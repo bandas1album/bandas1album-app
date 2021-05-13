@@ -1,0 +1,61 @@
+@import "src/scss/base/imports";
+
+.sidebar-footer {
+  padding: 0 rem(24px);
+
+  &__nav {
+    display: flex;
+    margin-top: rem(16px);
+
+    a {
+      font-size: rem(14px);
+
+      &:hover {
+        text-decoration: underline;
+      }
+
+      &:not(:last-child) {
+        margin-right: rem(8px);
+
+        &:after {
+          content: "•";
+          display: inline-block;
+          margin-left: rem(8px);
+        }
+      }
+    }
+  }
+
+  &__copy {
+    a:hover {
+      text-decoration: underline;
+    }
+
+    &__title {
+      margin: 0;
+
+      strong {
+        display: block;
+        font-size: rem(24px);
+      }
+
+      span {
+        display: block;
+        margin: 0;
+        margin-bottom: rem(4px);
+        font-size: rem(16px);
+        font-weight: 400;
+      }
+    }
+
+    p {
+      margin: 0;
+    }
+
+    small {
+      font-size: rem(14px);
+      text-transform: none;
+      letter-spacing: 0;
+    }
+  }
+}

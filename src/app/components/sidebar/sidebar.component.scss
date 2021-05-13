@@ -1,0 +1,47 @@
+@import "src/scss/base/imports";
+
+.sidebar {
+  position: relative;
+  display: flex;
+  min-height: 100%;
+  z-index: 9;
+
+  &__wrapper {
+    position: sticky;
+    top: 0;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    padding: rem(24px) 0;
+    overflow-y: scroll;
+  }
+
+  &-nav {
+    position: relative;
+    z-index: 2;
+    width: rem(64px);
+    background-color: $color-primary;
+    box-shadow: rem(4px) 0 rem(8px) rgba(0, 0, 0, 0.05);
+
+    .sidebar__wrapper {
+      overflow: hidden;
+    }
+
+    &__logo {
+      display: block;
+      width: rem(32px);
+      height: rem(32px);
+      margin: auto;
+      margin-bottom: rem(24px);
+
+      img {
+        width: 100%;
+        height: 100%;
+      }
+    }
+  }
+
+  app-sidebar-menu {
+    flex: 1;
+  }
+}

@@ -1,0 +1,57 @@
+.page {
+  background-color: $color-primary-shade;
+
+  .wrapper__button {
+    left: rem(88px);
+    bottom: rem(24px);
+  }
+
+  .main {
+    width: 100%;
+    max-width: rem(800px);
+    padding-right: rem(32px);
+
+    @media (min-width: $tablet) {
+      padding-right: rem(64px);
+    }
+
+    article {
+      padding-left: rem(32px);
+
+      @media (min-width: $tablet) {
+        padding-left: rem(64px);
+      }
+    }
+
+    ul,
+    ol {
+      font-size: rem(16px);
+      line-height: 1.5;
+
+      @media (min-width: $tablet) {
+        font-size: rem(20px);
+      }
+
+      li:not(:last-child) {
+        margin-bottom: rem(8px);
+
+        @media (min-width: $tablet) {
+          margin-bottom: rem(10px);
+        }
+      }
+    }
+
+    p {
+      font-size: rem(18px);
+      line-height: 1.5;
+
+      @media (min-width: $tablet) {
+        font-size: rem(24px);
+      }
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+  }
+}

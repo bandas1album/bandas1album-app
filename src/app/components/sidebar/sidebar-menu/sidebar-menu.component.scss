@@ -1,0 +1,27 @@
+@import "src/scss/base/imports";
+
+.sidebar-menu {
+  flex: 1;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  &__item {
+    @extend .reset-button;
+    width: 100%;
+    height: rem(48px);
+    font-size: rem(20px);
+    color: #fff;
+    transition: 0.2s all ease;
+
+    @media (min-width: $tablet) {
+      height: rem(64px);
+      font-size: rem(24px);
+    }
+
+    &:hover,
+    &.active {
+      background-color: $color-primary-shade;
+    }
+  }
+}

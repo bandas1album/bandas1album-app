@@ -1,0 +1,20 @@
+.single {
+  .wrapper__button {
+    right: rem(24px);
+    bottom: rem(24px);
+
+    @media (min-width: $desktop) {
+      left: rem(24px);
+    }
+  }
+
+  .list-posts {
+    position: fixed;
+    z-index: -1;
+    opacity: 0.5;
+    pointer-events: none;
+    filter: blur(3px);
+    max-height: 100vh;
+    overflow: hidden;
+  }
+}
