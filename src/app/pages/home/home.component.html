@@ -1,1 +1,19 @@
-<app-sidebar></app-sidebar>
+<main class="main">
+  <app-sidebar></app-sidebar>
+
+  <app-list-albums>
+    <li *ngFor="let item of list.items" albumItem>
+      <a class="list-posts__card" title="">
+        <picture>
+          <img
+            class="list-posts__card__image"
+            [src]="item.images.thumbnail"
+            alt=""
+            width="160"
+            height="160"
+          />
+        </picture>
+      </a>
+    </li>
+  </app-list-albums>
+</main>
