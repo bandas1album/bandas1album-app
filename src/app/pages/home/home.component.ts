@@ -8,7 +8,13 @@ import { AlbumService } from 'src/app/services/album/album.service';
 })
 export class HomeComponent implements OnInit {
   list: any = {
+    loading: true,
     items: [],
+  };
+  total: number = 0;
+  params: any = {
+    per_page: 95,
+    page: 1,
   };
 
   constructor(private albumService: AlbumService) {}
@@ -17,17 +23,18 @@ export class HomeComponent implements OnInit {
     this.getAlbums();
   }
 
-  getAlbums() {
-    const params = {
-      per_page: 96,
-    };
-    this.albumService.get({ params: params }).subscribe(
-      (res: any) => {
-        this.list.items = res;
-      },
-      (err: any) => {
-        // console.log(err);
-      }
-    );
+  async getAlbums() {
+    await this.albumService
+      .get({ observe: 'response', params: this.params })
+      .subscribe(
+        (res: any) => {
+          const { body, headers } = res;
+          this.list.items = body;
+          this.total = headers.get('X-WP-Total');
+        },
+        (err: any) => {
+          // console.log(err);
+        }
+      );
   }
 }

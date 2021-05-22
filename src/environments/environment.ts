@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  urlApi: 'http://localhost/wp-json/wp/v2/',
+  urlApi: 'http://localhost/wp-json/wp/v2',
 };
 
 /*

@@ -1,14 +1,9 @@
-<main class="main">
+<main class="main default">
   <app-sidebar></app-sidebar>
 
   <app-list-albums>
     <li *ngFor="let item of list.items" albumItem>
-      <a
-        [routerLink]="item.slug"
-        [state]="{ data: { id: item.id } }"
-        class="list-posts__card"
-        title=""
-      >
+      <app-card-list-albums [routerLink]="item.slug">
         <picture>
           <img
             class="list-posts__card__image"
@@ -18,7 +13,13 @@
             height="160"
           />
         </picture>
-      </a>
+      </app-card-list-albums>
+    </li>
+    <li albumItem>
+      <button>
+        <strong>+{{ total - 95 }}</strong>
+        <span>álbuns</span>
+      </button>
     </li>
   </app-list-albums>
 </main>

@@ -1,0 +1,29 @@
+@import "src/scss/base/imports";
+
+:host ::ng-deep {
+  img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+  }
+}
+
+.card {
+  display: block;
+  width: 100%;
+  height: 100%;
+  filter: grayscale(1);
+  transition: 0.2s all ease;
+  opacity: 0.8;
+  cursor: pointer;
+
+  &:hover {
+    filter: grayscale(0);
+    opacity: 1;
+  }
+
+  &__figure {
+    margin: 0;
+  }
+}
