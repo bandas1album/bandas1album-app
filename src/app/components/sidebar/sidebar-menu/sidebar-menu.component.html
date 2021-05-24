@@ -1,6 +1,7 @@
 <ul class="sidebar-menu">
   <li>
     <button
+      (click)="open(this.modals.albums)"
       class="sidebar-menu__item"
       data-sidebar="albums"
       aria-title="Álbuns de A a Z"
@@ -11,6 +12,7 @@
   </li>
   <li>
     <button
+      (click)="open(this.modals.countries)"
       class="sidebar-menu__item"
       data-sidebar="countries"
       aria-title="Bandas por países"
@@ -21,6 +23,7 @@
   </li>
   <li>
     <button
+      (click)="open(this.modals.years)"
       class="sidebar-menu__item"
       data-sidebar="year"
       aria-title="Ano de lançamento"
@@ -31,6 +34,7 @@
   </li>
   <li>
     <button
+      (click)="open(this.modals.genres)"
       class="sidebar-menu__item"
       data-sidebar="genres"
       aria-title="Gêneros"
