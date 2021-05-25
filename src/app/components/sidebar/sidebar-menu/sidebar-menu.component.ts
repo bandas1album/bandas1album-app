@@ -14,8 +14,8 @@ export class SidebarMenuComponent implements OnInit {
       list: [],
       isOpen: false,
     },
-    genres: {
-      title: 'Gêneros',
+    countries: {
+      title: 'Bandas por países',
       list: [],
       isOpen: false,
     },
@@ -24,8 +24,8 @@ export class SidebarMenuComponent implements OnInit {
       list: [],
       isOpen: false,
     },
-    countries: {
-      title: 'Bandas por países',
+    genres: {
+      title: 'Gêneros',
       list: [],
       isOpen: false,
     },
@@ -33,27 +33,37 @@ export class SidebarMenuComponent implements OnInit {
 
   constructor(private dialog: MatDialog) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.getAlbums();
+    this.getCountries();
+    this.getYears();
+    this.getGenres();
+  }
 
   open(modal: any) {
-    if (!modal.isOpen) {
-      modal.isOpen = true;
-      this.dialog.open(SidebarModalComponent, {
-        data: {
-          title: modal.title,
-          list: modal.list,
-        },
-        panelClass: 'sidebar-modal',
-        position: {
-          top: '0px',
-          left: '0px',
-        },
-      });
-    } else {
+    Object.entries(this.modals).forEach(([key, value]) => {
+      this.modals[key].ref = '';
       this.dialog.closeAll();
-      Object.entries(this.modals).forEach(([key, value]) => {
-        this.modals[key].isOpen = false;
-      });
-    }
+    });
+
+    modal.ref = this.dialog.open(SidebarModalComponent, {
+      data: {
+        title: modal.title,
+        list: modal.list,
+      },
+      panelClass: 'sidebar-modal',
+      position: {
+        top: '0px',
+        left: '0px',
+      },
+    });
   }
+
+  getAlbums() {}
+
+  getCountries() {}
+
+  getYears() {}
+
+  getGenres() {}
 }
