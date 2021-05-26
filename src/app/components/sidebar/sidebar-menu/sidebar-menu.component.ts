@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { AlbumService } from 'src/app/services/album/album.service';
 import { SidebarModalComponent } from '../../modals/sidebar-modal/sidebar-modal.component';
 
 @Component({
@@ -31,7 +32,7 @@ export class SidebarMenuComponent implements OnInit {
     },
   };
 
-  constructor(private dialog: MatDialog) {}
+  constructor(private dialog: MatDialog, private albumService: AlbumService) {}
 
   ngOnInit(): void {
     this.getAlbums();
@@ -59,7 +60,40 @@ export class SidebarMenuComponent implements OnInit {
     });
   }
 
-  getAlbums() {}
+  async getAlbums() {
+    const params = {
+      page: 1,
+      per_page: 100,
+      order: 'asc',
+      orderby: 'title',
+      _fields: ['title', 'slug', 'acf'],
+    };
+
+    await this.albumService
+      .get({ observe: 'response', params: params })
+      .subscribe(
+        (res: any) => {
+          const { body, headers } = res;
+
+          const obj = body.reduce((acc: any, c: any) => {
+            const letter = c.title.rendered[0];
+            acc[letter] = (acc[letter] || []).concat(c);
+            return acc;
+          }, {});
+
+          this.modals.albums.list = Object.entries(obj)
+            .map(([letter, albums]) => {
+              return { letter, albums };
+            })
+            .sort((a: any, b: any) => {
+              return a.letter - b.letter;
+            });
+        },
+        (err: any) => {
+          // console.log(err);
+        }
+      );
+  }
 
   getCountries() {}
 
