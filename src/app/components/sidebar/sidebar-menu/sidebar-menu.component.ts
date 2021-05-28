@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { AlbumService } from 'src/app/services/album/album.service';
 import { SidebarModalComponent } from '../../modals/sidebar-modal/sidebar-modal.component';
@@ -9,6 +9,7 @@ import { SidebarModalComponent } from '../../modals/sidebar-modal/sidebar-modal.
   styleUrls: ['./sidebar-menu.component.scss'],
 })
 export class SidebarMenuComponent implements OnInit {
+  albums: any = [];
   modals: any = {
     albums: {
       title: 'Álbuns de A a Z',
@@ -35,6 +36,8 @@ export class SidebarMenuComponent implements OnInit {
   constructor(private dialog: MatDialog, private albumService: AlbumService) {}
 
   ngOnInit(): void {
+    this.getAllPosts();
+
     this.getAlbums();
     this.getCountries();
     this.getYears();
@@ -60,7 +63,7 @@ export class SidebarMenuComponent implements OnInit {
     });
   }
 
-  async getAlbums() {
+  getAllPosts() {
     const params = {
       page: 1,
       per_page: 100,
@@ -69,33 +72,57 @@ export class SidebarMenuComponent implements OnInit {
       _fields: ['title', 'slug', 'acf'],
     };
 
-    await this.albumService
-      .get({ observe: 'response', params: params })
-      .subscribe(
-        (res: any) => {
-          const { body, headers } = res;
+    this.albumService.get({ observe: 'response', params: params }).subscribe(
+      (res: any) => {
+        const { body, headers } = res;
+        this.albums = body;
 
-          const obj = body.reduce((acc: any, c: any) => {
-            const letter = c.title.rendered[0];
-            acc[letter] = (acc[letter] || []).concat(c);
-            return acc;
-          }, {});
-
-          this.modals.albums.list = Object.entries(obj)
-            .map(([letter, albums]) => {
-              return { letter, albums };
-            })
-            .sort((a: any, b: any) => {
-              return a.letter - b.letter;
-            });
-        },
-        (err: any) => {
-          // console.log(err);
-        }
-      );
+        this.getAlbums();
+        this.getCountries();
+        this.getYears();
+        this.getGenres();
+      },
+      (err: any) => {
+        // console.log(err);
+      }
+    );
   }
 
-  getCountries() {}
+  loadMore() {
+    console.log('load more');
+  }
+
+  getAlbums() {
+    const obj = this.albums.reduce((acc: any, c: any) => {
+      const title = c.title.rendered[0];
+      acc[title] = (acc[title] || []).concat(c);
+      return acc;
+    }, {});
+
+    this.modals.albums.list = Object.entries(obj)
+      .map(([title, albums]) => {
+        return { title, albums };
+      })
+      .sort((a: any, b: any) => {
+        return a.title - b.title;
+      });
+  }
+
+  getCountries() {
+    const obj = this.albums.reduce((acc: any, c: any) => {
+      const title = c.acf.country;
+      acc[title] = (acc[title] || []).concat(c);
+      return acc;
+    }, {});
+
+    this.modals.countries.list = Object.entries(obj)
+      .map(([title, albums]) => {
+        return { title, albums };
+      })
+      .sort((a: any, b: any) => {
+        return a.title.charCodeAt(0) - b.title.charCodeAt(0);
+      });
+  }
 
   getYears() {}
 

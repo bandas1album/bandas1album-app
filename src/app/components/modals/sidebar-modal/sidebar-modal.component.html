@@ -3,7 +3,7 @@
 
   <ol>
     <li *ngFor="let item of data.list">
-      <h4 class="sidebar-modal__list__subtitle" id="-ref">{{ item.letter }}</h4>
+      <h4 class="sidebar-modal__list__subtitle" id="-ref">{{ item.title }}</h4>
       <ul>
         <li *ngFor="let album of item.albums">
           <a [routerLink]="album.slug">
