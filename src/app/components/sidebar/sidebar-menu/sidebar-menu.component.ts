@@ -33,6 +33,14 @@ export class SidebarMenuComponent implements OnInit {
     },
   };
 
+  params: any = {
+    page: 1,
+    per_page: 100,
+    order: 'asc',
+    orderby: 'title',
+    _fields: ['title', 'slug', 'acf'],
+  };
+
   constructor(private dialog: MatDialog, private albumService: AlbumService) {}
 
   ngOnInit(): void {
@@ -64,28 +72,23 @@ export class SidebarMenuComponent implements OnInit {
   }
 
   getAllPosts() {
-    const params = {
-      page: 1,
-      per_page: 100,
-      order: 'asc',
-      orderby: 'title',
-      _fields: ['title', 'slug', 'acf'],
-    };
+    this.albumService
+      .get({ observe: 'response', params: this.params })
+      .subscribe(
+        (res: any) => {
+          const { body, headers } = res;
+          this.albums = body;
+          this.loadMore();
 
-    this.albumService.get({ observe: 'response', params: params }).subscribe(
-      (res: any) => {
-        const { body, headers } = res;
-        this.albums = body;
-
-        this.getAlbums();
-        this.getCountries();
-        this.getYears();
-        this.getGenres();
-      },
-      (err: any) => {
-        // console.log(err);
-      }
-    );
+          this.getAlbums();
+          this.getCountries();
+          this.getYears();
+          this.getGenres();
+        },
+        (err: any) => {
+          // console.log(err);
+        }
+      );
   }
 
   loadMore() {
@@ -124,7 +127,23 @@ export class SidebarMenuComponent implements OnInit {
       });
   }
 
-  getYears() {}
+  getYears() {
+    const obj = this.albums.reduce((acc: any, c: any) => {
+      const year = new Date(c.acf.released).getFullYear();
+
+      const title = year;
+      acc[title] = (acc[title] || []).concat(c);
+      return acc;
+    }, {});
+
+    this.modals.years.list = Object.entries(obj)
+      .map(([title, albums]) => {
+        return { title, albums };
+      })
+      .sort((a: any, b: any) => {
+        return a.title - b.title;
+      });
+  }
 
   getGenres() {}
 }
