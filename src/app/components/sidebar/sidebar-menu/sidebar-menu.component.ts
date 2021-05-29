@@ -9,7 +9,12 @@ import { SidebarModalComponent } from '../../modals/sidebar-modal/sidebar-modal.
   styleUrls: ['./sidebar-menu.component.scss'],
 })
 export class SidebarMenuComponent implements OnInit {
-  albums: any = [];
+  albums: any = {
+    loading: false,
+    loadingMore: false,
+    list: [],
+    hasMore: false,
+  };
   modals: any = {
     albums: {
       title: 'Álbuns de A a Z',
@@ -45,11 +50,6 @@ export class SidebarMenuComponent implements OnInit {
 
   ngOnInit(): void {
     this.getAllPosts();
-
-    this.getAlbums();
-    this.getCountries();
-    this.getYears();
-    this.getGenres();
   }
 
   open(modal: any) {
@@ -71,14 +71,33 @@ export class SidebarMenuComponent implements OnInit {
     });
   }
 
-  getAllPosts() {
+  getAllPosts(resetList: boolean = false) {
+    this.albums;
     this.albumService
       .get({ observe: 'response', params: this.params })
       .subscribe(
         (res: any) => {
           const { body, headers } = res;
-          this.albums = body;
-          this.loadMore();
+
+          if (resetList) {
+            this.albums.list = body;
+          } else {
+            this.albums.list = this.albums.list.concat(body);
+          }
+
+          this.albums.list.loading = false;
+          this.albums.firstLoading = false;
+          this.albums.list.hasMore =
+            this.params.page < headers.get('X-WP-TotalPages');
+          this.params.page++;
+
+          if (this.albums.list.loadingMore) {
+            this.albums.list.loadingMore = false;
+          }
+
+          if (this.albums.list.hasMore) {
+            this.loadMore();
+          }
 
           this.getAlbums();
           this.getCountries();
@@ -86,17 +105,24 @@ export class SidebarMenuComponent implements OnInit {
           this.getGenres();
         },
         (err: any) => {
-          // console.log(err);
+          this.albums.list.loading = false;
+
+          if (this.albums.list.loadingMore) {
+            this.albums.list.loadingMore = false;
+          }
         }
       );
   }
 
   loadMore() {
-    console.log('load more');
+    this.albums.loadingMore = true;
+    this.getAllPosts();
   }
 
   getAlbums() {
-    const obj = this.albums.reduce((acc: any, c: any) => {
+    console.log(this.albums.list);
+
+    const obj = this.albums.list.reduce((acc: any, c: any) => {
       const title = c.title.rendered[0];
       acc[title] = (acc[title] || []).concat(c);
       return acc;
@@ -112,7 +138,7 @@ export class SidebarMenuComponent implements OnInit {
   }
 
   getCountries() {
-    const obj = this.albums.reduce((acc: any, c: any) => {
+    const obj = this.albums.list.reduce((acc: any, c: any) => {
       const title = c.acf.country;
       acc[title] = (acc[title] || []).concat(c);
       return acc;
@@ -128,7 +154,7 @@ export class SidebarMenuComponent implements OnInit {
   }
 
   getYears() {
-    const obj = this.albums.reduce((acc: any, c: any) => {
+    const obj = this.albums.list.reduce((acc: any, c: any) => {
       const year = new Date(c.acf.released).getFullYear();
 
       const title = year;
