@@ -120,8 +120,6 @@ export class SidebarMenuComponent implements OnInit {
   }
 
   getAlbums() {
-    console.log(this.albums.list);
-
     const obj = this.albums.list.reduce((acc: any, c: any) => {
       const title = c.title.rendered[0];
       acc[title] = (acc[title] || []).concat(c);

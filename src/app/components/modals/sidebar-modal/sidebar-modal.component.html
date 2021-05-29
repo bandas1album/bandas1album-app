@@ -7,8 +7,8 @@
       <ul>
         <li *ngFor="let album of item.albums">
           <a [routerLink]="album.slug">
-            <strong>{{ album.title.rendered }}</strong>
-            <span>{{ album.acf.artist }}</span>
+            <strong [innerHtml]="album.title.rendered"></strong>
+            <span [innerHtml]="album.acf.artist"></span>
           </a>
         </li>
       </ul>
