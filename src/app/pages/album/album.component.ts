@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Title } from '@angular/platform-browser';
-import { Router } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AlbumService } from 'src/app/services/album/album.service';
 import { SeoService } from 'src/app/services/seo/seo.service';
 
@@ -12,31 +12,40 @@ import { SeoService } from 'src/app/services/seo/seo.service';
 export class AlbumComponent implements OnInit {
   pageId: string = '';
   item: any = {};
+  params: any = {
+    slug: '',
+  };
 
   constructor(
     private seoService: SeoService,
     private albumService: AlbumService,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute,
+    private dialog: MatDialog
   ) {
     this.pageId = this.router.routerState.snapshot.url;
   }
 
   ngOnInit(): void {
-    this.get();
+    this.route.params.subscribe((params) => {
+      const { slug } = params;
+      this.item = {};
+      this.pageId = '';
+      this.params.slug = slug;
+
+      this.get();
+    });
   }
 
   get() {
-    const slug = this.pageId.replace('/', '');
-    const params = {
-      slug: slug,
-    };
-
-    this.albumService.get({ params: params }).subscribe(
+    this.albumService.get({ params: this.params }).subscribe(
       (res: any) => {
         this.item = res[0];
-        this.seoService.updateTitle(
-          `${this.item.title.rendered} | Bandas de 1 Álbum`
-        );
+        const title =
+          this.item.title.rendered == this.item.acf.artist
+            ? this.item.title.rendered
+            : `${this.item.title.rendered} - ${this.item.acf.artist}`;
+        this.seoService.updateTitle(`${title} | Bandas de 1 Álbum`);
         this.seoService.metatags(this.item);
       },
       (err: any) => {

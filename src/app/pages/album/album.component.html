@@ -1,132 +1,115 @@
-<article itemscope itemtype="https://schema.org/MusicAlbum">
-  <div class="post-album">
-    <div class="post-album__cover">
-      <picture>
-        <source [srcset]="item.images?.full" type="image/webp" />
-        <source [srcset]="item.images?.full" type="image/jpeg" />
-        <img
-          itemprop="image"
-          loading="lazy"
-          [src]="item.images?.full"
-          alt="Capa do álbum  da banda "
-        />
-      </picture>
-    </div>
-    <div class="post-album__content">
-      <!-- {% include lists/list-breadcrumb.html %} -->
-      <header class="post-album__content__header">
-        <div>
-          <h1 class="post-album__content__title" itemprop="name">
-            {{ item.title?.rendered }}
-          </h1>
-          <h2
-            class="post-album__content__artist"
-            itemprop="byArtist"
-            itemscope
-            itemtype="https://schema.org/MusicGroup"
-          >
-            <span itemprop="name">{{ item.acf?.artist }}</span>
-          </h2>
-        </div>
-        <strong class="post-album__content__year" itemprop="copyrightYear">{{
-          item.acf?.released | date: "yyyy"
-        }}</strong>
-        <!-- <ul class="post-album__content__genres">
-          <li>
-            <a href="/genero/{{ genre | slugify }}"
-              ><span itemprop="genre">{{ genre }}</span></a
+<main class="main">
+  <div class="main-bg"></div>
+  <article itemscope itemtype="https://schema.org/MusicAlbum">
+    <div class="post-album">
+      <div class="post-album__cover">
+        <picture>
+          <source [srcset]="item.images?.full" type="image/webp" />
+          <source [srcset]="item.images?.full" type="image/jpeg" />
+          <img
+            itemprop="image"
+            loading="lazy"
+            [src]="item.images?.full"
+            alt="Capa do álbum  da banda "
+          />
+        </picture>
+      </div>
+      <div class="post-album__content">
+        <!-- {% include lists/list-breadcrumb.html %} -->
+        <header class="post-album__content__header">
+          <div>
+            <h1 class="post-album__content__title" itemprop="name">
+              {{ item.title?.rendered }}
+            </h1>
+            <h2
+              class="post-album__content__artist"
+              itemprop="byArtist"
+              itemscope
+              itemtype="https://schema.org/MusicGroup"
             >
-          </li>
-        </ul> -->
-        <meta itemprop="copyrightHolder" [content]="item.acf?.label" />
-        <!-- <meta itemprop="description" [content]="'O álbum'+
-        {{ item.title.rendered }} +'foi o único disco de estúdio lançado por'+
-        {{ item.acf.artist }}+ '('+{{ item.acf.country }}+')'+', em'+{{ item.acf.released }}+', pelo selo '+ {{ item.acf.label }}+'.'" /> -->
-      </header>
-      <!-- {% include lists/list-links.html %} -->
+              <span itemprop="name">{{ item.acf?.artist }}</span>
+            </h2>
+          </div>
+          <strong
+            class="post-album__content__year"
+            itemprop="copyrightYear"
+            [innerHtml]="item.acf?.released | date: 'yyyy'"
+          ></strong>
+          <!-- <ul class="post-album__content__genres">
+            <li>
+              <a href="/genero/{{ genre | slugify }}"
+                ><span itemprop="genre">{{ genre }}</span></a
+              >
+            </li>
+          </ul> -->
+          <meta itemprop="copyrightHolder" [content]="item.acf?.label" />
+          <!-- <meta itemprop="description" [content]="'O álbum'+
+          {{ item.title.rendered }} +'foi o único disco de estúdio lançado por'+
+          {{ item.acf.artist }}+ '('+{{ item.acf.country }}+')'+', em'+{{ item.acf.released }}+', pelo selo '+ {{ item.acf.label }}+'.'" /> -->
+        </header>
+        <!-- {% include lists/list-links.html %} -->
 
-      <footer class="post-footer">
-        <!-- <nav class="post-navigation">
-          {% if page.previous.url %}
-          <a
-            class="post-navigation__link post-navigation__prev"
-            href="{{ page.previous.url }}"
-            rel="prev"
-            onclick="ga('send', 'event', 'Button', 'click', 'Pagination', 'Prev');"
+        <footer class="post-footer">
+          <!-- <nav class="post-navigation">
+            {% if page.previous.url %}
+            <a
+              class="post-navigation__link post-navigation__prev"
+              href="{{ page.previous.url }}"
+              rel="prev"
+              onclick="ga('send', 'event', 'Button', 'click', 'Pagination', 'Prev');"
+            >
+              <span>{{ page.previous.title }}</span>
+              <i class="fas fa-chevron-left"></i>
+            </a>
+            {% endif %} {% if page.next.url %}
+            <a
+              class="post-navigation__link post-navigation__next"
+              href="{{ page.next.url }}"
+              rel="next"
+              onclick="ga('send', 'event', 'Button', 'click', 'Pagination', 'Next');"
+            >
+              <i class="fas fa-chevron-right"></i>
+              <span>{{ page.next.title }}</span>
+            </a>
+            {% endif %}
+          </nav> -->
+
+          <button
+            data-open="share"
+            onclick="ga('send', 'event', 'Button', 'click', 'Share', 'Open Modal');"
+            class="post-footer__share"
+            aria-title="Abrir modal de share"
           >
-            <span>{{ page.previous.title }}</span>
-            <i class="fas fa-chevron-left"></i>
-          </a>
-          {% endif %} {% if page.next.url %}
-          <a
-            class="post-navigation__link post-navigation__next"
-            href="{{ page.next.url }}"
-            rel="next"
-            onclick="ga('send', 'event', 'Button', 'click', 'Pagination', 'Next');"
-          >
-            <i class="fas fa-chevron-right"></i>
-            <span>{{ page.next.title }}</span>
-          </a>
-          {% endif %}
-        </nav> -->
-
-        <button
-          data-open="share"
-          onclick="ga('send', 'event', 'Button', 'click', 'Share', 'Open Modal');"
-          class="post-footer__share"
-          aria-title="Abrir modal de share"
-        >
-          <i class="fas fa-share-alt" aria-hidden="true"></i>
-        </button>
-      </footer>
-    </div>
-  </div>
-
-  <div class="post-content">
-    <ng-container *ngIf="item.content?.rendered !== '<p>n</p>\n'">
-      <h3>Um pouco mais sobre {{ item.acf?.artist }}</h3>
-      <div [innerHtml]="item.content?.rendered"></div>
-    </ng-container>
-
-    <div class="post-tracklist" *ngIf="item.acf?.tracklist?.length">
-      <h3>Lista de faixas</h3>
-      <table>
-        <tr
-          *ngFor="let track of item.acf?.tracklist"
-          itemprop="track"
-          itemscope
-          itemtype="https://schema.org/MusicRecording"
-        >
-          <td itemprop="name">{{ track.name }}</td>
-          <td>
-            {{ track.duration }}
-          </td>
-        </tr>
-      </table>
+            <i class="fas fa-share-alt" aria-hidden="true"></i>
+          </button>
+        </footer>
+      </div>
     </div>
 
-    <!-- <div class="post-comments">
-      <div id="disqus_thread"></div>
-      <script>
-        var disqus_config = function () {
-          this.page.url = "{{ page.url | absolute_url }}";
-          this.page.identifier = "{{ page.id }}";
-        };
-        (function () {
-          var d = document,
-            s = d.createElement("script");
-          s.src = "https://bandas1album.disqus.com/embed.js";
-          s.setAttribute("data-timestamp", +new Date());
-          (d.head || d.body).appendChild(s);
-        })();
-      </script>
-      <noscript>
-        Please enable JavaScript to view the
-        <a href="https://disqus.com/?ref_noscript">
-          comments powered by Disqus.
-        </a>
-      </noscript>
-    </div> -->
-    <!-- <disqus [identifier]="pageId"></disqus> -->
-  </div>
-</article>
+    <div class="post-content">
+      <ng-container *ngIf="item.content?.rendered !== '<p>n</p>\n'">
+        <h3>Um pouco mais sobre {{ item.acf?.artist }}</h3>
+        <div [innerHtml]="item.content?.rendered"></div>
+      </ng-container>
+
+      <div class="post-tracklist" *ngIf="item.acf?.tracklist?.length">
+        <h3>Lista de faixas</h3>
+        <table>
+          <tr
+            *ngFor="let track of item.acf?.tracklist"
+            itemprop="track"
+            itemscope
+            itemtype="https://schema.org/MusicRecording"
+          >
+            <td itemprop="name">{{ track.name }}</td>
+            <td>
+              {{ track.duration }}
+            </td>
+          </tr>
+        </table>
+      </div>
+
+      <!-- <disqus class="post-comments" [identifier]="pageId"></disqus> -->
+    </div>
+  </article>
+</main>
