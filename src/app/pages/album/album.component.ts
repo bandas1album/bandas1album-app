@@ -45,7 +45,8 @@ export class AlbumComponent implements OnInit {
           this.item.title.rendered == this.item.acf.artist
             ? this.item.title.rendered
             : `${this.item.title.rendered} - ${this.item.acf.artist}`;
-        this.seoService.updateTitle(`${title} | Bandas de 1 Álbum`);
+        const year = new Date(this.item.acf.released).getFullYear();
+        this.seoService.updateTitle(`${title} (${year}) | Bandas de 1 Álbum`);
         this.seoService.metatags(this.item);
       },
       (err: any) => {

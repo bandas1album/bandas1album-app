@@ -17,7 +17,7 @@
       <div class="post-album__content">
         <!-- {% include lists/list-breadcrumb.html %} -->
         <header class="post-album__content__header">
-          <div>
+          <hgroup>
             <h1
               class="post-album__content__title"
               itemprop="name"
@@ -31,7 +31,7 @@
             >
               <span itemprop="name" [innerHtml]="item.acf?.artist"></span>
             </h2>
-          </div>
+          </hgroup>
           <strong
             class="post-album__content__year"
             itemprop="copyrightYear"
@@ -90,7 +90,7 @@
     </div>
 
     <div class="post-content">
-      <ng-container *ngIf="item.content?.rendered !== '<p>n</p>\n'">
+      <ng-container *ngIf="item.content?.rendered">
         <h3>Um pouco mais sobre {{ item.acf?.artist }}</h3>
         <div [innerHtml]="item.content?.rendered"></div>
       </ng-container>
