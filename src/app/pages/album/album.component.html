@@ -18,16 +18,18 @@
         <!-- {% include lists/list-breadcrumb.html %} -->
         <header class="post-album__content__header">
           <div>
-            <h1 class="post-album__content__title" itemprop="name">
-              {{ item.title?.rendered }}
-            </h1>
+            <h1
+              class="post-album__content__title"
+              itemprop="name"
+              [innerHtml]="item.title?.rendered"
+            ></h1>
             <h2
               class="post-album__content__artist"
               itemprop="byArtist"
               itemscope
               itemtype="https://schema.org/MusicGroup"
             >
-              <span itemprop="name">{{ item.acf?.artist }}</span>
+              <span itemprop="name" [innerHtml]="item.acf?.artist"></span>
             </h2>
           </div>
           <strong
@@ -47,7 +49,8 @@
           {{ item.title.rendered }} +'foi o único disco de estúdio lançado por'+
           {{ item.acf.artist }}+ '('+{{ item.acf.country }}+')'+', em'+{{ item.acf.released }}+', pelo selo '+ {{ item.acf.label }}+'.'" /> -->
         </header>
-        <!-- {% include lists/list-links.html %} -->
+
+        <app-list-links [item]="item"></app-list-links>
 
         <footer class="post-footer">
           <!-- <nav class="post-navigation">
@@ -101,10 +104,8 @@
             itemscope
             itemtype="https://schema.org/MusicRecording"
           >
-            <td itemprop="name">{{ track.name }}</td>
-            <td>
-              {{ track.duration }}
-            </td>
+            <td itemprop="name" [innerHtml]="track.name"></td>
+            <td [innerHtml]="track.duration"></td>
           </tr>
         </table>
       </div>

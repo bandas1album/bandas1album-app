@@ -5,6 +5,7 @@ import { AlbumRoutingModule } from './album-routing.module';
 import { AlbumComponent } from './album.component';
 import { DisqusModule } from 'ngx-disqus';
 import { MatDialogModule } from '@angular/material/dialog';
+import { ListLinksModule } from 'src/app/components/lists/list-links/list-links.module';
 
 @NgModule({
   declarations: [AlbumComponent],
@@ -13,6 +14,7 @@ import { MatDialogModule } from '@angular/material/dialog';
     AlbumRoutingModule,
     DisqusModule.forRoot('bandas1album'),
     MatDialogModule,
+    ListLinksModule,
   ],
 })
 export class AlbumModule {}
