@@ -53,29 +53,26 @@
         <app-list-links [item]="item"></app-list-links>
 
         <footer class="post-footer">
-          <!-- <nav class="post-navigation">
-            {% if page.previous.url %}
+          <nav class="post-navigation">
             <a
+              *ngIf="item.navigation.prev"
               class="post-navigation__link post-navigation__prev"
-              href="{{ page.previous.url }}"
+              [routerLink]="'/' + item.navigation.prev.slug"
               rel="prev"
-              onclick="ga('send', 'event', 'Button', 'click', 'Pagination', 'Prev');"
             >
-              <span>{{ page.previous.title }}</span>
+              <span>{{ item.navigation.prev.name }}</span>
               <i class="fas fa-chevron-left"></i>
             </a>
-            {% endif %} {% if page.next.url %}
             <a
+              *ngIf="item.navigation.next"
               class="post-navigation__link post-navigation__next"
-              href="{{ page.next.url }}"
+              [routerLink]="'/' + item.navigation.next.slug"
               rel="next"
-              onclick="ga('send', 'event', 'Button', 'click', 'Pagination', 'Next');"
             >
               <i class="fas fa-chevron-right"></i>
-              <span>{{ page.next.title }}</span>
+              <span>{{ item.navigation.next.name }}</span>
             </a>
-            {% endif %}
-          </nav> -->
+          </nav>
 
           <button
             data-open="share"
