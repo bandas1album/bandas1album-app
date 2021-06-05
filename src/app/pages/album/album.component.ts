@@ -54,4 +54,8 @@ export class AlbumComponent implements OnInit {
       }
     );
   }
+
+  share() {
+    console.log('share');
+  }
 }

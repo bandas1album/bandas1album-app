@@ -1,4 +1,8 @@
 @import "src/scss/base/imports";
+.main {
+  display: flex;
+}
+
 .main-bg {
   position: absolute;
   top: 0;

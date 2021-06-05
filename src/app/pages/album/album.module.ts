@@ -6,6 +6,7 @@ import { AlbumComponent } from './album.component';
 import { DisqusModule } from 'ngx-disqus';
 import { MatDialogModule } from '@angular/material/dialog';
 import { ListLinksModule } from 'src/app/components/lists/list-links/list-links.module';
+import { SidebarModule } from 'src/app/components/sidebar/sidebar.module';
 
 @NgModule({
   declarations: [AlbumComponent],
@@ -15,6 +16,7 @@ import { ListLinksModule } from 'src/app/components/lists/list-links/list-links.
     DisqusModule.forRoot('bandas1album'),
     MatDialogModule,
     ListLinksModule,
+    SidebarModule,
   ],
   schemas: [NO_ERRORS_SCHEMA],
 })
