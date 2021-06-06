@@ -6,6 +6,7 @@ import { HomeComponent } from './home.component';
 import { SidebarModule } from 'src/app/components/sidebar/sidebar.module';
 import { ListAlbumsModule } from 'src/app/components/lists/list-albums/list-albums.module';
 import { CardListAlbumsModule } from 'src/app/components/cards/card-list-albums/card-list-albums.module';
+import { ListAlbumsSectionModule } from './list-albums-section/list-albums-section.module';
 
 @NgModule({
   declarations: [HomeComponent],
@@ -13,8 +14,7 @@ import { CardListAlbumsModule } from 'src/app/components/cards/card-list-albums/
     CommonModule,
     HomeRoutingModule,
     SidebarModule,
-    ListAlbumsModule,
-    CardListAlbumsModule,
+    ListAlbumsSectionModule,
   ],
 })
 export class HomeModule {}
