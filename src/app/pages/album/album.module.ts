@@ -7,6 +7,7 @@ import { DisqusModule } from 'ngx-disqus';
 import { MatDialogModule } from '@angular/material/dialog';
 import { ListLinksModule } from 'src/app/components/lists/list-links/list-links.module';
 import { SidebarModule } from 'src/app/components/sidebar/sidebar.module';
+import { FooterDefaultModule } from 'src/app/components/footers/footer-default/footer-default.module';
 
 @NgModule({
   declarations: [AlbumComponent],
@@ -17,6 +18,7 @@ import { SidebarModule } from 'src/app/components/sidebar/sidebar.module';
     MatDialogModule,
     ListLinksModule,
     SidebarModule,
+    FooterDefaultModule,
   ],
   schemas: [NO_ERRORS_SCHEMA],
 })

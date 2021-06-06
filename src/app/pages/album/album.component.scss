@@ -15,3 +15,12 @@
   opacity: 0.5;
   filter: blur(5px);
 }
+
+section {
+  width: 100%;
+}
+
+app-footer-default {
+  display: block;
+  background-color: $color-primary-shade;
+}

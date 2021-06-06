@@ -1,5 +1,5 @@
 <ul class="post-album__content__links">
-  <li *ngIf="item.acf.amazon">
+  <li *ngIf="item.acf?.amazon">
     <a
       [href]="item.acf.amazon"
       target="_blank"
@@ -9,7 +9,7 @@
       <i class="fab fa-amazon"></i>
     </a>
   </li>
-  <li *ngIf="item.acf.deezer">
+  <li *ngIf="item.acf?.deezer">
     <a
       [href]="item.acf.deezer"
       target="_blank"
@@ -19,7 +19,7 @@
       <i class="fab fa-deezer"></i>
     </a>
   </li>
-  <li *ngIf="item.acf.lastfm">
+  <li *ngIf="item.acf?.lastfm">
     <a
       [href]="item.acf.lastfm"
       target="_blank"
@@ -29,7 +29,7 @@
       <i class="fab fa-lastfm"></i>
     </a>
   </li>
-  <li *ngIf="item.acf.spotify">
+  <li *ngIf="item.acf?.spotify">
     <a
       [href]="item.acf.spotify"
       target="_blank"
@@ -39,7 +39,7 @@
       <i class="fab fa-spotify"></i>
     </a>
   </li>
-  <li *ngIf="item.acf.youtube">
+  <li *ngIf="item.acf?.youtube">
     <a
       [href]="item.acf.youtube"
       target="_blank"
@@ -49,7 +49,7 @@
       <i class="fab fa-youtube"></i>
     </a>
   </li>
-  <li *ngIf="item.acf.wikipedia">
+  <li *ngIf="item.acf?.wikipedia">
     <a
       [href]="item.acf.wikipedia"
       target="_blank"
@@ -59,7 +59,7 @@
       <i class="fab fa-wikipedia-w"></i>
     </a>
   </li>
-  <li *ngIf="item.acf.download">
+  <li *ngIf="item.acf?.download">
     <a
       [href]="item.acf.download"
       target="_blank"
