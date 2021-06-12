@@ -8,6 +8,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { ListLinksModule } from 'src/app/components/lists/list-links/list-links.module';
 import { SidebarModule } from 'src/app/components/sidebar/sidebar.module';
 import { FooterDefaultModule } from 'src/app/components/footers/footer-default/footer-default.module';
+import { ShareModalModule } from 'src/app/components/modals/share-modal/share-modal.module';
 
 @NgModule({
   declarations: [AlbumComponent],
@@ -19,6 +20,7 @@ import { FooterDefaultModule } from 'src/app/components/footers/footer-default/f
     ListLinksModule,
     SidebarModule,
     FooterDefaultModule,
+    ShareModalModule,
   ],
   schemas: [NO_ERRORS_SCHEMA],
 })

@@ -1,6 +1,6 @@
 <section>
   <app-placeholder-list-albums
-    *ngIf="!list.items.length && list.loading"
+    *ngIf="firstLoading"
   ></app-placeholder-list-albums>
 
   <app-list-albums *ngIf="list.items.length && !list.loading">

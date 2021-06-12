@@ -1,15 +1,13 @@
-@import '../post/share';
+@import "../post/share";
 
 .modal-share {
-  display: flex;
-  align-items: flex-end;
   justify-content: center;
+  width: 100%;
 
-  @media (min-width: $tablet) {
-    align-items: center;
-  }
-
-  .modal-content {
+  .mat-dialog-container {
+    box-shadow: none;
+    background: transparent;
+    color: $white;
     width: 100%;
     padding: rem(32px) rem(24px);
     border-radius: rem(16px) rem(16px) 0 0;
@@ -21,17 +19,6 @@
       max-width: 640px;
       border-radius: rem(16px);
       transform: translateY(0);
-      opacity: 0;
-    }
-  }
-
-  &.is-active {
-    .modal-content {
-      transform: translateY(0);
-
-      @media (min-width: $tablet) {
-        opacity: 1;
-      }
     }
   }
 }

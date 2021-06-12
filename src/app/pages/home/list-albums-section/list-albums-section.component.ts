@@ -7,6 +7,7 @@ import { AlbumService } from 'src/app/services/album/album.service';
   styleUrls: ['./list-albums-section.component.scss'],
 })
 export class ListAlbumsSectionComponent implements OnInit {
+  firstLoading: boolean = true;
   list: any = {
     loading: true,
     items: [],
@@ -32,6 +33,7 @@ export class ListAlbumsSectionComponent implements OnInit {
           this.list.items = body;
           this.total = headers.get('X-WP-Total');
           this.list.loading = false;
+          this.firstLoading = false;
         },
         (err: any) => {
           this.list.loading = false;

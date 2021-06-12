@@ -11,6 +11,7 @@ const routes: Routes = [
     path: ':slug',
     loadChildren: () =>
       import('./pages/album/album.module').then((m) => m.AlbumModule),
+    data: { animation: 'Album' },
   },
 ];
 
