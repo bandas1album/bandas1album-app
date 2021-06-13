@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AlbumService } from 'src/app/services/album/album.service';
 import { SeoService } from 'src/app/services/seo/seo.service';
 import { ShareModalComponent } from 'src/app/components/modals/share-modal/share-modal.component';
+import { formatDate } from '@angular/common';
 
 @Component({
   selector: 'app-album',
@@ -63,7 +64,7 @@ export class AlbumComponent implements OnInit {
         slug: this.item.slug,
         title: this.item.title.rendered,
         artist: this.item.acf.artist,
-        released: this.item.acf.released,
+        released: formatDate(this.item.acf.released, 'yyyy', 'en-US'),
       },
     });
   }
