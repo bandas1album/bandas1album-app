@@ -14,6 +14,7 @@ import { formatDate } from '@angular/common';
 export class AlbumComponent implements OnInit {
   pageId: string = '';
   item: any = {};
+  loading: boolean = true;
   params: any = {
     slug: '',
   };
@@ -50,9 +51,12 @@ export class AlbumComponent implements OnInit {
         const year = new Date(this.item.acf.released).getFullYear();
         this.seoService.updateTitle(`${title} (${year}) | Bandas de 1 Álbum`);
         this.seoService.metatags(this.item);
+
+        this.loading = false;
       },
       (err: any) => {
         // console.log(err);
+        this.loading = false;
       }
     );
   }

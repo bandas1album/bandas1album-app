@@ -4,7 +4,10 @@
   <section>
     <div class="main-bg"></div>
     <article itemscope itemtype="https://schema.org/MusicAlbum">
-      <app-card-post-album>
+      <app-loading-card-post-album *ngIf="this.loading">
+      </app-loading-card-post-album>
+
+      <app-card-post-album *ngIf="!this.loading">
         <picture albumImage>
           <source [srcset]="item.images?.full" type="image/webp" />
           <source [srcset]="item.images?.full" type="image/jpeg" />

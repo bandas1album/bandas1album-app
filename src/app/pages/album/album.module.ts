@@ -10,6 +10,7 @@ import { SidebarModule } from 'src/app/components/sidebar/sidebar.module';
 import { FooterDefaultModule } from 'src/app/components/footers/footer-default/footer-default.module';
 import { ShareModalModule } from 'src/app/components/modals/share-modal/share-modal.module';
 import { CardPostAlbumModule } from 'src/app/components/cards/card-post-album/card-post-album.module';
+import { LoadingCardPostAlbumModule } from 'src/app/components/cards/card-post-album/loading-card-post-album/loading-card-post-album.module';
 
 @NgModule({
   declarations: [AlbumComponent],
@@ -23,6 +24,7 @@ import { CardPostAlbumModule } from 'src/app/components/cards/card-post-album/ca
     FooterDefaultModule,
     ShareModalModule,
     CardPostAlbumModule,
+    LoadingCardPostAlbumModule,
   ],
   schemas: [NO_ERRORS_SCHEMA],
 })
