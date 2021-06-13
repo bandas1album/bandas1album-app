@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Clipboard } from '@angular/cdk/clipboard';
 
@@ -8,6 +8,7 @@ import { Clipboard } from '@angular/cdk/clipboard';
   styleUrls: ['./share-modal.component.scss'],
 })
 export class ShareModalComponent implements OnInit {
+  @ViewChild('input') input: any;
   albumUrl: string = `https://bandas1album.com.br/${this.data.slug}`;
   twitterUrl: string = `https://twitter.com/intent/tweet?text=${this.data.title} - ${this.data.artist} (${this.data.released}) ${this.albumUrl} via @bandas1album`;
   facebookUrl: string = `https://www.facebook.com/sharer/sharer.php?u=${this.albumUrl}`;
@@ -22,5 +23,6 @@ export class ShareModalComponent implements OnInit {
 
   copyAlbumUrl() {
     this.clipboard.copy(this.albumUrl);
+    this.input.nativeElement.select();
   }
 }
