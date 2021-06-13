@@ -4,69 +4,50 @@
   <section>
     <div class="main-bg"></div>
     <article itemscope itemtype="https://schema.org/MusicAlbum">
-      <div class="post-album">
-        <div class="post-album__cover">
-          <picture>
-            <source [srcset]="item.images?.full" type="image/webp" />
-            <source [srcset]="item.images?.full" type="image/jpeg" />
-            <img
-              itemprop="image"
-              loading="lazy"
-              [src]="item.images?.full"
-              alt="Capa do álbum  da banda "
-              loading="lazy"
-            />
-          </picture>
-        </div>
-        <div class="post-album__content">
-          <!-- {% include lists/list-breadcrumb.html %} -->
-          <header class="post-album__content__header">
-            <hgroup>
-              <h1
-                class="post-album__content__title"
-                itemprop="name"
-                [innerHtml]="item.title?.rendered"
-              ></h1>
-              <h2
-                class="post-album__content__artist"
-                itemprop="byArtist"
-                itemscope
-                itemtype="https://schema.org/MusicGroup"
-              >
-                <span itemprop="name" [innerHtml]="item.acf?.artist"></span>
-              </h2>
-            </hgroup>
-            <strong
-              class="post-album__content__year"
-              itemprop="copyrightYear"
-              [innerHtml]="item.acf?.released | date: 'yyyy'"
-            ></strong>
-            <!-- <ul class="post-album__content__genres">
-              <li>
-                <a href="/genero/{{ genre | slugify }}"
-                  ><span itemprop="genre">{{ genre }}</span></a
-                >
-              </li>
-            </ul> -->
-            <meta itemprop="copyrightHolder" [content]="item.acf?.label" />
-            <!-- <meta itemprop="description" [content]="'O álbum'+
-            {{ item.title.rendered }} +'foi o único disco de estúdio lançado por'+
-            {{ item.acf.artist }}+ '('+{{ item.acf.country }}+')'+', em'+{{ item.acf.released }}+', pelo selo '+ {{ item.acf.label }}+'.'" /> -->
-          </header>
+      <app-card-post-album>
+        <picture albumImage>
+          <source [srcset]="item.images?.full" type="image/webp" />
+          <source [srcset]="item.images?.full" type="image/jpeg" />
+          <img
+            itemprop="image"
+            loading="lazy"
+            [src]="item.images?.full"
+            alt="Capa do álbum  da banda "
+            loading="lazy"
+          />
+        </picture>
 
-          <app-list-links [item]="item"></app-list-links>
+        <span albumTitle [innerHtml]="item.title?.rendered"></span>
+        <span albumArtist [innerHtml]="item.acf?.artist"></span>
+        <span
+          albumReleased
+          [innerHtml]="item.acf?.released | date: 'yyyy'"
+        ></span>
 
-          <footer class="post-footer">
-            <button
-              (click)="share()"
-              class="post-footer__share"
-              aria-title="Abrir modal de share"
-            >
-              <i class="fas fa-share-alt" aria-hidden="true"></i>
-            </button>
-          </footer>
-        </div>
-      </div>
+        <li albumGenreItem *ngFor="let genre of item.genres">
+          <a [routerLink]="'/genero/' + genre.slug">
+            <span itemprop="genre">{{ genre.name }}</span>
+          </a>
+        </li>
+
+        <app-list-links [item]="item" albumListLinks></app-list-links>
+
+        <meta
+          albumCopyrightHolder
+          itemprop="copyrightHolder"
+          [content]="item.acf?.label"
+        />
+        <meta albumDescription itemprop="description" content="" />
+        <app-list-links [item]="item"></app-list-links>
+        <button
+          albumButtonShare
+          (click)="share()"
+          class="post-footer__share"
+          aria-title="Abrir modal de share"
+        >
+          <i class="fas fa-share-alt" aria-hidden="true"></i>
+        </button>
+      </app-card-post-album>
 
       <div class="post-content">
         <ng-container *ngIf="item.content?.rendered">

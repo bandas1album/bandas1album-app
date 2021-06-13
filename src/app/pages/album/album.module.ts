@@ -9,6 +9,7 @@ import { ListLinksModule } from 'src/app/components/lists/list-links/list-links.
 import { SidebarModule } from 'src/app/components/sidebar/sidebar.module';
 import { FooterDefaultModule } from 'src/app/components/footers/footer-default/footer-default.module';
 import { ShareModalModule } from 'src/app/components/modals/share-modal/share-modal.module';
+import { CardPostAlbumModule } from 'src/app/components/cards/card-post-album/card-post-album.module';
 
 @NgModule({
   declarations: [AlbumComponent],
@@ -21,6 +22,7 @@ import { ShareModalModule } from 'src/app/components/modals/share-modal/share-mo
     SidebarModule,
     FooterDefaultModule,
     ShareModalModule,
+    CardPostAlbumModule,
   ],
   schemas: [NO_ERRORS_SCHEMA],
 })

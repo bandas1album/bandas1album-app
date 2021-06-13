@@ -24,6 +24,7 @@
   &__cover {
     width: 100%;
     margin-bottom: rem(32px);
+    margin: 0;
 
     @media (min-width: $desktop) {
       width: calc(100% - 480px);
@@ -88,12 +89,12 @@
     }
 
     &__year:before {
-      content: '(';
+      content: "(";
       display: inline-block;
     }
 
     &__year:after {
-      content: ')';
+      content: ")";
       display: inline-block;
     }
 
