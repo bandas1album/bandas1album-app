@@ -52,7 +52,10 @@
         </button>
       </app-card-post-album>
 
-      <div class="post-content">
+      <div
+        class="post-content"
+        *ngIf="item?.content?.rendered || item?.acf?.tracklist?.length"
+      >
         <ng-container *ngIf="item.content?.rendered">
           <h3>Um pouco mais sobre {{ item.acf?.artist }}</h3>
           <div [innerHtml]="item.content?.rendered"></div>
@@ -77,6 +80,8 @@
       </div>
     </article>
 
-    <app-footer-default></app-footer-default>
+    <app-footer-default
+      *ngIf="item?.content?.rendered || item?.acf?.tracklist?.length"
+    ></app-footer-default>
   </section>
 </main>

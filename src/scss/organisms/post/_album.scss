@@ -23,8 +23,8 @@
 
   &__cover {
     width: 100%;
-    margin-bottom: rem(32px);
     margin: 0;
+    margin-bottom: rem(32px);
 
     @media (min-width: $desktop) {
       width: calc(100% - 480px);
