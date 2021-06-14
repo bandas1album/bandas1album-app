@@ -1,6 +1,8 @@
 import { Component, HostListener, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { AlbumService } from 'src/app/services/album/album.service';
+import { GenresService } from 'src/app/services/genres/genres.service';
+import { SidebarModalGenresComponent } from '../../modals/sidebar-modal-genres/sidebar-modal-genres.component';
 import { SidebarModalComponent } from '../../modals/sidebar-modal/sidebar-modal.component';
 
 @Component({
@@ -46,10 +48,15 @@ export class SidebarMenuComponent implements OnInit {
     _fields: ['title', 'slug', 'acf'],
   };
 
-  constructor(private dialog: MatDialog, private albumService: AlbumService) {}
+  constructor(
+    private dialog: MatDialog,
+    private albumService: AlbumService,
+    private genresService: GenresService
+  ) {}
 
   ngOnInit(): void {
     this.getAllPosts();
+    this.getGenres();
   }
 
   open(modal: any) {
@@ -59,6 +66,27 @@ export class SidebarMenuComponent implements OnInit {
     });
 
     modal.ref = this.dialog.open(SidebarModalComponent, {
+      data: {
+        title: modal.title,
+        list: modal.list,
+      },
+      panelClass: 'sidebar-modal',
+      position: {
+        top: '0px',
+        left: '0px',
+      },
+    });
+  }
+
+  openGenres() {
+    const modal = this.modals.genres;
+
+    Object.entries(this.modals).forEach(([key, value]) => {
+      this.modals[key].ref = '';
+      this.dialog.closeAll();
+    });
+
+    modal.ref = this.dialog.open(SidebarModalGenresComponent, {
       data: {
         title: modal.title,
         list: modal.list,
@@ -102,7 +130,6 @@ export class SidebarMenuComponent implements OnInit {
           this.getAlbums();
           this.getCountries();
           this.getYears();
-          this.getGenres();
         },
         (err: any) => {
           this.albums.list.loading = false;
@@ -169,5 +196,9 @@ export class SidebarMenuComponent implements OnInit {
       });
   }
 
-  getGenres() {}
+  getGenres() {
+    this.genresService.get().subscribe((res) => {
+      this.modals.genres.list = res;
+    });
+  }
 }

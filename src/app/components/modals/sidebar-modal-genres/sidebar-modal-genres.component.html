@@ -1,0 +1,18 @@
+<div class="sidebar-modal__list" data-menu="albums">
+  <h3 class="sidebar-modal__list__title">{{ data.title }}</h3>
+
+  <ol>
+    <li>
+      <ul>
+        <li *ngFor="let genre of data.list">
+          <a [href]="'/genero/' + genre.slug">
+            <strong [innerHtml]="genre.title"></strong>
+            <span>{{
+              genre.count > 1 ? genre.count + " álbuns" : genre.count + " álbum"
+            }}</span>
+          </a>
+        </li>
+      </ul>
+    </li>
+  </ol>
+</div>
