@@ -5,6 +5,7 @@ import { AlbumService } from 'src/app/services/album/album.service';
 import { SeoService } from 'src/app/services/seo/seo.service';
 import { ShareModalComponent } from 'src/app/components/modals/share-modal/share-modal.component';
 import { formatDate } from '@angular/common';
+import { HtmlDecodePipe } from 'src/app/pipes/html-decode/html-decode.pipe';
 
 @Component({
   selector: 'app-album',
@@ -24,7 +25,8 @@ export class AlbumComponent implements OnInit {
     private albumService: AlbumService,
     private router: Router,
     private route: ActivatedRoute,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private htmlDecodePipe: HtmlDecodePipe
   ) {
     this.pageId = this.router.routerState.snapshot.url;
   }
@@ -44,11 +46,14 @@ export class AlbumComponent implements OnInit {
     this.albumService.get({ params: this.params }).subscribe(
       (res: any) => {
         this.item = res[0];
-        const title =
+
+        const mountTitle =
           this.item.title.rendered == this.item.acf.artist
             ? this.item.title.rendered
             : `${this.item.title.rendered} - ${this.item.acf.artist}`;
+        const title = this.htmlDecodePipe.transform(mountTitle);
         const year = new Date(this.item.acf.released).getFullYear();
+
         this.seoService.updateTitle(`${title} (${year}) | Bandas de 1 Álbum`);
         this.seoService.metatags(this.item);
 

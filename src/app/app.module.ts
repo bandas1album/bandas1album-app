@@ -6,6 +6,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatDialogModule } from '@angular/material/dialog';
+import { HtmlDecodePipe } from './pipes/html-decode/html-decode.pipe';
 
 @NgModule({
   declarations: [AppComponent],
@@ -16,7 +17,7 @@ import { MatDialogModule } from '@angular/material/dialog';
     BrowserAnimationsModule,
     MatDialogModule,
   ],
-  providers: [],
+  providers: [HtmlDecodePipe],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

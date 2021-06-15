@@ -11,6 +11,7 @@ import { FooterDefaultModule } from 'src/app/components/footers/footer-default/f
 import { ShareModalModule } from 'src/app/components/modals/share-modal/share-modal.module';
 import { CardPostAlbumModule } from 'src/app/components/cards/card-post-album/card-post-album.module';
 import { LoadingCardPostAlbumModule } from 'src/app/components/cards/card-post-album/loading-card-post-album/loading-card-post-album.module';
+import { HtmlDecodeModule } from 'src/app/pipes/html-decode/html-decode.module';
 
 @NgModule({
   declarations: [AlbumComponent],
