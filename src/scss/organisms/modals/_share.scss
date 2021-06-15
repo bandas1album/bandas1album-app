@@ -6,14 +6,12 @@
 
   .mat-dialog-container {
     box-shadow: none;
-    background: transparent;
+    background: $color-primary;
     color: $white;
     width: 100%;
     padding: rem(32px) rem(24px);
     border-radius: rem(16px) rem(16px) 0 0;
-    background-color: $color-primary;
     transform: translateY(100%);
-    transition: 0.4s all ease;
 
     @media (min-width: $tablet) {
       max-width: 640px;
