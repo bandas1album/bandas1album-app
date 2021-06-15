@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { SidebarModalComponent } from 'src/app/components/modals/sidebar-modal/sidebar-modal.component';
 import { AlbumService } from 'src/app/services/album/album.service';
 
 @Component({
@@ -18,7 +20,7 @@ export class ListAlbumsSectionComponent implements OnInit {
     page: 1,
   };
 
-  constructor(private albumService: AlbumService) {}
+  constructor(private albumService: AlbumService, private dialog: MatDialog) {}
 
   ngOnInit(): void {
     this.getAlbums();
@@ -40,5 +42,9 @@ export class ListAlbumsSectionComponent implements OnInit {
           // console.log(err);
         }
       );
+  }
+
+  openModal() {
+    this.dialog.open(SidebarModalComponent);
   }
 }
