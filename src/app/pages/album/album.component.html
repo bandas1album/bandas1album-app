@@ -22,7 +22,7 @@
 
       <app-card-post-album *ngIf="!this.loading">
         <picture albumImage>
-          <source [srcset]="item.images?.full" type="image/webp" />
+          <source [srcset]="item.images?.full_webp" type="image/webp" />
           <source [srcset]="item.images?.full" type="image/jpeg" />
           <img
             itemprop="image"
