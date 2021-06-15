@@ -5,7 +5,7 @@
 
   <app-list-albums *ngIf="list.items.length && !list.loading">
     <li *ngFor="let item of list.items" albumItem>
-      <app-card-list-albums [routerLink]="item.slug">
+      <app-card-list-albums [routerLink]="'/album/' + item.slug">
         <picture>
           <source [srcset]="item.images?.thumbnail_webp" type="image/webp" />
           <source [srcset]="item.images?.thumbnail" type="image/jpeg" />

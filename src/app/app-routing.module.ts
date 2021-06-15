@@ -8,10 +8,15 @@ const routes: Routes = [
       import('./pages/home/home.module').then((m) => m.HomeModule),
   },
   {
-    path: ':slug',
+    path: 'album/:slug',
     loadChildren: () =>
       import('./pages/album/album.module').then((m) => m.AlbumModule),
     data: { animation: 'Album' },
+  },
+  {
+    path: 'random',
+    loadChildren: () =>
+      import('./pages/random/random.module').then((m) => m.RandomModule),
   },
 ];
 

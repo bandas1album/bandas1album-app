@@ -1,3 +1,10 @@
+@import "src/scss/base/imports";
+
 .main {
   display: flex;
+}
+
+.wrapper__button {
+  left: rem(88px);
+  bottom: rem(24px);
 }
