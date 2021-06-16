@@ -8,6 +8,6 @@ import { GenresItem } from './models';
 })
 export class GenresService extends BaseService<GenresItem, null, null> {
   constructor(private readonly httpClient: HttpClient) {
-    super(httpClient, `genres`);
+    super(httpClient, `generos_album`);
   }
 }

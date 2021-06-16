@@ -18,6 +18,11 @@ const routes: Routes = [
     loadChildren: () =>
       import('./pages/random/random.module').then((m) => m.RandomModule),
   },
+  {
+    path: 'genero/:slug',
+    loadChildren: () =>
+      import('./pages/genre/genre.module').then((m) => m.GenreModule),
+  },
 ];
 
 @NgModule({

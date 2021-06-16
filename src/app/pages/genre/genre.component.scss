@@ -1,0 +1,14 @@
+@import "src/scss/base/imports";
+
+.main {
+  display: flex;
+}
+
+.wrapper {
+  flex-direction: column;
+}
+
+.wrapper__button {
+  left: rem(88px);
+  bottom: rem(24px);
+}

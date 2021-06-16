@@ -4,6 +4,6 @@
  * must accept this data model (as per the api contract).
  */
 export interface GenresItem {
-  name: string;
   slug: string;
+  id: number;
 }

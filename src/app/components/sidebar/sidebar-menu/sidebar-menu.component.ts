@@ -197,7 +197,12 @@ export class SidebarMenuComponent implements OnInit {
   }
 
   getGenres() {
-    this.genresService.get().subscribe((res) => {
+    const params = {
+      per_page: 100,
+      page: 1,
+    };
+
+    this.genresService.get({ params }).subscribe((res) => {
       this.modals.genres.list = res;
     });
   }

@@ -1,0 +1,20 @@
+<section>
+  <app-list-albums *ngIf="list.items.length && !list.loading">
+    <li *ngFor="let item of list.items" albumItem>
+      <app-card-list-albums [routerLink]="'/album/' + item.slug">
+        <picture>
+          <source [srcset]="item.images?.thumbnail_webp" type="image/webp" />
+          <source [srcset]="item.images?.thumbnail" type="image/jpeg" />
+          <img
+            class="list-posts__card__image"
+            [src]="item.images.thumbnail"
+            alt=""
+            width="160"
+            height="160"
+            loading="lazy"
+          />
+        </picture>
+      </app-card-list-albums>
+    </li>
+  </app-list-albums>
+</section>
