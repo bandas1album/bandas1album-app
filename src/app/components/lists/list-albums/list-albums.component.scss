@@ -2,26 +2,26 @@
 
 :host ::ng-deep {
   li {
-    width: 100%;
+    width: 100%; // 1
 
     @media (min-width: $mobile) {
-      width: 50%;
-    }
-
-    @media (min-width: $phablet) {
-      width: 25%;
+      width: 50%; // 2
     }
 
     @media (min-width: $tablet) {
-      width: 16.6666666667%;
+      width: 25%; // 4
     }
 
-    @media (min-width: $tablet-pro) {
-      width: 12.5%;
+    @media (min-width: $desktop) {
+      width: 16.666666667%; // 6
     }
 
     @media (min-width: $desktop-hd) {
-      width: 8.333333333%;
+      width: 12.5%; // 8
+    }
+
+    @media (min-width: $desktop-wide) {
+      width: 8.333%;
     }
 
     &:last-child {
@@ -64,32 +64,8 @@
 ul {
   display: flex;
   flex-wrap: wrap;
+  width: 100%;
   list-style: none;
   margin: 0;
   padding: 0;
-
-  &-by-category {
-    li:first-child {
-      display: flex;
-      align-items: center;
-      justify-content: flex-start;
-      padding: rem(24px) rem(32px);
-      width: 100%;
-
-      @media (min-width: $tablet) {
-        width: auto;
-        margin-right: auto;
-      }
-
-      h1 {
-        margin: 0;
-
-        span {
-          display: block;
-          font-size: rem(14px);
-          font-weight: 400;
-        }
-      }
-    }
-  }
 }
