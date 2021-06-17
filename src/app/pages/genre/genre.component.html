@@ -2,8 +2,43 @@
   <app-sidebar></app-sidebar>
 
   <div class="wrapper">
-    <app-full-banner></app-full-banner>
-    <app-list-albums-section></app-list-albums-section>
+    <app-full-banner>
+      <picture *ngIf="item?.images?.banner">
+        <source [srcset]="item.images.banner.webp" type="image/webp" />
+        <source [srcset]="item.images.banner.normal" type="image/jpeg" />
+        <img [src]="item.images.banner.normal" [alt]="item.title" />
+      </picture>
+
+      <span title>{{ item.name }}</span>
+      <span subtitle
+        >Mostrando <strong>{{ total }}</strong>
+        {{ total > 1 ? "álbuns" : "álbum" }}
+      </span>
+    </app-full-banner>
+
+    <section>
+      <app-list-albums *ngIf="list.items.length && !list.loading">
+        <li *ngFor="let item of list.items" albumItem>
+          <app-card-list-albums [routerLink]="'/album/' + item.slug">
+            <picture>
+              <source
+                [srcset]="item.images?.thumbnail_webp"
+                type="image/webp"
+              />
+              <source [srcset]="item.images?.thumbnail" type="image/jpeg" />
+              <img
+                class="list-posts__card__image"
+                [src]="item.images.thumbnail"
+                alt=""
+                width="160"
+                height="160"
+                loading="lazy"
+              />
+            </picture>
+          </app-card-list-albums>
+        </li>
+      </app-list-albums>
+    </section>
   </div>
 </main>
 

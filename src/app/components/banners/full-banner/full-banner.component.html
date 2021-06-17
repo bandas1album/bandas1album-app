@@ -1,13 +1,11 @@
 <figure class="banner">
-  <picture>
-    <source media="(min-width: )" srcset="" />
-    <img src="" alt="" />
-  </picture>
+  <ng-content select="picture"></ng-content>
+
   <figcaption class="banner-caption">
-    <h1>
+    <h1 class="banner-caption__title">
       <ng-content select="[title]"></ng-content>
     </h1>
-    <h2>
+    <h2 class="banner-caption__subtitle">
       <ng-content select="[subtitle]"></ng-content>
     </h2>
   </figcaption>
