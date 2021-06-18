@@ -1,5 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
 @import "~normalize.css";
+
 @import "./scss/base/imports";
 @import "./scss/base/base";
 
@@ -8,6 +9,7 @@
 @import "./scss/organisms/lists/all";
 @import "./scss/organisms/post/all";
 @import "./scss/organisms/header/all";
+@import "./scss/organisms/form/all";
 @import "./scss/organisms/footer/all";
 @import "./scss/organisms/sidebar/all";
 @import "./scss/organisms/modals/all";
