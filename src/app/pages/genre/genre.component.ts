@@ -9,6 +9,7 @@ import { GenresService } from 'src/app/services/genres/genres.service';
   styleUrls: ['./genre.component.scss'],
 })
 export class GenreComponent implements OnInit {
+  showFilters: boolean = false;
   firstLoading: boolean = true;
   item: any = {};
   list: any = {

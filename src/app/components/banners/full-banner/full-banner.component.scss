@@ -28,6 +28,12 @@
   strong {
     font-weight: 700;
   }
+
+  app-button {
+    position: absolute;
+    bottom: rem(24px);
+    right: rem(24px);
+  }
 }
 
 .banner {
@@ -38,6 +44,7 @@
 
   &-caption {
     position: relative;
+    height: 100%;
     padding: rem(64px) rem(40px) rem(72px);
 
     @media (min-width: $tablet) {

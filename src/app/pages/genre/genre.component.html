@@ -14,7 +14,14 @@
         >Mostrando <strong>{{ total }}</strong>
         {{ total > 1 ? "álbuns" : "álbum" }}
       </span>
+
+      <app-button filterToggle (click)="showFilters = !showFilters">
+        <i class="fas fa-filter" icon></i>
+        <span title>Filtros</span>
+      </app-button>
     </app-full-banner>
+
+    <app-genre-filter *ngIf="showFilters"></app-genre-filter>
 
     <section>
       <app-list-albums *ngIf="list.items.length && !list.loading">

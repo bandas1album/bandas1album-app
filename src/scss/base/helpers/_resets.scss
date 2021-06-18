@@ -6,7 +6,6 @@
   -webkit-appearance: none;
   user-select: none;
   vertical-align: middle;
-  white-space: nowrap;
   text-decoration: none;
   text-align: center;
   background-color: transparent;
@@ -14,10 +13,6 @@
 
   &:not(:disabled):not(.disabled) {
     cursor: pointer;
-  }
-
-  > * {
-    pointer-events: none;
   }
 }
 

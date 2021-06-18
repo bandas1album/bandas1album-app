@@ -8,6 +8,8 @@ import { SidebarModule } from 'src/app/components/sidebar/sidebar.module';
 import { RouterModule } from '@angular/router';
 import { ListAlbumsModule } from 'src/app/components/lists/list-albums/list-albums.module';
 import { CardListAlbumsModule } from 'src/app/components/cards/card-list-albums/card-list-albums.module';
+import { GenreFilterModule } from 'src/app/components/filters/genre-filter/genre-filter.module';
+import { ButtonModule } from 'src/app/components/buttons/button/button.module';
 
 @NgModule({
   declarations: [GenreComponent],
@@ -19,6 +21,8 @@ import { CardListAlbumsModule } from 'src/app/components/cards/card-list-albums/
     RouterModule,
     ListAlbumsModule,
     CardListAlbumsModule,
+    GenreFilterModule,
+    ButtonModule,
   ],
 })
 export class GenreModule {}
