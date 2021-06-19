@@ -1,32 +1,46 @@
-<form class="form">
+<form #form="ngForm" (submit)="submit()" class="form">
   <div class="form-row order">
     <h3 class="form-row__title">Ordenar por</h3>
     <div class="form-row__buttons">
       <div class="form-control">
-        <button
-          class="form-control__button"
-          (click)="orderTitle = orderTitle === 'desc' ? 'asc' : 'desc'"
-        >
-          <span>Nome do álbum</span>
-          <i
-            class="fas"
-            [ngClass]="orderTitle === 'desc' ? 'fa-arrow-up' : 'fa-arrow-down'"
-          ></i>
-        </button>
+        <div class="form-control__wrap">
+          <label for="orderTitle" class="form-control__toggle">
+            <span>Nome do álbum</span>
+            <i
+              class="fas"
+              [ngClass]="filters.orderTitle ? 'fa-arrow-up' : 'fa-arrow-down'"
+            ></i>
+          </label>
+          <input
+            #released="ngModel"
+            [(ngModel)]="filters.orderTitle"
+            type="checkbox"
+            name="orderTitle"
+            id="orderTitle"
+            (change)="submit()"
+          />
+        </div>
       </div>
       <div class="form-control">
-        <button
-          class="form-control__button"
-          (click)="orderReleased = orderReleased === 'desc' ? 'asc' : 'desc'"
-        >
-          <span>Ano de lançamento</span>
-          <i
-            class="fas"
-            [ngClass]="
-              orderReleased === 'desc' ? 'fa-arrow-up' : 'fa-arrow-down'
-            "
-          ></i>
-        </button>
+        <div class="form-control__wrap">
+          <label for="orderReleased" class="form-control__toggle">
+            <span>Ano de lançamento</span>
+            <i
+              class="fas"
+              [ngClass]="
+                filters.orderReleased ? 'fa-arrow-up' : 'fa-arrow-down'
+              "
+            ></i>
+          </label>
+          <input
+            #released="ngModel"
+            [(ngModel)]="filters.orderReleased"
+            type="checkbox"
+            name="orderReleased"
+            id="orderReleased"
+            (change)="submit()"
+          />
+        </div>
       </div>
     </div>
   </div>
@@ -41,13 +55,14 @@
           [items]="optionsCountries"
           bindLabel="label"
           bindValue="value"
-          [(ngModel)]="orderCountries"
+          [(ngModel)]="filters.orderCountries"
           [multiple]="true"
           name="countries"
           placeholder="Filtrar por país"
           notFoundText="Nenhum país encontrado"
           [virtualScroll]="true"
           [closeOnSelect]="false"
+          (change)="submit()"
         ></ng-select>
       </div>
     </div>

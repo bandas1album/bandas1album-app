@@ -81,7 +81,7 @@
       }
     }
 
-    &__button {
+    &__toggle {
       @extend .reset-button;
       display: flex;
       align-items: center;
@@ -110,6 +110,10 @@
 
       &:not(:last-child) {
         margin-bottom: rem(4px);
+      }
+
+      + input {
+        display: none;
       }
     }
 

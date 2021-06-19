@@ -1,4 +1,11 @@
-import { Component, Input, OnInit } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  ViewChild,
+} from '@angular/core';
 
 @Component({
   selector: 'app-genre-filter',
@@ -6,6 +13,8 @@ import { Component, Input, OnInit } from '@angular/core';
   styleUrls: ['./genre-filter.component.scss'],
 })
 export class GenreFilterComponent implements OnInit {
+  number: number = 1;
+  @ViewChild('form', { static: false }) public form: any;
   optionsReleased: any = [
     {
       label: 'Mais recentes',
@@ -27,11 +36,20 @@ export class GenreFilterComponent implements OnInit {
     },
   ];
   @Input() optionsCountries: any = [];
-  orderReleased: string = 'desc';
-  orderTitle: string = 'desc';
-  orderCountries: any = [];
+  @Output() submitted: EventEmitter<any> = new EventEmitter();
+  filters: any = {
+    orderReleased: false,
+    orderTitle: false,
+    orderCountries: [],
+  };
 
   constructor() {}
 
   ngOnInit(): void {}
+
+  submit() {
+    const { form, filters } = this;
+
+    this.submitted.emit(filters);
+  }
 }

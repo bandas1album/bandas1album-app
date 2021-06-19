@@ -69,13 +69,17 @@ export class GenreComponent implements OnInit {
       );
   }
 
-  filterCountries() {
-    this.list.items.filter((item: any) => {
+  async filterCountries() {
+    await this.list.items.filter((item: any) => {
       const country = item.acf.country;
 
       if (!this.countries.includes(country)) {
         this.countries.push(country);
       }
     });
+  }
+
+  doFilter(data: any) {
+    const { orderReleased, orderTitle, orderCountries } = data;
   }
 }
