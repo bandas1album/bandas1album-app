@@ -10,6 +10,7 @@ import { ListAlbumsModule } from 'src/app/components/lists/list-albums/list-albu
 import { CardListAlbumsModule } from 'src/app/components/cards/card-list-albums/card-list-albums.module';
 import { GenreFilterModule } from 'src/app/components/filters/genre-filter/genre-filter.module';
 import { ButtonModule } from 'src/app/components/buttons/button/button.module';
+import { PlaceholderListAlbumsModule } from 'src/app/components/lists/list-albums/placeholder-list-albums/placeholder-list-albums.module';
 
 @NgModule({
   declarations: [GenreComponent],
@@ -23,6 +24,7 @@ import { ButtonModule } from 'src/app/components/buttons/button/button.module';
     CardListAlbumsModule,
     GenreFilterModule,
     ButtonModule,
+    PlaceholderListAlbumsModule,
   ],
 })
 export class GenreModule {}

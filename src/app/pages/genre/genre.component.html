@@ -24,10 +24,15 @@
     <app-genre-filter
       *ngIf="showFilters"
       [optionsCountries]="countries"
+      [loading]="list.loading"
       (submitted)="doFilter($event)"
     ></app-genre-filter>
 
     <section>
+      <app-placeholder-list-albums
+        *ngIf="list.loading"
+      ></app-placeholder-list-albums>
+
       <app-list-albums *ngIf="list.items.length && !list.loading">
         <li *ngFor="let item of list.items" albumItem>
           <app-card-list-albums [routerLink]="'/album/' + item.slug">

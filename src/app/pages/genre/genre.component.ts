@@ -24,6 +24,9 @@ export class GenreComponent implements OnInit {
     per_page: 96,
     page: 1,
     generos_album: [],
+    orderby: 'meta_value',
+    meta_key: 'released',
+    order: 'asc',
   };
 
   constructor(
@@ -51,6 +54,8 @@ export class GenreComponent implements OnInit {
   }
 
   getAlbums() {
+    this.list.loading = true;
+
     this.albumService
       .get({ observe: 'response', params: this.albumParams })
       .subscribe(
@@ -81,5 +86,9 @@ export class GenreComponent implements OnInit {
 
   doFilter(data: any) {
     const { orderReleased, orderTitle, orderCountries } = data;
+
+    this.albumParams.order = orderReleased ? 'asc' : 'desc';
+
+    this.getAlbums();
   }
 }

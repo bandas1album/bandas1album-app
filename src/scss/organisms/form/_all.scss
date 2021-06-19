@@ -13,6 +13,11 @@
     padding: rem(40px) rem(48px);
   }
 
+  &.loading {
+    pointer-events: none;
+    opacity: 0.5;
+  }
+
   &-row {
     display: flex;
     flex-direction: column;

@@ -15,6 +15,7 @@ import {
 export class GenreFilterComponent implements OnInit {
   number: number = 1;
   @ViewChild('form', { static: false }) public form: any;
+  @Input() loading = false;
   optionsReleased: any = [
     {
       label: 'Mais recentes',
@@ -38,8 +39,8 @@ export class GenreFilterComponent implements OnInit {
   @Input() optionsCountries: any = [];
   @Output() submitted: EventEmitter<any> = new EventEmitter();
   filters: any = {
-    orderReleased: false,
-    orderTitle: false,
+    orderReleased: true,
+    orderTitle: true,
     orderCountries: [],
   };
 
