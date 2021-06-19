@@ -39,9 +39,9 @@ export class GenreFilterComponent implements OnInit {
   @Input() optionsCountries: any = [];
   @Output() submitted: EventEmitter<any> = new EventEmitter();
   filters: any = {
-    orderReleased: true,
-    orderTitle: true,
-    orderCountries: [],
+    released: true,
+    title: true,
+    country: [],
   };
 
   constructor() {}

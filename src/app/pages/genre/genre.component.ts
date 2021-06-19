@@ -85,9 +85,9 @@ export class GenreComponent implements OnInit {
   }
 
   doFilter(data: any) {
-    const { orderReleased, orderTitle, orderCountries } = data;
+    const { released, title, country } = data;
 
-    this.albumParams.order = orderReleased ? 'asc' : 'desc';
+    this.albumParams.order = released ? 'asc' : 'desc';
 
     this.getAlbums();
   }
