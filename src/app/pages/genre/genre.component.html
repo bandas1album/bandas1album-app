@@ -21,7 +21,10 @@
       </app-button>
     </app-full-banner>
 
-    <app-genre-filter *ngIf="showFilters"></app-genre-filter>
+    <app-genre-filter
+      *ngIf="showFilters"
+      [optionsCountries]="countries"
+    ></app-genre-filter>
 
     <section>
       <app-list-albums *ngIf="list.items.length && !list.loading">

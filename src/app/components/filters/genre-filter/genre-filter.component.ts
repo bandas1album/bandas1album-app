@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-genre-filter',
@@ -26,16 +26,7 @@ export class GenreFilterComponent implements OnInit {
       value: 'asc',
     },
   ];
-  optionsCountries: any = [
-    {
-      label: 'Alemanha',
-      value: 'alemanha',
-    },
-    {
-      label: 'Brasil',
-      value: 'brasil',
-    },
-  ];
+  @Input() optionsCountries: any = [];
   orderReleased: string = 'desc';
   orderTitle: string = 'desc';
   orderCountries: any = [];

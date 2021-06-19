@@ -18,6 +18,7 @@ export class GenreComponent implements OnInit {
   };
   total: number = 0;
   genresParams: any = {};
+  countries: any = [];
 
   albumParams: any = {
     per_page: 96,
@@ -59,11 +60,22 @@ export class GenreComponent implements OnInit {
           this.total = headers.get('X-WP-Total');
           this.list.loading = false;
           this.firstLoading = false;
+          this.filterCountries();
         },
         (err: any) => {
           this.list.loading = false;
           // console.log(err);
         }
       );
+  }
+
+  filterCountries() {
+    this.list.items.filter((item: any) => {
+      const country = item.acf.country;
+
+      if (!this.countries.includes(country)) {
+        this.countries.push(country);
+      }
+    });
   }
 }
