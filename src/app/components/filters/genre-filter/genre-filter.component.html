@@ -12,11 +12,10 @@
           <ng-select
             class="form-control__select"
             [items]="optionsOrder"
-            bindLabel="label"
-            bindValue="value"
             [(ngModel)]="filters.order"
             placeholder="Nome de A-Z"
             name="order"
+            [markFirst]="false"
             notFoundText="Nenhuma ordenação disponível"
             (change)="submit()"
           ></ng-select>

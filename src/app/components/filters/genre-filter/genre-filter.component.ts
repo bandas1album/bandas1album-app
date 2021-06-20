@@ -50,7 +50,7 @@ export class GenreFilterComponent implements OnInit {
     },
   ];
   filters: any = {
-    order: true,
+    order: this.optionsOrder[0],
     country: [],
   };
 

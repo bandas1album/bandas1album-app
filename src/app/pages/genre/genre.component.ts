@@ -87,8 +87,6 @@ export class GenreComponent implements OnInit {
     const { order, country } = data;
     this.albumParams = Object.assign(this.albumParams, order);
 
-    console.log(this.albumParams);
-
     this.getAlbums();
   }
 }

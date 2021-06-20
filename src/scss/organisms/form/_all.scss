@@ -135,6 +135,76 @@
         }
       }
 
+      &.ng-select-multiple {
+        &.ng-select-filtered {
+          .ng-value {
+            opacity: 0.2;
+            filter: grayscale(1);
+          }
+        }
+
+        .ng-has-value {
+          .ng-value-container {
+            margin: rem(-4px);
+          }
+
+          .ng-input {
+            margin: rem(6px) 0;
+          }
+
+          .ng-input input {
+            padding-left: rem(6px) !important;
+          }
+        }
+
+        .ng-select-container:not(.ng-has-value) {
+          .ng-input input {
+            padding-left: 0 !important;
+          }
+        }
+
+        .ng-value {
+          display: flex;
+          align-items: center;
+          margin: rem(4px);
+          transition: 0.2s all ease;
+
+          &-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: rem(16px);
+            height: rem(16px);
+            background-color: $color-primary-shade;
+            border-radius: rem(4px) 0 0 rem(4px);
+            transition: 0.2s all ease;
+
+            @media (min-width: $tablet) {
+              width: rem(24px);
+              height: rem(24px);
+            }
+
+            &:hover {
+              background-color: darken($color-primary-shade, 5%);
+            }
+          }
+
+          &-label {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: rem(16px);
+            padding: 0 8px;
+            background-color: $color-primary;
+            border-radius: 0 rem(4px) rem(4px) 0;
+
+            @media (min-width: $tablet) {
+              height: rem(24px);
+            }
+          }
+        }
+      }
+
       .ng-select-container {
         border: rem(2px) solid;
         border-color: transparent;
@@ -169,8 +239,12 @@
         }
       }
 
-      .ng-input input {
-        padding-left: rem(16px) !important;
+      .ng-input {
+        pointer-events: none;
+
+        input {
+          padding-left: rem(16px) !important;
+        }
       }
 
       .ng-dropdown-panel {
@@ -179,6 +253,21 @@
         border-radius: 0 0 rem(8px) rem(8px);
         border: rem(2px) solid rgba($white, 0.2);
         transform: translateY(-2px);
+      }
+
+      .ng-clear-wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: rem(24px) !important;
+        height: rem(24px);
+        border-radius: 50%;
+        background-color: $color-primary-shade;
+        transition: 0.2s all ease;
+
+        &:hover {
+          background-color: darken($color-primary-shade, 5%);
+        }
       }
 
       .ng-option {
