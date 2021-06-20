@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AlbumService } from 'src/app/services/album/album.service';
 import { GenresService } from 'src/app/services/genres/genres.service';
+import { SeoService } from 'src/app/services/seo/seo.service';
 
 @Component({
   selector: 'app-genre',
@@ -31,6 +32,7 @@ export class GenreComponent implements OnInit {
   constructor(
     private genresService: GenresService,
     private albumService: AlbumService,
+    private seoService: SeoService,
     private route: ActivatedRoute
   ) {}
 
@@ -47,6 +49,8 @@ export class GenreComponent implements OnInit {
       const data = res[0];
       this.albumParams.generos_album = data.id;
       this.item = data;
+
+      this.seoService.updateTitle(`${data.name} | Bandas de 1 Álbum`);
 
       this.getAlbums();
     });
