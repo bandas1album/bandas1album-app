@@ -13,34 +13,44 @@ import {
   styleUrls: ['./genre-filter.component.scss'],
 })
 export class GenreFilterComponent implements OnInit {
-  number: number = 1;
   @ViewChild('form', { static: false }) public form: any;
   @Input() loading = false;
-  optionsReleased: any = [
+  @Input() optionsCountries: any = [];
+  @Output() submitted: EventEmitter<any> = new EventEmitter();
+  optionsOrder: any = [
+    {
+      label: 'Nome de A-Z',
+      value: {
+        orderby: 'title',
+        order: 'asc',
+      },
+    },
+    {
+      label: 'Nome de Z-A',
+      value: {
+        orderby: 'title',
+        order: 'desc',
+      },
+    },
     {
       label: 'Mais recentes',
-      value: 'desc',
+      value: {
+        orderby: 'meta_value',
+        meta_key: 'released',
+        order: 'asc',
+      },
     },
     {
       label: 'Mais antigos',
-      value: 'asc',
+      value: {
+        orderby: 'meta_value',
+        meta_key: 'released',
+        order: 'desc',
+      },
     },
   ];
-  optionsTitle: any = [
-    {
-      label: 'Nome de A-z',
-      value: 'desc',
-    },
-    {
-      label: 'Nome de Z-a',
-      value: 'asc',
-    },
-  ];
-  @Input() optionsCountries: any = [];
-  @Output() submitted: EventEmitter<any> = new EventEmitter();
   filters: any = {
-    released: true,
-    title: true,
+    order: true,
     country: [],
   };
 

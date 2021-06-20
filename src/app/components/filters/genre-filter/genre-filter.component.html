@@ -9,42 +9,17 @@
     <div class="form-row__buttons">
       <div class="form-control">
         <div class="form-control__wrap">
-          <label for="orderTitle" class="form-control__toggle">
-            <span>Nome do álbum</span>
-            <i
-              class="fas"
-              [ngClass]="filters.orderTitle ? 'fa-arrow-up' : 'fa-arrow-down'"
-            ></i>
-          </label>
-          <input
-            #released="ngModel"
-            [(ngModel)]="filters.orderTitle"
-            type="checkbox"
-            name="orderTitle"
-            id="orderTitle"
+          <ng-select
+            class="form-control__select"
+            [items]="optionsOrder"
+            bindLabel="label"
+            bindValue="value"
+            [(ngModel)]="filters.order"
+            placeholder="Nome de A-Z"
+            name="order"
+            notFoundText="Nenhuma ordenação disponível"
             (change)="submit()"
-          />
-        </div>
-      </div>
-      <div class="form-control">
-        <div class="form-control__wrap">
-          <label for="orderReleased" class="form-control__toggle">
-            <span>Ano de lançamento</span>
-            <i
-              class="fas"
-              [ngClass]="
-                filters.orderReleased ? 'fa-arrow-up' : 'fa-arrow-down'
-              "
-            ></i>
-          </label>
-          <input
-            #released="ngModel"
-            [(ngModel)]="filters.orderReleased"
-            type="checkbox"
-            name="orderReleased"
-            id="orderReleased"
-            (change)="submit()"
-          />
+          ></ng-select>
         </div>
       </div>
     </div>
@@ -60,7 +35,7 @@
           [items]="optionsCountries"
           bindLabel="label"
           bindValue="value"
-          [(ngModel)]="filters.orderCountries"
+          [(ngModel)]="filters.country"
           [multiple]="true"
           name="countries"
           placeholder="Filtrar por país"

@@ -1,7 +1,0 @@
-@import "src/scss/base/imports";
-
-.order {
-  @media (min-width: $desktop) {
-    width: calc(75% - 12px);
-  }
-}
