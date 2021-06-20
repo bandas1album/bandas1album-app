@@ -35,24 +35,19 @@ export class GenreFilterComponent implements OnInit {
     {
       label: 'Mais recentes',
       value: {
-        orderby: 'meta_value',
-        meta_key: 'released',
+        orderby: 'date',
         order: 'asc',
       },
     },
     {
       label: 'Mais antigos',
       value: {
-        orderby: 'meta_value',
-        meta_key: 'released',
+        orderby: 'date',
         order: 'desc',
       },
     },
   ];
-  filters: any = {
-    order: this.optionsOrder[0],
-    country: [],
-  };
+  filters: any = {};
 
   constructor() {}
 
@@ -62,5 +57,18 @@ export class GenreFilterComponent implements OnInit {
     const { form, filters } = this;
 
     this.submitted.emit(filters);
+  }
+
+  filtersCountry(country: 'string') {
+    if (country) {
+      this.filters.country = {
+        meta_key: 'country',
+        meta_value: country,
+      };
+    } else {
+      this.filters.country = '';
+    }
+
+    this.submit();
   }
 }

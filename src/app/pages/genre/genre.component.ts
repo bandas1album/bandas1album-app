@@ -85,7 +85,24 @@ export class GenreComponent implements OnInit {
 
   doFilter(data: any) {
     const { order, country } = data;
-    this.albumParams = Object.assign(this.albumParams, order);
+
+    if (order?.value) {
+      this.albumParams = Object.assign(this.albumParams, order.value);
+    } else {
+      this.albumParams = Object.assign(this.albumParams, {
+        orderby: 'title',
+        order: 'asc',
+      });
+    }
+
+    if (country) {
+      this.albumParams = Object.assign(this.albumParams, country);
+    } else {
+      this.albumParams = Object.assign(this.albumParams, {
+        meta_key: '',
+        meta_value: '',
+      });
+    }
 
     this.getAlbums();
   }

@@ -15,9 +15,10 @@
             [(ngModel)]="filters.order"
             placeholder="Nome de A-Z"
             name="order"
-            [markFirst]="false"
+            placeholder="Selecione a ordenação"
             notFoundText="Nenhuma ordenação disponível"
             (change)="submit()"
+            [markFirst]="false"
           ></ng-select>
         </div>
       </div>
@@ -32,15 +33,11 @@
         <ng-select
           class="form-control__select"
           [items]="optionsCountries"
-          bindLabel="label"
-          bindValue="value"
-          [(ngModel)]="filters.country"
-          [multiple]="true"
           name="countries"
           placeholder="Filtrar por país"
           notFoundText="Nenhum país encontrado"
           [virtualScroll]="true"
-          (change)="submit()"
+          (change)="filtersCountry($event)"
         ></ng-select>
       </div>
     </div>
