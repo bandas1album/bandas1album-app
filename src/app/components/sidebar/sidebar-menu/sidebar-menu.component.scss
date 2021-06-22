@@ -17,7 +17,7 @@
   list-style: none;
 
   &.is-loading {
-    .sidebar-menu__item {
+    .sidebar-menu__item:not(.filled) {
       opacity: 0.5;
       pointer-events: none;
 
@@ -43,6 +43,10 @@
     &:hover,
     &.active {
       background-color: $color-primary-shade;
+    }
+
+    &.filled {
+      background-color: darken($color-primary-shade, 5%);
     }
   }
 }

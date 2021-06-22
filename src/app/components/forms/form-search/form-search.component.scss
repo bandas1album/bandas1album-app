@@ -1,0 +1,113 @@
+@import "src/scss/base/imports";
+
+.form {
+  position: relative;
+  padding: 0;
+  z-index: 99999;
+  width: 100%;
+  height: rem(64px);
+
+  &-control {
+    min-height: 100%;
+
+    &:not(:last-child) {
+      margin-bottom: 0;
+    }
+  }
+
+  input {
+    @extend .reset-input;
+    width: 100%;
+    height: 100%;
+    padding: rem(12px) rem(64px);
+    background-color: rgba($white, 0.1);
+    transition: 0.2s all ease;
+    color: $white;
+    font-weight: 600;
+    font-size: rem(16px);
+
+    @media (min-width: $tablet) {
+      padding: rem(16px) rem(64px);
+      font-size: rem(18px);
+    }
+
+    &:hover {
+      background-color: rgba($white, 0.2);
+    }
+
+    &:focus,
+    &.has-value {
+      padding-top: rem(28px);
+      background-color: transparent;
+      border-color: rgba($white, 0.2);
+
+      + label {
+        font-size: rem(12px);
+        top: 0;
+        transform: translateY(12px);
+        font-weight: 400;
+      }
+    }
+  }
+
+  i {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: rem(20px);
+    font-size: rem(20px);
+
+    @media (min-width: $tablet) {
+      font-size: rem(24px);
+    }
+  }
+
+  label {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: rem(64px);
+    font-size: rem(16px);
+    color: $white;
+    transition: 0.2s all ease;
+    cursor: text;
+    font-weight: 600;
+    font-size: rem(16px);
+    white-space: nowrap;
+
+    @media (min-width: $tablet) {
+      left: rem(64px);
+      font-size: rem(18px);
+    }
+  }
+
+  ul {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    list-style: none;
+    background-color: rgba($color-primary-shade, 0.6);
+    backdrop-filter: blur(4px);
+    border-radius: 0 0 rem(8px) rem(8px);
+
+    li {
+      padding: rem(4px) rem(16px);
+      font-size: rem(16px);
+      font-weight: 600;
+
+      @media (min-width: $desktop) {
+        padding: rem(8px) rem(16px);
+        font-size: rem(18px);
+      }
+
+      &.ng-option-selected,
+      &:hover {
+        background-color: rgba($white, 0.2);
+      }
+    }
+
+    span {
+      text-decoration: underline;
+    }
+  }
+}

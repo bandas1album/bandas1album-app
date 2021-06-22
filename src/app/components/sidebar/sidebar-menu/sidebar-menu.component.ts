@@ -217,4 +217,8 @@ export class SidebarMenuComponent implements OnInit {
       this.modals.genres.list = res;
     });
   }
+
+  openSearch() {
+    console.log('search');
+  }
 }

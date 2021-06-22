@@ -1,6 +1,16 @@
 <ul class="sidebar-menu" [ngClass]="{ 'is-loading': albums.loading }">
   <li>
     <button
+      (click)="openSearch()"
+      class="sidebar-menu__item filled"
+      aria-title="Campo de busca"
+      title="Campo de busca"
+    >
+      <i class="fas fa-search" aria-hidden="true"></i>
+    </button>
+  </li>
+  <li>
+    <button
       (click)="open(this.modals.albums)"
       class="sidebar-menu__item"
       aria-title="Álbuns de A a Z"
