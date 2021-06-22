@@ -18,6 +18,7 @@ export class ListAlbumsSectionComponent implements OnInit {
   params: any = {
     per_page: 95,
     page: 1,
+    orderby: 'rand',
   };
 
   constructor(private albumService: AlbumService, private dialog: MatDialog) {}
