@@ -67,9 +67,12 @@
 
       <div
         class="post-content"
-        *ngIf="item?.content?.rendered || item?.acf?.tracklist?.length"
+        *ngIf="
+          (item?.content?.rendered && item?.content?.rendered.length > 50) ||
+          item?.acf?.tracklist?.length
+        "
       >
-        <ng-container *ngIf="item.content?.rendered">
+        <ng-container>
           <h3>Um pouco mais sobre {{ item.acf?.artist }}</h3>
           <div [innerHtml]="item.content?.rendered"></div>
         </ng-container>
@@ -94,7 +97,10 @@
     </article>
 
     <app-footer-default
-      *ngIf="item?.content?.rendered || item?.acf?.tracklist?.length"
+      *ngIf="
+        (item?.content?.rendered && item?.content?.rendered.length > 50) ||
+        item?.acf?.tracklist?.length
+      "
     ></app-footer-default>
   </section>
 </main>
