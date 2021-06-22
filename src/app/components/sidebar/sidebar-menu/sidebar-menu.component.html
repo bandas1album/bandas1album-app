@@ -1,46 +1,58 @@
-<ul class="sidebar-menu">
+<ul class="sidebar-menu" [ngClass]="{ 'is-loading': albums.loading }">
   <li>
     <button
       (click)="open(this.modals.albums)"
       class="sidebar-menu__item"
-      data-sidebar="albums"
       aria-title="Álbuns de A a Z"
       title="Álbuns de A a Z"
     >
-      <i class="fas fa-compact-disc" aria-hidden="true"></i>
+      <i
+        class="fas"
+        [ngClass]="albums.loading ? 'fa-circle-notch' : 'fa-compact-disc'"
+        aria-hidden="true"
+      ></i>
     </button>
   </li>
   <li>
     <button
       (click)="open(this.modals.countries)"
       class="sidebar-menu__item"
-      data-sidebar="countries"
       aria-title="Bandas por países"
       title="Bandas por países"
     >
-      <i class="fas fa-globe" aria-hidden="true"></i>
+      <i
+        class="fas"
+        [ngClass]="albums.loading ? 'fa-circle-notch' : 'fa-globe'"
+        aria-hidden="true"
+      ></i>
     </button>
   </li>
   <li>
     <button
       (click)="open(this.modals.years)"
       class="sidebar-menu__item"
-      data-sidebar="year"
       aria-title="Ano de lançamento"
       title="Ano de lançamento"
     >
-      <i class="fas fa-calendar-check" aria-hidden="true"></i>
+      <i
+        class="fas"
+        [ngClass]="albums.loading ? 'fa-circle-notch' : 'fa-calendar-check'"
+        aria-hidden="true"
+      ></i>
     </button>
   </li>
   <li>
     <button
       (click)="openGenres()"
       class="sidebar-menu__item"
-      data-sidebar="genres"
       aria-title="Gêneros"
       title="Gêneros"
     >
-      <i class="fas fa-book" aria-hidden="true"></i>
+      <i
+        class="fas"
+        [ngClass]="albums.loading ? 'fa-circle-notch' : 'fa-book'"
+        aria-hidden="true"
+      ></i>
     </button>
   </li>
 </ul>

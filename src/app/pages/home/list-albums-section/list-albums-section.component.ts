@@ -43,8 +43,4 @@ export class ListAlbumsSectionComponent implements OnInit {
         }
       );
   }
-
-  openModal() {
-    this.dialog.open(SidebarModalComponent);
-  }
 }

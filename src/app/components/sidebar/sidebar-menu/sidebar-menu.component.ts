@@ -11,6 +11,8 @@ import { SidebarModalComponent } from '../../modals/sidebar-modal/sidebar-modal.
   styleUrls: ['./sidebar-menu.component.scss'],
 })
 export class SidebarMenuComponent implements OnInit {
+  isLoaded: boolean = false;
+  selectedModal: string = '';
   albums: any = {
     loading: false,
     loadingMore: false,
@@ -55,27 +57,78 @@ export class SidebarMenuComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.getAllPosts();
     this.getGenres();
   }
 
-  open(modal: any) {
-    Object.entries(this.modals).forEach(([key, value]) => {
-      this.modals[key].ref = '';
-      this.dialog.closeAll();
-    });
+  getAllPosts(resetList: boolean = false) {
+    this.albums.loading = true;
 
-    modal.ref = this.dialog.open(SidebarModalComponent, {
-      data: {
-        title: modal.title,
-        list: modal.list,
-      },
-      panelClass: 'sidebar-modal',
-      position: {
-        top: '0px',
-        left: '0px',
-      },
-    });
+    this.albumService
+      .get({ observe: 'response', params: this.params })
+      .subscribe(
+        (res: any) => {
+          const { body, headers } = res;
+          this.isLoaded = true;
+
+          if (resetList) {
+            this.albums.list = body;
+          } else {
+            this.albums.list = this.albums.list.concat(body);
+          }
+
+          this.albums.loading = false;
+          this.albums.firstLoading = false;
+          this.albums.hasMore =
+            this.params.page < headers.get('X-WP-TotalPages');
+          this.params.page++;
+
+          if (this.albums.loadingMore) {
+            this.albums.loadingMore = false;
+          }
+
+          if (this.albums.hasMore) {
+            this.loadMore();
+          } else {
+            this.open(this.selectedModal);
+          }
+
+          this.getAlbums();
+          this.getCountries();
+          this.getYears();
+        },
+        (err: any) => {
+          this.albums.loading = false;
+
+          if (this.albums.loadingMore) {
+            this.albums.loadingMore = false;
+          }
+        }
+      );
+  }
+
+  open(modal: any) {
+    this.selectedModal = modal;
+
+    if (this.isLoaded) {
+      Object.entries(this.modals).forEach(([key, value]) => {
+        this.modals[key].ref = '';
+        this.dialog.closeAll();
+      });
+
+      modal.ref = this.dialog.open(SidebarModalComponent, {
+        data: {
+          title: modal.title,
+          list: modal.list,
+        },
+        panelClass: 'sidebar-modal',
+        position: {
+          top: '0px',
+          left: '0px',
+        },
+      });
+    } else {
+      this.getAllPosts();
+    }
   }
 
   openGenres() {
@@ -97,48 +150,6 @@ export class SidebarMenuComponent implements OnInit {
         left: '0px',
       },
     });
-  }
-
-  getAllPosts(resetList: boolean = false) {
-    this.albums;
-    this.albumService
-      .get({ observe: 'response', params: this.params })
-      .subscribe(
-        (res: any) => {
-          const { body, headers } = res;
-
-          if (resetList) {
-            this.albums.list = body;
-          } else {
-            this.albums.list = this.albums.list.concat(body);
-          }
-
-          this.albums.list.loading = false;
-          this.albums.firstLoading = false;
-          this.albums.list.hasMore =
-            this.params.page < headers.get('X-WP-TotalPages');
-          this.params.page++;
-
-          if (this.albums.list.loadingMore) {
-            this.albums.list.loadingMore = false;
-          }
-
-          if (this.albums.list.hasMore) {
-            this.loadMore();
-          }
-
-          this.getAlbums();
-          this.getCountries();
-          this.getYears();
-        },
-        (err: any) => {
-          this.albums.list.loading = false;
-
-          if (this.albums.list.loadingMore) {
-            this.albums.list.loadingMore = false;
-          }
-        }
-      );
   }
 
   loadMore() {

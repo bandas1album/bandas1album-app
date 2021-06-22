@@ -1,10 +1,31 @@
 @import "src/scss/base/imports";
 
+@keyframes rotate {
+  from {
+    transform: rotate(0);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 .sidebar-menu {
   flex: 1;
   margin: 0;
   padding: 0;
   list-style: none;
+
+  &.is-loading {
+    .sidebar-menu__item {
+      opacity: 0.5;
+      pointer-events: none;
+
+      i {
+        animation: rotate infinite linear 1s;
+      }
+    }
+  }
 
   &__item {
     @extend .reset-button;
