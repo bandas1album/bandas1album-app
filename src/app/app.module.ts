@@ -7,7 +7,6 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatDialogModule } from '@angular/material/dialog';
 import { HtmlDecodePipe } from './pipes/html-decode/html-decode.pipe';
-import { FormSearchModule } from './components/forms/form-search/form-search.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -17,7 +16,6 @@ import { FormSearchModule } from './components/forms/form-search/form-search.mod
     HttpClientModule,
     BrowserAnimationsModule,
     MatDialogModule,
-    FormSearchModule,
   ],
   providers: [HtmlDecodePipe],
   bootstrap: [AppComponent],

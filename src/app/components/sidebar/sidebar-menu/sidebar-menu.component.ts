@@ -1,8 +1,9 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { AlbumService } from 'src/app/services/album/album.service';
 import { GenresService } from 'src/app/services/genres/genres.service';
 import { SidebarModalGenresComponent } from '../../modals/sidebar-modal-genres/sidebar-modal-genres.component';
+import { SidebarModalSearchComponent } from '../../modals/sidebar-modal-search/sidebar-modal-search.component';
 import { SidebarModalComponent } from '../../modals/sidebar-modal/sidebar-modal.component';
 
 @Component({
@@ -11,6 +12,8 @@ import { SidebarModalComponent } from '../../modals/sidebar-modal/sidebar-modal.
   styleUrls: ['./sidebar-menu.component.scss'],
 })
 export class SidebarMenuComponent implements OnInit {
+  @Output() toggleSearch: EventEmitter<any> = new EventEmitter();
+  searchIsOpened: boolean = false;
   isLoaded: boolean = false;
   selectedModal: string = '';
   albums: any = {
@@ -219,6 +222,12 @@ export class SidebarMenuComponent implements OnInit {
   }
 
   openSearch() {
-    console.log('search');
+    this.dialog.open(SidebarModalSearchComponent, {
+      panelClass: 'sidebar-modal',
+      position: {
+        top: '0px',
+        left: '0px',
+      },
+    });
   }
 }
