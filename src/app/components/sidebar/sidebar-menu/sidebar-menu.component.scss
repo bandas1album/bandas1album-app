@@ -17,7 +17,7 @@
   list-style: none;
 
   &.is-loading {
-    .sidebar-menu__item:not(.filled) {
+    .sidebar-menu__item:not(.search) {
       opacity: 0.5;
       pointer-events: none;
 

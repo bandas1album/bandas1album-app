@@ -123,7 +123,7 @@ export class SidebarMenuComponent implements OnInit {
           title: modal.title,
           list: modal.list,
         },
-        panelClass: 'sidebar-modal',
+        panelClass: ['sidebar-modal', 'sidebar-modal--list'],
         position: {
           top: '0px',
           left: '0px',
@@ -137,17 +137,14 @@ export class SidebarMenuComponent implements OnInit {
   openGenres() {
     const modal = this.modals.genres;
 
-    Object.entries(this.modals).forEach(([key, value]) => {
-      this.modals[key].ref = '';
-      this.dialog.closeAll();
-    });
+    this.closeModal();
 
     modal.ref = this.dialog.open(SidebarModalGenresComponent, {
       data: {
         title: modal.title,
         list: modal.list,
       },
-      panelClass: 'sidebar-modal',
+      panelClass: ['sidebar-modal', 'sidebar-modal--list'],
       position: {
         top: '0px',
         left: '0px',
@@ -222,12 +219,27 @@ export class SidebarMenuComponent implements OnInit {
   }
 
   openSearch() {
-    this.dialog.open(SidebarModalSearchComponent, {
-      panelClass: 'sidebar-modal',
-      position: {
-        top: '0px',
-        left: '0px',
-      },
+    this.closeModal();
+
+    if (this.searchIsOpened) {
+      this.closeModal();
+    } else {
+      this.dialog.open(SidebarModalSearchComponent, {
+        panelClass: ['sidebar-modal', 'sidebar-modal--search'],
+        position: {
+          top: '0px',
+          left: '0px',
+        },
+      });
+    }
+
+    this.searchIsOpened = !this.searchIsOpened;
+  }
+
+  closeModal() {
+    Object.entries(this.modals).forEach(([key, value]) => {
+      this.modals[key].ref = '';
+      this.dialog.closeAll();
     });
   }
 }

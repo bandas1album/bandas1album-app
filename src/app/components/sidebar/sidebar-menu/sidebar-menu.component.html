@@ -2,7 +2,8 @@
   <li>
     <button
       (click)="openSearch()"
-      class="sidebar-menu__item filled"
+      class="sidebar-menu__item search"
+      [ngClass]="{ filled: searchIsOpened }"
       aria-title="Campo de busca"
       title="Campo de busca"
     >

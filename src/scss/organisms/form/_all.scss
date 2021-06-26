@@ -2,7 +2,6 @@
   display: flex;
   flex-direction: column;
   padding: rem(24px) rem(32px);
-  background-color: $color-primary-shade;
 
   @media (min-width: $tablet) {
     flex-direction: row;

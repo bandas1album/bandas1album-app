@@ -1,13 +1,22 @@
 <div class="sidebar-modal__list" data-menu="albums">
   <form class="form">
     <div class="form-control">
-      <input id="search" type="text" />
+      <input
+        id="search"
+        [(ngModel)]="term"
+        [ngClass]="{ 'has-value': term }"
+        type="text"
+        name="search"
+      />
       <label for="search">Faça sua busca</label>
     </div>
   </form>
 
-  <ol>
-    <!-- <li *ngFor="let item of data.list">
+  <ul>
+    {{
+      term
+    }}
+    <li *ngFor="let item of data.list">
       <h4 class="sidebar-modal__list__subtitle" id="-ref">{{ item.title }}</h4>
       <ul>
         <li *ngFor="let album of item.albums">
@@ -17,6 +26,6 @@
           </a>
         </li>
       </ul>
-    </li> -->
-  </ol>
+    </li>
+  </ul>
 </div>

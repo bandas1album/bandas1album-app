@@ -1,0 +1,11 @@
+@keyframes slideX {
+  100% {
+    transform: translateX(64px);
+  }
+}
+
+.sidebar-modal--list {
+  transform: translateX(-100%);
+  animation: slideX 0.1s forwards;
+  background-color: $color-primary-shade;
+}

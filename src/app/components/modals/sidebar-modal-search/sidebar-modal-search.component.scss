@@ -1,69 +1,74 @@
 @import "src/scss/base/imports";
 
-.form {
-  position: relative;
-  padding: 0;
-  width: 100%;
-  height: rem(64px);
-
-  &-control {
-    min-height: 100%;
-
-    &:not(:last-child) {
-      margin-bottom: 0;
-    }
-  }
-
-  input {
-    @extend .reset-input;
+.sidebar-modal__list {
+  .form {
+    position: relative;
+    padding: 0;
     width: 100%;
-    height: 100%;
-    padding: rem(12px) rem(16px);
-    background-color: rgba($white, 0.1);
-    transition: 0.2s all ease;
-    color: $white;
-    font-weight: 600;
-    font-size: rem(16px);
+    height: rem(64px);
 
-    @media (min-width: $tablet) {
-      padding: rem(16px);
-      font-size: rem(18px);
+    &-control {
+      min-height: 100%;
+
+      &:not(:last-child) {
+        margin-bottom: 0;
+      }
     }
 
-    &:hover {
-      background-color: rgba($white, 0.2);
+    input {
+      @extend .reset-input;
+      width: 100%;
+      height: 100%;
+      padding: rem(12px) rem(16px);
+      background-color: rgba($color-primary-shade, 0.6);
+      backdrop-filter: blur(6px);
+      transition: 0.2s all ease;
+      color: $white;
+      font-weight: 600;
+      font-size: rem(16px);
+      border-radius: 0 rem(4px) rem(4px) 0;
+
+      @media (min-width: $tablet) {
+        padding: rem(16px);
+        font-size: rem(18px);
+      }
+
+      &:focus,
+      &.has-value {
+        padding-top: rem(28px);
+        background-color: rgba($color-primary-shade, 0.4);
+
+        + label {
+          font-size: rem(12px);
+          top: 0;
+          transform: translateY(12px);
+          font-weight: 400;
+        }
+      }
     }
 
-    &:focus,
-    &.has-value {
-      padding-top: rem(28px);
-      background-color: transparent;
-      border-color: rgba($white, 0.2);
+    label {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      left: rem(16px);
+      font-size: rem(16px);
+      color: $white;
+      transition: 0.2s all ease;
+      cursor: text;
+      font-weight: 600;
+      font-size: rem(16px);
+      white-space: nowrap;
 
-      + label {
-        font-size: rem(12px);
-        top: 0;
-        transform: translateY(12px);
-        font-weight: 400;
+      @media (min-width: $tablet) {
+        font-size: rem(18px);
       }
     }
   }
 
-  label {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    left: rem(16px);
-    font-size: rem(16px);
-    color: $white;
-    transition: 0.2s all ease;
-    cursor: text;
-    font-weight: 600;
-    font-size: rem(16px);
-    white-space: nowrap;
-
-    @media (min-width: $tablet) {
-      font-size: rem(18px);
-    }
+  ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
   }
 }
