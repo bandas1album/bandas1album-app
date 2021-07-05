@@ -6,7 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./placeholder-list-albums.component.scss'],
 })
 export class PlaceholderListAlbumsComponent implements OnInit {
-  items: any = Array(96);
+  items: any = Array(48);
 
   constructor() {}
 
