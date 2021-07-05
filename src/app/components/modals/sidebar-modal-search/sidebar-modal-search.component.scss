@@ -45,6 +45,10 @@
           font-weight: 400;
         }
       }
+
+      &.has-value {
+        border-radius: 0 rem(4px) 0 0;
+      }
     }
 
     label {

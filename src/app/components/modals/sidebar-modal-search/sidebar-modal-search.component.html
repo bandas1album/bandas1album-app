@@ -16,7 +16,7 @@
 
   <ul>
     <li *ngFor="let item of list.items">
-      <a [routerLink]="'/album/' + item.slug">
+      <a [routerLink]="item.link">
         <strong [innerHtml]="item.title.rendered"></strong>
         <span [innerHtml]="item.acf.artist"></span>
       </a>
