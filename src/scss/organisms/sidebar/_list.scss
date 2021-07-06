@@ -8,4 +8,6 @@
   transform: translateX(-100%);
   animation: slideX 0.1s forwards;
   background-color: $color-primary-shade;
+  overflow: auto;
+  height: 100%;
 }
