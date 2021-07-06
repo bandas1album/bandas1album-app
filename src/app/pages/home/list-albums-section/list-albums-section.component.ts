@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { SidebarModalComponent } from 'src/app/components/modals/sidebar-modal/sidebar-modal.component';
 import { AlbumService } from 'src/app/services/album/album.service';
@@ -9,6 +10,7 @@ import { AlbumService } from 'src/app/services/album/album.service';
   styleUrls: ['./list-albums-section.component.scss'],
 })
 export class ListAlbumsSectionComponent implements OnInit {
+  isBrowser = false;
   firstLoading: boolean = true;
   list: any = {
     loading: true,
@@ -21,13 +23,23 @@ export class ListAlbumsSectionComponent implements OnInit {
     orderby: 'rand',
   };
 
-  constructor(private albumService: AlbumService, private dialog: MatDialog) {}
+  constructor(
+    @Inject(PLATFORM_ID) platformId: object,
+    private albumService: AlbumService,
+    private dialog: MatDialog
+  ) {
+    this.isBrowser = isPlatformBrowser(platformId);
+  }
 
   ngOnInit(): void {
     this.getAlbums();
   }
 
   async getAlbums() {
+    if (!this.isBrowser) {
+      return;
+    }
+
     await this.albumService
       .get({ observe: 'response', params: this.params })
       .subscribe(

@@ -1,4 +1,12 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import {
+  Component,
+  EventEmitter,
+  Inject,
+  OnInit,
+  Output,
+  PLATFORM_ID,
+} from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { AlbumService } from 'src/app/services/album/album.service';
 import { GenresService } from 'src/app/services/genres/genres.service';
@@ -12,6 +20,7 @@ import { SidebarModalComponent } from '../../modals/sidebar-modal/sidebar-modal.
   styleUrls: ['./sidebar-menu.component.scss'],
 })
 export class SidebarMenuComponent implements OnInit {
+  isBrowser = false;
   @Output() toggleSearch: EventEmitter<any> = new EventEmitter();
   searchIsOpened: boolean = false;
   isLoaded: boolean = false;
@@ -54,10 +63,13 @@ export class SidebarMenuComponent implements OnInit {
   };
 
   constructor(
+    @Inject(PLATFORM_ID) platformId: object,
     private dialog: MatDialog,
     private albumService: AlbumService,
     private genresService: GenresService
-  ) {}
+  ) {
+    this.isBrowser = isPlatformBrowser(platformId);
+  }
 
   ngOnInit(): void {
     this.getGenres();
@@ -208,6 +220,10 @@ export class SidebarMenuComponent implements OnInit {
   }
 
   getGenres() {
+    if (!this.isBrowser) {
+      return;
+    }
+
     const params = {
       per_page: 100,
       page: 1,

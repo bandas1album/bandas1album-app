@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { NavigationEnd, Router } from '@angular/router';
 
@@ -8,7 +9,15 @@ import { NavigationEnd, Router } from '@angular/router';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
-  constructor(private dialog: MatDialog, private router: Router) {}
+  isBrowser = false;
+
+  constructor(
+    @Inject(PLATFORM_ID) platformId: object,
+    private dialog: MatDialog,
+    private router: Router
+  ) {
+    this.isBrowser = isPlatformBrowser(platformId);
+  }
 
   ngOnInit(): void {
     this.router.events.subscribe((evt) => {
@@ -25,9 +34,11 @@ export class AppComponent implements OnInit {
         return;
       }
 
-      setTimeout(() => {
-        window.scroll({ top: 0, left: 0, behavior: 'smooth' });
-      }, 500);
+      if (this.isBrowser) {
+        setTimeout(() => {
+          window.scroll({ top: 0, left: 0, behavior: 'smooth' });
+        }, 500);
+      }
     });
   }
 }

@@ -11,7 +11,7 @@ const routes: Routes = [
     path: 'album/:slug',
     loadChildren: () =>
       import('./pages/album/album.module').then((m) => m.AlbumModule),
-    data: { animation: 'Album' },
+    pathMatch: 'full',
   },
   {
     path: 'random',
@@ -22,6 +22,7 @@ const routes: Routes = [
     path: 'genero/:slug',
     loadChildren: () =>
       import('./pages/genre/genre.module').then((m) => m.GenreModule),
+    pathMatch: 'full',
   },
 ];
 

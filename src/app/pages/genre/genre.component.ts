@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AlbumService } from 'src/app/services/album/album.service';
 import { GenresService } from 'src/app/services/genres/genres.service';
@@ -10,6 +11,7 @@ import { SeoService } from 'src/app/services/seo/seo.service';
   styleUrls: ['./genre.component.scss'],
 })
 export class GenreComponent implements OnInit {
+  isBrowser = false;
   showFilters: boolean = false;
   firstLoading: boolean = true;
   item: any = {};
@@ -30,11 +32,14 @@ export class GenreComponent implements OnInit {
   };
 
   constructor(
+    @Inject(PLATFORM_ID) platformId: object,
     private genresService: GenresService,
     private albumService: AlbumService,
     private seoService: SeoService,
     private route: ActivatedRoute
-  ) {}
+  ) {
+    this.isBrowser = isPlatformBrowser(platformId);
+  }
 
   ngOnInit(): void {
     this.route.params.subscribe((params) => {
@@ -45,6 +50,10 @@ export class GenreComponent implements OnInit {
   }
 
   getGenreId() {
+    if (!this.isBrowser) {
+      return;
+    }
+
     this.genresService.get({ params: this.genresParams }).subscribe((res) => {
       const data = res[0];
       this.albumParams.generos_album = data.id;

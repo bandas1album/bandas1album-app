@@ -4,8 +4,8 @@
   <div class="wrapper">
     <app-full-banner>
       <picture *ngIf="item?.images?.banner">
-        <source [srcset]="item.images.banner.webp" type="image/webp" />
-        <source [srcset]="item.images.banner.normal" type="image/jpeg" />
+        <source [srcset]="item.images.banner?.webp" type="image/webp" />
+        <source [srcset]="item.images.banner?.normal" type="image/jpeg" />
         <img [src]="item.images.banner.normal" [alt]="item.title" />
       </picture>
 

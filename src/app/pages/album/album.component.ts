@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AlbumService } from 'src/app/services/album/album.service';
 import { SeoService } from 'src/app/services/seo/seo.service';
 import { ShareModalComponent } from 'src/app/components/modals/share-modal/share-modal.component';
-import { formatDate } from '@angular/common';
+import { formatDate, isPlatformBrowser } from '@angular/common';
 import { HtmlDecodePipe } from 'src/app/pipes/html-decode/html-decode.pipe';
 
 @Component({
@@ -13,6 +13,7 @@ import { HtmlDecodePipe } from 'src/app/pipes/html-decode/html-decode.pipe';
   styleUrls: ['./album.component.scss'],
 })
 export class AlbumComponent implements OnInit {
+  isBrowser = false;
   pageId: string = '';
   item: any = {};
   loading: boolean = true;
@@ -21,6 +22,7 @@ export class AlbumComponent implements OnInit {
   };
 
   constructor(
+    @Inject(PLATFORM_ID) platformId: object,
     private seoService: SeoService,
     private albumService: AlbumService,
     private router: Router,
@@ -28,6 +30,7 @@ export class AlbumComponent implements OnInit {
     private dialog: MatDialog,
     private htmlDecodePipe: HtmlDecodePipe
   ) {
+    this.isBrowser = isPlatformBrowser(platformId);
     this.pageId = this.router.routerState.snapshot.url;
   }
 
@@ -43,6 +46,10 @@ export class AlbumComponent implements OnInit {
   }
 
   get() {
+    if (!this.isBrowser) {
+      return;
+    }
+
     this.albumService.get({ params: this.params }).subscribe(
       (res: any) => {
         this.item = res[0];
