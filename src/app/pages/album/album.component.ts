@@ -58,6 +58,14 @@ export class AlbumComponent implements OnInit {
             title
             content
             link
+            terms {
+              edges {
+                node {
+                  slug
+                  name
+                }
+              }
+            }
             acf {
               amazon
               artist

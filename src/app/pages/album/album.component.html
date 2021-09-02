@@ -40,9 +40,9 @@
           [innerHtml]="item.acf?.released | date: 'yyyy'"
         ></span>
 
-        <li albumGenreItem *ngFor="let genre of item.genres">
-          <a [routerLink]="'/genero/' + genre.slug">
-            <span itemprop="genre">{{ genre.name }}</span>
+        <li albumGenreItem *ngFor="let genre of item.terms.edges">
+          <a [routerLink]="'/genero/' + genre.node.slug">
+            <span itemprop="genre">{{ genre.node.name }}</span>
           </a>
         </li>
 
