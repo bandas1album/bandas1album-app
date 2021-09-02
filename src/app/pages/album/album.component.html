@@ -28,7 +28,7 @@
             itemprop="image"
             loading="lazy"
             [src]="item.featuredImage.node.sourceUrl"
-            alt="Capa do álbum da banda "
+            [alt]="'Capa do álbum ' + item.title + ' de ' + item.acf.artist"
             loading="lazy"
           />
         </picture>
