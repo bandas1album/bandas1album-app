@@ -18,7 +18,7 @@ export class SeoService {
   }
 
   metatags(data: any) {
-    data.yoast_meta.forEach((meta: any) => {
+    data.forEach((meta: any) => {
       this.meta.updateTag(meta);
     });
   }

@@ -22,13 +22,13 @@
 
       <app-card-post-album *ngIf="!this.loading">
         <picture albumImage>
-          <source [srcset]="item.images?.full_webp" type="image/webp" />
-          <source [srcset]="item.images?.full" type="image/jpeg" />
+          <source [srcset]="item.featuredImage.node.sourceUrl + '.webp'" type="image/webp" />
+          <source [srcset]="item.featuredImage.node.sourceUrl" type="image/jpeg" />
           <img
             itemprop="image"
             loading="lazy"
-            [src]="item.images?.full"
-            alt="Capa do álbum  da banda "
+            [src]="item.featuredImage.node.sourceUrl"
+            alt="Capa do álbum da banda "
             loading="lazy"
           />
         </picture>
@@ -68,13 +68,13 @@
       <div
         class="post-content"
         *ngIf="
-          (item?.content?.rendered && item?.content?.rendered.length > 50) ||
+          (item?.content && item?.content.length > 50) ||
           item?.acf?.tracklist?.length
         "
       >
         <ng-container>
           <h3>Um pouco mais sobre {{ item.acf?.artist }}</h3>
-          <div [innerHtml]="item.content?.rendered"></div>
+          <div [innerHtml]="item.content"></div>
         </ng-container>
 
         <div class="post-tracklist" *ngIf="item.acf?.tracklist?.length">
@@ -98,7 +98,7 @@
 
     <app-footer-default
       *ngIf="
-        (item?.content?.rendered && item?.content?.rendered.length > 50) ||
+        (item?.content && item?.content.length > 50) ||
         item?.acf?.tracklist?.length
       "
     ></app-footer-default>

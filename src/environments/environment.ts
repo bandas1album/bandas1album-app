@@ -5,6 +5,7 @@
 export const environment = {
   production: false,
   urlApi: 'http://localhost/wp-json/wp/v2',
+  graphql: 'http://localhost/graphql'
 };
 
 /*

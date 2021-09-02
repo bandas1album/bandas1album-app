@@ -1,11 +1,11 @@
 import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AlbumService } from 'src/app/services/album/album.service';
 import { SeoService } from 'src/app/services/seo/seo.service';
 import { ShareModalComponent } from 'src/app/components/modals/share-modal/share-modal.component';
 import { formatDate, isPlatformBrowser } from '@angular/common';
 import { HtmlDecodePipe } from 'src/app/pipes/html-decode/html-decode.pipe';
+import {Apollo, gql} from 'apollo-angular';
 
 @Component({
   selector: 'app-album',
@@ -23,8 +23,8 @@ export class AlbumComponent implements OnInit {
 
   constructor(
     @Inject(PLATFORM_ID) platformId: object,
+    private apollo: Apollo,
     private seoService: SeoService,
-    private albumService: AlbumService,
     private router: Router,
     private route: ActivatedRoute,
     private dialog: MatDialog,
@@ -50,27 +50,65 @@ export class AlbumComponent implements OnInit {
       return;
     }
 
-    this.albumService.get({ params: this.params }).subscribe(
-      (res: any) => {
-        this.item = res[0];
+    this.apollo.watchQuery({
+      query: gql`
+        {
+          album(id: "${this.params.slug}", idType: URI) {
+            albumId
+            title
+            content
+            acf {
+              amazon
+              artist
+              country
+              deezer
+              download
+              label
+              lastfm
+              released
+              spotify
+              tracklist {
+                duration
+                fieldGroupName
+                title
+              }
+              wikipedia
+            }
+            seo {
+              metaDesc
+            }
+            featuredImage {
+              node {
+                sourceUrl
+              }
+            }
+          }
+        }
+      `,
+    }).valueChanges.subscribe((result: any) => {
+      this.item = result.data.album;
 
         const mountTitle =
-          this.item.title.rendered == this.item.acf.artist
-            ? this.item.title.rendered
-            : `${this.item.title.rendered} - ${this.item.acf.artist}`;
+          this.item.title == this.item.acf.artist
+            ? this.item.title
+            : `${this.item.title} - ${this.item.acf.artist}`;
         const title = this.htmlDecodePipe.transform(mountTitle);
         const year = new Date(this.item.acf.released).getFullYear();
 
         this.seoService.updateTitle(`${title} (${year}) | Bandas de 1 Álbum`);
-        this.seoService.metatags(this.item);
+        this.seoService.metatags([
+          {
+            name: 'description',
+            content: this.item.seo.metaDesc
+          },
+          {
+            name: 'og:image',
+            content: this.item.featuredImage.node.sourceUrl
+          }
+        ]);
 
         this.loading = false;
-      },
-      (err: any) => {
-        // console.log(err);
-        this.loading = false;
-      }
-    );
+    })
   }
 
   share() {
@@ -78,7 +116,7 @@ export class AlbumComponent implements OnInit {
       panelClass: 'modal-share',
       data: {
         slug: this.item.slug,
-        title: this.item.title.rendered,
+        title: this.item.title,
         artist: this.item.acf.artist,
         released: formatDate(this.item.acf.released, 'yyyy', 'en-US'),
       },
