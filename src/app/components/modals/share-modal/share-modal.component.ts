@@ -9,7 +9,7 @@ import { Clipboard } from '@angular/cdk/clipboard';
 })
 export class ShareModalComponent implements OnInit {
   @ViewChild('input') input: any;
-  albumUrl: string = `https://bandas1album.com.br/${this.data.slug}`;
+  albumUrl: string = this.data.link;
   twitterUrl: string = `https://twitter.com/intent/tweet?text=${this.data.title} - ${this.data.artist} (${this.data.released}) ${this.albumUrl} via @bandas1album`;
   facebookUrl: string = `https://www.facebook.com/sharer/sharer.php?u=${this.albumUrl}`;
   whatsappUrl: string = `https://api.whatsapp.com/send?text=${this.data.title} - ${this.data.artist} (${this.data.released}) ${this.albumUrl}`;

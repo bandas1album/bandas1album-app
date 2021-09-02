@@ -57,6 +57,7 @@ export class AlbumComponent implements OnInit {
             albumId
             title
             content
+            link
             acf {
               amazon
               artist
@@ -115,7 +116,7 @@ export class AlbumComponent implements OnInit {
     this.dialog.open(ShareModalComponent, {
       panelClass: 'modal-share',
       data: {
-        slug: this.item.slug,
+        link: this.item.link,
         title: this.item.title,
         artist: this.item.acf.artist,
         released: formatDate(this.item.acf.released, 'yyyy', 'en-US'),
