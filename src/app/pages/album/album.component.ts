@@ -125,7 +125,7 @@ export class AlbumComponent implements OnInit {
     this.dialog.open(ShareModalComponent, {
       panelClass: 'modal-share',
       data: {
-        link: this.item.link,
+        link: `https://bandas1album.com.br/album/${this.item.slug}`,
         title: this.item.title,
         artist: this.item.acf.artist,
         released: formatDate(this.item.acf.released, 'yyyy', 'en-US'),
