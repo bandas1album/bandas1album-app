@@ -46,7 +46,7 @@ export class ListAlbumsSectionComponent implements OnInit {
                 }
                 featuredImage {
                   node {
-                    sourceUrl
+                    sourceUrl(size: THUMBNAIL)
                   }
                 }
               }
