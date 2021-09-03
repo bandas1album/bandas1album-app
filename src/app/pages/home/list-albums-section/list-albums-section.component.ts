@@ -1,8 +1,6 @@
 import { isPlatformBrowser } from '@angular/common';
 import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { SidebarModalComponent } from 'src/app/components/modals/sidebar-modal/sidebar-modal.component';
-import { AlbumService } from 'src/app/services/album/album.service';
+import {Apollo, gql} from 'apollo-angular';
 
 @Component({
   selector: 'app-list-albums-section',
@@ -17,16 +15,10 @@ export class ListAlbumsSectionComponent implements OnInit {
     items: [],
   };
   total: number = 0;
-  params: any = {
-    per_page: 95,
-    page: 1,
-    orderby: 'rand',
-  };
 
   constructor(
     @Inject(PLATFORM_ID) platformId: object,
-    private albumService: AlbumService,
-    private dialog: MatDialog
+    private apollo: Apollo,
   ) {
     this.isBrowser = isPlatformBrowser(platformId);
   }
@@ -40,20 +32,36 @@ export class ListAlbumsSectionComponent implements OnInit {
       return;
     }
 
-    await this.albumService
-      .get({ observe: 'response', params: this.params })
-      .subscribe(
-        (res: any) => {
-          const { body, headers } = res;
-          this.list.items = body;
-          this.total = headers.get('X-WP-Total');
-          this.list.loading = false;
-          this.firstLoading = false;
-        },
-        (err: any) => {
-          this.list.loading = false;
-          // console.log(err);
+    this.apollo.watchQuery({
+      query: gql`
+        {
+          albums(first: 95) {
+            edges {
+              node {
+                slug
+                title
+                link
+                acf {
+                  artist
+                }
+                featuredImage {
+                  node {
+                    sourceUrl
+                  }
+                }
+              }
+            },
+            pageInfo {
+              total
+            }
+          }
         }
-      );
+      `
+    }).valueChanges.subscribe((result: any) => {
+      this.list.items = result.data.albums.edges;
+      this.total = result.data.albums.pageInfo.total;
+      this.list.loading = false;
+      this.firstLoading = false;
+    });
   }
 }

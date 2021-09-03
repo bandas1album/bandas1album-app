@@ -5,14 +5,13 @@
 
   <app-list-albums *ngIf="list.items.length && !list.loading">
     <li *ngFor="let item of list.items" albumItem>
-      <app-card-list-albums [routerLink]="'/album/' + item.slug">
+      <app-card-list-albums [routerLink]="'/album/' + item.node.slug">
         <picture>
-          <source [srcset]="item.images?.thumbnail_webp" type="image/webp" />
-          <source [srcset]="item.images?.thumbnail" type="image/jpeg" />
+          <source [srcset]="item.node.featuredImage.node.sourceUrl + '.webp'" type="image/webp" />
           <img
             class="list-posts__card__image"
-            [src]="item.images.thumbnail"
-            alt=""
+            [src]="item.node.featuredImage.node.sourceUrl"
+            [alt]="'Capa do álbum ' + item.node.title + ' de ' + item.node.acf.artist"
             width="160"
             height="160"
             loading="lazy"
