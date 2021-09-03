@@ -97,6 +97,7 @@ export class AlbumComponent implements OnInit {
     }).valueChanges.subscribe((result: any) => {
       this.item = result.data.album;
 
+
         const mountTitle =
           this.item.title == this.item.acf.artist
             ? this.item.title
