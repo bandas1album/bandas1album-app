@@ -84,7 +84,7 @@ export class AlbumComponent implements OnInit {
               wikipedia
             }
             seo {
-              metaDesc
+              fullHead
             }
             featuredImage {
               node {
@@ -96,28 +96,10 @@ export class AlbumComponent implements OnInit {
       `,
     }).valueChanges.subscribe((result: any) => {
       this.item = result.data.album;
+      const seo = result.data.album.seo;
+      document.querySelector('head')?.insertAdjacentHTML('beforeend', seo.fullHead);
 
-
-        const mountTitle =
-          this.item.title == this.item.acf.artist
-            ? this.item.title
-            : `${this.item.title} - ${this.item.acf.artist}`;
-        const title = this.htmlDecodePipe.transform(mountTitle);
-        const year = new Date(this.item.acf.released).getFullYear();
-
-        this.seoService.updateTitle(`${title} (${year}) | Bandas de 1 Álbum`);
-        this.seoService.metatags([
-          {
-            name: 'description',
-            content: this.item.seo.metaDesc
-          },
-          {
-            name: 'og:image',
-            content: this.item.featuredImage.node.sourceUrl
-          }
-        ]);
-
-        this.loading = false;
+      this.loading = false;
     })
   }
 
