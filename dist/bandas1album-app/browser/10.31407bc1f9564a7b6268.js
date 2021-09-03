@@ -11,7 +11,7 @@
                 }
                 featuredImage {
                   node {
-                    sourceUrl
+                    sourceUrl(size: THUMBNAIL)
                   }
                 }
               }

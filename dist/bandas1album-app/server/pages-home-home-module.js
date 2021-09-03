@@ -11,7 +11,7 @@ exports.ids=[5],exports.modules={"0TNI":function(module,__webpack_exports__,__we
                 }
                 featuredImage {
                   node {
-                    sourceUrl
+                    sourceUrl(size: THUMBNAIL)
                   }
                 }
               }
