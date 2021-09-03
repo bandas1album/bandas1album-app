@@ -77,20 +77,7 @@
           <div [innerHtml]="item.content"></div>
         </ng-container>
 
-        <div class="post-tracklist" *ngIf="item.acf?.tracklist?.length">
-          <h3>Lista de faixas</h3>
-          <table>
-            <tr
-              *ngFor="let track of item.acf?.tracklist"
-              itemprop="track"
-              itemscope
-              itemtype="https://schema.org/MusicRecording"
-            >
-              <td itemprop="name" [innerHtml]="track.title"></td>
-              <td [innerHtml]="track.duration"></td>
-            </tr>
-          </table>
-        </div>
+        <app-tracklist item.acf?.tracklist?.length [tracks]="item.acf?.tracklist"></app-tracklist>
       </div>
     </article>
 

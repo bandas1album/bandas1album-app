@@ -1,0 +1,14 @@
+<div class="post-tracklist">
+  <h3>Lista de faixas</h3>
+  <table>
+    <tr
+      *ngFor="let track of tracks"
+      itemprop="track"
+      itemscope
+      itemtype="https://schema.org/MusicRecording"
+    >
+      <td itemprop="name" [innerHtml]="track.title"></td>
+      <td [innerHtml]="track.duration"></td>
+    </tr>
+  </table>
+</div>
