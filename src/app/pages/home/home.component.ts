@@ -1,7 +1,6 @@
 import { isPlatformBrowser } from '@angular/common';
 import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
-import { PagesService } from 'src/app/services/pages/pages.service';
-import { SeoService } from 'src/app/services/seo/seo.service';
+import {Apollo, gql} from 'apollo-angular';
 
 @Component({
   selector: 'app-home',
@@ -10,14 +9,10 @@ import { SeoService } from 'src/app/services/seo/seo.service';
 })
 export class HomeComponent implements OnInit {
   isBrowser = false;
-  params: any = {
-    slug: 'homepage',
-  };
 
   constructor(
     @Inject(PLATFORM_ID) platformId: object,
-    private pagesService: PagesService,
-    private seoService: SeoService
+    private apollo: Apollo,
   ) {
     this.isBrowser = isPlatformBrowser(platformId);
   }
@@ -31,16 +26,19 @@ export class HomeComponent implements OnInit {
       return;
     }
 
-    this.pagesService.get({ params: this.params }).subscribe((res) => {
-      const data = res[0];
-
-      data.yoast_meta.map((item: any) => {
-        if (item.property === 'og:title') {
-          this.seoService.updateTitle(item.content);
+    this.apollo.watchQuery({
+      query: gql`
+        {
+          page(id: "/", idType: URI) {
+            seo {
+              fullHead
+            }
+          }
         }
-      });
-
-      this.seoService.metatags(data);
+      `
+    }).valueChanges.subscribe((result: any) => {
+      const seo = result.data.page.seo;
+      document.querySelector('head')?.insertAdjacentHTML('beforeend', seo.fullHead);
     });
   }
 }
