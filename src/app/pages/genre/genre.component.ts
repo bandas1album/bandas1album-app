@@ -41,7 +41,7 @@ export class GenreComponent implements OnInit {
     this.apollo.watchQuery({
       query: gql`
         {
-          generoAlbum(id: "/generos_album/${slug}", idType: URI) {
+          generoAlbum(id: "${slug}", idType: SLUG) {
             name
             seo {
               fullHead
