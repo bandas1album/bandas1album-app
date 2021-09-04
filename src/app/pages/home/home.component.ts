@@ -9,6 +9,9 @@ import {Apollo, gql} from 'apollo-angular';
 })
 export class HomeComponent implements OnInit {
   isBrowser = false;
+  loading: boolean = true;
+  items: any = [];
+  total: number = 0;
 
   constructor(
     @Inject(PLATFORM_ID) platformId: object,
@@ -34,11 +37,34 @@ export class HomeComponent implements OnInit {
               fullHead
             }
           }
+          albums(first: 95) {
+            edges {
+              node {
+                slug
+                title
+                link
+                acf {
+                  artist
+                }
+                featuredImage {
+                  node {
+                    sourceUrl(size: THUMBNAIL)
+                  }
+                }
+              }
+            },
+            pageInfo {
+              total
+            }
+          }
         }
       `
     }).valueChanges.subscribe((result: any) => {
       const seo = result.data.page.seo;
       document.querySelector('head')?.insertAdjacentHTML('beforeend', seo.fullHead);
+      this.items = result.data.albums.edges;
+      this.total = result.data.albums.pageInfo.total;
+      this.loading = false;
     });
   }
 }

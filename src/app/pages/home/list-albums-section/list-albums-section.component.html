@@ -1,10 +1,10 @@
 <section>
   <app-placeholder-list-albums
-    *ngIf="firstLoading"
+    *ngIf="loading"
   ></app-placeholder-list-albums>
 
-  <app-list-albums *ngIf="list.items.length && !list.loading">
-    <li *ngFor="let item of list.items" albumItem>
+  <app-list-albums *ngIf="list.length && !loading">
+    <li *ngFor="let item of list" albumItem>
       <app-card-list-albums [routerLink]="'/album/' + item.node.slug">
         <picture>
           <source [srcset]="item.node.featuredImage.node.sourceUrl + '.webp'" type="image/webp" />

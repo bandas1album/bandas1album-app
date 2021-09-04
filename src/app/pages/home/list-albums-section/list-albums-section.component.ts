@@ -1,6 +1,4 @@
-import { isPlatformBrowser } from '@angular/common';
-import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
-import {Apollo, gql} from 'apollo-angular';
+import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
   selector: 'app-list-albums-section',
@@ -9,59 +7,15 @@ import {Apollo, gql} from 'apollo-angular';
 })
 export class ListAlbumsSectionComponent implements OnInit {
   isBrowser = false;
-  firstLoading: boolean = true;
-  list: any = {
-    loading: true,
-    items: [],
-  };
-  total: number = 0;
+  @Input() list: any = [];
+  @Input() loading: boolean = true;
+  @Input() total: number = 0;
 
   constructor(
-    @Inject(PLATFORM_ID) platformId: object,
-    private apollo: Apollo,
   ) {
-    this.isBrowser = isPlatformBrowser(platformId);
   }
 
   ngOnInit(): void {
-    this.getAlbums();
   }
 
-  async getAlbums() {
-    if (!this.isBrowser) {
-      return;
-    }
-
-    this.apollo.watchQuery({
-      query: gql`
-        {
-          albums(first: 95) {
-            edges {
-              node {
-                slug
-                title
-                link
-                acf {
-                  artist
-                }
-                featuredImage {
-                  node {
-                    sourceUrl(size: THUMBNAIL)
-                  }
-                }
-              }
-            },
-            pageInfo {
-              total
-            }
-          }
-        }
-      `
-    }).valueChanges.subscribe((result: any) => {
-      this.list.items = result.data.albums.edges;
-      this.total = result.data.albums.pageInfo.total;
-      this.list.loading = false;
-      this.firstLoading = false;
-    });
-  }
 }
