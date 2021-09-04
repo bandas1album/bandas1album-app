@@ -1,10 +1,8 @@
 import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
-import { SeoService } from 'src/app/services/seo/seo.service';
 import { ShareModalComponent } from 'src/app/components/modals/share-modal/share-modal.component';
 import { formatDate, isPlatformBrowser } from '@angular/common';
-import { HtmlDecodePipe } from 'src/app/pipes/html-decode/html-decode.pipe';
 import {Apollo, gql} from 'apollo-angular';
 
 @Component({
@@ -24,11 +22,9 @@ export class AlbumComponent implements OnInit {
   constructor(
     @Inject(PLATFORM_ID) platformId: object,
     private apollo: Apollo,
-    private seoService: SeoService,
     private router: Router,
     private route: ActivatedRoute,
-    private dialog: MatDialog,
-    private htmlDecodePipe: HtmlDecodePipe
+    private dialog: MatDialog
   ) {
     this.isBrowser = isPlatformBrowser(platformId);
     this.pageId = this.router.routerState.snapshot.url;
