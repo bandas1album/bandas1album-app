@@ -3,19 +3,18 @@
 
   <div class="wrapper">
     <app-full-banner>
-      <picture *ngIf="item?.images?.banner">
-        <source [srcset]="item.images.banner?.webp" type="image/webp" />
-        <source [srcset]="item.images.banner?.normal" type="image/jpeg" />
-        <img [src]="item.images.banner.normal" [alt]="item.title" />
+      <picture *ngIf="item?.acfCategory?.banner?.sourceUrl">
+        <source [srcset]="item?.acfCategory?.banner?.sourceUrl + '.webp'" type="image/webp" />
+        <img [src]="item?.acfCategory?.banner?.sourceUrl" [alt]="item?.name" />
       </picture>
 
-      <span title>{{ item.name }}</span>
+      <span title>{{ item?.name }}</span>
       <span subtitle
         >Mostrando <strong>{{ total }}</strong>
         {{ total > 1 ? "álbuns" : "álbum" }}
       </span>
 
-      <app-button filterToggle (click)="showFilters = !showFilters">
+      <app-button *ngIf="false" filterToggle (click)="showFilters = !showFilters">
         <i class="fas fa-filter" icon></i>
         <span title>Filtros</span>
       </app-button>
@@ -35,17 +34,13 @@
 
       <app-list-albums *ngIf="list.items.length && !list.loading">
         <li *ngFor="let item of list.items" albumItem>
-          <app-card-list-albums [routerLink]="'/album/' + item.slug">
+          <app-card-list-albums [routerLink]="'/album/' + item.node.slug">
             <picture>
-              <source
-                [srcset]="item.images?.thumbnail_webp"
-                type="image/webp"
-              />
-              <source [srcset]="item.images?.thumbnail" type="image/jpeg" />
+              <source [srcset]="item.node.featuredImage.node.sourceUrl + '.webp'" type="image/webp" />
               <img
                 class="list-posts__card__image"
-                [src]="item.images.thumbnail"
-                alt=""
+                [src]="item.node.featuredImage.node.sourceUrl"
+                [alt]="'Capa do álbum ' + item.node.title + ' de ' + item.node.acf.artist"
                 width="160"
                 height="160"
                 loading="lazy"

@@ -1,9 +1,7 @@
 import { isPlatformBrowser } from '@angular/common';
 import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { AlbumService } from 'src/app/services/album/album.service';
-import { GenresService } from 'src/app/services/genres/genres.service';
-import { SeoService } from 'src/app/services/seo/seo.service';
+import {Apollo, gql} from 'apollo-angular';
 
 @Component({
   selector: 'app-genre',
@@ -20,22 +18,11 @@ export class GenreComponent implements OnInit {
     items: [],
   };
   total: number = 0;
-  genresParams: any = {};
   countries: any = [];
-
-  albumParams: any = {
-    per_page: 96,
-    page: 1,
-    generos_album: [],
-    orderby: 'title',
-    order: 'asc',
-  };
 
   constructor(
     @Inject(PLATFORM_ID) platformId: object,
-    private genresService: GenresService,
-    private albumService: AlbumService,
-    private seoService: SeoService,
+    private apollo: Apollo,
     private route: ActivatedRoute
   ) {
     this.isBrowser = isPlatformBrowser(platformId);
@@ -44,51 +31,95 @@ export class GenreComponent implements OnInit {
   ngOnInit(): void {
     this.route.params.subscribe((params) => {
       const { slug } = params;
-      this.genresParams.slug = slug;
-      this.getGenreId();
+      this.getAlbums(slug);
     });
   }
 
-  getGenreId() {
-    if (!this.isBrowser) {
-      return;
-    }
-
-    this.genresService.get({ params: this.genresParams }).subscribe((res) => {
-      const data = res[0];
-      this.albumParams.generos_album = data.id;
-      this.item = data;
-
-      this.seoService.updateTitle(`${data.name} | Bandas de 1 Álbum`);
-
-      this.getAlbums();
-    });
-  }
-
-  getAlbums() {
+  getAlbums(slug: string = '') {
     this.list.loading = true;
 
-    this.albumService
-      .get({ observe: 'response', params: this.albumParams })
-      .subscribe(
-        (res: any) => {
-          const { body, headers } = res;
-          this.list.items = body;
-          this.total = headers.get('X-WP-Total');
-          this.list.loading = false;
-          this.firstLoading = false;
-          this.filterCountries();
-        },
-        (err: any) => {
-          this.list.loading = false;
-          // console.log(err);
+    this.apollo.watchQuery({
+      query: gql`
+        {
+          generoAlbum(id: "/generos_album/${slug}", idType: URI) {
+            name
+            seo {
+              fullHead
+            }
+            acfCategory {
+              banner {
+                sourceUrl
+              }
+            }
+          }
+          albums(
+            where: {
+              taxQuery: {
+                relation: OR,
+                taxArray: [
+                  {
+                    terms: ["${slug}"],
+                    taxonomy: GENEROALBUM,
+                    operator: IN,
+                    field: SLUG
+                  },
+                ]
+              }
+            }
+          ) {
+            edges {
+              node {
+                slug
+                title
+                link
+                acf {
+                  artist
+                  country
+                }
+                featuredImage {
+                  node {
+                    sourceUrl(size: THUMBNAIL)
+                  }
+                }
+              }
+            }
+            pageInfo {
+              total
+            }
+          }
         }
-      );
+      `
+    }).valueChanges.subscribe((result: any) => {
+      this.item = result.data.generoAlbum;
+      this.list.items = result.data.albums.edges;
+      this.list.loading = false;
+      this.total = result.data.albums.pageInfo.total;
+      this.filterCountries();
+
+      document.querySelector('head')?.insertAdjacentHTML('beforeend', this.item.seo.fullHead);
+    });
+
+    // this.albumService
+    //   .get({ observe: 'response', params: this.albumParams })
+    //   .subscribe(
+    //     (res: any) => {
+    //       const { body, headers } = res;
+    //       this.list.items = body;
+    //       this.total = headers.get('X-WP-Total');
+    //       this.list.loading = false;
+    //       this.firstLoading = false;
+    //       this.filterCountries();
+    //     },
+    //     (err: any) => {
+    //       this.list.loading = false;
+    //       // console.log(err);
+    //     }
+    //   );
   }
 
   async filterCountries() {
     await this.list.items.filter((item: any) => {
-      const country = item.acf.country;
+      const country = item.node.acf.country;
 
       if (!this.countries.includes(country)) {
         this.countries.push(country);
@@ -97,26 +128,26 @@ export class GenreComponent implements OnInit {
   }
 
   doFilter(data: any) {
-    const { order, country } = data;
+    // const { order, country } = data;
 
-    if (order?.value) {
-      this.albumParams = Object.assign(this.albumParams, order.value);
-    } else {
-      this.albumParams = Object.assign(this.albumParams, {
-        orderby: 'title',
-        order: 'asc',
-      });
-    }
+    // if (order?.value) {
+    //   this.albumParams = Object.assign(this.albumParams, order.value);
+    // } else {
+    //   this.albumParams = Object.assign(this.albumParams, {
+    //     orderby: 'title',
+    //     order: 'asc',
+    //   });
+    // }
 
-    if (country) {
-      this.albumParams = Object.assign(this.albumParams, country);
-    } else {
-      this.albumParams = Object.assign(this.albumParams, {
-        meta_key: '',
-        meta_value: '',
-      });
-    }
+    // if (country) {
+    //   this.albumParams = Object.assign(this.albumParams, country);
+    // } else {
+    //   this.albumParams = Object.assign(this.albumParams, {
+    //     meta_key: '',
+    //     meta_value: '',
+    //   });
+    // }
 
-    this.getAlbums();
+    // this.getAlbums();
   }
 }
