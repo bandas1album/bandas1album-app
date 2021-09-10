@@ -2,6 +2,7 @@ import { isPlatformBrowser } from '@angular/common';
 import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import {Apollo, gql} from 'apollo-angular';
+import { SeoService } from 'src/app/services/seo/seo.service';
 
 @Component({
   selector: 'app-genre',
@@ -23,7 +24,8 @@ export class GenreComponent implements OnInit {
   constructor(
     @Inject(PLATFORM_ID) platformId: object,
     private apollo: Apollo,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private seoService: SeoService
   ) {
     this.isBrowser = isPlatformBrowser(platformId);
   }
@@ -44,7 +46,11 @@ export class GenreComponent implements OnInit {
           generoAlbum(id: "${slug}", idType: SLUG) {
             name
             seo {
-              fullHead
+              title
+              metaDesc
+              opengraphImage {
+                sourceUrl
+              }
             }
             acfCategory {
               banner {
@@ -90,31 +96,15 @@ export class GenreComponent implements OnInit {
         }
       `
     }).valueChanges.subscribe((result: any) => {
+      const seo = result.data.generoAlbum.seo;
+      this.seoService.update(seo);
+      this.seoService.updateOgUrl();
       this.item = result.data.generoAlbum;
       this.list.items = result.data.albums.edges;
       this.list.loading = false;
       this.total = result.data.albums.pageInfo.total;
       this.filterCountries();
-
-      document.querySelector('head')?.insertAdjacentHTML('beforeend', this.item.seo.fullHead);
     });
-
-    // this.albumService
-    //   .get({ observe: 'response', params: this.albumParams })
-    //   .subscribe(
-    //     (res: any) => {
-    //       const { body, headers } = res;
-    //       this.list.items = body;
-    //       this.total = headers.get('X-WP-Total');
-    //       this.list.loading = false;
-    //       this.firstLoading = false;
-    //       this.filterCountries();
-    //     },
-    //     (err: any) => {
-    //       this.list.loading = false;
-    //       // console.log(err);
-    //     }
-    //   );
   }
 
   async filterCountries() {
