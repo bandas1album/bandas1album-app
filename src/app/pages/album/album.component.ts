@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ShareModalComponent } from 'src/app/components/modals/share-modal/share-modal.component';
 import { formatDate, isPlatformBrowser } from '@angular/common';
 import {Apollo, gql} from 'apollo-angular';
+import { SeoService } from 'src/app/services/seo/seo.service';
 
 @Component({
   selector: 'app-album',
@@ -24,7 +25,8 @@ export class AlbumComponent implements OnInit {
     private apollo: Apollo,
     private router: Router,
     private route: ActivatedRoute,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private seoService: SeoService
   ) {
     this.isBrowser = isPlatformBrowser(platformId);
     this.pageId = this.router.routerState.snapshot.url;
@@ -80,7 +82,11 @@ export class AlbumComponent implements OnInit {
               wikipedia
             }
             seo {
-              fullHead
+              title
+              metaDesc
+              opengraphImage {
+                sourceUrl
+              }
             }
             featuredImage {
               node {
@@ -91,10 +97,10 @@ export class AlbumComponent implements OnInit {
         }
       `,
     }).valueChanges.subscribe((result: any) => {
-      this.item = result.data.album;
       const seo = result.data.album.seo;
-      document.querySelector('head')?.insertAdjacentHTML('beforeend', seo.fullHead);
-
+      this.seoService.update(seo);
+      this.seoService.updateOgUrl();
+      this.item = result.data.album;
       this.loading = false;
     })
   }
