@@ -15,7 +15,7 @@
     "prerender": "ng run bandas1album-app:prerender"
   },
   "engines": {
-    "node": "^14"
+    "node": "14.17.6"
   },
   "private": true,
   "dependencies": {
@@ -35,7 +35,7 @@
     "@nguniversal/express-engine": "^11.2.1",
     "apollo-angular": "^2.6.0",
     "express": "^4.15.2",
-    "graphql": "^15.5.2",
+    "graphql": "^15.5.3",
     "ngx-disqus": "^2.4.3",
     "ngx-swiper-wrapper": "^10.0.0",
     "normalize.css": "^8.0.1",
@@ -53,7 +53,7 @@
     "@nguniversal/builders": "^11.2.1",
     "@types/express": "^4.17.13",
     "@types/jasmine": "~3.6.0",
-    "@types/node": "^12.20.23",
+    "@types/node": "^12.20.24",
     "@types/smoothscroll-polyfill": "^0.3.1",
     "@types/url-join": "^4.0.1",
     "codelyzer": "^6.0.0",

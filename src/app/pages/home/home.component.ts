@@ -9,6 +9,9 @@ const query = gql`
     seo {
       title
       metaDesc
+      opengraphImage {
+        sourceUrl
+      }
     }
   }
   albums(first: 95) {
@@ -66,8 +69,8 @@ export class HomeComponent implements OnInit {
       query
     }).valueChanges.subscribe((result: any) => {
       const seo = result.data.page.seo;
-      this.seoService.updateTitle(seo.title);
-      this.seoService.updateTag('description', seo.metaDesc);
+      this.seoService.update(seo);
+      this.seoService.updateOgUrl();
       this.items = result.data.albums.edges;
       this.total = result.data.albums.pageInfo.total;
       this.loading = false;

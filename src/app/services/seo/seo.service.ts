@@ -14,9 +14,9 @@ export class SeoService {
   ) {}
 
   update(meta: any) {
-    const title = `${meta.title} | HSA`;
-    const description = meta.description ? meta.description : '';
-    const image = meta?.image || meta?.images?.desktop;
+    const title = `${meta.title}`;
+    const description = meta.metaDesc ? meta.metaDesc : '';
+    const image = meta?.opengraphImage?.sourceUrl;
 
     this.title.setTitle(title);
     this.meta.updateTag({ name: 'description', content: description });
@@ -42,7 +42,7 @@ export class SeoService {
 
     this.meta.addTags([
       { name: 'og:url', content: url },
-      { name: 'twitter:urltwitter:url', content: url }
+      { name: 'twitter:url', content: url }
     ]);
 
     this.meta.updateTag({
