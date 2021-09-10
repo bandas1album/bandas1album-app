@@ -5,7 +5,7 @@
     <li>
       <ul>
         <li *ngFor="let genre of data.list">
-          <a [href]="'/genero/' + genre.slug">
+          <a [routerLink]="'/genero/' + genre.slug">
             <strong [innerHtml]="genre.name"></strong>
             <span>{{
               genre.count > 1 ? genre.count + " álbuns" : genre.count + " álbum"
