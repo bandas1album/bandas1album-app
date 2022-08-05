@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 import { Subject, Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { AlbumService } from 'src/app/services/album/album.service';
@@ -16,7 +16,7 @@ export class SidebarModalSearchComponent implements OnInit {
     items: [],
   };
   term: string = '';
-  searchControl = new FormControl();
+  searchControl = new UntypedFormControl();
   formControlSub: any = Subscription;
   subject = new Subject();
 
