@@ -1,0 +1,49 @@
+@import "src/scss/base/_imports.scss";
+
+.m-tabs-search {
+  padding-bottom: 40px;
+  border-radius: 16px 16px 0 0;
+  background-color: var(--color-primary);
+  overflow: hidden;
+
+  &__control {
+    position: relative;
+
+    input {
+      @extend %reset-input;
+      width: 100%;
+      height: 48px;
+      padding: 0 24px;
+      font-size: 14px;
+      font-weight: 400;
+      background-color: var(--color-primary-shade);
+      color: var(--color-light);
+
+      &::placeholder {
+        color: var(--color-light);
+        opacity: 0.4;
+      }
+    }
+  }
+
+  &__help {
+    @extend %reset-button;
+    position: absolute;
+    top: 50%;
+    right: 24px;
+    display: flex;
+    transform: translateY(-50%);
+    font-size: 24px;
+    color: var(--color-light);
+  }
+
+  &__autocomplete {
+    margin: 0;
+    padding: 24px;
+    list-style: none;
+
+    li:not(:last-child) {
+      margin-bottom: 12px;
+    }
+  }
+}

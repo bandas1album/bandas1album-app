@@ -1,0 +1,143 @@
+@import "src/scss/base/_imports.scss";
+
+.m-tabs {
+  position: fixed;
+  bottom: 16px;
+  left: 0;
+  right: 0;
+  width: calc(100% - 32px);
+  margin: 0 auto;
+
+  @media (min-width: $size-tablet) {
+    bottom: 24px;
+    width: calc(100% - 48px);
+  }
+
+  @media (min-width: $size-desktop) {
+    bottom: 40px;
+    width: calc(100% - 80px);
+  }
+
+  &.-open {
+    .m-tabs-wrapper {
+      border-radius: 0 0 16px 16px;
+    }
+  }
+
+  app-tabs-search,
+  app-tabs-menu {
+    display: block;
+    position: absolute;
+    bottom: 80px;
+    left: 0;
+    right: 0;
+    width: 100%;
+    pointer-events: none;
+    opacity: 0;
+    transition: 0.2s transform ease, 0.2s opacity ease;
+    transform: translateY(50%);
+
+    &:not([hidden]) {
+      pointer-events: all;
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  &-wrapper {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 80px;
+    padding: 0 32px;
+    border-radius: 16px;
+    background-color: var(--color-light);
+    transition: 0.2s border-radius ease;
+    box-shadow: 0 8px 16px rgba(#000, 0.1);
+
+    @media (min-width: $size-tablet) {
+      height: 96px;
+      padding: 0 48px;
+    }
+
+    @media (min-width: $size-desktop) {
+      height: 104px;
+      padding: 0 80px;
+    }
+  }
+
+  &__logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background-color: var(--color-light);
+    transform: translateY(-20px);
+
+    @media (min-width: $size-tablet) {
+      width: 136px;
+      height: 136px;
+    }
+
+    &::before {
+      content: "";
+      position: absolute;
+      top: 32px;
+      left: -4px;
+      display: block;
+      width: 11px;
+      height: 8px;
+      background-image: url("data:image/svg+xml,%3Csvg width='11' height='8' viewBox='0 0 11 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M8.70269 3.31833C7.28544 5.36547 5.15546 6.81027 2.72937 7.37014L3.49691e-07 8L8 8L11 0L8.70269 3.31833Z' fill='white'/%3E%3C/svg%3E%0A");
+
+      @media (min-width: $size-tablet) {
+        left: 0;
+      }
+
+      @media (min-width: $size-desktop) {
+        top: 30px;
+      }
+    }
+
+    &::after {
+      content: "";
+      position: absolute;
+      top: 32px;
+      right: -4px;
+      display: block;
+      width: 11px;
+      height: 8px;
+      background-image: url("data:image/svg+xml,%3Csvg width='11' height='8' viewBox='0 0 11 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M2.29731 3.31833C3.71456 5.36547 5.84454 6.81027 8.27063 7.37014L11 8L3 7.99999L0 0L2.29731 3.31833Z' fill='white'/%3E%3C/svg%3E%0A");
+
+      @media (min-width: $size-tablet) {
+        right: 0;
+      }
+
+      @media (min-width: $size-desktop) {
+        top: 30px;
+      }
+    }
+  }
+
+  &__button {
+    @extend %reset-button;
+    display: flex;
+    font-size: 32px;
+    color: var(--color-primary);
+
+    @media (min-width: $size-tablet) {
+      font-size: 48px;
+    }
+
+    &:hover {
+      color: var(--color-primary-tint);
+    }
+
+    &:active {
+      color: var(--color-primary-shade);
+    }
+  }
+}
