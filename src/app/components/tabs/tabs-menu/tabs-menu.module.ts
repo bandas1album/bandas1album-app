@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TabsMenuComponent } from './tabs-menu.component';
 
@@ -6,5 +6,6 @@ import { TabsMenuComponent } from './tabs-menu.component';
   declarations: [TabsMenuComponent],
   imports: [CommonModule],
   exports: [TabsMenuComponent],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class TabsMenuModule {}
