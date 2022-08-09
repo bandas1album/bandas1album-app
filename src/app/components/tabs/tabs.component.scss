@@ -6,16 +6,12 @@
   left: 0;
   right: 0;
   width: calc(100% - 32px);
+  max-width: 768px;
   margin: 0 auto;
 
   @media (min-width: $size-tablet) {
     bottom: 24px;
     width: calc(100% - 48px);
-  }
-
-  @media (min-width: $size-desktop) {
-    bottom: 40px;
-    width: calc(100% - 80px);
   }
 
   &.-open {
@@ -44,6 +40,14 @@
     }
   }
 
+  app-logo {
+    width: 56px;
+
+    @media (min-width: $size-tablet) {
+      width: 64px;
+    }
+  }
+
   &-wrapper {
     position: relative;
     z-index: 1;
@@ -60,11 +64,6 @@
     @media (min-width: $size-tablet) {
       height: 96px;
       padding: 0 48px;
-    }
-
-    @media (min-width: $size-desktop) {
-      height: 104px;
-      padding: 0 80px;
     }
   }
 
@@ -96,10 +95,6 @@
       @media (min-width: $size-tablet) {
         left: 0;
       }
-
-      @media (min-width: $size-desktop) {
-        top: 30px;
-      }
     }
 
     &::after {
@@ -114,10 +109,6 @@
 
       @media (min-width: $size-tablet) {
         right: 0;
-      }
-
-      @media (min-width: $size-desktop) {
-        top: 30px;
       }
     }
   }
