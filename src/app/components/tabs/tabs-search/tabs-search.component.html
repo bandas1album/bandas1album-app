@@ -1,11 +1,11 @@
 <form class="m-tabs-search">
   <div class="m-tabs-search__control">
-    <input type="text" placeholder="Faça sua busca" />
+    <input (keyup)="get($event)" type="text" placeholder="Faça sua busca" />
     <button type="button" class="m-tabs-search__help">
       <ion-icon name="help-circle-outline"></ion-icon>
     </button>
   </div>
   <ul class="m-tabs-search__autocomplete">
-    <li>Álbum / T<u>he</u>m Crooked Vultures</li>
+    <li *ngFor="let item of autocompleteList">{{ item.attributes.title }}</li>
   </ul>
 </form>
