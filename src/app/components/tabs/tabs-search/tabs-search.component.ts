@@ -3,7 +3,24 @@ import { Component, OnInit } from '@angular/core';
 
 const GET_AUTOCOMPLETE = gql`
   query GetAutocomplete($search: String) {
-    albums(filters: { title: { startsWith: $search } }) {
+    albums(
+      filters: {
+        or: [
+          { title: { startsWith: $search } }
+          { artist: { startsWith: $search } }
+          { country: { startsWith: $search } }
+          { genres: { title: { startsWith: $search } } }
+        ]
+      }
+    ) {
+      data {
+        attributes {
+          title
+        }
+      }
+    }
+
+    genres(filters: { title: { startsWith: $search } }) {
       data {
         attributes {
           title
@@ -12,6 +29,7 @@ const GET_AUTOCOMPLETE = gql`
     }
   }
 `;
+
 @Component({
   selector: 'app-tabs-search',
   templateUrl: './tabs-search.component.html',
@@ -25,7 +43,11 @@ export class TabsSearchComponent implements OnInit {
   ngOnInit(): void {}
 
   get(event: any) {
-    this.apollo
+    if (!event.target.value) {
+      return (this.autocompleteList = []);
+    }
+
+    return this.apollo
       .watchQuery<any>({
         query: GET_AUTOCOMPLETE,
         variables: {
@@ -33,7 +55,12 @@ export class TabsSearchComponent implements OnInit {
         },
       })
       .valueChanges.subscribe(({ data }) => {
-        this.autocompleteList = data.albums.data.map((item: any) => item);
+        this.autocompleteList.albums = data.albums.data.map(
+          (item: any) => item
+        );
+        this.autocompleteList.genres = data.genres.data.map(
+          (item: any) => item
+        );
       });
   }
 }

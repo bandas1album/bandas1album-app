@@ -6,6 +6,11 @@
     </button>
   </div>
   <ul class="m-tabs-search__autocomplete">
-    <li *ngFor="let item of autocompleteList">{{ item.attributes.title }}</li>
+    <li *ngFor="let item of autocompleteList.albums">
+      Álbuns / {{ item.attributes.title }}
+    </li>
+    <li *ngFor="let item of autocompleteList.genres">
+      Gêneros / {{ item.attributes.title }}
+    </li>
   </ul>
 </form>
