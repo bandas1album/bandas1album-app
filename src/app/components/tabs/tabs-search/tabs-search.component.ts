@@ -8,8 +8,6 @@ const GET_AUTOCOMPLETE = gql`
         or: [
           { title: { startsWith: $search } }
           { artist: { startsWith: $search } }
-          { country: { startsWith: $search } }
-          { genres: { title: { startsWith: $search } } }
         ]
       }
     ) {
@@ -21,6 +19,14 @@ const GET_AUTOCOMPLETE = gql`
     }
 
     genres(filters: { title: { startsWith: $search } }) {
+      data {
+        attributes {
+          title
+        }
+      }
+    }
+
+    countries(filters: { title: { startsWith: $search } }) {
       data {
         attributes {
           title
@@ -55,12 +61,7 @@ export class TabsSearchComponent implements OnInit {
         },
       })
       .valueChanges.subscribe(({ data }) => {
-        this.autocompleteList.albums = data.albums.data.map(
-          (item: any) => item
-        );
-        this.autocompleteList.genres = data.genres.data.map(
-          (item: any) => item
-        );
+        this.autocompleteList = data;
       });
   }
 }
