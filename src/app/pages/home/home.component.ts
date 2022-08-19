@@ -1,6 +1,5 @@
 import { isPlatformBrowser } from '@angular/common';
 import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
-import { Apollo, gql } from 'apollo-angular';
 
 @Component({
   selector: 'app-home',

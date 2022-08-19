@@ -12,6 +12,7 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatDialogModule } from '@angular/material/dialog';
 import { HtmlDecodePipe } from './pipes/html-decode/html-decode.pipe';
+import { SlugifyPipe } from './pipes/slugify/slugify.pipe';
 
 @NgModule({
   declarations: [AppComponent],
@@ -23,9 +24,9 @@ import { HtmlDecodePipe } from './pipes/html-decode/html-decode.pipe';
     MatDialogModule,
     TabsModule,
   ],
-
   providers: [
     HtmlDecodePipe,
+    SlugifyPipe,
     {
       provide: APOLLO_OPTIONS,
       useFactory: (httpLink: HttpLink) => {

@@ -1,0 +1,15 @@
+<ul class="m-list-albums">
+  <li *ngFor="let album of albums">
+    <a [routerLink]="album.attributes.title | slugify">
+      <img
+        [src]="
+          'http://localhost:1337' + album.attributes.cover.data.attributes.url
+        "
+        [alt]="album.attributes.title"
+        width="196"
+        height="196"
+        loading="lazy"
+      />
+    </a>
+  </li>
+</ul>
