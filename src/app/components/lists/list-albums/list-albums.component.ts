@@ -1,3 +1,5 @@
+import { SlugifyPipe } from './../../../pipes/slugify/slugify.pipe';
+import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { Apollo, gql } from 'apollo-angular';
 
@@ -5,6 +7,7 @@ const GET_ALBUMS = gql`
   query getAlbums($page: Int) {
     albums(pagination: { page: $page, pageSize: 48 }) {
       data {
+        id
         attributes {
           title
           artist
@@ -36,7 +39,7 @@ const GET_ALBUMS = gql`
 export class ListAlbumsComponent implements OnInit {
   albums: any = [];
 
-  constructor(private apollo: Apollo) {}
+  constructor(private apollo: Apollo, private route: Router) {}
 
   ngOnInit(): void {
     this.get();

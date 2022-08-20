@@ -1,11 +1,8 @@
 import { TabsModule } from './components/tabs/tabs.module';
-import { ApolloModule, APOLLO_OPTIONS } from 'apollo-angular';
-import { HttpLink } from 'apollo-angular/http';
-import { InMemoryCache } from '@apollo/client/core';
 import { HttpClientModule } from '@angular/common/http';
-import { environment } from '../environments/environment';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { GraphQLModule } from './graphql.module';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -23,24 +20,9 @@ import { SlugifyPipe } from './pipes/slugify/slugify.pipe';
     BrowserAnimationsModule,
     MatDialogModule,
     TabsModule,
-    ApolloModule,
+    GraphQLModule,
   ],
-  providers: [
-    HtmlDecodePipe,
-    SlugifyPipe,
-    {
-      provide: APOLLO_OPTIONS,
-      useFactory: (httpLink: HttpLink) => {
-        return {
-          cache: new InMemoryCache(),
-          link: httpLink.create({
-            uri: environment.graphql,
-          }),
-        };
-      },
-      deps: [HttpLink],
-    },
-  ],
+  providers: [HtmlDecodePipe, SlugifyPipe],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
