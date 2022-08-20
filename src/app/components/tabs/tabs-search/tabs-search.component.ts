@@ -10,6 +10,7 @@ const GET_AUTOCOMPLETE = gql`
           { artist: { startsWith: $search } }
         ]
       }
+      pagination: { limit: 2 }
     ) {
       data {
         attributes {
@@ -18,7 +19,10 @@ const GET_AUTOCOMPLETE = gql`
       }
     }
 
-    genres(filters: { title: { startsWith: $search } }) {
+    genres(
+      filters: { title: { startsWith: $search } }
+      pagination: { limit: 2 }
+    ) {
       data {
         attributes {
           title
@@ -26,7 +30,10 @@ const GET_AUTOCOMPLETE = gql`
       }
     }
 
-    countries(filters: { title: { startsWith: $search } }) {
+    countries(
+      filters: { title: { startsWith: $search } }
+      pagination: { limit: 2 }
+    ) {
       data {
         attributes {
           title

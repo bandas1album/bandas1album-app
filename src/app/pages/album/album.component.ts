@@ -1,20 +1,8 @@
-import { SlugifyPipe } from './../../pipes/slugify/slugify.pipe';
-import { Location } from '@angular/common';
-import { Apollo, gql } from 'apollo-angular';
-import { ActivatedRoute, Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
-
-const GET_ALBUM = gql`
-  query getAlbum($slug: String) {
-    albums(filters: { slug: { eq: $slug } }) {
-      data {
-        attributes {
-          title
-        }
-      }
-    }
-  }
-`;
+import { Apollo } from 'apollo-angular';
+import { ActivatedRoute } from '@angular/router';
+import { Subscription } from 'rxjs';
+import ALBUM_QUERY from '../../@graphql/queries/album';
 
 @Component({
   selector: 'app-album',
@@ -22,26 +10,32 @@ const GET_ALBUM = gql`
   styleUrls: ['./album.component.scss'],
 })
 export class AlbumComponent implements OnInit {
-  album: any;
+  data: any;
+  loading = true;
+  errors: any;
+
+  private queryAlbum!: Subscription;
 
   constructor(private route: ActivatedRoute, private apollo: Apollo) {}
 
   ngOnInit(): void {
-    const slug = this.route.snapshot.paramMap.get('slug');
-
-    this.getAlbum(slug);
+    this.route.params.subscribe((params) => {
+      this.queryAlbum = this.apollo
+        .watchQuery<any>({
+          query: ALBUM_QUERY,
+          variables: {
+            slug: params.slug,
+          },
+        })
+        .valueChanges.subscribe((result) => {
+          this.data = result.data;
+          this.loading = result.loading;
+          this.errors = result.errors;
+        });
+    });
   }
 
-  getAlbum(slug: string | null) {
-    return this.apollo
-      .watchQuery<any>({
-        query: GET_ALBUM,
-        variables: {
-          slug,
-        },
-      })
-      .valueChanges.subscribe(({ data }) => {
-        this.album = data.albums.data[0].attributes;
-      });
+  ngOnDestroy() {
+    this.queryAlbum.unsubscribe();
   }
 }

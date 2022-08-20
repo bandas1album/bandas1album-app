@@ -2,6 +2,7 @@ import { isPlatformBrowser } from '@angular/common';
 import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { NavigationEnd, Router } from '@angular/router';
+import smoothscroll from 'smoothscroll-polyfill';
 
 @Component({
   selector: 'app-root',
@@ -20,6 +21,13 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    if (this.isBrowser) {
+      this.scroll();
+      smoothscroll.polyfill();
+    }
+  }
+
+  scroll(): void {
     this.router.events.subscribe((evt) => {
       if (!(evt instanceof NavigationEnd)) {
         return;
@@ -34,11 +42,9 @@ export class AppComponent implements OnInit {
         return;
       }
 
-      if (this.isBrowser) {
-        setTimeout(() => {
-          window.scroll({ top: 0, left: 0, behavior: 'smooth' });
-        }, 500);
-      }
+      setTimeout(() => {
+        window.scroll({ top: 0, left: 0, behavior: 'smooth' });
+      }, 500);
     });
   }
 }
