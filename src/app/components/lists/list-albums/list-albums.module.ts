@@ -1,3 +1,4 @@
+import { CardAlbumModule } from './../../cards/card-album/card-album.module';
 import { SlugifyModule } from './../../../pipes/slugify/slugify.module';
 import { SlugifyPipe } from './../../../pipes/slugify/slugify.pipe';
 import { RouterModule } from '@angular/router';
@@ -7,7 +8,7 @@ import { ListAlbumsComponent } from './list-albums.component';
 
 @NgModule({
   declarations: [ListAlbumsComponent],
-  imports: [CommonModule, RouterModule, SlugifyModule],
+  imports: [CommonModule, RouterModule, SlugifyModule, CardAlbumModule],
   exports: [ListAlbumsComponent],
 })
 export class ListAlbumsModule {}
