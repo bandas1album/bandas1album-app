@@ -1,5 +1,5 @@
 import { TabsModule } from './components/tabs/tabs.module';
-import { APOLLO_OPTIONS } from 'apollo-angular';
+import { ApolloModule, APOLLO_OPTIONS } from 'apollo-angular';
 import { HttpLink } from 'apollo-angular/http';
 import { InMemoryCache } from '@apollo/client/core';
 import { HttpClientModule } from '@angular/common/http';
@@ -23,6 +23,7 @@ import { SlugifyPipe } from './pipes/slugify/slugify.pipe';
     BrowserAnimationsModule,
     MatDialogModule,
     TabsModule,
+    ApolloModule,
   ],
   providers: [
     HtmlDecodePipe,
