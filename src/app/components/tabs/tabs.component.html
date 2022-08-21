@@ -1,5 +1,8 @@
 <div class="m-tabs" [ngClass]="{ '-open': showSearch || showMenu }">
-  <app-tabs-search [hidden]="!showSearch"></app-tabs-search>
+  <app-tabs-search
+    [hidden]="!showSearch"
+    [focus]="showSearch"
+  ></app-tabs-search>
   <app-tabs-menu [hidden]="!showMenu"></app-tabs-menu>
 
   <div class="m-tabs-wrapper">

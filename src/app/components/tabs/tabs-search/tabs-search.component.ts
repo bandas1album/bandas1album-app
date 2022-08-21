@@ -1,5 +1,11 @@
 import { Apollo } from 'apollo-angular';
-import { Component, OnInit } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  Input,
+  OnChanges,
+  ViewChild,
+} from '@angular/core';
 import AUTOCOMPLETE_QUERY from 'src/app/@graphql/queries/autocomplete';
 
 @Component({
@@ -7,16 +13,16 @@ import AUTOCOMPLETE_QUERY from 'src/app/@graphql/queries/autocomplete';
   templateUrl: './tabs-search.component.html',
   styleUrls: ['./tabs-search.component.scss'],
 })
-export class TabsSearchComponent implements OnInit {
+export class TabsSearchComponent implements OnChanges {
   data: any = [];
   errors: any = [];
   loading: boolean = true;
 
+  @ViewChild('search') searchElement!: ElementRef;
+  @Input() focus: boolean = false;
   showTooltip = false;
 
   constructor(private apollo: Apollo) {}
-
-  ngOnInit(): void {}
 
   get(event: any) {
     if (!event.target.value) {
@@ -35,5 +41,11 @@ export class TabsSearchComponent implements OnInit {
         this.errors = result.errors;
         this.loading = result.loading;
       });
+  }
+
+  ngOnChanges(): void {
+    if (this.focus) {
+      this.searchElement.nativeElement.focus();
+    }
   }
 }

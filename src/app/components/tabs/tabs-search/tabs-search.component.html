@@ -1,6 +1,11 @@
 <form class="m-tabs-search">
   <div class="m-tabs-search__control">
-    <input (keyup)="get($event)" type="text" placeholder="Faça sua busca" />
+    <input
+      (keyup)="get($event)"
+      #search
+      type="text"
+      placeholder="Faça sua busca"
+    />
 
     <button
       type="button"
