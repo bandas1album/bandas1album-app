@@ -1,6 +1,7 @@
 import { Apollo } from 'apollo-angular';
 import { Component, OnInit } from '@angular/core';
 import ALBUMS_QUERY from 'src/app/@graphql/queries/albums';
+import { Album } from 'src/app/models/album/album.model';
 
 @Component({
   selector: 'app-home',
@@ -10,7 +11,7 @@ import ALBUMS_QUERY from 'src/app/@graphql/queries/albums';
 export class HomeComponent implements OnInit {
   firstLoading = true;
   loading = true;
-  data: any[] = [];
+  data?: Album[];
   errors: any;
   page: number = 1;
 
