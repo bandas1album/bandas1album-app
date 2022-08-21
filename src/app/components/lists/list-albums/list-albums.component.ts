@@ -11,6 +11,6 @@ export class ListAlbumsComponent {
   loadingArray: any = [];
 
   constructor() {
-    this.loadingArray = Array(48).fill(48);
+    this.loadingArray = Array(104).fill(104);
   }
 }

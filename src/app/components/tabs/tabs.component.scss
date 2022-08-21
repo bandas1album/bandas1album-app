@@ -42,6 +42,7 @@
 
   app-logo {
     width: 56px;
+    cursor: pointer;
 
     @media (min-width: $size-tablet) {
       width: 64px;
