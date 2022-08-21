@@ -2,7 +2,7 @@ import { TabsModule } from './components/tabs/tabs.module';
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { GraphQLModule } from './graphql.module';
+import { GraphQLModule } from './@graphql/graphql.module';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
