@@ -1,23 +1,31 @@
 <form class="m-tabs-search">
   <div class="m-tabs-search__control">
     <input (keyup)="get($event)" type="text" placeholder="Faça sua busca" />
-    <button type="button" class="m-tabs-search__help">
-      <ion-icon name="help-circle-outline"></ion-icon>
+
+    <button
+      type="button"
+      class="m-tabs-search__help"
+      aria-label="Você pode pesquisar por álbum, banda, gênero e país."
+      (click)="showTooltip = !showTooltip"
+      [ngClass]="{ show: showTooltip }"
+    >
+      <ion-icon aria-hidden="true" name="help-circle-outline"></ion-icon>
     </button>
   </div>
+
   <ul class="m-tabs-search__autocomplete">
-    <li *ngFor="let item of autocompleteList?.albums?.data">
+    <li *ngFor="let item of data?.albums?.data">
       <a [routerLink]="'/album/' + (item.attributes.title | slugify)">
         Álbuns / {{ item.attributes.title }}
       </a>
     </li>
-    <li *ngFor="let item of autocompleteList?.genres?.data">
+    <li *ngFor="let item of data?.genres?.data">
       Gêneros / {{ item.attributes.title }}
     </li>
-    <li *ngFor="let item of autocompleteList?.countries?.data">
+    <li *ngFor="let item of data?.countries?.data">
       País / {{ item.attributes.title }}
     </li>
-    <li *ngFor="let item of autocompleteList?.released?.data">
+    <li *ngFor="let item of data?.released?.data">
       Ano / {{ item.attributes.title }}
     </li>
   </ul>

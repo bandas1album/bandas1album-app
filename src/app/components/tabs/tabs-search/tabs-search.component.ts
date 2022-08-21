@@ -1,47 +1,6 @@
-import { Apollo, gql } from 'apollo-angular';
+import { Apollo } from 'apollo-angular';
 import { Component, OnInit } from '@angular/core';
-
-const GET_AUTOCOMPLETE = gql`
-  query GetAutocomplete($search: String) {
-    albums(
-      filters: {
-        or: [
-          { title: { startsWith: $search } }
-          { artist: { startsWith: $search } }
-        ]
-      }
-      pagination: { limit: 2 }
-    ) {
-      data {
-        attributes {
-          title
-        }
-      }
-    }
-
-    genres(
-      filters: { title: { startsWith: $search } }
-      pagination: { limit: 2 }
-    ) {
-      data {
-        attributes {
-          title
-        }
-      }
-    }
-
-    countries(
-      filters: { title: { startsWith: $search } }
-      pagination: { limit: 2 }
-    ) {
-      data {
-        attributes {
-          title
-        }
-      }
-    }
-  }
-`;
+import AUTOCOMPLETE_QUERY from 'src/app/@graphql/queries/autocomplete';
 
 @Component({
   selector: 'app-tabs-search',
@@ -49,7 +8,11 @@ const GET_AUTOCOMPLETE = gql`
   styleUrls: ['./tabs-search.component.scss'],
 })
 export class TabsSearchComponent implements OnInit {
-  autocompleteList: any = [];
+  data: any = [];
+  errors: any = [];
+  loading: boolean = true;
+
+  showTooltip = false;
 
   constructor(private apollo: Apollo) {}
 
@@ -57,18 +20,20 @@ export class TabsSearchComponent implements OnInit {
 
   get(event: any) {
     if (!event.target.value) {
-      return (this.autocompleteList = []);
+      return (this.data = []);
     }
 
     return this.apollo
       .watchQuery<any>({
-        query: GET_AUTOCOMPLETE,
+        query: AUTOCOMPLETE_QUERY,
         variables: {
           search: event.target.value,
         },
       })
-      .valueChanges.subscribe(({ data }) => {
-        this.autocompleteList = data;
+      .valueChanges.subscribe((result) => {
+        this.data = result.data;
+        this.errors = result.errors;
+        this.loading = result.loading;
       });
   }
 }
