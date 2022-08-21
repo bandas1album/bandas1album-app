@@ -11,10 +11,24 @@
           showDebut = false
         "
       >
-        Álbuns
+        <span>Álbuns</span>
+        <ion-icon name="chevron-down-circle"></ion-icon>
       </button>
-      <ul [hidden]="!showAlbums" class="m-tabs-menu__submenu">
-        <li></li>
+
+      <ul
+        infinite-scroll
+        [infiniteScrollDistance]="2"
+        [infiniteScrollThrottle]="1000"
+        (scrolled)="onScrollAlbums()"
+        [hidden]="!showAlbums"
+        class="m-tabs-menu__submenu"
+      >
+        <li *ngFor="let item of data?.albums">
+          <app-card-menu-album
+            [routerLink]="['/album', item.attributes.slug]"
+            [item]="item"
+          ></app-card-menu-album>
+        </li>
       </ul>
     </li>
     <li>
@@ -28,10 +42,11 @@
           showDebut = false
         "
       >
-        Gêneros
+        <span>Gêneros</span>
+        <ion-icon name="chevron-down-circle"></ion-icon>
       </button>
       <ul [hidden]="!showGenres" class="m-tabs-menu__submenu">
-        <li></li>
+        <li *ngFor="let item of data?.genres"></li>
       </ul>
     </li>
     <li>
@@ -45,10 +60,11 @@
           showDebut = false
         "
       >
-        Países
+        <span>Países</span>
+        <ion-icon name="chevron-down-circle"></ion-icon>
       </button>
       <ul [hidden]="!showCountries" class="m-tabs-menu__submenu">
-        <li></li>
+        <li *ngFor="let item of data?.countries"></li>
       </ul>
     </li>
     <li>
@@ -62,10 +78,11 @@
           showCountries = false
         "
       >
-        Ano de lançamento
+        <span>Ano de lançamento</span>
+        <ion-icon name="chevron-down-circle"></ion-icon>
       </button>
       <ul [hidden]="!showDebut" class="m-tabs-menu__submenu">
-        <li></li>
+        <li *ngFor="let item of data?.years"></li>
       </ul>
     </li>
   </ul>
@@ -75,10 +92,10 @@
 
     <ul>
       <li>
-        <a href="">Termos de Uso</a>
+        <a href="#">Termos</a>
       </li>
       <li>
-        <a href="">Política de Privacidade</a>
+        <a href="#">Privacidade</a>
       </li>
     </ul>
   </div>
@@ -95,11 +112,30 @@
     </li>
     <li>
       <a
+        href="https://open.spotify.com/user/ryyq8vjpuf4vgfgll9zoecplr?si=09LFT22HQaaRIgfIkIatEw"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <ion-icon name="play-circle-outline"></ion-icon>
+      </a>
+    </li>
+
+    <li>
+      <a
         href="http://twitter.com/bandas1album"
         target="_blank"
         rel="noopener noreferrer"
       >
         <ion-icon name="logo-twitter"></ion-icon>
+      </a>
+    </li>
+    <li>
+      <a
+        href="https://www.youtube.com/channel/UCBFLR6baFsadrq2MswNT5KQ"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <ion-icon name="logo-youtube"></ion-icon>
       </a>
     </li>
     <li>

@@ -14,6 +14,7 @@ export class HomeComponent implements OnInit {
   data?: Album[];
   errors: any;
   page: number = 1;
+  perpage: number = 104;
 
   constructor(private apollo: Apollo) {}
 
@@ -22,7 +23,8 @@ export class HomeComponent implements OnInit {
       .watchQuery<any>({
         query: ALBUMS_QUERY,
         variables: {
-          page: 1,
+          page: this.page,
+          perpage: this.perpage,
         },
       })
       .valueChanges.subscribe((result) => {
@@ -41,6 +43,7 @@ export class HomeComponent implements OnInit {
         query: ALBUMS_QUERY,
         variables: {
           page: ++this.page,
+          perpage: this.perpage,
         },
       })
       .valueChanges.subscribe((result) => {
