@@ -8,7 +8,7 @@ import { ListAlbumsComponent } from './list-albums.component';
 
 @NgModule({
   declarations: [ListAlbumsComponent],
-  imports: [CommonModule, RouterModule, SlugifyModule, CardAlbumModule],
+  imports: [CommonModule],
   exports: [ListAlbumsComponent],
 })
 export class ListAlbumsModule {}

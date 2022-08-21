@@ -1,5 +1,6 @@
-import { isPlatformBrowser } from '@angular/common';
-import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
+import { Apollo } from 'apollo-angular';
+import { Component, OnInit } from '@angular/core';
+import ALBUMS_QUERY from 'src/app/@graphql/queries/albums';
 
 @Component({
   selector: 'app-home',
@@ -7,11 +8,28 @@ import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
   styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent implements OnInit {
-  isBrowser = false;
+  data: any;
+  loading = true;
+  errors: any;
 
-  constructor(@Inject(PLATFORM_ID) platformId: object) {
-    this.isBrowser = isPlatformBrowser(platformId);
+  constructor(private apollo: Apollo) {}
+
+  ngOnInit(): void {
+    this.getAlbums();
   }
 
-  ngOnInit(): void {}
+  getAlbums() {
+    return this.apollo
+      .watchQuery<any>({
+        query: ALBUMS_QUERY,
+        variables: {
+          page: 1,
+        },
+      })
+      .valueChanges.subscribe((result) => {
+        this.data = result.data;
+        this.loading = result.loading;
+        this.errors = result.errors;
+      });
+  }
 }

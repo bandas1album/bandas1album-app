@@ -1,3 +1,10 @@
 <main>
-  <app-list-albums></app-list-albums>
+  <app-list-albums>
+    <li *ngFor="let album of data.albums.data">
+      <app-card-album
+        [routerLink]="['/album/', album.attributes.slug]"
+        [item]="album"
+      ></app-card-album>
+    </li>
+  </app-list-albums>
 </main>
