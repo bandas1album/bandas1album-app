@@ -1,3 +1,13 @@
+@keyframes rotate {
+  from {
+    transform: rotate(0);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 .m-list-albums {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -5,4 +15,21 @@
   margin: 0;
   padding: 6px;
   list-style: none;
+
+  .placeholder {
+    height: 47vw;
+    background-color: var(--color-primary-shade);
+    border-radius: 8px;
+  }
+
+  ion-icon {
+    margin: 32px auto 0;
+    grid-column: span 2;
+    font-size: 48px;
+    animation: rotate infinite linear 3s;
+  }
+
+  &.loading {
+    padding-bottom: 160px;
+  }
 }

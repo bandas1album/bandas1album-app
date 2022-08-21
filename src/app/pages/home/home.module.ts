@@ -6,6 +6,7 @@ import { HomeComponent } from './home.component';
 import { ListAlbumsModule } from './../../components/lists/list-albums/list-albums.module';
 import { CardAlbumModule } from './../../components/cards/card-album/card-album.module';
 import { SlugifyModule } from './../../pipes/slugify/slugify.module';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 
 @NgModule({
   declarations: [HomeComponent],
@@ -15,6 +16,7 @@ import { SlugifyModule } from './../../pipes/slugify/slugify.module';
     ListAlbumsModule,
     CardAlbumModule,
     SlugifyModule,
+    InfiniteScrollModule,
   ],
 })
 export class HomeModule {}

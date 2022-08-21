@@ -37,6 +37,7 @@
     "express": "^4.15.2",
     "graphql": "^16.6.0",
     "ngx-disqus": "^2.4.3",
+    "ngx-infinite-scroll": "^14.0.0",
     "ngx-swiper-wrapper": "^10.0.0",
     "normalize.css": "^8.0.1",
     "rxjs": "~6.6.0",

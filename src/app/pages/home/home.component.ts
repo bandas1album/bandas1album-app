@@ -8,18 +8,16 @@ import ALBUMS_QUERY from 'src/app/@graphql/queries/albums';
   styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent implements OnInit {
-  data: any;
+  firstLoading = true;
   loading = true;
+  data: any[] = [];
   errors: any;
+  page: number = 1;
 
   constructor(private apollo: Apollo) {}
 
   ngOnInit(): void {
-    this.getAlbums();
-  }
-
-  getAlbums() {
-    return this.apollo
+    this.apollo
       .watchQuery<any>({
         query: ALBUMS_QUERY,
         variables: {
@@ -27,7 +25,26 @@ export class HomeComponent implements OnInit {
         },
       })
       .valueChanges.subscribe((result) => {
-        this.data = result.data;
+        this.firstLoading = false;
+        this.data = result.data.albums.data;
+        this.loading = result.loading;
+        this.errors = result.errors;
+      });
+  }
+
+  onScroll() {
+    this.loading = true;
+
+    return this.apollo
+      .watchQuery<any>({
+        query: ALBUMS_QUERY,
+        variables: {
+          page: ++this.page,
+        },
+      })
+      .valueChanges.subscribe((result) => {
+        this.data = Object.assign([], this.data);
+        this.data.push(...result.data.albums.data);
         this.loading = result.loading;
         this.errors = result.errors;
       });

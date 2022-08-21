@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-list-albums',
@@ -6,5 +6,11 @@ import { Component } from '@angular/core';
   styleUrls: ['./list-albums.component.scss'],
 })
 export class ListAlbumsComponent {
-  constructor() {}
+  @Input() loading: boolean = true;
+  @Input() firstLoading: boolean = true;
+  loadingArray: any = [];
+
+  constructor() {
+    this.loadingArray = Array(48).fill(48);
+  }
 }

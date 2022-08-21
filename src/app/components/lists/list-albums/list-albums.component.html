@@ -1,3 +1,11 @@
-<ul class="m-list-albums">
-  <ng-content></ng-content>
+<ul class="m-list-albums" [ngClass]="{ firstLoading, loading }">
+  <ng-container *ngIf="firstLoading; else content">
+    <li class="placeholder" *ngFor="let item of loadingArray"></li>
+  </ng-container>
+
+  <ng-template #content>
+    <ng-content></ng-content>
+  </ng-template>
+
+  <ion-icon *ngIf="loading" name="refresh-outline"></ion-icon>
 </ul>

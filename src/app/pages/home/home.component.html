@@ -1,6 +1,13 @@
 <main>
-  <app-list-albums>
-    <li *ngFor="let album of data.albums.data">
+  <app-list-albums
+    infinite-scroll
+    [infiniteScrollDistance]="2"
+    [infiniteScrollThrottle]="1000"
+    (scrolled)="onScroll()"
+    [firstLoading]="firstLoading"
+    [loading]="loading"
+  >
+    <li *ngFor="let album of data">
       <app-card-album
         [routerLink]="['/album/', album.attributes.slug]"
         [item]="album"
