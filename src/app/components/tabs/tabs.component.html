@@ -14,7 +14,10 @@
     </button>
 
     <div class="m-tabs__logo">
-      <app-logo routerLink="/"></app-logo>
+      <app-logo
+        routerLink="/"
+        (click)="showSearch = false; showMenu = false"
+      ></app-logo>
     </div>
 
     <button
