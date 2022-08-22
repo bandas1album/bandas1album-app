@@ -1,3 +1,4 @@
+import { CardMenuModule } from './../../cards/card-menu/card-menu.module';
 import { CardMenuAlbumModule } from './../../cards/card-menu-album/card-menu-album.module';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { RouterModule } from '@angular/router';
@@ -11,6 +12,7 @@ import { TabsMenuComponent } from './tabs-menu.component';
     CommonModule,
     RouterModule,
     InfiniteScrollModule,
+    CardMenuModule,
     CardMenuAlbumModule,
   ],
   exports: [TabsMenuComponent],

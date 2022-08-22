@@ -18,12 +18,13 @@
       <ul
         infinite-scroll
         [infiniteScrollDistance]="2"
-        [infiniteScrollThrottle]="1000"
+        [infiniteScrollThrottle]="50"
+        [scrollWindow]="false"
         (scrolled)="onScrollAlbums()"
         [hidden]="!showAlbums"
         class="m-tabs-menu__submenu"
       >
-        <li *ngFor="let item of data?.albums">
+        <li *ngFor="let item of data.albums.list">
           <app-card-menu-album
             [routerLink]="['/album', item.attributes.slug]"
             [item]="item"
@@ -45,8 +46,22 @@
         <span>Gêneros</span>
         <ion-icon name="chevron-down-circle"></ion-icon>
       </button>
-      <ul [hidden]="!showGenres" class="m-tabs-menu__submenu">
-        <li *ngFor="let item of data?.genres"></li>
+      <ul
+        infinite-scroll
+        [infiniteScrollDistance]="2"
+        [infiniteScrollThrottle]="50"
+        [scrollWindow]="false"
+        (scrolled)="onScrollGenres()"
+        [hidden]="!showGenres"
+        class="m-tabs-menu__submenu"
+      >
+        <li *ngFor="let item of data.genres.list">
+          <app-card-menu
+            [routerLink]="['/genero', item.attributes.slug]"
+            [item]="item"
+          >
+          </app-card-menu>
+        </li>
       </ul>
     </li>
     <li>
@@ -64,7 +79,7 @@
         <ion-icon name="chevron-down-circle"></ion-icon>
       </button>
       <ul [hidden]="!showCountries" class="m-tabs-menu__submenu">
-        <li *ngFor="let item of data?.countries"></li>
+        <li *ngFor="let item of data?.countries?.list"></li>
       </ul>
     </li>
     <li>
@@ -82,7 +97,7 @@
         <ion-icon name="chevron-down-circle"></ion-icon>
       </button>
       <ul [hidden]="!showDebut" class="m-tabs-menu__submenu">
-        <li *ngFor="let item of data?.years"></li>
+        <li *ngFor="let item of data?.years?.list"></li>
       </ul>
     </li>
   </ul>

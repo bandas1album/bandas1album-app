@@ -1,8 +1,8 @@
 import gql from 'graphql-tag';
 
 const ALBUMS_QUERY: any = gql`
-  query Albums($page: Int, $perpage: Int) {
-    albums(pagination: { page: $page, pageSize: $perpage }) {
+  query Albums($page: Int, $perpage: Int, $sort: [String]) {
+    albums(pagination: { page: $page, pageSize: $perpage }, sort: $sort) {
       data {
         attributes {
           title
