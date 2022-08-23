@@ -1,3 +1,4 @@
+import { TabsMenuSocialModule } from './tabs-menu-social/tabs-menu-social.module';
 import { CardMenuModule } from './../../cards/card-menu/card-menu.module';
 import { CardMenuAlbumModule } from './../../cards/card-menu-album/card-menu-album.module';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
@@ -5,6 +6,7 @@ import { RouterModule } from '@angular/router';
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TabsMenuComponent } from './tabs-menu.component';
+import { TabsMenuFooterModule } from './tabs-menu-footer/tabs-menu-footer.module';
 
 @NgModule({
   declarations: [TabsMenuComponent],
@@ -14,6 +16,8 @@ import { TabsMenuComponent } from './tabs-menu.component';
     InfiniteScrollModule,
     CardMenuModule,
     CardMenuAlbumModule,
+    TabsMenuFooterModule,
+    TabsMenuSocialModule,
   ],
   exports: [TabsMenuComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
