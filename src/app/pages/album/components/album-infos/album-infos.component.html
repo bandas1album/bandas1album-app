@@ -1,0 +1,23 @@
+<div class="infos">
+  <h1 class="infos-title">
+    <ng-content select="[title]"></ng-content>
+  </h1>
+  <h2 class="infos-subtitle">
+    <ng-content select="[subtitle]"></ng-content>
+  </h2>
+
+  <ul class="infos-meta">
+    <li>
+      <ion-icon name="calendar"></ion-icon>
+      <ng-content select="[released]"></ng-content>
+    </li>
+    <li>
+      <ion-icon name="location"></ion-icon>
+      <ng-content select="[country]"></ng-content>
+    </li>
+    <li>
+      <ion-icon name="bookmark"></ion-icon>
+      <ng-content select="[genre]"></ng-content>
+    </li>
+  </ul>
+</div>

@@ -1,0 +1,35 @@
+.infos {
+  padding: 56px 32px 32px 32px;
+  background-color: var(--color-primary-tint);
+
+  &-title {
+    margin: 0 0 8px;
+    font-size: 24px;
+    line-height: 120%;
+  }
+
+  &-subtitle {
+    margin: 0 0 24px;
+    font-size: 16px;
+    font-weight: 400;
+  }
+
+  &-meta {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+
+    li {
+      display: flex;
+      align-items: center;
+
+      ion-icon {
+        margin-right: 8px;
+      }
+
+      &:not(:last-child) {
+        margin-bottom: 16px;
+      }
+    }
+  }
+}

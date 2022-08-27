@@ -1,3 +1,4 @@
+import { AlbumInfosModule } from './components/album-infos/album-infos.module';
 import { PageHeaderModule } from './../../components/headers/page-header/page-header.module';
 import { AlbumCoverModule } from './components/album-cover/album-cover.module';
 import { NgModule } from '@angular/core';
@@ -12,6 +13,7 @@ import { AlbumComponent } from './album.component';
     CommonModule,
     AlbumRoutingModule,
     AlbumCoverModule,
+    AlbumInfosModule,
     PageHeaderModule,
   ],
 })
