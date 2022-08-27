@@ -20,12 +20,12 @@
       data?.albums?.data[0].attributes?.country.data.attributes.title
     }}</span>
     <span genre>{{
-      data.albums.data[0].attributes?.genres?.data[0]?.attributes?.title
+      data?.albums.data[0].attributes?.genres?.data[0]?.attributes?.title
     }}</span>
   </app-album-infos>
 
   <app-album-tracklist>
-    <li track *ngFor="let track of data.albums.data[0].attributes?.tracklist">
+    <li track *ngFor="let track of data?.albums.data[0].attributes?.tracklist">
       <span>{{ track.title }}</span>
       <span>{{ track.duration }}</span>
     </li>
