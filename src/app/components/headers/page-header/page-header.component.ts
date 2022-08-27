@@ -1,5 +1,5 @@
 import { Location } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-page-header',
@@ -7,8 +7,6 @@ import { Component, Input } from '@angular/core';
   styleUrls: ['./page-header.component.scss'],
 })
 export class PageHeaderComponent {
-  @Input() title: string = '';
-
   constructor(private location: Location) {}
 
   back() {

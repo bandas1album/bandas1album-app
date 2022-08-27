@@ -1,3 +1,12 @@
-<main>
-  {{ data | json }}
-</main>
+<article>
+  <app-page-header>
+    <span title>{{ data?.albums?.data[0]?.attributes?.title }}</span>
+  </app-page-header>
+
+  <app-album-cover
+    [image]="
+      'http://localhost:1337' +
+      data?.albums?.data[0].attributes.cover?.data?.attributes?.url
+    "
+  ></app-album-cover>
+</article>

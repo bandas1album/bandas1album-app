@@ -1,4 +1,6 @@
 <header class="header">
   <ion-icon (click)="back()" name="chevron-back-circle"></ion-icon>
-  <h1 class="header-title">{{ title }}</h1>
+  <h1 class="header-title">
+    <ng-content select="[title]"></ng-content>
+  </h1>
 </header>

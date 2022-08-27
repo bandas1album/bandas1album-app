@@ -6,6 +6,29 @@ const ALBUM_QUERY: any = gql`
       data {
         attributes {
           title
+          artist
+          released
+          country {
+            data {
+              attributes {
+                title
+              }
+            }
+          }
+          genres {
+            data {
+              attributes {
+                title
+              }
+            }
+          }
+          cover {
+            data {
+              attributes {
+                url
+              }
+            }
+          }
         }
       }
     }
