@@ -1,3 +1,4 @@
+import { AlbumTracklistModule } from './components/album-tracklist/album-tracklist.module';
 import { AlbumInfosModule } from './components/album-infos/album-infos.module';
 import { PageHeaderModule } from './../../components/headers/page-header/page-header.module';
 import { AlbumCoverModule } from './components/album-cover/album-cover.module';
@@ -11,10 +12,11 @@ import { AlbumComponent } from './album.component';
   declarations: [AlbumComponent],
   imports: [
     CommonModule,
+    PageHeaderModule,
     AlbumRoutingModule,
     AlbumCoverModule,
     AlbumInfosModule,
-    PageHeaderModule,
+    AlbumTracklistModule,
   ],
 })
 export class AlbumModule {}

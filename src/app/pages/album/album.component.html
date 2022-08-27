@@ -23,4 +23,11 @@
       data.albums.data[0].attributes?.genres?.data[0]?.attributes?.title
     }}</span>
   </app-album-infos>
+
+  <app-album-tracklist>
+    <li track *ngFor="let track of data.albums.data[0].attributes?.tracklist">
+      <span>{{ track.title }}</span>
+      <span>{{ track.duration }}</span>
+    </li>
+  </app-album-tracklist>
 </article>

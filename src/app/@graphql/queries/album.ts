@@ -29,6 +29,7 @@ const ALBUM_QUERY: any = gql`
               }
             }
           }
+          tracklist
         }
       }
     }
