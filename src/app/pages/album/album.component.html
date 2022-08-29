@@ -10,6 +10,17 @@
     "
   ></app-album-cover>
 
+  <app-album-links>
+    <li
+      link
+      *ngFor="let link of data?.albums?.data[0].attributes?.social | keyvalue"
+    >
+      <a [href]="link.value" target="_blank" rel="noopener noreferrer">
+        <img [src]="'/assets/img/icons/' + link.key + '.svg'" alt="" />
+      </a>
+    </li>
+  </app-album-links>
+
   <app-album-infos>
     <span title>{{ data?.albums?.data[0].attributes?.title }}</span>
     <span subtitle>{{ data?.albums?.data[0].attributes?.artist }}</span>
@@ -24,7 +35,7 @@
     }}</span>
   </app-album-infos>
 
-  <app-album-tracklist>
+  <app-album-tracklist *ngIf="data?.albums.data[0].attributes?.tracklist">
     <li track *ngFor="let track of data?.albums.data[0].attributes?.tracklist">
       <span>{{ track.title }}</span>
       <span>{{ track.duration }}</span>

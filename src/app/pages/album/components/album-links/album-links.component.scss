@@ -1,0 +1,108 @@
+@import "src/scss/base/imports";
+
+::ng-deep {
+  .links-list li {
+    &:not(:last-child) {
+      margin-right: 16px;
+
+      @media (min-width: $size-tablet) {
+        margin-right: 24px;
+      }
+
+      @media (min-width: $size-desktop) {
+        margin-right: 32px;
+      }
+    }
+
+    a {
+      display: flex;
+      color: var(--color-light);
+      text-decoration: none;
+    }
+
+    img {
+      display: block;
+      width: 1.4em;
+      height: auto;
+
+      @media (min-width: $size-tablet) {
+        width: 1.8em;
+      }
+
+      @media (min-width: $size-desktop) {
+        width: 2em;
+      }
+    }
+  }
+}
+
+.links {
+  position: absolute;
+  top: -32px;
+  left: 32px;
+  overflow: hidden;
+  border-radius: 32px;
+
+  &-button {
+    @extend %reset-button;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    padding-left: 4px;
+    font-size: 24px;
+    border-radius: 50%;
+    background-color: var(--color-primary-shade);
+    color: var(--color-light);
+
+    @media (min-width: $size-tablet) {
+      width: 56px;
+      height: 56px;
+      font-size: 32px;
+    }
+
+    @media (min-width: $size-desktop) {
+      width: 64px;
+      height: 64px;
+      font-size: 40px;
+    }
+  }
+
+  &-list {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 48px;
+    margin: 0;
+    padding-left: 64px;
+    padding-right: 24px;
+    list-style: none;
+    border-radius: 32px;
+    background-color: var(--color-primary);
+    opacity: 0;
+    transform: translateX(-100%);
+    transition: opacity 0.2s ease, transform 0.2s ease;
+
+    @media (min-width: $size-tablet) {
+      height: 56px;
+      padding-left: 72px;
+      padding-right: 32px;
+    }
+
+    @media (min-width: $size-desktop) {
+      height: 64px;
+      padding-left: 80px;
+      padding-right: 40px;
+    }
+
+    &:not([hidden]) {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+}

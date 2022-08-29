@@ -1,0 +1,9 @@
+<div class="links">
+  <button (click)="hide = !hide" class="links-button">
+    <ion-icon name="play"></ion-icon>
+  </button>
+
+  <ul class="links-list" [hidden]="hide">
+    <ng-content select="[link]"></ng-content>
+  </ul>
+</div>
