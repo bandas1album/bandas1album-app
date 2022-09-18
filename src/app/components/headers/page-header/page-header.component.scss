@@ -25,7 +25,8 @@
     pointer-events: none;
   }
 
-  &.-show {
+  &.-fixed {
+    position: fixed;
     background-color: var(--color-primary-tint);
 
     .header-title {
