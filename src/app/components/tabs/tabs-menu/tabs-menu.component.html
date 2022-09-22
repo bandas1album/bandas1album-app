@@ -78,8 +78,20 @@
         <span>Países</span>
         <ion-icon name="chevron-down-circle"></ion-icon>
       </button>
-      <ul [hidden]="!showCountries" class="m-tabs-menu__submenu">
-        <li *ngFor="let item of data?.countries?.list"></li>
+      <ul
+        infinite-scroll
+        [infiniteScrollDistance]="2"
+        [infiniteScrollThrottle]="50"
+        [scrollWindow]="false"
+        (scrolled)="onScrollCountries()"
+        [hidden]="!showCountries"
+        class="m-tabs-menu__submenu"
+      >
+        <li *ngFor="let item of data?.countries?.list">
+          <span [routerLink]="['/pais', item.attributes.slug]">
+            {{ item.attributes.title }}
+          </span>
+        </li>
       </ul>
     </li>
     <li>

@@ -1,7 +1,7 @@
 import { Apollo } from 'apollo-angular';
 import { Component, OnInit } from '@angular/core';
 import ALBUMS_QUERY from 'src/app/@graphql/queries/albums';
-import { Album } from 'src/app/models/album/album.model';
+import { Album } from 'src/app/interfaces/album';
 
 @Component({
   selector: 'app-home',

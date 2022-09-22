@@ -1,5 +1,5 @@
-export class Album {
-  attributes!: {
+export interface Album {
+  attributes: {
     artist: string;
     cover: any;
     slug: string;

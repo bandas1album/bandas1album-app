@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { Album } from 'src/app/models/album/album.model';
+import { Album } from 'src/app/interfaces/album';
 
 @Component({
   selector: 'app-card-menu-album',

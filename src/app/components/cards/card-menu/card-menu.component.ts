@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
-import { Album } from 'src/app/models/album/album.model';
+import { Album } from 'src/app/interfaces/album';
+import { Genre } from 'src/app/interfaces/genre';
 
 @Component({
   selector: 'app-card-menu',
@@ -7,7 +8,7 @@ import { Album } from 'src/app/models/album/album.model';
   styleUrls: ['./card-menu.component.scss'],
 })
 export class CardMenuComponent {
-  @Input() item!: Album;
+  @Input() item!: Album | Genre;
   @Input() total: number = 0;
 
   constructor() {}

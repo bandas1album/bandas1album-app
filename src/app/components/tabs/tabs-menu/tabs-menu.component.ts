@@ -1,24 +1,12 @@
+import { Subscription } from 'rxjs';
 import { Apollo } from 'apollo-angular';
 import { Component, OnInit } from '@angular/core';
+
 import ALBUMS_QUERY from 'src/app/@graphql/queries/albums';
 import GENRES_QUERY from 'src/app/@graphql/queries/genres';
-import { Album } from 'src/app/models/album/album.model';
+import COUNTRIES_QUERY from 'src/app/@graphql/queries/countries';
 
-class DataMenu {
-  albums: DataMenuList = new DataMenuList();
-  genres: DataMenuList = new DataMenuList();
-  countries: DataMenuList = new DataMenuList();
-  years: DataMenuList = new DataMenuList();
-}
-
-class DataMenuList {
-  list: Album[] = [];
-  errors: any = [];
-  loading: boolean = false;
-  page: number = 1;
-  perpage: number = 16;
-  total: number = 0;
-}
+import { DataMenu } from 'src/app/models/menu/data-menu.model';
 
 @Component({
   selector: 'app-tabs-menu',
@@ -43,7 +31,7 @@ export class TabsMenuComponent implements OnInit {
     this.getYears();
   }
 
-  getAlbums() {
+  private getAlbums(): Subscription {
     this.data.albums.loading = true;
 
     return this.apollo
@@ -62,7 +50,7 @@ export class TabsMenuComponent implements OnInit {
       });
   }
 
-  onScrollAlbums() {
+  protected onScrollAlbums(): Subscription {
     this.data.albums.loading = true;
 
     return this.apollo
@@ -82,7 +70,7 @@ export class TabsMenuComponent implements OnInit {
       });
   }
 
-  getGenres() {
+  private getGenres(): Subscription {
     this.data.genres.loading = true;
 
     return this.apollo
@@ -101,7 +89,7 @@ export class TabsMenuComponent implements OnInit {
       });
   }
 
-  onScrollGenres() {
+  protected onScrollGenres(): Subscription {
     this.data.genres.loading = true;
 
     return this.apollo
@@ -121,7 +109,44 @@ export class TabsMenuComponent implements OnInit {
       });
   }
 
-  getCountries() {}
+  private getCountries(): Subscription {
+    this.data.countries.loading = true;
 
-  getYears() {}
+    return this.apollo
+      .watchQuery<any>({
+        query: COUNTRIES_QUERY,
+        variables: {
+          page: this.data.countries.page,
+          perpage: this.data.countries.perpage,
+          sort: ['title:asc'],
+        },
+      })
+      .valueChanges.subscribe((result) => {
+        this.data.countries.loading = result.loading;
+        this.data.countries.errors = result.errors;
+        this.data.countries.list = result.data.countries.data;
+      });
+  }
+
+  protected onScrollCountries(): Subscription {
+    this.data.countries.loading = true;
+
+    return this.apollo
+      .watchQuery<any>({
+        query: COUNTRIES_QUERY,
+        variables: {
+          page: ++this.data.countries.page,
+          perpage: this.data.countries.perpage,
+          sort: ['title:asc'],
+        },
+      })
+      .valueChanges.subscribe((result) => {
+        this.data.countries.loading = result.loading;
+        this.data.countries.errors = result.errors;
+        this.data.countries.list = Object.assign([], this.data.countries.list);
+        this.data.countries.list.push(...result.data.countries.data);
+      });
+  }
+
+  private getYears(): void {}
 }
