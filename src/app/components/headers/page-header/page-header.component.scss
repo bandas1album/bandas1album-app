@@ -1,3 +1,5 @@
+@import "src/scss/base/_imports.scss";
+
 .header {
   position: absolute;
   top: 0;
@@ -11,8 +13,13 @@
   padding: 0 16px;
   user-select: none;
 
-  ion-icon {
-    font-size: 32px;
+  &-back {
+    @extend %reset-button;
+    color: var(--color-light);
+
+    ion-icon {
+      font-size: 32px;
+    }
   }
 
   &-title {
@@ -28,6 +35,7 @@
   &.-fixed {
     position: fixed;
     background-color: var(--color-primary-tint);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
 
     .header-title {
       opacity: 1;

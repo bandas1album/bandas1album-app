@@ -1,5 +1,7 @@
 <header class="header" [ngClass]="{ '-fixed': isFixed }">
-  <ion-icon (click)="back()" name="chevron-back-circle"></ion-icon>
+  <button class="header-back">
+    <ion-icon (click)="back()" name="chevron-back-circle"></ion-icon>
+  </button>
   <h1 class="header-title">
     <ng-content select="[title]"></ng-content>
   </h1>
