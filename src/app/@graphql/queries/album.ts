@@ -19,6 +19,7 @@ const ALBUM_QUERY: any = gql`
             data {
               attributes {
                 title
+                slug
               }
             }
           }

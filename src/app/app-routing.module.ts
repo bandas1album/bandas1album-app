@@ -12,6 +12,11 @@ const routes: Routes = [
     loadChildren: () =>
       import('./pages/album/album.module').then((m) => m.AlbumModule),
   },
+  {
+    path: 'genero/:slug',
+    loadChildren: () =>
+      import('./pages/genre/genre.module').then((m) => m.GenreModule),
+  },
 ];
 
 @NgModule({

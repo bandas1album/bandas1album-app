@@ -1,3 +1,4 @@
+import { RouterModule } from '@angular/router';
 import { AlbumLinksModule } from './components/album-links/album-links.module';
 import { AlbumTracklistModule } from './components/album-tracklist/album-tracklist.module';
 import { AlbumInfosModule } from './components/album-infos/album-infos.module';
@@ -19,6 +20,7 @@ import { AlbumComponent } from './album.component';
     AlbumLinksModule,
     AlbumInfosModule,
     AlbumTracklistModule,
+    RouterModule,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })

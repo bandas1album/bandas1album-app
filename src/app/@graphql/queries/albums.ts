@@ -1,8 +1,17 @@
 import gql from 'graphql-tag';
 
 const ALBUMS_QUERY: any = gql`
-  query Albums($page: Int, $perpage: Int, $sort: [String]) {
-    albums(pagination: { page: $page, pageSize: $perpage }, sort: $sort) {
+  query Albums(
+    $page: Int
+    $perpage: Int
+    $sort: [String]
+    $genres: GenreFiltersInput
+  ) {
+    albums(
+      pagination: { page: $page, pageSize: $perpage }
+      sort: $sort
+      filters: { genres: $genres }
+    ) {
       data {
         attributes {
           title
@@ -15,6 +24,12 @@ const ALBUMS_QUERY: any = gql`
               }
             }
           }
+        }
+      }
+      meta {
+        pagination {
+          total
+          pageSize
         }
       }
     }

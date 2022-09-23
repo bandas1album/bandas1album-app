@@ -30,9 +30,15 @@
     <span country>{{
       data?.albums?.data[0].attributes?.country.data.attributes.title
     }}</span>
-    <span genre>{{
-      data?.albums.data[0].attributes?.genres?.data[0]?.attributes?.title
-    }}</span>
+    <span
+      [routerLink]="[
+        '/genero/',
+        data?.albums.data[0].attributes?.genres?.data[0]?.attributes?.slug
+      ]"
+      genre
+    >
+      {{ data?.albums.data[0].attributes?.genres?.data[0]?.attributes?.title }}
+    </span>
   </app-album-infos>
 
   <app-album-tracklist *ngIf="data?.albums.data[0].attributes?.tracklist">

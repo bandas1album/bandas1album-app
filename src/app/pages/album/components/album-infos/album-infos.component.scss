@@ -22,6 +22,11 @@
     li {
       display: flex;
       align-items: center;
+      cursor: pointer;
+
+      &:hover {
+        text-decoration: underline;
+      }
 
       ion-icon {
         margin-right: 8px;
