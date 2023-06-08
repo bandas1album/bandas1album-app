@@ -9,11 +9,6 @@
     "lint": "next lint --max-warnings=0",
     "prepare": "husky install"
   },
-  "lint-staged": {
-    "src/**/*": [
-      "yarn lint"
-    ]
-  },
   "dependencies": {
     "@types/node": "20.2.5",
     "@types/react": "18.2.9",
