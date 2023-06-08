@@ -6,7 +6,13 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint --max-warnings=0",
+    "prepare": "husky install"
+  },
+  "lint-staged": {
+    "src/**/*": [
+      "yarn lint --fix"
+    ]
   },
   "dependencies": {
     "@types/node": "20.2.5",
@@ -26,6 +32,7 @@
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-react": "^7.32.2",
     "eslint-plugin-react-hooks": "^4.6.0",
+    "husky": "^8.0.3",
     "prettier": "2.8.8"
   }
 }
