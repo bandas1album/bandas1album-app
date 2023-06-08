@@ -1,6 +1,6 @@
 import Head from 'next/head'
 
-const foo = 'teste'
+const foo = 'foo'
 
 export default function Home() {
   return (
