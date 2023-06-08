@@ -5,11 +5,7 @@ import styles from '@/styles/Home.module.css'
 
 const inter = Inter({ subsets: ['latin'] })
 
-type Props = {
-  title: string
-}
-
-export default function Home({ title = 'Bandas 1 Álbum' }: Props) {
+export default function Home() {
   return (
     <>
       <Head>
@@ -20,9 +16,7 @@ export default function Home({ title = 'Bandas 1 Álbum' }: Props) {
       </Head>
       <main className={`${styles.main} ${inter.className}`}>
         <div className={styles.description}>
-          <p>
-            {title}
-          </p>
+          <p>Bandas 1 Album</p>
           <div>
             <a
               href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
