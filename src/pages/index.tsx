@@ -1,7 +1,5 @@
 import Head from 'next/head'
 
-const foot = 123
-
 export default function Home() {
   return (
     <>

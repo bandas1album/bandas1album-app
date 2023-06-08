@@ -10,8 +10,8 @@
     "prepare": "husky install"
   },
   "lint-staged": {
-    "src/**/*": [
-      "eslint --fix"
+    "src": [
+      "yarn lint --fix"
     ]
   },
   "dependencies": {
