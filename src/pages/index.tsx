@@ -1,5 +1,7 @@
 import Head from 'next/head'
 
+const foo = 'foo'
+
 export default function Home() {
   return (
     <>
