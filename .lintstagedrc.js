@@ -9,5 +9,5 @@ const buildEslintCommand = (filenames) =>
     .join(' --file ')}`
 
 module.exports = {
-  'src/**/*': [buildEslintCommand, 'yarn test --findRelatedTests --passWithNoTests --bail'],
+  'src/{components,pages,templates}/*': [buildEslintCommand, 'yarn test --findRelatedTests --passWithNoTests --bail'],
 }

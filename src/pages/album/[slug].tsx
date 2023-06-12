@@ -1,19 +1,17 @@
 import { AlbumEntityResponseCollection, AlbumProps } from '@/types'
 import client from '@/graphql/client'
-import { GET_ALBUM, GET_ALBUMS } from '@/graphql/queries'
+import { GET_ALBUM_BY_SLUG, GET_ALBUMS } from '@/graphql/queries'
 import { GetStaticProps } from 'next'
 import { useRouter } from 'next/router'
-
-type AlbumTemplateProps = {
-  title: string
-}
+import { GetAlbumBySlugQuery } from '@/graphql/generated/graphql'
+import AlbumTemplate, { AlbumTemplateProps } from '@/templates/Album'
 
 export default function Album({ title }: AlbumTemplateProps) {
   const router = useRouter()
 
   if (router.isFallback) return null
 
-  return <h1>{title}</h1>
+  return <AlbumTemplate title={title} />
 }
 
 export async function getStaticPaths() {
@@ -31,9 +29,12 @@ export async function getStaticPaths() {
 }
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
-  const { album }: { album: AlbumProps } = await client.request(GET_ALBUM, {
-    slug: `${params?.slug}`
-  })
+  const { album } = await client.request<GetAlbumBySlugQuery>(
+    GET_ALBUM_BY_SLUG,
+    {
+      slug: `${params?.slug}`
+    }
+  )
 
   if (!album) return { notFound: true }
 

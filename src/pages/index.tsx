@@ -1,27 +1,19 @@
-import { AlbumEntityResponseCollection, AlbumProps } from '@/types'
-import ListAlbums from '@/components/ListAlbums'
+import { AlbumProps } from '@/types'
 import client from '@/graphql/client'
 import { GET_ALBUMS } from '@/graphql/queries'
-import Head from 'next/head'
+import { GetAlbumsQuery } from '@/graphql/generated/graphql'
+import HomeTemplate from '@/templates/Home'
 
 export default function Home({ albums }: { albums: AlbumProps[] }) {
-  return (
-    <>
-      <Head>
-        <title>Bandas de 1 Álbum</title>
-      </Head>
-      <ListAlbums albums={albums} />
-    </>
-  )
+  return <HomeTemplate albums={albums} />
 }
 
 export const getStaticProps = async () => {
-  const { albums }: { albums: AlbumEntityResponseCollection } =
-    await client.request(GET_ALBUMS)
+  const { albums } = await client.request<GetAlbumsQuery>(GET_ALBUMS)
 
   return {
     props: {
-      albums: albums
+      albums
     }
   }
 }
