@@ -1,24 +1,24 @@
-import CardAlbum, { AlbumProps } from '../CardAlbum'
+import { AlbumProps } from '@/types'
+import CardAlbum from '../CardAlbum'
 import { List } from './styles'
 
 type ListAlbumsProps = {
-  items: AlbumProps[]
+  albums: AlbumProps[]
 }
 
-const ListAlbums = ({ items }: ListAlbumsProps) => {
+export default function ListAlbums({ albums }: ListAlbumsProps) {
   return (
     <List>
-      {items.map(({ artist, slug, cover, title }) => (
-        <CardAlbum
-          key={`album-${slug}`}
-          artist={artist}
-          slug={slug}
-          cover={cover}
-          title={title}
-        />
+      {albums.map((album) => (
+        <li key={`album-${album.id}`}>
+          <CardAlbum
+            artist={album.artist}
+            slug={album.slug}
+            cover={album.cover}
+            title={album.title}
+          />
+        </li>
       ))}
     </List>
   )
 }
-
-export default ListAlbums
