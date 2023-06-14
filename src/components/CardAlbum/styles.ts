@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-export const Card = styled.div`
+export const Card = styled.article`
   cursor: pointer;
   position: relative;
   overflow: hidden;
@@ -26,9 +26,16 @@ export const Card = styled.div`
   }
 `
 
-export const CardImage = styled.img`
+export const CardImage = styled.figure`
   display: block;
   width: 100%;
   height: 100%;
+  margin: 0;
   object-fit: cover;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
 `

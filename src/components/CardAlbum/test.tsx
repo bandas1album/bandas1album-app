@@ -5,16 +5,13 @@ import CardAlbum from '.'
 describe('<CardAlbum />', () => {
   it('should render the component', () => {
     render(
-      <CardAlbum artist="4 Cabeça" slug="4-cabeca" cover="" title="4 Cabeça" />
+      <CardAlbum
+        artist="4 Cabeça"
+        slug="4-cabeca"
+        cover="https://cdn.host.com/4-cabeca.png"
+        title="4 Cabeça"
+      />
     )
-  })
-
-  it('should show logo if not pass image', () => {
-    render(
-      <CardAlbum artist="4 Cabeça" slug="4-cabeca" cover="" title="4 Cabeça" />
-    )
-
-    expect(screen.getByRole('img').getAttribute('src')).toEqual('logo.svg')
   })
 
   it('should show album image if passed', () => {
@@ -22,17 +19,24 @@ describe('<CardAlbum />', () => {
       <CardAlbum
         artist="4 Cabeça"
         slug="4-cabeca"
-        cover="4-cabeca.png"
+        cover="https://cdn.host.com/4-cabeca.png"
         title="4 Cabeça"
       />
     )
 
-    expect(screen.getByRole('img').getAttribute('src')).toEqual('4-cabeca.png')
+    expect(screen.getByRole('img').getAttribute('src')).toEqual(
+      '/_next/image?url=https%3A%2F%2Fcdn.host.com%2F4-cabeca.png&w=384&q=75'
+    )
   })
 
   it('should has album link', () => {
     render(
-      <CardAlbum artist="4 Cabeça" slug="4-cabeca" cover="" title="4 Cabeça" />
+      <CardAlbum
+        artist="4 Cabeça"
+        slug="4-cabeca"
+        cover="https://cdn.host.com/4-cabeca.png"
+        title="4 Cabeça"
+      />
     )
 
     expect(screen.getByRole('link').getAttribute('href')).toEqual(

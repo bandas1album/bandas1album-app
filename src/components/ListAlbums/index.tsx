@@ -12,9 +12,10 @@ export default function ListAlbums({ albums }: ListAlbumsProps) {
       {albums.map((album) => (
         <li key={`album-${album.id}`}>
           <CardAlbum
+            id={album.id}
             artist={album.artist}
             slug={album.slug}
-            cover={album.cover}
+            cover={album.cover.url}
             title={album.title}
           />
         </li>

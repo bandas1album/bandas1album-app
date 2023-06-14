@@ -11,7 +11,7 @@ describe('<ListAlbums />', () => {
       id: '0',
       artist: '4 Cabeça',
       cover: {
-        url: '4-cabeca.png'
+        url: 'https://cdn.host.com/4-cabeca.png'
       },
       slug: '4-cabeca',
       title: '4 Cabeça'
@@ -24,18 +24,20 @@ describe('<ListAlbums />', () => {
 
   it('should render with more than one card item', () => {
     const album = {
+      id: '0',
       artist: '4 Cabeça',
       cover: {
-        url: '4-cabeca.png'
+        url: 'https://cdn.host.com/4-cabeca.png'
       },
       slug: '4-cabeca',
       title: '4 Cabeça'
     }
 
     const album2 = {
+      id: '1',
       artist: 'Action',
       cover: {
-        url: 'action.png'
+        url: 'https://cdn.host.com/action.png'
       },
       slug: 'action',
       title: 'Action'
