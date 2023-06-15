@@ -17,3 +17,21 @@ export const Button = styled.button`
     cursor: pointer;
   }
 `
+
+export const Input = styled.input`
+  appearance: none;
+  display: block;
+  width: 100%;
+  border: 0;
+  background-clip: padding-box;
+  outline: 0;
+
+  &:not(:disabled):not(.disabled) {
+    cursor: text;
+  }
+
+  &:disabled,
+  &.disabled {
+    cursor: default;
+  }
+`
