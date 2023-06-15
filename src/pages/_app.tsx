@@ -5,6 +5,7 @@ import NextNProgress from 'nextjs-progressbar'
 
 import SEO from '../../next-seo.config'
 import { DefaultSeo } from 'next-seo'
+import Tabs from '@/components/Tabs'
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
@@ -17,7 +18,7 @@ export default function App({ Component, pageProps }: AppProps) {
       </Head>
       <DefaultSeo {...SEO} />
       <GlobalStyles />
-      <main>
+      <main role="main">
         <NextNProgress
           color="#a58a67"
           startPosition={0.3}
@@ -27,6 +28,7 @@ export default function App({ Component, pageProps }: AppProps) {
         />
 
         <Component {...pageProps} />
+        <Tabs />
       </main>
     </>
   )
