@@ -12,7 +12,7 @@ export const TabsPanel = styled.header`
   margin: 0 auto;
 `
 
-export const TabsWrapper = styled.div`
+export const TabsWrapper = styled.div<{ $opened: boolean }>`
   position: relative;
   z-index: 1;
   display: flex;
@@ -20,10 +20,33 @@ export const TabsWrapper = styled.div`
   justify-content: space-between;
   height: 80px;
   padding: 0 32px;
-  border-radius: 16px;
   background-color: var(--color-light);
   transition: 0.2s border-radius ease;
   box-shadow: 0 8px 16px rgba(#000, 0.1);
+  ${(props) =>
+    props.$opened ? 'border-radius: 0 0 16px 16px;' : 'border-radius: 16px;'}
+`
+
+export const TabsItem = styled.div<{ $opened: boolean }>`
+  display: block;
+  position: absolute;
+  bottom: 80px;
+  left: 0;
+  right: 0;
+  width: 100%;
+  pointer-events: none;
+  opacity: 0;
+  transition: 0.2s transform ease, 0.2s opacity ease;
+  transform: translateY(50%);
+
+  ${(props) =>
+    props.$opened
+      ? `
+    pointer-events: all;
+    opacity: 1;
+    transform: translateY(0);
+  `
+      : ''}
 `
 
 export const TabsButton = styled(Button)`
