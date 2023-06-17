@@ -21,14 +21,25 @@ export default function Tabs() {
 
   return (
     <TabsPanel>
-      <TabsItem $opened={isOpenedSearch ? true : false}>
+      <TabsItem
+        aria-label="Aba de busca"
+        aria-expanded={isOpenedSearch ? true : false}
+        $opened={isOpenedSearch ? true : false}
+      >
         <TabsSearch />
       </TabsItem>
-      <TabsItem $opened={isOpenedMenu ? true : false}>
+      <TabsItem
+        aria-label="Aba de menu"
+        aria-expanded={isOpenedMenu ? true : false}
+        $opened={isOpenedMenu ? true : false}
+      >
         <TabsMenu />
       </TabsItem>
       <TabsWrapper $opened={openedTabs.state}>
         <TabsButton
+          aria-label={
+            isOpenedSearch ? 'Fechar aba de busca' : 'Abrir aba de busca'
+          }
           onClick={() =>
             setOpenedTabs({
               state:
@@ -37,9 +48,10 @@ export default function Tabs() {
             })
           }
         >
-          <Search />
+          <Search aria-hidden="true" />
         </TabsButton>
         <Link
+          aria-label="Voltar para a homepage"
           href="/"
           onClick={() =>
             setOpenedTabs({
@@ -51,6 +63,7 @@ export default function Tabs() {
           <TabsLogo></TabsLogo>
         </Link>
         <TabsButton
+          aria-label={isOpenedMenu ? 'Fechar aba de menu' : 'Abrir aba de menu'}
           onClick={() => {
             setOpenedTabs({
               state:
@@ -59,7 +72,7 @@ export default function Tabs() {
             })
           }}
         >
-          <Menu />
+          <Menu aria-hidden="true" />
         </TabsButton>
       </TabsWrapper>
     </TabsPanel>
