@@ -41,3 +41,23 @@ export const GET_ALBUM_BY_SLUG = gql`
     }
   }
 `
+
+export const GET_AUTOCOMPLETE_BY_SEARCH = gql`
+  query getAutocompleteBySearch($search: String) {
+    albums(where: { title_contains: $search }, first: 2) {
+      id
+      title
+      slug
+    }
+    genres(where: { title_contains: $search }, first: 2) {
+      id
+      title
+      slug
+    }
+    countries(where: { title_contains: $search }, first: 2) {
+      id
+      title
+      slug
+    }
+  }
+`

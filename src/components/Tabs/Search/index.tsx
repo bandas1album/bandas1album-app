@@ -1,17 +1,57 @@
+import { useEffect, useState } from 'react'
+import { debounce } from 'lodash'
 import { HelpCircle } from '@styled-icons/ionicons-outline'
 import {
   SearchAutocomplete,
   SearchControl,
+  SearchError,
   SearchForm,
   SearchHelp,
   SearchInput
 } from './styles'
+import { GetAutocompleteBySearchQuery } from '@/graphql/generated/graphql'
+import { GET_AUTOCOMPLETE_BY_SEARCH } from '@/graphql/queries'
+import client from '@/graphql/client'
+import Link from 'next/link'
 
 export default function TabsSearch() {
+  const [search, setSearch] = useState('')
+  const [autocomplete, setAutocomplete] = useState<
+    GetAutocompleteBySearchQuery | undefined
+  >(undefined)
+  const [error, setError] = useState(false)
+
+  useEffect(() => {
+    setError(false)
+    setAutocomplete(undefined)
+
+    if (search.length) {
+      client
+        .request<GetAutocompleteBySearchQuery>(GET_AUTOCOMPLETE_BY_SEARCH, {
+          search: search
+        })
+        .then((response) => {
+          if (
+            response.albums.length ||
+            response.countries.length ||
+            response.genres.length
+          )
+            return setAutocomplete(response)
+
+          return setError(true)
+        })
+        .catch(() => setError(true))
+    }
+  }, [search])
+
   return (
     <SearchForm className="m-tabs-search">
       <SearchControl className="m-tabs-search__control">
-        <SearchInput type="text" placeholder="Faça sua busca" />
+        <SearchInput
+          onChange={debounce((e) => setSearch(e.target.value), 500)}
+          type="text"
+          placeholder="Faça sua busca"
+        />
 
         <SearchHelp
           type="button"
@@ -22,20 +62,44 @@ export default function TabsSearch() {
         </SearchHelp>
       </SearchControl>
 
-      <SearchAutocomplete className="m-tabs-search__autocomplete">
-        <li>
-          Álbuns / <strong>Lorem</strong>
-        </li>
-        <li>
-          Gêneros / <strong>Lorem</strong>
-        </li>
-        <li>
-          País / <strong>Lorem</strong>
-        </li>
-        <li>
-          Ano / <strong>Lorem</strong>
-        </li>
-      </SearchAutocomplete>
+      {error ? (
+        <SearchError>
+          Não foi possível encontrar o álbum, país ou gênero buscado.
+        </SearchError>
+      ) : (
+        ''
+      )}
+
+      {autocomplete?.albums.length ||
+      autocomplete?.genres.length ||
+      autocomplete?.countries.length ? (
+        <SearchAutocomplete className="m-tabs-search__autocomplete">
+          {autocomplete?.albums.map((album) => (
+            <li key={album.id}>
+              <Link href={`/album/${album.slug}`}>
+                Álbuns / <strong>{album.title}</strong>
+              </Link>
+            </li>
+          ))}
+
+          {autocomplete?.genres.map((genre) => (
+            <li key={genre.id}>
+              <Link href={`/genero/${genre.slug}`}>
+                Gêneros / <strong>{genre.title}</strong>
+              </Link>
+            </li>
+          ))}
+          {autocomplete?.countries.map((country) => (
+            <li key={country.id}>
+              <Link href={`/pais/${country.slug}`}>
+                Países / <strong>{country.title}</strong>
+              </Link>
+            </li>
+          ))}
+        </SearchAutocomplete>
+      ) : (
+        ''
+      )}
     </SearchForm>
   )
 }

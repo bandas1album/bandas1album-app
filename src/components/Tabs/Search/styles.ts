@@ -71,6 +71,11 @@ export const SearchHelp = styled(Button)`
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
   }
+
+  svg {
+    width: 24px;
+    height: 24px;
+  }
 `
 
 export const SearchAutocomplete = styled.ul`
@@ -91,4 +96,13 @@ export const SearchAutocomplete = styled.ul`
       text-decoration: underline;
     }
   }
+`
+
+export const SearchError = styled.p`
+  width: 100%;
+  margin: 0;
+  padding: 16px 0;
+  text-align: center;
+  font-size: 14px;
+  color: var(--color-light);
 `
