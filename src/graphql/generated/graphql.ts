@@ -56,7 +56,7 @@ export type Album = Node & {
   publishedAt?: Maybe<Scalars['DateTime']['output']>;
   /** User that last published this document */
   publishedBy?: Maybe<User>;
-  released?: Maybe<Scalars['Date']['output']>;
+  released?: Maybe<Released>;
   scheduledIn: Array<ScheduledOperation>;
   slug?: Maybe<Scalars['String']['output']>;
   social?: Maybe<Scalars['Json']['output']>;
@@ -122,6 +122,12 @@ export type AlbumPublishedByArgs = {
 };
 
 
+export type AlbumReleasedArgs = {
+  forceParentLocale?: InputMaybe<Scalars['Boolean']['input']>;
+  locales?: InputMaybe<Array<Locale>>;
+};
+
+
 export type AlbumScheduledInArgs = {
   after?: InputMaybe<Scalars['String']['input']>;
   before?: InputMaybe<Scalars['String']['input']>;
@@ -164,7 +170,7 @@ export type AlbumCreateInput = {
   createdAt?: InputMaybe<Scalars['DateTime']['input']>;
   genres?: InputMaybe<GenreCreateManyInlineInput>;
   label?: InputMaybe<Scalars['String']['input']>;
-  released?: InputMaybe<Scalars['Date']['input']>;
+  released?: InputMaybe<ReleasedCreateOneInlineInput>;
   slug?: InputMaybe<Scalars['String']['input']>;
   social?: InputMaybe<Scalars['Json']['input']>;
   title: Scalars['String']['input'];
@@ -321,21 +327,7 @@ export type AlbumManyWhereInput = {
   /** All values that are not contained in given list. */
   publishedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
   publishedBy?: InputMaybe<UserWhereInput>;
-  released?: InputMaybe<Scalars['Date']['input']>;
-  /** All values greater than the given value. */
-  released_gt?: InputMaybe<Scalars['Date']['input']>;
-  /** All values greater than or equal the given value. */
-  released_gte?: InputMaybe<Scalars['Date']['input']>;
-  /** All values that are contained in given list. */
-  released_in?: InputMaybe<Array<InputMaybe<Scalars['Date']['input']>>>;
-  /** All values less than the given value. */
-  released_lt?: InputMaybe<Scalars['Date']['input']>;
-  /** All values less than or equal the given value. */
-  released_lte?: InputMaybe<Scalars['Date']['input']>;
-  /** Any other value that exists and is not equal to the given value. */
-  released_not?: InputMaybe<Scalars['Date']['input']>;
-  /** All values that are not contained in given list. */
-  released_not_in?: InputMaybe<Array<InputMaybe<Scalars['Date']['input']>>>;
+  released?: InputMaybe<ReleasedWhereInput>;
   scheduledIn_every?: InputMaybe<ScheduledOperationWhereInput>;
   scheduledIn_none?: InputMaybe<ScheduledOperationWhereInput>;
   scheduledIn_some?: InputMaybe<ScheduledOperationWhereInput>;
@@ -426,8 +418,6 @@ export enum AlbumOrderByInput {
   LabelDesc = 'label_DESC',
   PublishedAtAsc = 'publishedAt_ASC',
   PublishedAtDesc = 'publishedAt_DESC',
-  ReleasedAsc = 'released_ASC',
-  ReleasedDesc = 'released_DESC',
   SlugAsc = 'slug_ASC',
   SlugDesc = 'slug_DESC',
   TitleAsc = 'title_ASC',
@@ -443,7 +433,7 @@ export type AlbumUpdateInput = {
   cover?: InputMaybe<AssetUpdateOneInlineInput>;
   genres?: InputMaybe<GenreUpdateManyInlineInput>;
   label?: InputMaybe<Scalars['String']['input']>;
-  released?: InputMaybe<Scalars['Date']['input']>;
+  released?: InputMaybe<ReleasedUpdateOneInlineInput>;
   slug?: InputMaybe<Scalars['String']['input']>;
   social?: InputMaybe<Scalars['Json']['input']>;
   title?: InputMaybe<Scalars['String']['input']>;
@@ -471,7 +461,6 @@ export type AlbumUpdateManyInput = {
   artist?: InputMaybe<Scalars['String']['input']>;
   content?: InputMaybe<Scalars['String']['input']>;
   label?: InputMaybe<Scalars['String']['input']>;
-  released?: InputMaybe<Scalars['Date']['input']>;
   social?: InputMaybe<Scalars['Json']['input']>;
   title?: InputMaybe<Scalars['String']['input']>;
   tracklist?: InputMaybe<Scalars['Json']['input']>;
@@ -652,21 +641,7 @@ export type AlbumWhereInput = {
   /** All values that are not contained in given list. */
   publishedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
   publishedBy?: InputMaybe<UserWhereInput>;
-  released?: InputMaybe<Scalars['Date']['input']>;
-  /** All values greater than the given value. */
-  released_gt?: InputMaybe<Scalars['Date']['input']>;
-  /** All values greater than or equal the given value. */
-  released_gte?: InputMaybe<Scalars['Date']['input']>;
-  /** All values that are contained in given list. */
-  released_in?: InputMaybe<Array<InputMaybe<Scalars['Date']['input']>>>;
-  /** All values less than the given value. */
-  released_lt?: InputMaybe<Scalars['Date']['input']>;
-  /** All values less than or equal the given value. */
-  released_lte?: InputMaybe<Scalars['Date']['input']>;
-  /** Any other value that exists and is not equal to the given value. */
-  released_not?: InputMaybe<Scalars['Date']['input']>;
-  /** All values that are not contained in given list. */
-  released_not_in?: InputMaybe<Array<InputMaybe<Scalars['Date']['input']>>>;
+  released?: InputMaybe<ReleasedWhereInput>;
   scheduledIn_every?: InputMaybe<ScheduledOperationWhereInput>;
   scheduledIn_none?: InputMaybe<ScheduledOperationWhereInput>;
   scheduledIn_some?: InputMaybe<ScheduledOperationWhereInput>;
@@ -2684,6 +2659,8 @@ export type Mutation = {
   createCountry?: Maybe<Country>;
   /** Create one genre */
   createGenre?: Maybe<Genre>;
+  /** Create one released */
+  createReleased?: Maybe<Released>;
   /** Create one scheduledRelease */
   createScheduledRelease?: Maybe<ScheduledRelease>;
   /** Delete one album from _all_ existing stages. Returns deleted document. */
@@ -2722,6 +2699,15 @@ export type Mutation = {
   deleteManyGenres: BatchPayload;
   /** Delete many Genre documents, return deleted documents */
   deleteManyGenresConnection: GenreConnection;
+  /**
+   * Delete many Released documents
+   * @deprecated Please use the new paginated many mutation (deleteManyReleasesConnection)
+   */
+  deleteManyReleases: BatchPayload;
+  /** Delete many Released documents, return deleted documents */
+  deleteManyReleasesConnection: ReleasedConnection;
+  /** Delete one released from _all_ existing stages. Returns deleted document. */
+  deleteReleased?: Maybe<Released>;
   /** Delete and return scheduled operation */
   deleteScheduledOperation?: Maybe<ScheduledOperation>;
   /** Delete one scheduledRelease from _all_ existing stages. Returns deleted document. */
@@ -2762,6 +2748,15 @@ export type Mutation = {
   publishManyGenres: BatchPayload;
   /** Publish many Genre documents */
   publishManyGenresConnection: GenreConnection;
+  /**
+   * Publish many Released documents
+   * @deprecated Please use the new paginated many mutation (publishManyReleasesConnection)
+   */
+  publishManyReleases: BatchPayload;
+  /** Publish many Released documents */
+  publishManyReleasesConnection: ReleasedConnection;
+  /** Publish one released */
+  publishReleased?: Maybe<Released>;
   /** Schedule to publish one album */
   schedulePublishAlbum?: Maybe<Album>;
   /** Schedule to publish one asset */
@@ -2770,6 +2765,8 @@ export type Mutation = {
   schedulePublishCountry?: Maybe<Country>;
   /** Schedule to publish one genre */
   schedulePublishGenre?: Maybe<Genre>;
+  /** Schedule to publish one released */
+  schedulePublishReleased?: Maybe<Released>;
   /** Unpublish one album from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only. */
   scheduleUnpublishAlbum?: Maybe<Album>;
   /** Unpublish one asset from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only. */
@@ -2778,6 +2775,8 @@ export type Mutation = {
   scheduleUnpublishCountry?: Maybe<Country>;
   /** Unpublish one genre from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only. */
   scheduleUnpublishGenre?: Maybe<Genre>;
+  /** Unpublish one released from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only. */
+  scheduleUnpublishReleased?: Maybe<Released>;
   /** Unpublish one album from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only. */
   unpublishAlbum?: Maybe<Album>;
   /** Unpublish one asset from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only. */
@@ -2814,6 +2813,15 @@ export type Mutation = {
   unpublishManyGenres: BatchPayload;
   /** Find many Genre documents that match criteria in specified stage and unpublish from target stages */
   unpublishManyGenresConnection: GenreConnection;
+  /**
+   * Unpublish many Released documents
+   * @deprecated Please use the new paginated many mutation (unpublishManyReleasesConnection)
+   */
+  unpublishManyReleases: BatchPayload;
+  /** Find many Released documents that match criteria in specified stage and unpublish from target stages */
+  unpublishManyReleasesConnection: ReleasedConnection;
+  /** Unpublish one released from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only. */
+  unpublishReleased?: Maybe<Released>;
   /** Update one album */
   updateAlbum?: Maybe<Album>;
   /** Update one asset */
@@ -2850,6 +2858,15 @@ export type Mutation = {
   updateManyGenres: BatchPayload;
   /** Update many Genre documents */
   updateManyGenresConnection: GenreConnection;
+  /**
+   * Update many releases
+   * @deprecated Please use the new paginated many mutation (updateManyReleasesConnection)
+   */
+  updateManyReleases: BatchPayload;
+  /** Update many Released documents */
+  updateManyReleasesConnection: ReleasedConnection;
+  /** Update one released */
+  updateReleased?: Maybe<Released>;
   /** Update one scheduledRelease */
   updateScheduledRelease?: Maybe<ScheduledRelease>;
   /** Upsert one album */
@@ -2860,6 +2877,8 @@ export type Mutation = {
   upsertCountry?: Maybe<Country>;
   /** Upsert one genre */
   upsertGenre?: Maybe<Genre>;
+  /** Upsert one released */
+  upsertReleased?: Maybe<Released>;
 };
 
 
@@ -2880,6 +2899,11 @@ export type MutationCreateCountryArgs = {
 
 export type MutationCreateGenreArgs = {
   data: GenreCreateInput;
+};
+
+
+export type MutationCreateReleasedArgs = {
+  data: ReleasedCreateInput;
 };
 
 
@@ -2965,6 +2989,26 @@ export type MutationDeleteManyGenresConnectionArgs = {
   last?: InputMaybe<Scalars['Int']['input']>;
   skip?: InputMaybe<Scalars['Int']['input']>;
   where?: InputMaybe<GenreManyWhereInput>;
+};
+
+
+export type MutationDeleteManyReleasesArgs = {
+  where?: InputMaybe<ReleasedManyWhereInput>;
+};
+
+
+export type MutationDeleteManyReleasesConnectionArgs = {
+  after?: InputMaybe<Scalars['ID']['input']>;
+  before?: InputMaybe<Scalars['ID']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<ReleasedManyWhereInput>;
+};
+
+
+export type MutationDeleteReleasedArgs = {
+  where: ReleasedWhereUniqueInput;
 };
 
 
@@ -3083,6 +3127,30 @@ export type MutationPublishManyGenresConnectionArgs = {
 };
 
 
+export type MutationPublishManyReleasesArgs = {
+  to?: Array<Stage>;
+  where?: InputMaybe<ReleasedManyWhereInput>;
+};
+
+
+export type MutationPublishManyReleasesConnectionArgs = {
+  after?: InputMaybe<Scalars['ID']['input']>;
+  before?: InputMaybe<Scalars['ID']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  from?: InputMaybe<Stage>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  to?: Array<Stage>;
+  where?: InputMaybe<ReleasedManyWhereInput>;
+};
+
+
+export type MutationPublishReleasedArgs = {
+  to?: Array<Stage>;
+  where: ReleasedWhereUniqueInput;
+};
+
+
 export type MutationSchedulePublishAlbumArgs = {
   releaseAt?: InputMaybe<Scalars['DateTime']['input']>;
   releaseId?: InputMaybe<Scalars['String']['input']>;
@@ -3118,6 +3186,14 @@ export type MutationSchedulePublishGenreArgs = {
 };
 
 
+export type MutationSchedulePublishReleasedArgs = {
+  releaseAt?: InputMaybe<Scalars['DateTime']['input']>;
+  releaseId?: InputMaybe<Scalars['String']['input']>;
+  to?: Array<Stage>;
+  where: ReleasedWhereUniqueInput;
+};
+
+
 export type MutationScheduleUnpublishAlbumArgs = {
   from?: Array<Stage>;
   releaseAt?: InputMaybe<Scalars['DateTime']['input']>;
@@ -3149,6 +3225,14 @@ export type MutationScheduleUnpublishGenreArgs = {
   releaseAt?: InputMaybe<Scalars['DateTime']['input']>;
   releaseId?: InputMaybe<Scalars['String']['input']>;
   where: GenreWhereUniqueInput;
+};
+
+
+export type MutationScheduleUnpublishReleasedArgs = {
+  from?: Array<Stage>;
+  releaseAt?: InputMaybe<Scalars['DateTime']['input']>;
+  releaseId?: InputMaybe<Scalars['String']['input']>;
+  where: ReleasedWhereUniqueInput;
 };
 
 
@@ -3254,6 +3338,30 @@ export type MutationUnpublishManyGenresConnectionArgs = {
 };
 
 
+export type MutationUnpublishManyReleasesArgs = {
+  from?: Array<Stage>;
+  where?: InputMaybe<ReleasedManyWhereInput>;
+};
+
+
+export type MutationUnpublishManyReleasesConnectionArgs = {
+  after?: InputMaybe<Scalars['ID']['input']>;
+  before?: InputMaybe<Scalars['ID']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  from?: Array<Stage>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  stage?: InputMaybe<Stage>;
+  where?: InputMaybe<ReleasedManyWhereInput>;
+};
+
+
+export type MutationUnpublishReleasedArgs = {
+  from?: Array<Stage>;
+  where: ReleasedWhereUniqueInput;
+};
+
+
 export type MutationUpdateAlbumArgs = {
   data: AlbumUpdateInput;
   where: AlbumWhereUniqueInput;
@@ -3346,6 +3454,29 @@ export type MutationUpdateManyGenresConnectionArgs = {
 };
 
 
+export type MutationUpdateManyReleasesArgs = {
+  data: ReleasedUpdateManyInput;
+  where?: InputMaybe<ReleasedManyWhereInput>;
+};
+
+
+export type MutationUpdateManyReleasesConnectionArgs = {
+  after?: InputMaybe<Scalars['ID']['input']>;
+  before?: InputMaybe<Scalars['ID']['input']>;
+  data: ReleasedUpdateManyInput;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<ReleasedManyWhereInput>;
+};
+
+
+export type MutationUpdateReleasedArgs = {
+  data: ReleasedUpdateInput;
+  where: ReleasedWhereUniqueInput;
+};
+
+
 export type MutationUpdateScheduledReleaseArgs = {
   data: ScheduledReleaseUpdateInput;
   where: ScheduledReleaseWhereUniqueInput;
@@ -3373,6 +3504,12 @@ export type MutationUpsertCountryArgs = {
 export type MutationUpsertGenreArgs = {
   upsert: GenreUpsertInput;
   where: GenreWhereUniqueInput;
+};
+
+
+export type MutationUpsertReleasedArgs = {
+  upsert: ReleasedUpsertInput;
+  where: ReleasedWhereUniqueInput;
 };
 
 /** An object with an ID */
@@ -3441,6 +3578,14 @@ export type Query = {
   genresConnection: GenreConnection;
   /** Fetches an object given its ID */
   node?: Maybe<Node>;
+  /** Retrieve a single released */
+  released?: Maybe<Released>;
+  /** Retrieve document version */
+  releasedVersion?: Maybe<DocumentVersion>;
+  /** Retrieve multiple releases */
+  releases: Array<Released>;
+  /** Retrieve multiple releases using the Relay connection interface */
+  releasesConnection: ReleasedConnection;
   /** Retrieve a single scheduledOperation */
   scheduledOperation?: Maybe<ScheduledOperation>;
   /** Retrieve multiple scheduledOperations */
@@ -3621,6 +3766,44 @@ export type QueryNodeArgs = {
 };
 
 
+export type QueryReleasedArgs = {
+  locales?: Array<Locale>;
+  stage?: Stage;
+  where: ReleasedWhereUniqueInput;
+};
+
+
+export type QueryReleasedVersionArgs = {
+  where: VersionWhereInput;
+};
+
+
+export type QueryReleasesArgs = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  locales?: Array<Locale>;
+  orderBy?: InputMaybe<ReleasedOrderByInput>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  stage?: Stage;
+  where?: InputMaybe<ReleasedWhereInput>;
+};
+
+
+export type QueryReleasesConnectionArgs = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  locales?: Array<Locale>;
+  orderBy?: InputMaybe<ReleasedOrderByInput>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  stage?: Stage;
+  where?: InputMaybe<ReleasedWhereInput>;
+};
+
+
 export type QueryScheduledOperationArgs = {
   locales?: Array<Locale>;
   stage?: Stage;
@@ -3736,6 +3919,504 @@ export type RgbaInput = {
   r: Scalars['RGBAHue']['input'];
 };
 
+export type Released = Node & {
+  __typename?: 'Released';
+  albums: Array<Album>;
+  /** The time the document was created */
+  createdAt: Scalars['DateTime']['output'];
+  /** User that created this document */
+  createdBy?: Maybe<User>;
+  /** Get the document in other stages */
+  documentInStages: Array<Released>;
+  /** List of Released versions */
+  history: Array<Version>;
+  /** The unique identifier */
+  id: Scalars['ID']['output'];
+  /** The time the document was published. Null on documents in draft stage. */
+  publishedAt?: Maybe<Scalars['DateTime']['output']>;
+  /** User that last published this document */
+  publishedBy?: Maybe<User>;
+  scheduledIn: Array<ScheduledOperation>;
+  slug?: Maybe<Scalars['String']['output']>;
+  /** System stage field */
+  stage: Stage;
+  /** The time the document was updated */
+  updatedAt: Scalars['DateTime']['output'];
+  /** User that last updated this document */
+  updatedBy?: Maybe<User>;
+  year: Scalars['String']['output'];
+};
+
+
+export type ReleasedAlbumsArgs = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  forceParentLocale?: InputMaybe<Scalars['Boolean']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  locales?: InputMaybe<Array<Locale>>;
+  orderBy?: InputMaybe<AlbumOrderByInput>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<AlbumWhereInput>;
+};
+
+
+export type ReleasedCreatedByArgs = {
+  forceParentLocale?: InputMaybe<Scalars['Boolean']['input']>;
+  locales?: InputMaybe<Array<Locale>>;
+};
+
+
+export type ReleasedDocumentInStagesArgs = {
+  includeCurrent?: Scalars['Boolean']['input'];
+  inheritLocale?: Scalars['Boolean']['input'];
+  stages?: Array<Stage>;
+};
+
+
+export type ReleasedHistoryArgs = {
+  limit?: Scalars['Int']['input'];
+  skip?: Scalars['Int']['input'];
+  stageOverride?: InputMaybe<Stage>;
+};
+
+
+export type ReleasedPublishedByArgs = {
+  forceParentLocale?: InputMaybe<Scalars['Boolean']['input']>;
+  locales?: InputMaybe<Array<Locale>>;
+};
+
+
+export type ReleasedScheduledInArgs = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  forceParentLocale?: InputMaybe<Scalars['Boolean']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  locales?: InputMaybe<Array<Locale>>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<ScheduledOperationWhereInput>;
+};
+
+
+export type ReleasedUpdatedByArgs = {
+  forceParentLocale?: InputMaybe<Scalars['Boolean']['input']>;
+  locales?: InputMaybe<Array<Locale>>;
+};
+
+export type ReleasedConnectInput = {
+  /** Allow to specify document position in list of connected documents, will default to appending at end of list */
+  position?: InputMaybe<ConnectPositionInput>;
+  /** Document to connect */
+  where: ReleasedWhereUniqueInput;
+};
+
+/** A connection to a list of items. */
+export type ReleasedConnection = {
+  __typename?: 'ReleasedConnection';
+  aggregate: Aggregate;
+  /** A list of edges. */
+  edges: Array<ReleasedEdge>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+};
+
+export type ReleasedCreateInput = {
+  albums?: InputMaybe<AlbumCreateManyInlineInput>;
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>;
+  slug?: InputMaybe<Scalars['String']['input']>;
+  updatedAt?: InputMaybe<Scalars['DateTime']['input']>;
+  year: Scalars['String']['input'];
+};
+
+export type ReleasedCreateManyInlineInput = {
+  /** Connect multiple existing Released documents */
+  connect?: InputMaybe<Array<ReleasedWhereUniqueInput>>;
+  /** Create and connect multiple existing Released documents */
+  create?: InputMaybe<Array<ReleasedCreateInput>>;
+};
+
+export type ReleasedCreateOneInlineInput = {
+  /** Connect one existing Released document */
+  connect?: InputMaybe<ReleasedWhereUniqueInput>;
+  /** Create and connect one Released document */
+  create?: InputMaybe<ReleasedCreateInput>;
+};
+
+/** An edge in a connection. */
+export type ReleasedEdge = {
+  __typename?: 'ReleasedEdge';
+  /** A cursor for use in pagination. */
+  cursor: Scalars['String']['output'];
+  /** The item at the end of the edge. */
+  node: Released;
+};
+
+/** Identifies documents */
+export type ReleasedManyWhereInput = {
+  /** Logical AND on all given filters. */
+  AND?: InputMaybe<Array<ReleasedWhereInput>>;
+  /** Logical NOT on all given filters combined by AND. */
+  NOT?: InputMaybe<Array<ReleasedWhereInput>>;
+  /** Logical OR on all given filters. */
+  OR?: InputMaybe<Array<ReleasedWhereInput>>;
+  /** Contains search across all appropriate fields. */
+  _search?: InputMaybe<Scalars['String']['input']>;
+  albums_every?: InputMaybe<AlbumWhereInput>;
+  albums_none?: InputMaybe<AlbumWhereInput>;
+  albums_some?: InputMaybe<AlbumWhereInput>;
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values greater than the given value. */
+  createdAt_gt?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values greater than or equal the given value. */
+  createdAt_gte?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values that are contained in given list. */
+  createdAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
+  /** All values less than the given value. */
+  createdAt_lt?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values less than or equal the given value. */
+  createdAt_lte?: InputMaybe<Scalars['DateTime']['input']>;
+  /** Any other value that exists and is not equal to the given value. */
+  createdAt_not?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values that are not contained in given list. */
+  createdAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
+  createdBy?: InputMaybe<UserWhereInput>;
+  documentInStages_every?: InputMaybe<ReleasedWhereStageInput>;
+  documentInStages_none?: InputMaybe<ReleasedWhereStageInput>;
+  documentInStages_some?: InputMaybe<ReleasedWhereStageInput>;
+  id?: InputMaybe<Scalars['ID']['input']>;
+  /** All values containing the given string. */
+  id_contains?: InputMaybe<Scalars['ID']['input']>;
+  /** All values ending with the given string. */
+  id_ends_with?: InputMaybe<Scalars['ID']['input']>;
+  /** All values that are contained in given list. */
+  id_in?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  id_not?: InputMaybe<Scalars['ID']['input']>;
+  /** All values not containing the given string. */
+  id_not_contains?: InputMaybe<Scalars['ID']['input']>;
+  /** All values not ending with the given string */
+  id_not_ends_with?: InputMaybe<Scalars['ID']['input']>;
+  /** All values that are not contained in given list. */
+  id_not_in?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** All values not starting with the given string. */
+  id_not_starts_with?: InputMaybe<Scalars['ID']['input']>;
+  /** All values starting with the given string. */
+  id_starts_with?: InputMaybe<Scalars['ID']['input']>;
+  publishedAt?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values greater than the given value. */
+  publishedAt_gt?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values greater than or equal the given value. */
+  publishedAt_gte?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values that are contained in given list. */
+  publishedAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
+  /** All values less than the given value. */
+  publishedAt_lt?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values less than or equal the given value. */
+  publishedAt_lte?: InputMaybe<Scalars['DateTime']['input']>;
+  /** Any other value that exists and is not equal to the given value. */
+  publishedAt_not?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values that are not contained in given list. */
+  publishedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
+  publishedBy?: InputMaybe<UserWhereInput>;
+  scheduledIn_every?: InputMaybe<ScheduledOperationWhereInput>;
+  scheduledIn_none?: InputMaybe<ScheduledOperationWhereInput>;
+  scheduledIn_some?: InputMaybe<ScheduledOperationWhereInput>;
+  slug?: InputMaybe<Scalars['String']['input']>;
+  /** All values containing the given string. */
+  slug_contains?: InputMaybe<Scalars['String']['input']>;
+  /** All values ending with the given string. */
+  slug_ends_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values that are contained in given list. */
+  slug_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  slug_not?: InputMaybe<Scalars['String']['input']>;
+  /** All values not containing the given string. */
+  slug_not_contains?: InputMaybe<Scalars['String']['input']>;
+  /** All values not ending with the given string */
+  slug_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values that are not contained in given list. */
+  slug_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** All values not starting with the given string. */
+  slug_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values starting with the given string. */
+  slug_starts_with?: InputMaybe<Scalars['String']['input']>;
+  updatedAt?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values greater than the given value. */
+  updatedAt_gt?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values greater than or equal the given value. */
+  updatedAt_gte?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values that are contained in given list. */
+  updatedAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
+  /** All values less than the given value. */
+  updatedAt_lt?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values less than or equal the given value. */
+  updatedAt_lte?: InputMaybe<Scalars['DateTime']['input']>;
+  /** Any other value that exists and is not equal to the given value. */
+  updatedAt_not?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values that are not contained in given list. */
+  updatedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
+  updatedBy?: InputMaybe<UserWhereInput>;
+  year?: InputMaybe<Scalars['String']['input']>;
+  /** All values containing the given string. */
+  year_contains?: InputMaybe<Scalars['String']['input']>;
+  /** All values ending with the given string. */
+  year_ends_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values that are contained in given list. */
+  year_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  year_not?: InputMaybe<Scalars['String']['input']>;
+  /** All values not containing the given string. */
+  year_not_contains?: InputMaybe<Scalars['String']['input']>;
+  /** All values not ending with the given string */
+  year_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values that are not contained in given list. */
+  year_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** All values not starting with the given string. */
+  year_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values starting with the given string. */
+  year_starts_with?: InputMaybe<Scalars['String']['input']>;
+};
+
+export enum ReleasedOrderByInput {
+  CreatedAtAsc = 'createdAt_ASC',
+  CreatedAtDesc = 'createdAt_DESC',
+  IdAsc = 'id_ASC',
+  IdDesc = 'id_DESC',
+  PublishedAtAsc = 'publishedAt_ASC',
+  PublishedAtDesc = 'publishedAt_DESC',
+  SlugAsc = 'slug_ASC',
+  SlugDesc = 'slug_DESC',
+  UpdatedAtAsc = 'updatedAt_ASC',
+  UpdatedAtDesc = 'updatedAt_DESC',
+  YearAsc = 'year_ASC',
+  YearDesc = 'year_DESC'
+}
+
+export type ReleasedUpdateInput = {
+  albums?: InputMaybe<AlbumUpdateManyInlineInput>;
+  slug?: InputMaybe<Scalars['String']['input']>;
+  year?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type ReleasedUpdateManyInlineInput = {
+  /** Connect multiple existing Released documents */
+  connect?: InputMaybe<Array<ReleasedConnectInput>>;
+  /** Create and connect multiple Released documents */
+  create?: InputMaybe<Array<ReleasedCreateInput>>;
+  /** Delete multiple Released documents */
+  delete?: InputMaybe<Array<ReleasedWhereUniqueInput>>;
+  /** Disconnect multiple Released documents */
+  disconnect?: InputMaybe<Array<ReleasedWhereUniqueInput>>;
+  /** Override currently-connected documents with multiple existing Released documents */
+  set?: InputMaybe<Array<ReleasedWhereUniqueInput>>;
+  /** Update multiple Released documents */
+  update?: InputMaybe<Array<ReleasedUpdateWithNestedWhereUniqueInput>>;
+  /** Upsert multiple Released documents */
+  upsert?: InputMaybe<Array<ReleasedUpsertWithNestedWhereUniqueInput>>;
+};
+
+export type ReleasedUpdateManyInput = {
+  /** No fields in updateMany data input */
+  _?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type ReleasedUpdateManyWithNestedWhereInput = {
+  /** Update many input */
+  data: ReleasedUpdateManyInput;
+  /** Document search */
+  where: ReleasedWhereInput;
+};
+
+export type ReleasedUpdateOneInlineInput = {
+  /** Connect existing Released document */
+  connect?: InputMaybe<ReleasedWhereUniqueInput>;
+  /** Create and connect one Released document */
+  create?: InputMaybe<ReleasedCreateInput>;
+  /** Delete currently connected Released document */
+  delete?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Disconnect currently connected Released document */
+  disconnect?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Update single Released document */
+  update?: InputMaybe<ReleasedUpdateWithNestedWhereUniqueInput>;
+  /** Upsert single Released document */
+  upsert?: InputMaybe<ReleasedUpsertWithNestedWhereUniqueInput>;
+};
+
+export type ReleasedUpdateWithNestedWhereUniqueInput = {
+  /** Document to update */
+  data: ReleasedUpdateInput;
+  /** Unique document search */
+  where: ReleasedWhereUniqueInput;
+};
+
+export type ReleasedUpsertInput = {
+  /** Create document if it didn't exist */
+  create: ReleasedCreateInput;
+  /** Update document if it exists */
+  update: ReleasedUpdateInput;
+};
+
+export type ReleasedUpsertWithNestedWhereUniqueInput = {
+  /** Upsert data */
+  data: ReleasedUpsertInput;
+  /** Unique document search */
+  where: ReleasedWhereUniqueInput;
+};
+
+/** This contains a set of filters that can be used to compare values internally */
+export type ReleasedWhereComparatorInput = {
+  /** This field can be used to request to check if the entry is outdated by internal comparison */
+  outdated_to?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+/** Identifies documents */
+export type ReleasedWhereInput = {
+  /** Logical AND on all given filters. */
+  AND?: InputMaybe<Array<ReleasedWhereInput>>;
+  /** Logical NOT on all given filters combined by AND. */
+  NOT?: InputMaybe<Array<ReleasedWhereInput>>;
+  /** Logical OR on all given filters. */
+  OR?: InputMaybe<Array<ReleasedWhereInput>>;
+  /** Contains search across all appropriate fields. */
+  _search?: InputMaybe<Scalars['String']['input']>;
+  albums_every?: InputMaybe<AlbumWhereInput>;
+  albums_none?: InputMaybe<AlbumWhereInput>;
+  albums_some?: InputMaybe<AlbumWhereInput>;
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values greater than the given value. */
+  createdAt_gt?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values greater than or equal the given value. */
+  createdAt_gte?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values that are contained in given list. */
+  createdAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
+  /** All values less than the given value. */
+  createdAt_lt?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values less than or equal the given value. */
+  createdAt_lte?: InputMaybe<Scalars['DateTime']['input']>;
+  /** Any other value that exists and is not equal to the given value. */
+  createdAt_not?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values that are not contained in given list. */
+  createdAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
+  createdBy?: InputMaybe<UserWhereInput>;
+  documentInStages_every?: InputMaybe<ReleasedWhereStageInput>;
+  documentInStages_none?: InputMaybe<ReleasedWhereStageInput>;
+  documentInStages_some?: InputMaybe<ReleasedWhereStageInput>;
+  id?: InputMaybe<Scalars['ID']['input']>;
+  /** All values containing the given string. */
+  id_contains?: InputMaybe<Scalars['ID']['input']>;
+  /** All values ending with the given string. */
+  id_ends_with?: InputMaybe<Scalars['ID']['input']>;
+  /** All values that are contained in given list. */
+  id_in?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  id_not?: InputMaybe<Scalars['ID']['input']>;
+  /** All values not containing the given string. */
+  id_not_contains?: InputMaybe<Scalars['ID']['input']>;
+  /** All values not ending with the given string */
+  id_not_ends_with?: InputMaybe<Scalars['ID']['input']>;
+  /** All values that are not contained in given list. */
+  id_not_in?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** All values not starting with the given string. */
+  id_not_starts_with?: InputMaybe<Scalars['ID']['input']>;
+  /** All values starting with the given string. */
+  id_starts_with?: InputMaybe<Scalars['ID']['input']>;
+  publishedAt?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values greater than the given value. */
+  publishedAt_gt?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values greater than or equal the given value. */
+  publishedAt_gte?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values that are contained in given list. */
+  publishedAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
+  /** All values less than the given value. */
+  publishedAt_lt?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values less than or equal the given value. */
+  publishedAt_lte?: InputMaybe<Scalars['DateTime']['input']>;
+  /** Any other value that exists and is not equal to the given value. */
+  publishedAt_not?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values that are not contained in given list. */
+  publishedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
+  publishedBy?: InputMaybe<UserWhereInput>;
+  scheduledIn_every?: InputMaybe<ScheduledOperationWhereInput>;
+  scheduledIn_none?: InputMaybe<ScheduledOperationWhereInput>;
+  scheduledIn_some?: InputMaybe<ScheduledOperationWhereInput>;
+  slug?: InputMaybe<Scalars['String']['input']>;
+  /** All values containing the given string. */
+  slug_contains?: InputMaybe<Scalars['String']['input']>;
+  /** All values ending with the given string. */
+  slug_ends_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values that are contained in given list. */
+  slug_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  slug_not?: InputMaybe<Scalars['String']['input']>;
+  /** All values not containing the given string. */
+  slug_not_contains?: InputMaybe<Scalars['String']['input']>;
+  /** All values not ending with the given string */
+  slug_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values that are not contained in given list. */
+  slug_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** All values not starting with the given string. */
+  slug_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values starting with the given string. */
+  slug_starts_with?: InputMaybe<Scalars['String']['input']>;
+  updatedAt?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values greater than the given value. */
+  updatedAt_gt?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values greater than or equal the given value. */
+  updatedAt_gte?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values that are contained in given list. */
+  updatedAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
+  /** All values less than the given value. */
+  updatedAt_lt?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values less than or equal the given value. */
+  updatedAt_lte?: InputMaybe<Scalars['DateTime']['input']>;
+  /** Any other value that exists and is not equal to the given value. */
+  updatedAt_not?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values that are not contained in given list. */
+  updatedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
+  updatedBy?: InputMaybe<UserWhereInput>;
+  year?: InputMaybe<Scalars['String']['input']>;
+  /** All values containing the given string. */
+  year_contains?: InputMaybe<Scalars['String']['input']>;
+  /** All values ending with the given string. */
+  year_ends_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values that are contained in given list. */
+  year_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  year_not?: InputMaybe<Scalars['String']['input']>;
+  /** All values not containing the given string. */
+  year_not_contains?: InputMaybe<Scalars['String']['input']>;
+  /** All values not ending with the given string */
+  year_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values that are not contained in given list. */
+  year_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** All values not starting with the given string. */
+  year_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values starting with the given string. */
+  year_starts_with?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** The document in stages filter allows specifying a stage entry to cross compare the same document between different stages */
+export type ReleasedWhereStageInput = {
+  /** Logical AND on all given filters. */
+  AND?: InputMaybe<Array<ReleasedWhereStageInput>>;
+  /** Logical NOT on all given filters combined by AND. */
+  NOT?: InputMaybe<Array<ReleasedWhereStageInput>>;
+  /** Logical OR on all given filters. */
+  OR?: InputMaybe<Array<ReleasedWhereStageInput>>;
+  /** This field contains fields which can be set as true or false to specify an internal comparison */
+  compareWithParent?: InputMaybe<ReleasedWhereComparatorInput>;
+  /** Specify the stage to compare with */
+  stage?: InputMaybe<Stage>;
+};
+
+/** References Released record uniquely */
+export type ReleasedWhereUniqueInput = {
+  id?: InputMaybe<Scalars['ID']['input']>;
+  slug?: InputMaybe<Scalars['String']['input']>;
+  year?: InputMaybe<Scalars['String']['input']>;
+};
+
 /** Custom type representing a rich text value comprising of raw rich text ast, html, markdown and text values */
 export type RichText = {
   __typename?: 'RichText';
@@ -3831,7 +4512,7 @@ export type ScheduledOperationUpdatedByArgs = {
   locales?: InputMaybe<Array<Locale>>;
 };
 
-export type ScheduledOperationAffectedDocument = Album | Asset | Country | Genre;
+export type ScheduledOperationAffectedDocument = Album | Asset | Country | Genre | Released;
 
 export type ScheduledOperationConnectInput = {
   /** Allow to specify document position in list of connected documents, will default to appending at end of list */
@@ -5287,19 +5968,19 @@ export type GetAlbumBySlugQueryVariables = Exact<{
 }>;
 
 
-export type GetAlbumBySlugQuery = { __typename?: 'Query', album?: { __typename?: 'Album', artist?: string | null, content?: string | null, slug?: string | null, social?: any | null, stage: Stage, title: string, tracklist?: any | null, released?: any | null, label?: string | null, id: string, genres: Array<{ __typename?: 'Genre', slug?: string | null, title?: string | null }>, country?: { __typename?: 'Country', title?: string | null, slug?: string | null } | null, cover: { __typename?: 'Asset', url: string } } | null };
+export type GetAlbumBySlugQuery = { __typename?: 'Query', album?: { __typename?: 'Album', artist?: string | null, content?: string | null, slug?: string | null, social?: any | null, stage: Stage, title: string, tracklist?: any | null, label?: string | null, id: string, genres: Array<{ __typename?: 'Genre', slug?: string | null, title?: string | null }>, country?: { __typename?: 'Country', title?: string | null, slug?: string | null } | null, cover: { __typename?: 'Asset', url: string }, released?: { __typename?: 'Released', year: string } | null } | null };
 
 export type GetAutocompleteBySearchQueryVariables = Exact<{
   search?: InputMaybe<Scalars['String']['input']>;
 }>;
 
 
-export type GetAutocompleteBySearchQuery = { __typename?: 'Query', albums: Array<{ __typename?: 'Album', id: string, title: string, slug?: string | null }>, genres: Array<{ __typename?: 'Genre', id: string, title?: string | null, slug?: string | null }>, countries: Array<{ __typename?: 'Country', id: string, title?: string | null, slug?: string | null }> };
+export type GetAutocompleteBySearchQuery = { __typename?: 'Query', albums: Array<{ __typename?: 'Album', id: string, title: string, slug?: string | null }>, genres: Array<{ __typename?: 'Genre', id: string, title?: string | null, slug?: string | null }>, countries: Array<{ __typename?: 'Country', id: string, title?: string | null, slug?: string | null }>, releases: Array<{ __typename?: 'Released', id: string, year: string }> };
 
 
 export const GetAlbumsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"getAlbums"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"albums"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"slug"}},{"kind":"Field","name":{"kind":"Name","value":"artist"}},{"kind":"Field","name":{"kind":"Name","value":"cover"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"url"}}]}}]}}]}}]} as unknown as DocumentNode<GetAlbumsQuery, GetAlbumsQueryVariables>;
-export const GetAlbumBySlugDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"getAlbumBySlug"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"slug"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"album"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"slug"},"value":{"kind":"Variable","name":{"kind":"Name","value":"slug"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"artist"}},{"kind":"Field","name":{"kind":"Name","value":"content"}},{"kind":"Field","name":{"kind":"Name","value":"genres"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"slug"}},{"kind":"Field","name":{"kind":"Name","value":"title"}}]}},{"kind":"Field","name":{"kind":"Name","value":"country"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"slug"}}]}},{"kind":"Field","name":{"kind":"Name","value":"cover"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"url"}}]}},{"kind":"Field","name":{"kind":"Name","value":"slug"}},{"kind":"Field","name":{"kind":"Name","value":"social"}},{"kind":"Field","name":{"kind":"Name","value":"stage"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"tracklist"}},{"kind":"Field","name":{"kind":"Name","value":"released"}},{"kind":"Field","name":{"kind":"Name","value":"label"}},{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<GetAlbumBySlugQuery, GetAlbumBySlugQueryVariables>;
-export const GetAutocompleteBySearchDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"getAutocompleteBySearch"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"search"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"albums"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"title_contains"},"value":{"kind":"Variable","name":{"kind":"Name","value":"search"}}}]}},{"kind":"Argument","name":{"kind":"Name","value":"first"},"value":{"kind":"IntValue","value":"2"}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"slug"}}]}},{"kind":"Field","name":{"kind":"Name","value":"genres"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"title_contains"},"value":{"kind":"Variable","name":{"kind":"Name","value":"search"}}}]}},{"kind":"Argument","name":{"kind":"Name","value":"first"},"value":{"kind":"IntValue","value":"2"}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"slug"}}]}},{"kind":"Field","name":{"kind":"Name","value":"countries"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"title_contains"},"value":{"kind":"Variable","name":{"kind":"Name","value":"search"}}}]}},{"kind":"Argument","name":{"kind":"Name","value":"first"},"value":{"kind":"IntValue","value":"2"}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"slug"}}]}}]}}]} as unknown as DocumentNode<GetAutocompleteBySearchQuery, GetAutocompleteBySearchQueryVariables>;
+export const GetAlbumBySlugDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"getAlbumBySlug"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"slug"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"album"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"slug"},"value":{"kind":"Variable","name":{"kind":"Name","value":"slug"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"artist"}},{"kind":"Field","name":{"kind":"Name","value":"content"}},{"kind":"Field","name":{"kind":"Name","value":"genres"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"slug"}},{"kind":"Field","name":{"kind":"Name","value":"title"}}]}},{"kind":"Field","name":{"kind":"Name","value":"country"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"slug"}}]}},{"kind":"Field","name":{"kind":"Name","value":"cover"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"url"}}]}},{"kind":"Field","name":{"kind":"Name","value":"slug"}},{"kind":"Field","name":{"kind":"Name","value":"social"}},{"kind":"Field","name":{"kind":"Name","value":"stage"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"tracklist"}},{"kind":"Field","name":{"kind":"Name","value":"released"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"year"}}]}},{"kind":"Field","name":{"kind":"Name","value":"label"}},{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<GetAlbumBySlugQuery, GetAlbumBySlugQueryVariables>;
+export const GetAutocompleteBySearchDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"getAutocompleteBySearch"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"search"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"albums"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"title_starts_with"},"value":{"kind":"Variable","name":{"kind":"Name","value":"search"}}}]}},{"kind":"Argument","name":{"kind":"Name","value":"first"},"value":{"kind":"IntValue","value":"2"}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"slug"}}]}},{"kind":"Field","name":{"kind":"Name","value":"genres"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"title_starts_with"},"value":{"kind":"Variable","name":{"kind":"Name","value":"search"}}}]}},{"kind":"Argument","name":{"kind":"Name","value":"first"},"value":{"kind":"IntValue","value":"2"}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"slug"}}]}},{"kind":"Field","name":{"kind":"Name","value":"countries"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"title_starts_with"},"value":{"kind":"Variable","name":{"kind":"Name","value":"search"}}}]}},{"kind":"Argument","name":{"kind":"Name","value":"first"},"value":{"kind":"IntValue","value":"2"}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"slug"}}]}},{"kind":"Field","name":{"kind":"Name","value":"releases"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"year_starts_with"},"value":{"kind":"Variable","name":{"kind":"Name","value":"search"}}}]}},{"kind":"Argument","name":{"kind":"Name","value":"first"},"value":{"kind":"IntValue","value":"2"}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"year"}}]}}]}}]} as unknown as DocumentNode<GetAutocompleteBySearchQuery, GetAutocompleteBySearchQueryVariables>;
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: { input: string | number; output: string; }
@@ -5349,7 +6030,7 @@ export type Album = Node & {
   publishedAt?: Maybe<Scalars['DateTime']['output']>;
   /** User that last published this document */
   publishedBy?: Maybe<User>;
-  released?: Maybe<Scalars['Date']['output']>;
+  released?: Maybe<Released>;
   scheduledIn: Array<ScheduledOperation>;
   slug?: Maybe<Scalars['String']['output']>;
   social?: Maybe<Scalars['Json']['output']>;
@@ -5415,6 +6096,12 @@ export type AlbumPublishedByArgs = {
 };
 
 
+export type AlbumReleasedArgs = {
+  forceParentLocale?: InputMaybe<Scalars['Boolean']['input']>;
+  locales?: InputMaybe<Array<Locale>>;
+};
+
+
 export type AlbumScheduledInArgs = {
   after?: InputMaybe<Scalars['String']['input']>;
   before?: InputMaybe<Scalars['String']['input']>;
@@ -5457,7 +6144,7 @@ export type AlbumCreateInput = {
   createdAt?: InputMaybe<Scalars['DateTime']['input']>;
   genres?: InputMaybe<GenreCreateManyInlineInput>;
   label?: InputMaybe<Scalars['String']['input']>;
-  released?: InputMaybe<Scalars['Date']['input']>;
+  released?: InputMaybe<ReleasedCreateOneInlineInput>;
   slug?: InputMaybe<Scalars['String']['input']>;
   social?: InputMaybe<Scalars['Json']['input']>;
   title: Scalars['String']['input'];
@@ -5614,21 +6301,7 @@ export type AlbumManyWhereInput = {
   /** All values that are not contained in given list. */
   publishedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
   publishedBy?: InputMaybe<UserWhereInput>;
-  released?: InputMaybe<Scalars['Date']['input']>;
-  /** All values greater than the given value. */
-  released_gt?: InputMaybe<Scalars['Date']['input']>;
-  /** All values greater than or equal the given value. */
-  released_gte?: InputMaybe<Scalars['Date']['input']>;
-  /** All values that are contained in given list. */
-  released_in?: InputMaybe<Array<InputMaybe<Scalars['Date']['input']>>>;
-  /** All values less than the given value. */
-  released_lt?: InputMaybe<Scalars['Date']['input']>;
-  /** All values less than or equal the given value. */
-  released_lte?: InputMaybe<Scalars['Date']['input']>;
-  /** Any other value that exists and is not equal to the given value. */
-  released_not?: InputMaybe<Scalars['Date']['input']>;
-  /** All values that are not contained in given list. */
-  released_not_in?: InputMaybe<Array<InputMaybe<Scalars['Date']['input']>>>;
+  released?: InputMaybe<ReleasedWhereInput>;
   scheduledIn_every?: InputMaybe<ScheduledOperationWhereInput>;
   scheduledIn_none?: InputMaybe<ScheduledOperationWhereInput>;
   scheduledIn_some?: InputMaybe<ScheduledOperationWhereInput>;
@@ -5719,8 +6392,6 @@ export enum AlbumOrderByInput {
   LabelDesc = 'label_DESC',
   PublishedAtAsc = 'publishedAt_ASC',
   PublishedAtDesc = 'publishedAt_DESC',
-  ReleasedAsc = 'released_ASC',
-  ReleasedDesc = 'released_DESC',
   SlugAsc = 'slug_ASC',
   SlugDesc = 'slug_DESC',
   TitleAsc = 'title_ASC',
@@ -5736,7 +6407,7 @@ export type AlbumUpdateInput = {
   cover?: InputMaybe<AssetUpdateOneInlineInput>;
   genres?: InputMaybe<GenreUpdateManyInlineInput>;
   label?: InputMaybe<Scalars['String']['input']>;
-  released?: InputMaybe<Scalars['Date']['input']>;
+  released?: InputMaybe<ReleasedUpdateOneInlineInput>;
   slug?: InputMaybe<Scalars['String']['input']>;
   social?: InputMaybe<Scalars['Json']['input']>;
   title?: InputMaybe<Scalars['String']['input']>;
@@ -5764,7 +6435,6 @@ export type AlbumUpdateManyInput = {
   artist?: InputMaybe<Scalars['String']['input']>;
   content?: InputMaybe<Scalars['String']['input']>;
   label?: InputMaybe<Scalars['String']['input']>;
-  released?: InputMaybe<Scalars['Date']['input']>;
   social?: InputMaybe<Scalars['Json']['input']>;
   title?: InputMaybe<Scalars['String']['input']>;
   tracklist?: InputMaybe<Scalars['Json']['input']>;
@@ -5945,21 +6615,7 @@ export type AlbumWhereInput = {
   /** All values that are not contained in given list. */
   publishedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
   publishedBy?: InputMaybe<UserWhereInput>;
-  released?: InputMaybe<Scalars['Date']['input']>;
-  /** All values greater than the given value. */
-  released_gt?: InputMaybe<Scalars['Date']['input']>;
-  /** All values greater than or equal the given value. */
-  released_gte?: InputMaybe<Scalars['Date']['input']>;
-  /** All values that are contained in given list. */
-  released_in?: InputMaybe<Array<InputMaybe<Scalars['Date']['input']>>>;
-  /** All values less than the given value. */
-  released_lt?: InputMaybe<Scalars['Date']['input']>;
-  /** All values less than or equal the given value. */
-  released_lte?: InputMaybe<Scalars['Date']['input']>;
-  /** Any other value that exists and is not equal to the given value. */
-  released_not?: InputMaybe<Scalars['Date']['input']>;
-  /** All values that are not contained in given list. */
-  released_not_in?: InputMaybe<Array<InputMaybe<Scalars['Date']['input']>>>;
+  released?: InputMaybe<ReleasedWhereInput>;
   scheduledIn_every?: InputMaybe<ScheduledOperationWhereInput>;
   scheduledIn_none?: InputMaybe<ScheduledOperationWhereInput>;
   scheduledIn_some?: InputMaybe<ScheduledOperationWhereInput>;
@@ -7977,6 +8633,8 @@ export type Mutation = {
   createCountry?: Maybe<Country>;
   /** Create one genre */
   createGenre?: Maybe<Genre>;
+  /** Create one released */
+  createReleased?: Maybe<Released>;
   /** Create one scheduledRelease */
   createScheduledRelease?: Maybe<ScheduledRelease>;
   /** Delete one album from _all_ existing stages. Returns deleted document. */
@@ -8015,6 +8673,15 @@ export type Mutation = {
   deleteManyGenres: BatchPayload;
   /** Delete many Genre documents, return deleted documents */
   deleteManyGenresConnection: GenreConnection;
+  /**
+   * Delete many Released documents
+   * @deprecated Please use the new paginated many mutation (deleteManyReleasesConnection)
+   */
+  deleteManyReleases: BatchPayload;
+  /** Delete many Released documents, return deleted documents */
+  deleteManyReleasesConnection: ReleasedConnection;
+  /** Delete one released from _all_ existing stages. Returns deleted document. */
+  deleteReleased?: Maybe<Released>;
   /** Delete and return scheduled operation */
   deleteScheduledOperation?: Maybe<ScheduledOperation>;
   /** Delete one scheduledRelease from _all_ existing stages. Returns deleted document. */
@@ -8055,6 +8722,15 @@ export type Mutation = {
   publishManyGenres: BatchPayload;
   /** Publish many Genre documents */
   publishManyGenresConnection: GenreConnection;
+  /**
+   * Publish many Released documents
+   * @deprecated Please use the new paginated many mutation (publishManyReleasesConnection)
+   */
+  publishManyReleases: BatchPayload;
+  /** Publish many Released documents */
+  publishManyReleasesConnection: ReleasedConnection;
+  /** Publish one released */
+  publishReleased?: Maybe<Released>;
   /** Schedule to publish one album */
   schedulePublishAlbum?: Maybe<Album>;
   /** Schedule to publish one asset */
@@ -8063,6 +8739,8 @@ export type Mutation = {
   schedulePublishCountry?: Maybe<Country>;
   /** Schedule to publish one genre */
   schedulePublishGenre?: Maybe<Genre>;
+  /** Schedule to publish one released */
+  schedulePublishReleased?: Maybe<Released>;
   /** Unpublish one album from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only. */
   scheduleUnpublishAlbum?: Maybe<Album>;
   /** Unpublish one asset from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only. */
@@ -8071,6 +8749,8 @@ export type Mutation = {
   scheduleUnpublishCountry?: Maybe<Country>;
   /** Unpublish one genre from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only. */
   scheduleUnpublishGenre?: Maybe<Genre>;
+  /** Unpublish one released from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only. */
+  scheduleUnpublishReleased?: Maybe<Released>;
   /** Unpublish one album from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only. */
   unpublishAlbum?: Maybe<Album>;
   /** Unpublish one asset from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only. */
@@ -8107,6 +8787,15 @@ export type Mutation = {
   unpublishManyGenres: BatchPayload;
   /** Find many Genre documents that match criteria in specified stage and unpublish from target stages */
   unpublishManyGenresConnection: GenreConnection;
+  /**
+   * Unpublish many Released documents
+   * @deprecated Please use the new paginated many mutation (unpublishManyReleasesConnection)
+   */
+  unpublishManyReleases: BatchPayload;
+  /** Find many Released documents that match criteria in specified stage and unpublish from target stages */
+  unpublishManyReleasesConnection: ReleasedConnection;
+  /** Unpublish one released from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only. */
+  unpublishReleased?: Maybe<Released>;
   /** Update one album */
   updateAlbum?: Maybe<Album>;
   /** Update one asset */
@@ -8143,6 +8832,15 @@ export type Mutation = {
   updateManyGenres: BatchPayload;
   /** Update many Genre documents */
   updateManyGenresConnection: GenreConnection;
+  /**
+   * Update many releases
+   * @deprecated Please use the new paginated many mutation (updateManyReleasesConnection)
+   */
+  updateManyReleases: BatchPayload;
+  /** Update many Released documents */
+  updateManyReleasesConnection: ReleasedConnection;
+  /** Update one released */
+  updateReleased?: Maybe<Released>;
   /** Update one scheduledRelease */
   updateScheduledRelease?: Maybe<ScheduledRelease>;
   /** Upsert one album */
@@ -8153,6 +8851,8 @@ export type Mutation = {
   upsertCountry?: Maybe<Country>;
   /** Upsert one genre */
   upsertGenre?: Maybe<Genre>;
+  /** Upsert one released */
+  upsertReleased?: Maybe<Released>;
 };
 
 
@@ -8173,6 +8873,11 @@ export type MutationCreateCountryArgs = {
 
 export type MutationCreateGenreArgs = {
   data: GenreCreateInput;
+};
+
+
+export type MutationCreateReleasedArgs = {
+  data: ReleasedCreateInput;
 };
 
 
@@ -8258,6 +8963,26 @@ export type MutationDeleteManyGenresConnectionArgs = {
   last?: InputMaybe<Scalars['Int']['input']>;
   skip?: InputMaybe<Scalars['Int']['input']>;
   where?: InputMaybe<GenreManyWhereInput>;
+};
+
+
+export type MutationDeleteManyReleasesArgs = {
+  where?: InputMaybe<ReleasedManyWhereInput>;
+};
+
+
+export type MutationDeleteManyReleasesConnectionArgs = {
+  after?: InputMaybe<Scalars['ID']['input']>;
+  before?: InputMaybe<Scalars['ID']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<ReleasedManyWhereInput>;
+};
+
+
+export type MutationDeleteReleasedArgs = {
+  where: ReleasedWhereUniqueInput;
 };
 
 
@@ -8376,6 +9101,30 @@ export type MutationPublishManyGenresConnectionArgs = {
 };
 
 
+export type MutationPublishManyReleasesArgs = {
+  to?: Array<Stage>;
+  where?: InputMaybe<ReleasedManyWhereInput>;
+};
+
+
+export type MutationPublishManyReleasesConnectionArgs = {
+  after?: InputMaybe<Scalars['ID']['input']>;
+  before?: InputMaybe<Scalars['ID']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  from?: InputMaybe<Stage>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  to?: Array<Stage>;
+  where?: InputMaybe<ReleasedManyWhereInput>;
+};
+
+
+export type MutationPublishReleasedArgs = {
+  to?: Array<Stage>;
+  where: ReleasedWhereUniqueInput;
+};
+
+
 export type MutationSchedulePublishAlbumArgs = {
   releaseAt?: InputMaybe<Scalars['DateTime']['input']>;
   releaseId?: InputMaybe<Scalars['String']['input']>;
@@ -8411,6 +9160,14 @@ export type MutationSchedulePublishGenreArgs = {
 };
 
 
+export type MutationSchedulePublishReleasedArgs = {
+  releaseAt?: InputMaybe<Scalars['DateTime']['input']>;
+  releaseId?: InputMaybe<Scalars['String']['input']>;
+  to?: Array<Stage>;
+  where: ReleasedWhereUniqueInput;
+};
+
+
 export type MutationScheduleUnpublishAlbumArgs = {
   from?: Array<Stage>;
   releaseAt?: InputMaybe<Scalars['DateTime']['input']>;
@@ -8442,6 +9199,14 @@ export type MutationScheduleUnpublishGenreArgs = {
   releaseAt?: InputMaybe<Scalars['DateTime']['input']>;
   releaseId?: InputMaybe<Scalars['String']['input']>;
   where: GenreWhereUniqueInput;
+};
+
+
+export type MutationScheduleUnpublishReleasedArgs = {
+  from?: Array<Stage>;
+  releaseAt?: InputMaybe<Scalars['DateTime']['input']>;
+  releaseId?: InputMaybe<Scalars['String']['input']>;
+  where: ReleasedWhereUniqueInput;
 };
 
 
@@ -8547,6 +9312,30 @@ export type MutationUnpublishManyGenresConnectionArgs = {
 };
 
 
+export type MutationUnpublishManyReleasesArgs = {
+  from?: Array<Stage>;
+  where?: InputMaybe<ReleasedManyWhereInput>;
+};
+
+
+export type MutationUnpublishManyReleasesConnectionArgs = {
+  after?: InputMaybe<Scalars['ID']['input']>;
+  before?: InputMaybe<Scalars['ID']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  from?: Array<Stage>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  stage?: InputMaybe<Stage>;
+  where?: InputMaybe<ReleasedManyWhereInput>;
+};
+
+
+export type MutationUnpublishReleasedArgs = {
+  from?: Array<Stage>;
+  where: ReleasedWhereUniqueInput;
+};
+
+
 export type MutationUpdateAlbumArgs = {
   data: AlbumUpdateInput;
   where: AlbumWhereUniqueInput;
@@ -8639,6 +9428,29 @@ export type MutationUpdateManyGenresConnectionArgs = {
 };
 
 
+export type MutationUpdateManyReleasesArgs = {
+  data: ReleasedUpdateManyInput;
+  where?: InputMaybe<ReleasedManyWhereInput>;
+};
+
+
+export type MutationUpdateManyReleasesConnectionArgs = {
+  after?: InputMaybe<Scalars['ID']['input']>;
+  before?: InputMaybe<Scalars['ID']['input']>;
+  data: ReleasedUpdateManyInput;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<ReleasedManyWhereInput>;
+};
+
+
+export type MutationUpdateReleasedArgs = {
+  data: ReleasedUpdateInput;
+  where: ReleasedWhereUniqueInput;
+};
+
+
 export type MutationUpdateScheduledReleaseArgs = {
   data: ScheduledReleaseUpdateInput;
   where: ScheduledReleaseWhereUniqueInput;
@@ -8666,6 +9478,12 @@ export type MutationUpsertCountryArgs = {
 export type MutationUpsertGenreArgs = {
   upsert: GenreUpsertInput;
   where: GenreWhereUniqueInput;
+};
+
+
+export type MutationUpsertReleasedArgs = {
+  upsert: ReleasedUpsertInput;
+  where: ReleasedWhereUniqueInput;
 };
 
 /** An object with an ID */
@@ -8734,6 +9552,14 @@ export type Query = {
   genresConnection: GenreConnection;
   /** Fetches an object given its ID */
   node?: Maybe<Node>;
+  /** Retrieve a single released */
+  released?: Maybe<Released>;
+  /** Retrieve document version */
+  releasedVersion?: Maybe<DocumentVersion>;
+  /** Retrieve multiple releases */
+  releases: Array<Released>;
+  /** Retrieve multiple releases using the Relay connection interface */
+  releasesConnection: ReleasedConnection;
   /** Retrieve a single scheduledOperation */
   scheduledOperation?: Maybe<ScheduledOperation>;
   /** Retrieve multiple scheduledOperations */
@@ -8914,6 +9740,44 @@ export type QueryNodeArgs = {
 };
 
 
+export type QueryReleasedArgs = {
+  locales?: Array<Locale>;
+  stage?: Stage;
+  where: ReleasedWhereUniqueInput;
+};
+
+
+export type QueryReleasedVersionArgs = {
+  where: VersionWhereInput;
+};
+
+
+export type QueryReleasesArgs = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  locales?: Array<Locale>;
+  orderBy?: InputMaybe<ReleasedOrderByInput>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  stage?: Stage;
+  where?: InputMaybe<ReleasedWhereInput>;
+};
+
+
+export type QueryReleasesConnectionArgs = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  locales?: Array<Locale>;
+  orderBy?: InputMaybe<ReleasedOrderByInput>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  stage?: Stage;
+  where?: InputMaybe<ReleasedWhereInput>;
+};
+
+
 export type QueryScheduledOperationArgs = {
   locales?: Array<Locale>;
   stage?: Stage;
@@ -9029,6 +9893,504 @@ export type RgbaInput = {
   r: Scalars['RGBAHue']['input'];
 };
 
+export type Released = Node & {
+  __typename?: 'Released';
+  albums: Array<Album>;
+  /** The time the document was created */
+  createdAt: Scalars['DateTime']['output'];
+  /** User that created this document */
+  createdBy?: Maybe<User>;
+  /** Get the document in other stages */
+  documentInStages: Array<Released>;
+  /** List of Released versions */
+  history: Array<Version>;
+  /** The unique identifier */
+  id: Scalars['ID']['output'];
+  /** The time the document was published. Null on documents in draft stage. */
+  publishedAt?: Maybe<Scalars['DateTime']['output']>;
+  /** User that last published this document */
+  publishedBy?: Maybe<User>;
+  scheduledIn: Array<ScheduledOperation>;
+  slug?: Maybe<Scalars['String']['output']>;
+  /** System stage field */
+  stage: Stage;
+  /** The time the document was updated */
+  updatedAt: Scalars['DateTime']['output'];
+  /** User that last updated this document */
+  updatedBy?: Maybe<User>;
+  year: Scalars['String']['output'];
+};
+
+
+export type ReleasedAlbumsArgs = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  forceParentLocale?: InputMaybe<Scalars['Boolean']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  locales?: InputMaybe<Array<Locale>>;
+  orderBy?: InputMaybe<AlbumOrderByInput>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<AlbumWhereInput>;
+};
+
+
+export type ReleasedCreatedByArgs = {
+  forceParentLocale?: InputMaybe<Scalars['Boolean']['input']>;
+  locales?: InputMaybe<Array<Locale>>;
+};
+
+
+export type ReleasedDocumentInStagesArgs = {
+  includeCurrent?: Scalars['Boolean']['input'];
+  inheritLocale?: Scalars['Boolean']['input'];
+  stages?: Array<Stage>;
+};
+
+
+export type ReleasedHistoryArgs = {
+  limit?: Scalars['Int']['input'];
+  skip?: Scalars['Int']['input'];
+  stageOverride?: InputMaybe<Stage>;
+};
+
+
+export type ReleasedPublishedByArgs = {
+  forceParentLocale?: InputMaybe<Scalars['Boolean']['input']>;
+  locales?: InputMaybe<Array<Locale>>;
+};
+
+
+export type ReleasedScheduledInArgs = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  forceParentLocale?: InputMaybe<Scalars['Boolean']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  locales?: InputMaybe<Array<Locale>>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<ScheduledOperationWhereInput>;
+};
+
+
+export type ReleasedUpdatedByArgs = {
+  forceParentLocale?: InputMaybe<Scalars['Boolean']['input']>;
+  locales?: InputMaybe<Array<Locale>>;
+};
+
+export type ReleasedConnectInput = {
+  /** Allow to specify document position in list of connected documents, will default to appending at end of list */
+  position?: InputMaybe<ConnectPositionInput>;
+  /** Document to connect */
+  where: ReleasedWhereUniqueInput;
+};
+
+/** A connection to a list of items. */
+export type ReleasedConnection = {
+  __typename?: 'ReleasedConnection';
+  aggregate: Aggregate;
+  /** A list of edges. */
+  edges: Array<ReleasedEdge>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+};
+
+export type ReleasedCreateInput = {
+  albums?: InputMaybe<AlbumCreateManyInlineInput>;
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>;
+  slug?: InputMaybe<Scalars['String']['input']>;
+  updatedAt?: InputMaybe<Scalars['DateTime']['input']>;
+  year: Scalars['String']['input'];
+};
+
+export type ReleasedCreateManyInlineInput = {
+  /** Connect multiple existing Released documents */
+  connect?: InputMaybe<Array<ReleasedWhereUniqueInput>>;
+  /** Create and connect multiple existing Released documents */
+  create?: InputMaybe<Array<ReleasedCreateInput>>;
+};
+
+export type ReleasedCreateOneInlineInput = {
+  /** Connect one existing Released document */
+  connect?: InputMaybe<ReleasedWhereUniqueInput>;
+  /** Create and connect one Released document */
+  create?: InputMaybe<ReleasedCreateInput>;
+};
+
+/** An edge in a connection. */
+export type ReleasedEdge = {
+  __typename?: 'ReleasedEdge';
+  /** A cursor for use in pagination. */
+  cursor: Scalars['String']['output'];
+  /** The item at the end of the edge. */
+  node: Released;
+};
+
+/** Identifies documents */
+export type ReleasedManyWhereInput = {
+  /** Logical AND on all given filters. */
+  AND?: InputMaybe<Array<ReleasedWhereInput>>;
+  /** Logical NOT on all given filters combined by AND. */
+  NOT?: InputMaybe<Array<ReleasedWhereInput>>;
+  /** Logical OR on all given filters. */
+  OR?: InputMaybe<Array<ReleasedWhereInput>>;
+  /** Contains search across all appropriate fields. */
+  _search?: InputMaybe<Scalars['String']['input']>;
+  albums_every?: InputMaybe<AlbumWhereInput>;
+  albums_none?: InputMaybe<AlbumWhereInput>;
+  albums_some?: InputMaybe<AlbumWhereInput>;
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values greater than the given value. */
+  createdAt_gt?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values greater than or equal the given value. */
+  createdAt_gte?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values that are contained in given list. */
+  createdAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
+  /** All values less than the given value. */
+  createdAt_lt?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values less than or equal the given value. */
+  createdAt_lte?: InputMaybe<Scalars['DateTime']['input']>;
+  /** Any other value that exists and is not equal to the given value. */
+  createdAt_not?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values that are not contained in given list. */
+  createdAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
+  createdBy?: InputMaybe<UserWhereInput>;
+  documentInStages_every?: InputMaybe<ReleasedWhereStageInput>;
+  documentInStages_none?: InputMaybe<ReleasedWhereStageInput>;
+  documentInStages_some?: InputMaybe<ReleasedWhereStageInput>;
+  id?: InputMaybe<Scalars['ID']['input']>;
+  /** All values containing the given string. */
+  id_contains?: InputMaybe<Scalars['ID']['input']>;
+  /** All values ending with the given string. */
+  id_ends_with?: InputMaybe<Scalars['ID']['input']>;
+  /** All values that are contained in given list. */
+  id_in?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  id_not?: InputMaybe<Scalars['ID']['input']>;
+  /** All values not containing the given string. */
+  id_not_contains?: InputMaybe<Scalars['ID']['input']>;
+  /** All values not ending with the given string */
+  id_not_ends_with?: InputMaybe<Scalars['ID']['input']>;
+  /** All values that are not contained in given list. */
+  id_not_in?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** All values not starting with the given string. */
+  id_not_starts_with?: InputMaybe<Scalars['ID']['input']>;
+  /** All values starting with the given string. */
+  id_starts_with?: InputMaybe<Scalars['ID']['input']>;
+  publishedAt?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values greater than the given value. */
+  publishedAt_gt?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values greater than or equal the given value. */
+  publishedAt_gte?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values that are contained in given list. */
+  publishedAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
+  /** All values less than the given value. */
+  publishedAt_lt?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values less than or equal the given value. */
+  publishedAt_lte?: InputMaybe<Scalars['DateTime']['input']>;
+  /** Any other value that exists and is not equal to the given value. */
+  publishedAt_not?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values that are not contained in given list. */
+  publishedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
+  publishedBy?: InputMaybe<UserWhereInput>;
+  scheduledIn_every?: InputMaybe<ScheduledOperationWhereInput>;
+  scheduledIn_none?: InputMaybe<ScheduledOperationWhereInput>;
+  scheduledIn_some?: InputMaybe<ScheduledOperationWhereInput>;
+  slug?: InputMaybe<Scalars['String']['input']>;
+  /** All values containing the given string. */
+  slug_contains?: InputMaybe<Scalars['String']['input']>;
+  /** All values ending with the given string. */
+  slug_ends_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values that are contained in given list. */
+  slug_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  slug_not?: InputMaybe<Scalars['String']['input']>;
+  /** All values not containing the given string. */
+  slug_not_contains?: InputMaybe<Scalars['String']['input']>;
+  /** All values not ending with the given string */
+  slug_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values that are not contained in given list. */
+  slug_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** All values not starting with the given string. */
+  slug_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values starting with the given string. */
+  slug_starts_with?: InputMaybe<Scalars['String']['input']>;
+  updatedAt?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values greater than the given value. */
+  updatedAt_gt?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values greater than or equal the given value. */
+  updatedAt_gte?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values that are contained in given list. */
+  updatedAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
+  /** All values less than the given value. */
+  updatedAt_lt?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values less than or equal the given value. */
+  updatedAt_lte?: InputMaybe<Scalars['DateTime']['input']>;
+  /** Any other value that exists and is not equal to the given value. */
+  updatedAt_not?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values that are not contained in given list. */
+  updatedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
+  updatedBy?: InputMaybe<UserWhereInput>;
+  year?: InputMaybe<Scalars['String']['input']>;
+  /** All values containing the given string. */
+  year_contains?: InputMaybe<Scalars['String']['input']>;
+  /** All values ending with the given string. */
+  year_ends_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values that are contained in given list. */
+  year_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  year_not?: InputMaybe<Scalars['String']['input']>;
+  /** All values not containing the given string. */
+  year_not_contains?: InputMaybe<Scalars['String']['input']>;
+  /** All values not ending with the given string */
+  year_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values that are not contained in given list. */
+  year_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** All values not starting with the given string. */
+  year_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values starting with the given string. */
+  year_starts_with?: InputMaybe<Scalars['String']['input']>;
+};
+
+export enum ReleasedOrderByInput {
+  CreatedAtAsc = 'createdAt_ASC',
+  CreatedAtDesc = 'createdAt_DESC',
+  IdAsc = 'id_ASC',
+  IdDesc = 'id_DESC',
+  PublishedAtAsc = 'publishedAt_ASC',
+  PublishedAtDesc = 'publishedAt_DESC',
+  SlugAsc = 'slug_ASC',
+  SlugDesc = 'slug_DESC',
+  UpdatedAtAsc = 'updatedAt_ASC',
+  UpdatedAtDesc = 'updatedAt_DESC',
+  YearAsc = 'year_ASC',
+  YearDesc = 'year_DESC'
+}
+
+export type ReleasedUpdateInput = {
+  albums?: InputMaybe<AlbumUpdateManyInlineInput>;
+  slug?: InputMaybe<Scalars['String']['input']>;
+  year?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type ReleasedUpdateManyInlineInput = {
+  /** Connect multiple existing Released documents */
+  connect?: InputMaybe<Array<ReleasedConnectInput>>;
+  /** Create and connect multiple Released documents */
+  create?: InputMaybe<Array<ReleasedCreateInput>>;
+  /** Delete multiple Released documents */
+  delete?: InputMaybe<Array<ReleasedWhereUniqueInput>>;
+  /** Disconnect multiple Released documents */
+  disconnect?: InputMaybe<Array<ReleasedWhereUniqueInput>>;
+  /** Override currently-connected documents with multiple existing Released documents */
+  set?: InputMaybe<Array<ReleasedWhereUniqueInput>>;
+  /** Update multiple Released documents */
+  update?: InputMaybe<Array<ReleasedUpdateWithNestedWhereUniqueInput>>;
+  /** Upsert multiple Released documents */
+  upsert?: InputMaybe<Array<ReleasedUpsertWithNestedWhereUniqueInput>>;
+};
+
+export type ReleasedUpdateManyInput = {
+  /** No fields in updateMany data input */
+  _?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type ReleasedUpdateManyWithNestedWhereInput = {
+  /** Update many input */
+  data: ReleasedUpdateManyInput;
+  /** Document search */
+  where: ReleasedWhereInput;
+};
+
+export type ReleasedUpdateOneInlineInput = {
+  /** Connect existing Released document */
+  connect?: InputMaybe<ReleasedWhereUniqueInput>;
+  /** Create and connect one Released document */
+  create?: InputMaybe<ReleasedCreateInput>;
+  /** Delete currently connected Released document */
+  delete?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Disconnect currently connected Released document */
+  disconnect?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Update single Released document */
+  update?: InputMaybe<ReleasedUpdateWithNestedWhereUniqueInput>;
+  /** Upsert single Released document */
+  upsert?: InputMaybe<ReleasedUpsertWithNestedWhereUniqueInput>;
+};
+
+export type ReleasedUpdateWithNestedWhereUniqueInput = {
+  /** Document to update */
+  data: ReleasedUpdateInput;
+  /** Unique document search */
+  where: ReleasedWhereUniqueInput;
+};
+
+export type ReleasedUpsertInput = {
+  /** Create document if it didn't exist */
+  create: ReleasedCreateInput;
+  /** Update document if it exists */
+  update: ReleasedUpdateInput;
+};
+
+export type ReleasedUpsertWithNestedWhereUniqueInput = {
+  /** Upsert data */
+  data: ReleasedUpsertInput;
+  /** Unique document search */
+  where: ReleasedWhereUniqueInput;
+};
+
+/** This contains a set of filters that can be used to compare values internally */
+export type ReleasedWhereComparatorInput = {
+  /** This field can be used to request to check if the entry is outdated by internal comparison */
+  outdated_to?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+/** Identifies documents */
+export type ReleasedWhereInput = {
+  /** Logical AND on all given filters. */
+  AND?: InputMaybe<Array<ReleasedWhereInput>>;
+  /** Logical NOT on all given filters combined by AND. */
+  NOT?: InputMaybe<Array<ReleasedWhereInput>>;
+  /** Logical OR on all given filters. */
+  OR?: InputMaybe<Array<ReleasedWhereInput>>;
+  /** Contains search across all appropriate fields. */
+  _search?: InputMaybe<Scalars['String']['input']>;
+  albums_every?: InputMaybe<AlbumWhereInput>;
+  albums_none?: InputMaybe<AlbumWhereInput>;
+  albums_some?: InputMaybe<AlbumWhereInput>;
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values greater than the given value. */
+  createdAt_gt?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values greater than or equal the given value. */
+  createdAt_gte?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values that are contained in given list. */
+  createdAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
+  /** All values less than the given value. */
+  createdAt_lt?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values less than or equal the given value. */
+  createdAt_lte?: InputMaybe<Scalars['DateTime']['input']>;
+  /** Any other value that exists and is not equal to the given value. */
+  createdAt_not?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values that are not contained in given list. */
+  createdAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
+  createdBy?: InputMaybe<UserWhereInput>;
+  documentInStages_every?: InputMaybe<ReleasedWhereStageInput>;
+  documentInStages_none?: InputMaybe<ReleasedWhereStageInput>;
+  documentInStages_some?: InputMaybe<ReleasedWhereStageInput>;
+  id?: InputMaybe<Scalars['ID']['input']>;
+  /** All values containing the given string. */
+  id_contains?: InputMaybe<Scalars['ID']['input']>;
+  /** All values ending with the given string. */
+  id_ends_with?: InputMaybe<Scalars['ID']['input']>;
+  /** All values that are contained in given list. */
+  id_in?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  id_not?: InputMaybe<Scalars['ID']['input']>;
+  /** All values not containing the given string. */
+  id_not_contains?: InputMaybe<Scalars['ID']['input']>;
+  /** All values not ending with the given string */
+  id_not_ends_with?: InputMaybe<Scalars['ID']['input']>;
+  /** All values that are not contained in given list. */
+  id_not_in?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** All values not starting with the given string. */
+  id_not_starts_with?: InputMaybe<Scalars['ID']['input']>;
+  /** All values starting with the given string. */
+  id_starts_with?: InputMaybe<Scalars['ID']['input']>;
+  publishedAt?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values greater than the given value. */
+  publishedAt_gt?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values greater than or equal the given value. */
+  publishedAt_gte?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values that are contained in given list. */
+  publishedAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
+  /** All values less than the given value. */
+  publishedAt_lt?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values less than or equal the given value. */
+  publishedAt_lte?: InputMaybe<Scalars['DateTime']['input']>;
+  /** Any other value that exists and is not equal to the given value. */
+  publishedAt_not?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values that are not contained in given list. */
+  publishedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
+  publishedBy?: InputMaybe<UserWhereInput>;
+  scheduledIn_every?: InputMaybe<ScheduledOperationWhereInput>;
+  scheduledIn_none?: InputMaybe<ScheduledOperationWhereInput>;
+  scheduledIn_some?: InputMaybe<ScheduledOperationWhereInput>;
+  slug?: InputMaybe<Scalars['String']['input']>;
+  /** All values containing the given string. */
+  slug_contains?: InputMaybe<Scalars['String']['input']>;
+  /** All values ending with the given string. */
+  slug_ends_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values that are contained in given list. */
+  slug_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  slug_not?: InputMaybe<Scalars['String']['input']>;
+  /** All values not containing the given string. */
+  slug_not_contains?: InputMaybe<Scalars['String']['input']>;
+  /** All values not ending with the given string */
+  slug_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values that are not contained in given list. */
+  slug_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** All values not starting with the given string. */
+  slug_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values starting with the given string. */
+  slug_starts_with?: InputMaybe<Scalars['String']['input']>;
+  updatedAt?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values greater than the given value. */
+  updatedAt_gt?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values greater than or equal the given value. */
+  updatedAt_gte?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values that are contained in given list. */
+  updatedAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
+  /** All values less than the given value. */
+  updatedAt_lt?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values less than or equal the given value. */
+  updatedAt_lte?: InputMaybe<Scalars['DateTime']['input']>;
+  /** Any other value that exists and is not equal to the given value. */
+  updatedAt_not?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values that are not contained in given list. */
+  updatedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
+  updatedBy?: InputMaybe<UserWhereInput>;
+  year?: InputMaybe<Scalars['String']['input']>;
+  /** All values containing the given string. */
+  year_contains?: InputMaybe<Scalars['String']['input']>;
+  /** All values ending with the given string. */
+  year_ends_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values that are contained in given list. */
+  year_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  year_not?: InputMaybe<Scalars['String']['input']>;
+  /** All values not containing the given string. */
+  year_not_contains?: InputMaybe<Scalars['String']['input']>;
+  /** All values not ending with the given string */
+  year_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values that are not contained in given list. */
+  year_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** All values not starting with the given string. */
+  year_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values starting with the given string. */
+  year_starts_with?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** The document in stages filter allows specifying a stage entry to cross compare the same document between different stages */
+export type ReleasedWhereStageInput = {
+  /** Logical AND on all given filters. */
+  AND?: InputMaybe<Array<ReleasedWhereStageInput>>;
+  /** Logical NOT on all given filters combined by AND. */
+  NOT?: InputMaybe<Array<ReleasedWhereStageInput>>;
+  /** Logical OR on all given filters. */
+  OR?: InputMaybe<Array<ReleasedWhereStageInput>>;
+  /** This field contains fields which can be set as true or false to specify an internal comparison */
+  compareWithParent?: InputMaybe<ReleasedWhereComparatorInput>;
+  /** Specify the stage to compare with */
+  stage?: InputMaybe<Stage>;
+};
+
+/** References Released record uniquely */
+export type ReleasedWhereUniqueInput = {
+  id?: InputMaybe<Scalars['ID']['input']>;
+  slug?: InputMaybe<Scalars['String']['input']>;
+  year?: InputMaybe<Scalars['String']['input']>;
+};
+
 /** Custom type representing a rich text value comprising of raw rich text ast, html, markdown and text values */
 export type RichText = {
   __typename?: 'RichText';
@@ -9124,7 +10486,7 @@ export type ScheduledOperationUpdatedByArgs = {
   locales?: InputMaybe<Array<Locale>>;
 };
 
-export type ScheduledOperationAffectedDocument = Album | Asset | Country | Genre;
+export type ScheduledOperationAffectedDocument = Album | Asset | Country | Genre | Released;
 
 export type ScheduledOperationConnectInput = {
   /** Allow to specify document position in list of connected documents, will default to appending at end of list */
@@ -10580,11 +11942,11 @@ export type GetAlbumBySlugQueryVariables = Exact<{
 }>;
 
 
-export type GetAlbumBySlugQuery = { __typename?: 'Query', album?: { __typename?: 'Album', artist?: string | null, content?: string | null, slug?: string | null, social?: any | null, stage: Stage, title: string, tracklist?: any | null, released?: any | null, label?: string | null, id: string, genres: Array<{ __typename?: 'Genre', slug?: string | null, title?: string | null }>, country?: { __typename?: 'Country', title?: string | null, slug?: string | null } | null, cover: { __typename?: 'Asset', url: string } } | null };
+export type GetAlbumBySlugQuery = { __typename?: 'Query', album?: { __typename?: 'Album', artist?: string | null, content?: string | null, slug?: string | null, social?: any | null, stage: Stage, title: string, tracklist?: any | null, label?: string | null, id: string, genres: Array<{ __typename?: 'Genre', slug?: string | null, title?: string | null }>, country?: { __typename?: 'Country', title?: string | null, slug?: string | null } | null, cover: { __typename?: 'Asset', url: string }, released?: { __typename?: 'Released', year: string } | null } | null };
 
 export type GetAutocompleteBySearchQueryVariables = Exact<{
   search?: InputMaybe<Scalars['String']['input']>;
 }>;
 
 
-export type GetAutocompleteBySearchQuery = { __typename?: 'Query', albums: Array<{ __typename?: 'Album', id: string, title: string, slug?: string | null }>, genres: Array<{ __typename?: 'Genre', id: string, title?: string | null, slug?: string | null }>, countries: Array<{ __typename?: 'Country', id: string, title?: string | null, slug?: string | null }> };
+export type GetAutocompleteBySearchQuery = { __typename?: 'Query', albums: Array<{ __typename?: 'Album', id: string, title: string, slug?: string | null }>, genres: Array<{ __typename?: 'Genre', id: string, title?: string | null, slug?: string | null }>, countries: Array<{ __typename?: 'Country', id: string, title?: string | null, slug?: string | null }>, releases: Array<{ __typename?: 'Released', id: string, year: string }> };

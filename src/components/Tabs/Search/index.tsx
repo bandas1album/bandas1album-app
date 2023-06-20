@@ -34,7 +34,8 @@ export default function TabsSearch() {
           if (
             response.albums.length ||
             response.countries.length ||
-            response.genres.length
+            response.genres.length ||
+            response.releases.length
           )
             return setAutocomplete(response)
 
@@ -56,7 +57,7 @@ export default function TabsSearch() {
         <SearchHelp
           type="button"
           className="m-tabs-search__help"
-          aria-label="Você pode pesquisar por álbum, banda, gênero e país."
+          aria-label="Você pode pesquisar por álbum, banda, gênero, país e ano de lançamento."
         >
           <HelpCircle />
         </SearchHelp>
@@ -64,7 +65,8 @@ export default function TabsSearch() {
 
       {error ? (
         <SearchError>
-          Não foi possível encontrar o álbum, país ou gênero buscado.
+          Não foi possível encontrar o álbum, país, gênero ou ano de lançamento
+          buscado.
         </SearchError>
       ) : (
         ''
@@ -72,7 +74,8 @@ export default function TabsSearch() {
 
       {autocomplete?.albums.length ||
       autocomplete?.genres.length ||
-      autocomplete?.countries.length ? (
+      autocomplete?.countries.length ||
+      autocomplete?.releases.length ? (
         <SearchAutocomplete className="m-tabs-search__autocomplete">
           {autocomplete?.albums.map((album) => (
             <li key={album.id}>
@@ -81,7 +84,6 @@ export default function TabsSearch() {
               </Link>
             </li>
           ))}
-
           {autocomplete?.genres.map((genre) => (
             <li key={genre.id}>
               <Link href={`/genero/${genre.slug}`}>
@@ -93,6 +95,13 @@ export default function TabsSearch() {
             <li key={country.id}>
               <Link href={`/pais/${country.slug}`}>
                 Países / <strong>{country.title}</strong>
+              </Link>
+            </li>
+          ))}
+          {autocomplete?.releases.map((released) => (
+            <li key={released.id}>
+              <Link href={`/lancamento/${released.year}`}>
+                Lançamento / <strong>{released.year}</strong>
               </Link>
             </li>
           ))}

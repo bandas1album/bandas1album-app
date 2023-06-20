@@ -35,7 +35,9 @@ export const GET_ALBUM_BY_SLUG = gql`
       stage
       title
       tracklist
-      released
+      released {
+        year
+      }
       label
       id
     }
@@ -44,20 +46,24 @@ export const GET_ALBUM_BY_SLUG = gql`
 
 export const GET_AUTOCOMPLETE_BY_SEARCH = gql`
   query getAutocompleteBySearch($search: String) {
-    albums(where: { title_contains: $search }, first: 2) {
+    albums(where: { title_starts_with: $search }, first: 2) {
       id
       title
       slug
     }
-    genres(where: { title_contains: $search }, first: 2) {
+    genres(where: { title_starts_with: $search }, first: 2) {
       id
       title
       slug
     }
-    countries(where: { title_contains: $search }, first: 2) {
+    countries(where: { title_starts_with: $search }, first: 2) {
       id
       title
       slug
+    }
+    releases(where: { year_starts_with: $search }, first: 2) {
+      id
+      year
     }
   }
 `
