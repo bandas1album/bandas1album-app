@@ -36,7 +36,7 @@ export const GET_ALBUM_BY_SLUG = gql`
       title
       tracklist
       released {
-        year
+        title
       }
       label
       id
@@ -61,9 +61,37 @@ export const GET_AUTOCOMPLETE_BY_SEARCH = gql`
       title
       slug
     }
-    releases(where: { year_starts_with: $search }, first: 2) {
+    releases(where: { title_starts_with: $search }, first: 2) {
       id
-      year
+      title
+    }
+  }
+`
+
+export const GET_MENU_CATEGORIES = gql`
+  query getMenuCategories {
+    albums {
+      id
+      title
+      artist
+      slug
+      cover {
+        url
+      }
+    }
+    genres {
+      id
+      title
+      slug
+    }
+    countries {
+      id
+      title
+      slug
+    }
+    releases {
+      id
+      title
     }
   }
 `

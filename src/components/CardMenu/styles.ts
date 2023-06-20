@@ -19,22 +19,24 @@ export const CardImage = styled.figure`
   width: 48px;
   height: 48px;
   margin: 0;
-  border-radius: 8px;
 
   img {
     width: 100%;
     height: 100%;
+    border-radius: 8px;
   }
 `
 
 export const CardTitle = styled.h2`
   font-size: 16px;
+  font-weight: 600;
   margin: 0;
   line-height: 120%;
 `
 
 export const CardSubtitle = styled.h3`
   font-size: 14px;
+  font-weight: 400;
   margin: 0;
   line-height: 120%;
   opacity: 0.5;

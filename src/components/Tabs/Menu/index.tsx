@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import {
   MenuFooter,
   MenuList,
@@ -10,75 +10,126 @@ import {
 import Link from 'next/link'
 import { Spotify, Instagram } from '@styled-icons/fa-brands'
 import { ChevronDownCircle } from '@styled-icons/ionicons-outline'
-import { CardMenu, CardMenuProps } from '@/components/CardMenu'
+import { CardMenu } from '@/components/CardMenu'
+import client from '@/graphql/client'
+import {
+  Album,
+  Country,
+  Genre,
+  GetMenuCategoriesQuery,
+  Released
+} from '@/graphql/generated/graphql'
+import { GET_MENU_CATEGORIES } from '@/graphql/queries'
 
 export default function TabsMenu() {
+  const [opened, setOpened] = useState(false)
   const [submenu, setSubmenu] = useState('albums')
-  const categories = [
-    {
-      slug: 'albums',
-      title: 'Álbuns',
-      list: [
-        {
-          title: '4 Cabeça'
-        }
-      ]
-    },
-    {
-      slug: 'genres',
-      title: 'Gêneros',
-      list: [
-        {
-          title: '4 Cabeça'
-        }
-      ]
-    },
-    {
-      slug: 'countries',
-      title: 'Países',
-      list: [
-        {
-          title: '4 Cabeça'
-        }
-      ]
-    },
-    {
-      slug: 'released',
-      title: 'Ano de lançamento',
-      list: [
-        {
-          title: '4 Cabeça'
-        }
-      ]
+  const [albums, setAlbums] = useState<Album[]>([])
+  const [genres, setGenres] = useState<Genre[]>([])
+  const [countries, setCountries] = useState<Country[]>([])
+  const [releases, setReleases] = useState<Released[]>([])
+
+  useEffect(() => {
+    if (!opened) {
+      client
+        .request<GetMenuCategoriesQuery>(GET_MENU_CATEGORIES)
+        .then((response) => {
+          setAlbums(response.albums)
+          setGenres(response.genres)
+          setCountries(response.countries)
+          setReleases(response.releases)
+        })
+        .catch((error) => console.error(error))
     }
-  ]
+
+    return () => {
+      setOpened(true)
+    }
+  }, [opened])
 
   return (
     <MenuNav>
       <MenuList>
-        {categories.map((category, index) => (
-          <li key={index}>
-            <MenuTitle
-              onClick={() => setSubmenu(category.slug)}
-              $isActive={submenu === category.slug}
-            >
-              <span>{category.title}</span>
-              <ChevronDownCircle />
-            </MenuTitle>
+        <li>
+          <MenuTitle
+            onClick={() => setSubmenu('albums')}
+            $isActive={submenu === 'albums'}
+          >
+            <span>Álbuns</span>
+            <ChevronDownCircle />
+          </MenuTitle>
 
-            <Submenu hidden>
-              {category.list.map((album: CardMenuProps, index) => (
-                <li key={index}>
+          <Submenu hidden>
+            {albums?.map((album) => (
+              <li key={album.id}>
+                <Link href={`/album/${album.slug}`}>
                   <CardMenu
-                    image={album?.image}
-                    title={album?.title}
-                    subtitle={album?.subtitle}
+                    image={album.cover.url}
+                    title={album.title}
+                    subtitle={album?.artist}
                   />
-                </li>
-              ))}
-            </Submenu>
-          </li>
-        ))}
+                </Link>
+              </li>
+            ))}
+          </Submenu>
+        </li>
+        <li>
+          <MenuTitle
+            onClick={() => setSubmenu('genres')}
+            $isActive={submenu === 'genres'}
+          >
+            <span>Gêneros</span>
+            <ChevronDownCircle />
+          </MenuTitle>
+
+          <Submenu hidden>
+            {genres?.map((genre) => (
+              <li key={genre.id}>
+                <Link href={`/genero/${genre.slug}`}>
+                  <CardMenu title={genre.title} />
+                </Link>
+              </li>
+            ))}
+          </Submenu>
+        </li>
+        <li>
+          <MenuTitle
+            onClick={() => setSubmenu('countries')}
+            $isActive={submenu === 'countries'}
+          >
+            <span>Países</span>
+            <ChevronDownCircle />
+          </MenuTitle>
+
+          <Submenu hidden>
+            {countries?.map((country) => (
+              <li key={country.id}>
+                <Link href={`/pais/${country.slug}`}>
+                  <CardMenu title={country.title} />
+                </Link>
+              </li>
+            ))}
+          </Submenu>
+        </li>
+        <li>
+          <MenuTitle
+            onClick={() => setSubmenu('releases')}
+            $isActive={submenu === 'releases'}
+          >
+            <span>Ano de lançamento</span>
+            <ChevronDownCircle />
+          </MenuTitle>
+
+          <Submenu hidden>
+            {releases?.map((year) => (
+              <li key={year.id}>
+                <Link href={`/ano/${year.title}`}>
+                  <CardMenu title={year.title} />
+                </Link>
+              </li>
+            ))}
+          </Submenu>
+        </li>
       </MenuList>
 
       <MenuFooter>

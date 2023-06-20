@@ -3940,11 +3940,11 @@ export type Released = Node & {
   slug?: Maybe<Scalars['String']['output']>;
   /** System stage field */
   stage: Stage;
+  title: Scalars['String']['output'];
   /** The time the document was updated */
   updatedAt: Scalars['DateTime']['output'];
   /** User that last updated this document */
   updatedBy?: Maybe<User>;
-  year: Scalars['String']['output'];
 };
 
 
@@ -4025,8 +4025,8 @@ export type ReleasedCreateInput = {
   albums?: InputMaybe<AlbumCreateManyInlineInput>;
   createdAt?: InputMaybe<Scalars['DateTime']['input']>;
   slug?: InputMaybe<Scalars['String']['input']>;
+  title: Scalars['String']['input'];
   updatedAt?: InputMaybe<Scalars['DateTime']['input']>;
-  year: Scalars['String']['input'];
 };
 
 export type ReleasedCreateManyInlineInput = {
@@ -4141,6 +4141,25 @@ export type ReleasedManyWhereInput = {
   slug_not_starts_with?: InputMaybe<Scalars['String']['input']>;
   /** All values starting with the given string. */
   slug_starts_with?: InputMaybe<Scalars['String']['input']>;
+  title?: InputMaybe<Scalars['String']['input']>;
+  /** All values containing the given string. */
+  title_contains?: InputMaybe<Scalars['String']['input']>;
+  /** All values ending with the given string. */
+  title_ends_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values that are contained in given list. */
+  title_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  title_not?: InputMaybe<Scalars['String']['input']>;
+  /** All values not containing the given string. */
+  title_not_contains?: InputMaybe<Scalars['String']['input']>;
+  /** All values not ending with the given string */
+  title_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values that are not contained in given list. */
+  title_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** All values not starting with the given string. */
+  title_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values starting with the given string. */
+  title_starts_with?: InputMaybe<Scalars['String']['input']>;
   updatedAt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values greater than the given value. */
   updatedAt_gt?: InputMaybe<Scalars['DateTime']['input']>;
@@ -4157,25 +4176,6 @@ export type ReleasedManyWhereInput = {
   /** All values that are not contained in given list. */
   updatedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
   updatedBy?: InputMaybe<UserWhereInput>;
-  year?: InputMaybe<Scalars['String']['input']>;
-  /** All values containing the given string. */
-  year_contains?: InputMaybe<Scalars['String']['input']>;
-  /** All values ending with the given string. */
-  year_ends_with?: InputMaybe<Scalars['String']['input']>;
-  /** All values that are contained in given list. */
-  year_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
-  /** Any other value that exists and is not equal to the given value. */
-  year_not?: InputMaybe<Scalars['String']['input']>;
-  /** All values not containing the given string. */
-  year_not_contains?: InputMaybe<Scalars['String']['input']>;
-  /** All values not ending with the given string */
-  year_not_ends_with?: InputMaybe<Scalars['String']['input']>;
-  /** All values that are not contained in given list. */
-  year_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
-  /** All values not starting with the given string. */
-  year_not_starts_with?: InputMaybe<Scalars['String']['input']>;
-  /** All values starting with the given string. */
-  year_starts_with?: InputMaybe<Scalars['String']['input']>;
 };
 
 export enum ReleasedOrderByInput {
@@ -4187,16 +4187,16 @@ export enum ReleasedOrderByInput {
   PublishedAtDesc = 'publishedAt_DESC',
   SlugAsc = 'slug_ASC',
   SlugDesc = 'slug_DESC',
+  TitleAsc = 'title_ASC',
+  TitleDesc = 'title_DESC',
   UpdatedAtAsc = 'updatedAt_ASC',
-  UpdatedAtDesc = 'updatedAt_DESC',
-  YearAsc = 'year_ASC',
-  YearDesc = 'year_DESC'
+  UpdatedAtDesc = 'updatedAt_DESC'
 }
 
 export type ReleasedUpdateInput = {
   albums?: InputMaybe<AlbumUpdateManyInlineInput>;
   slug?: InputMaybe<Scalars['String']['input']>;
-  year?: InputMaybe<Scalars['String']['input']>;
+  title?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type ReleasedUpdateManyInlineInput = {
@@ -4359,6 +4359,25 @@ export type ReleasedWhereInput = {
   slug_not_starts_with?: InputMaybe<Scalars['String']['input']>;
   /** All values starting with the given string. */
   slug_starts_with?: InputMaybe<Scalars['String']['input']>;
+  title?: InputMaybe<Scalars['String']['input']>;
+  /** All values containing the given string. */
+  title_contains?: InputMaybe<Scalars['String']['input']>;
+  /** All values ending with the given string. */
+  title_ends_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values that are contained in given list. */
+  title_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  title_not?: InputMaybe<Scalars['String']['input']>;
+  /** All values not containing the given string. */
+  title_not_contains?: InputMaybe<Scalars['String']['input']>;
+  /** All values not ending with the given string */
+  title_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values that are not contained in given list. */
+  title_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** All values not starting with the given string. */
+  title_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values starting with the given string. */
+  title_starts_with?: InputMaybe<Scalars['String']['input']>;
   updatedAt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values greater than the given value. */
   updatedAt_gt?: InputMaybe<Scalars['DateTime']['input']>;
@@ -4375,25 +4394,6 @@ export type ReleasedWhereInput = {
   /** All values that are not contained in given list. */
   updatedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
   updatedBy?: InputMaybe<UserWhereInput>;
-  year?: InputMaybe<Scalars['String']['input']>;
-  /** All values containing the given string. */
-  year_contains?: InputMaybe<Scalars['String']['input']>;
-  /** All values ending with the given string. */
-  year_ends_with?: InputMaybe<Scalars['String']['input']>;
-  /** All values that are contained in given list. */
-  year_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
-  /** Any other value that exists and is not equal to the given value. */
-  year_not?: InputMaybe<Scalars['String']['input']>;
-  /** All values not containing the given string. */
-  year_not_contains?: InputMaybe<Scalars['String']['input']>;
-  /** All values not ending with the given string */
-  year_not_ends_with?: InputMaybe<Scalars['String']['input']>;
-  /** All values that are not contained in given list. */
-  year_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
-  /** All values not starting with the given string. */
-  year_not_starts_with?: InputMaybe<Scalars['String']['input']>;
-  /** All values starting with the given string. */
-  year_starts_with?: InputMaybe<Scalars['String']['input']>;
 };
 
 /** The document in stages filter allows specifying a stage entry to cross compare the same document between different stages */
@@ -4414,7 +4414,7 @@ export type ReleasedWhereStageInput = {
 export type ReleasedWhereUniqueInput = {
   id?: InputMaybe<Scalars['ID']['input']>;
   slug?: InputMaybe<Scalars['String']['input']>;
-  year?: InputMaybe<Scalars['String']['input']>;
+  title?: InputMaybe<Scalars['String']['input']>;
 };
 
 /** Custom type representing a rich text value comprising of raw rich text ast, html, markdown and text values */
@@ -5968,19 +5968,25 @@ export type GetAlbumBySlugQueryVariables = Exact<{
 }>;
 
 
-export type GetAlbumBySlugQuery = { __typename?: 'Query', album?: { __typename?: 'Album', artist?: string | null, content?: string | null, slug?: string | null, social?: any | null, stage: Stage, title: string, tracklist?: any | null, label?: string | null, id: string, genres: Array<{ __typename?: 'Genre', slug?: string | null, title?: string | null }>, country?: { __typename?: 'Country', title?: string | null, slug?: string | null } | null, cover: { __typename?: 'Asset', url: string }, released?: { __typename?: 'Released', year: string } | null } | null };
+export type GetAlbumBySlugQuery = { __typename?: 'Query', album?: { __typename?: 'Album', artist?: string | null, content?: string | null, slug?: string | null, social?: any | null, stage: Stage, title: string, tracklist?: any | null, label?: string | null, id: string, genres: Array<{ __typename?: 'Genre', slug?: string | null, title?: string | null }>, country?: { __typename?: 'Country', title?: string | null, slug?: string | null } | null, cover: { __typename?: 'Asset', url: string }, released?: { __typename?: 'Released', title: string } | null } | null };
 
 export type GetAutocompleteBySearchQueryVariables = Exact<{
   search?: InputMaybe<Scalars['String']['input']>;
 }>;
 
 
-export type GetAutocompleteBySearchQuery = { __typename?: 'Query', albums: Array<{ __typename?: 'Album', id: string, title: string, slug?: string | null }>, genres: Array<{ __typename?: 'Genre', id: string, title?: string | null, slug?: string | null }>, countries: Array<{ __typename?: 'Country', id: string, title?: string | null, slug?: string | null }>, releases: Array<{ __typename?: 'Released', id: string, year: string }> };
+export type GetAutocompleteBySearchQuery = { __typename?: 'Query', albums: Array<{ __typename?: 'Album', id: string, title: string, slug?: string | null }>, genres: Array<{ __typename?: 'Genre', id: string, title?: string | null, slug?: string | null }>, countries: Array<{ __typename?: 'Country', id: string, title?: string | null, slug?: string | null }>, releases: Array<{ __typename?: 'Released', id: string, title: string }> };
+
+export type GetMenuCategoriesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetMenuCategoriesQuery = { __typename?: 'Query', albums: Array<{ __typename?: 'Album', id: string, title: string, artist?: string | null, slug?: string | null, cover: { __typename?: 'Asset', url: string } }>, genres: Array<{ __typename?: 'Genre', id: string, title?: string | null, slug?: string | null }>, countries: Array<{ __typename?: 'Country', id: string, title?: string | null, slug?: string | null }>, releases: Array<{ __typename?: 'Released', id: string, title: string }> };
 
 
 export const GetAlbumsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"getAlbums"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"albums"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"slug"}},{"kind":"Field","name":{"kind":"Name","value":"artist"}},{"kind":"Field","name":{"kind":"Name","value":"cover"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"url"}}]}}]}}]}}]} as unknown as DocumentNode<GetAlbumsQuery, GetAlbumsQueryVariables>;
-export const GetAlbumBySlugDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"getAlbumBySlug"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"slug"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"album"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"slug"},"value":{"kind":"Variable","name":{"kind":"Name","value":"slug"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"artist"}},{"kind":"Field","name":{"kind":"Name","value":"content"}},{"kind":"Field","name":{"kind":"Name","value":"genres"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"slug"}},{"kind":"Field","name":{"kind":"Name","value":"title"}}]}},{"kind":"Field","name":{"kind":"Name","value":"country"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"slug"}}]}},{"kind":"Field","name":{"kind":"Name","value":"cover"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"url"}}]}},{"kind":"Field","name":{"kind":"Name","value":"slug"}},{"kind":"Field","name":{"kind":"Name","value":"social"}},{"kind":"Field","name":{"kind":"Name","value":"stage"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"tracklist"}},{"kind":"Field","name":{"kind":"Name","value":"released"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"year"}}]}},{"kind":"Field","name":{"kind":"Name","value":"label"}},{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<GetAlbumBySlugQuery, GetAlbumBySlugQueryVariables>;
-export const GetAutocompleteBySearchDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"getAutocompleteBySearch"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"search"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"albums"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"title_starts_with"},"value":{"kind":"Variable","name":{"kind":"Name","value":"search"}}}]}},{"kind":"Argument","name":{"kind":"Name","value":"first"},"value":{"kind":"IntValue","value":"2"}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"slug"}}]}},{"kind":"Field","name":{"kind":"Name","value":"genres"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"title_starts_with"},"value":{"kind":"Variable","name":{"kind":"Name","value":"search"}}}]}},{"kind":"Argument","name":{"kind":"Name","value":"first"},"value":{"kind":"IntValue","value":"2"}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"slug"}}]}},{"kind":"Field","name":{"kind":"Name","value":"countries"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"title_starts_with"},"value":{"kind":"Variable","name":{"kind":"Name","value":"search"}}}]}},{"kind":"Argument","name":{"kind":"Name","value":"first"},"value":{"kind":"IntValue","value":"2"}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"slug"}}]}},{"kind":"Field","name":{"kind":"Name","value":"releases"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"year_starts_with"},"value":{"kind":"Variable","name":{"kind":"Name","value":"search"}}}]}},{"kind":"Argument","name":{"kind":"Name","value":"first"},"value":{"kind":"IntValue","value":"2"}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"year"}}]}}]}}]} as unknown as DocumentNode<GetAutocompleteBySearchQuery, GetAutocompleteBySearchQueryVariables>;
+export const GetAlbumBySlugDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"getAlbumBySlug"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"slug"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"album"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"slug"},"value":{"kind":"Variable","name":{"kind":"Name","value":"slug"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"artist"}},{"kind":"Field","name":{"kind":"Name","value":"content"}},{"kind":"Field","name":{"kind":"Name","value":"genres"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"slug"}},{"kind":"Field","name":{"kind":"Name","value":"title"}}]}},{"kind":"Field","name":{"kind":"Name","value":"country"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"slug"}}]}},{"kind":"Field","name":{"kind":"Name","value":"cover"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"url"}}]}},{"kind":"Field","name":{"kind":"Name","value":"slug"}},{"kind":"Field","name":{"kind":"Name","value":"social"}},{"kind":"Field","name":{"kind":"Name","value":"stage"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"tracklist"}},{"kind":"Field","name":{"kind":"Name","value":"released"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"title"}}]}},{"kind":"Field","name":{"kind":"Name","value":"label"}},{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<GetAlbumBySlugQuery, GetAlbumBySlugQueryVariables>;
+export const GetAutocompleteBySearchDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"getAutocompleteBySearch"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"search"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"albums"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"title_starts_with"},"value":{"kind":"Variable","name":{"kind":"Name","value":"search"}}}]}},{"kind":"Argument","name":{"kind":"Name","value":"first"},"value":{"kind":"IntValue","value":"2"}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"slug"}}]}},{"kind":"Field","name":{"kind":"Name","value":"genres"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"title_starts_with"},"value":{"kind":"Variable","name":{"kind":"Name","value":"search"}}}]}},{"kind":"Argument","name":{"kind":"Name","value":"first"},"value":{"kind":"IntValue","value":"2"}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"slug"}}]}},{"kind":"Field","name":{"kind":"Name","value":"countries"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"title_starts_with"},"value":{"kind":"Variable","name":{"kind":"Name","value":"search"}}}]}},{"kind":"Argument","name":{"kind":"Name","value":"first"},"value":{"kind":"IntValue","value":"2"}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"slug"}}]}},{"kind":"Field","name":{"kind":"Name","value":"releases"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"title_starts_with"},"value":{"kind":"Variable","name":{"kind":"Name","value":"search"}}}]}},{"kind":"Argument","name":{"kind":"Name","value":"first"},"value":{"kind":"IntValue","value":"2"}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}}]}}]}}]} as unknown as DocumentNode<GetAutocompleteBySearchQuery, GetAutocompleteBySearchQueryVariables>;
+export const GetMenuCategoriesDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"getMenuCategories"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"albums"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"artist"}},{"kind":"Field","name":{"kind":"Name","value":"slug"}},{"kind":"Field","name":{"kind":"Name","value":"cover"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"url"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"genres"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"slug"}}]}},{"kind":"Field","name":{"kind":"Name","value":"countries"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"slug"}}]}},{"kind":"Field","name":{"kind":"Name","value":"releases"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}}]}}]}}]} as unknown as DocumentNode<GetMenuCategoriesQuery, GetMenuCategoriesQueryVariables>;
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: { input: string | number; output: string; }
@@ -9914,11 +9920,11 @@ export type Released = Node & {
   slug?: Maybe<Scalars['String']['output']>;
   /** System stage field */
   stage: Stage;
+  title: Scalars['String']['output'];
   /** The time the document was updated */
   updatedAt: Scalars['DateTime']['output'];
   /** User that last updated this document */
   updatedBy?: Maybe<User>;
-  year: Scalars['String']['output'];
 };
 
 
@@ -9999,8 +10005,8 @@ export type ReleasedCreateInput = {
   albums?: InputMaybe<AlbumCreateManyInlineInput>;
   createdAt?: InputMaybe<Scalars['DateTime']['input']>;
   slug?: InputMaybe<Scalars['String']['input']>;
+  title: Scalars['String']['input'];
   updatedAt?: InputMaybe<Scalars['DateTime']['input']>;
-  year: Scalars['String']['input'];
 };
 
 export type ReleasedCreateManyInlineInput = {
@@ -10115,6 +10121,25 @@ export type ReleasedManyWhereInput = {
   slug_not_starts_with?: InputMaybe<Scalars['String']['input']>;
   /** All values starting with the given string. */
   slug_starts_with?: InputMaybe<Scalars['String']['input']>;
+  title?: InputMaybe<Scalars['String']['input']>;
+  /** All values containing the given string. */
+  title_contains?: InputMaybe<Scalars['String']['input']>;
+  /** All values ending with the given string. */
+  title_ends_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values that are contained in given list. */
+  title_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  title_not?: InputMaybe<Scalars['String']['input']>;
+  /** All values not containing the given string. */
+  title_not_contains?: InputMaybe<Scalars['String']['input']>;
+  /** All values not ending with the given string */
+  title_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values that are not contained in given list. */
+  title_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** All values not starting with the given string. */
+  title_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values starting with the given string. */
+  title_starts_with?: InputMaybe<Scalars['String']['input']>;
   updatedAt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values greater than the given value. */
   updatedAt_gt?: InputMaybe<Scalars['DateTime']['input']>;
@@ -10131,25 +10156,6 @@ export type ReleasedManyWhereInput = {
   /** All values that are not contained in given list. */
   updatedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
   updatedBy?: InputMaybe<UserWhereInput>;
-  year?: InputMaybe<Scalars['String']['input']>;
-  /** All values containing the given string. */
-  year_contains?: InputMaybe<Scalars['String']['input']>;
-  /** All values ending with the given string. */
-  year_ends_with?: InputMaybe<Scalars['String']['input']>;
-  /** All values that are contained in given list. */
-  year_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
-  /** Any other value that exists and is not equal to the given value. */
-  year_not?: InputMaybe<Scalars['String']['input']>;
-  /** All values not containing the given string. */
-  year_not_contains?: InputMaybe<Scalars['String']['input']>;
-  /** All values not ending with the given string */
-  year_not_ends_with?: InputMaybe<Scalars['String']['input']>;
-  /** All values that are not contained in given list. */
-  year_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
-  /** All values not starting with the given string. */
-  year_not_starts_with?: InputMaybe<Scalars['String']['input']>;
-  /** All values starting with the given string. */
-  year_starts_with?: InputMaybe<Scalars['String']['input']>;
 };
 
 export enum ReleasedOrderByInput {
@@ -10161,16 +10167,16 @@ export enum ReleasedOrderByInput {
   PublishedAtDesc = 'publishedAt_DESC',
   SlugAsc = 'slug_ASC',
   SlugDesc = 'slug_DESC',
+  TitleAsc = 'title_ASC',
+  TitleDesc = 'title_DESC',
   UpdatedAtAsc = 'updatedAt_ASC',
-  UpdatedAtDesc = 'updatedAt_DESC',
-  YearAsc = 'year_ASC',
-  YearDesc = 'year_DESC'
+  UpdatedAtDesc = 'updatedAt_DESC'
 }
 
 export type ReleasedUpdateInput = {
   albums?: InputMaybe<AlbumUpdateManyInlineInput>;
   slug?: InputMaybe<Scalars['String']['input']>;
-  year?: InputMaybe<Scalars['String']['input']>;
+  title?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type ReleasedUpdateManyInlineInput = {
@@ -10333,6 +10339,25 @@ export type ReleasedWhereInput = {
   slug_not_starts_with?: InputMaybe<Scalars['String']['input']>;
   /** All values starting with the given string. */
   slug_starts_with?: InputMaybe<Scalars['String']['input']>;
+  title?: InputMaybe<Scalars['String']['input']>;
+  /** All values containing the given string. */
+  title_contains?: InputMaybe<Scalars['String']['input']>;
+  /** All values ending with the given string. */
+  title_ends_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values that are contained in given list. */
+  title_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  title_not?: InputMaybe<Scalars['String']['input']>;
+  /** All values not containing the given string. */
+  title_not_contains?: InputMaybe<Scalars['String']['input']>;
+  /** All values not ending with the given string */
+  title_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values that are not contained in given list. */
+  title_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** All values not starting with the given string. */
+  title_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values starting with the given string. */
+  title_starts_with?: InputMaybe<Scalars['String']['input']>;
   updatedAt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values greater than the given value. */
   updatedAt_gt?: InputMaybe<Scalars['DateTime']['input']>;
@@ -10349,25 +10374,6 @@ export type ReleasedWhereInput = {
   /** All values that are not contained in given list. */
   updatedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
   updatedBy?: InputMaybe<UserWhereInput>;
-  year?: InputMaybe<Scalars['String']['input']>;
-  /** All values containing the given string. */
-  year_contains?: InputMaybe<Scalars['String']['input']>;
-  /** All values ending with the given string. */
-  year_ends_with?: InputMaybe<Scalars['String']['input']>;
-  /** All values that are contained in given list. */
-  year_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
-  /** Any other value that exists and is not equal to the given value. */
-  year_not?: InputMaybe<Scalars['String']['input']>;
-  /** All values not containing the given string. */
-  year_not_contains?: InputMaybe<Scalars['String']['input']>;
-  /** All values not ending with the given string */
-  year_not_ends_with?: InputMaybe<Scalars['String']['input']>;
-  /** All values that are not contained in given list. */
-  year_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
-  /** All values not starting with the given string. */
-  year_not_starts_with?: InputMaybe<Scalars['String']['input']>;
-  /** All values starting with the given string. */
-  year_starts_with?: InputMaybe<Scalars['String']['input']>;
 };
 
 /** The document in stages filter allows specifying a stage entry to cross compare the same document between different stages */
@@ -10388,7 +10394,7 @@ export type ReleasedWhereStageInput = {
 export type ReleasedWhereUniqueInput = {
   id?: InputMaybe<Scalars['ID']['input']>;
   slug?: InputMaybe<Scalars['String']['input']>;
-  year?: InputMaybe<Scalars['String']['input']>;
+  title?: InputMaybe<Scalars['String']['input']>;
 };
 
 /** Custom type representing a rich text value comprising of raw rich text ast, html, markdown and text values */
@@ -11942,11 +11948,16 @@ export type GetAlbumBySlugQueryVariables = Exact<{
 }>;
 
 
-export type GetAlbumBySlugQuery = { __typename?: 'Query', album?: { __typename?: 'Album', artist?: string | null, content?: string | null, slug?: string | null, social?: any | null, stage: Stage, title: string, tracklist?: any | null, label?: string | null, id: string, genres: Array<{ __typename?: 'Genre', slug?: string | null, title?: string | null }>, country?: { __typename?: 'Country', title?: string | null, slug?: string | null } | null, cover: { __typename?: 'Asset', url: string }, released?: { __typename?: 'Released', year: string } | null } | null };
+export type GetAlbumBySlugQuery = { __typename?: 'Query', album?: { __typename?: 'Album', artist?: string | null, content?: string | null, slug?: string | null, social?: any | null, stage: Stage, title: string, tracklist?: any | null, label?: string | null, id: string, genres: Array<{ __typename?: 'Genre', slug?: string | null, title?: string | null }>, country?: { __typename?: 'Country', title?: string | null, slug?: string | null } | null, cover: { __typename?: 'Asset', url: string }, released?: { __typename?: 'Released', title: string } | null } | null };
 
 export type GetAutocompleteBySearchQueryVariables = Exact<{
   search?: InputMaybe<Scalars['String']['input']>;
 }>;
 
 
-export type GetAutocompleteBySearchQuery = { __typename?: 'Query', albums: Array<{ __typename?: 'Album', id: string, title: string, slug?: string | null }>, genres: Array<{ __typename?: 'Genre', id: string, title?: string | null, slug?: string | null }>, countries: Array<{ __typename?: 'Country', id: string, title?: string | null, slug?: string | null }>, releases: Array<{ __typename?: 'Released', id: string, year: string }> };
+export type GetAutocompleteBySearchQuery = { __typename?: 'Query', albums: Array<{ __typename?: 'Album', id: string, title: string, slug?: string | null }>, genres: Array<{ __typename?: 'Genre', id: string, title?: string | null, slug?: string | null }>, countries: Array<{ __typename?: 'Country', id: string, title?: string | null, slug?: string | null }>, releases: Array<{ __typename?: 'Released', id: string, title: string }> };
+
+export type GetMenuCategoriesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetMenuCategoriesQuery = { __typename?: 'Query', albums: Array<{ __typename?: 'Album', id: string, title: string, artist?: string | null, slug?: string | null, cover: { __typename?: 'Asset', url: string } }>, genres: Array<{ __typename?: 'Genre', id: string, title?: string | null, slug?: string | null }>, countries: Array<{ __typename?: 'Country', id: string, title?: string | null, slug?: string | null }>, releases: Array<{ __typename?: 'Released', id: string, title: string }> };
