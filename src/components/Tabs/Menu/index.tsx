@@ -49,6 +49,7 @@ export default function TabsMenu() {
           <li>
             <MenuTitle
               onClick={() => setSubmenu('albums')}
+              onBlur={() => setSubmenu('')}
               $isActive={submenu === 'albums'}
             >
               <span>Álbuns</span>
@@ -77,6 +78,7 @@ export default function TabsMenu() {
           <li>
             <MenuTitle
               onClick={() => setSubmenu('genres')}
+              onBlur={() => setSubmenu('')}
               $isActive={submenu === 'genres'}
             >
               <span>Gêneros</span>
@@ -101,6 +103,7 @@ export default function TabsMenu() {
           <li>
             <MenuTitle
               onClick={() => setSubmenu('countries')}
+              onBlur={() => setSubmenu('')}
               $isActive={submenu === 'countries'}
             >
               <span>Países</span>
@@ -124,6 +127,7 @@ export default function TabsMenu() {
           <li>
             <MenuTitle
               onClick={() => setSubmenu('releases')}
+              onBlur={() => setSubmenu('')}
               $isActive={submenu === 'releases'}
             >
               <span>Ano de lançamento</span>
