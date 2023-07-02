@@ -12,22 +12,17 @@ import { Spotify, Instagram } from '@styled-icons/fa-brands'
 import { ChevronDownCircle } from '@styled-icons/ionicons-outline'
 import { CardMenu } from '@/components/CardMenu'
 import client from '@/graphql/client'
-import {
-  Album,
-  Country,
-  Genre,
-  GetMenuCategoriesQuery,
-  Released
-} from '@/graphql/generated/graphql'
+import { GetMenuCategoriesQuery } from '@/graphql/generated/graphql'
 import { GET_MENU_CATEGORIES } from '@/graphql/queries'
 
 export default function TabsMenu() {
   const [opened, setOpened] = useState(false)
   const [submenu, setSubmenu] = useState('albums')
-  const [albums, setAlbums] = useState<Album[]>([])
-  const [genres, setGenres] = useState<Genre[]>([])
-  const [countries, setCountries] = useState<Country[]>([])
-  const [releases, setReleases] = useState<Released[]>([])
+  const [albums, setAlbums] = useState<GetMenuCategoriesQuery['albums']>()
+  const [genres, setGenres] = useState<GetMenuCategoriesQuery['genres']>()
+  const [countries, setCountries] =
+    useState<GetMenuCategoriesQuery['countries']>()
+  const [releases, setReleases] = useState<GetMenuCategoriesQuery['releases']>()
 
   useEffect(() => {
     if (!opened) {
@@ -50,86 +45,104 @@ export default function TabsMenu() {
   return (
     <MenuNav>
       <MenuList>
-        <li>
-          <MenuTitle
-            onClick={() => setSubmenu('albums')}
-            $isActive={submenu === 'albums'}
-          >
-            <span>Álbuns</span>
-            <ChevronDownCircle />
-          </MenuTitle>
+        {albums?.nodes.length ? (
+          <li>
+            <MenuTitle
+              onClick={() => setSubmenu('albums')}
+              $isActive={submenu === 'albums'}
+            >
+              <span>Álbuns</span>
+              <ChevronDownCircle />
+            </MenuTitle>
 
-          <Submenu hidden>
-            {albums?.map((album) => (
-              <li key={album.id}>
-                <Link href={`/album/${album.slug}`}>
-                  <CardMenu
-                    image={album.cover.url}
-                    title={album.title}
-                    subtitle={album?.artist}
-                  />
-                </Link>
-              </li>
-            ))}
-          </Submenu>
-        </li>
-        <li>
-          <MenuTitle
-            onClick={() => setSubmenu('genres')}
-            $isActive={submenu === 'genres'}
-          >
-            <span>Gêneros</span>
-            <ChevronDownCircle />
-          </MenuTitle>
+            <Submenu hidden>
+              {albums?.nodes.map((album) => (
+                <li key={album.id}>
+                  <Link href={`/album/${album.slug}`}>
+                    <CardMenu
+                      image={album.featuredImage?.node.sourceUrl || ''}
+                      title={album.title || ''}
+                      subtitle={album?.acf?.artist || ''}
+                    />
+                  </Link>
+                </li>
+              ))}
+            </Submenu>
+          </li>
+        ) : (
+          ''
+        )}
 
-          <Submenu hidden>
-            {genres?.map((genre) => (
-              <li key={genre.id}>
-                <Link href={`/genero/${genre.slug}`}>
-                  <CardMenu title={genre.title} />
-                </Link>
-              </li>
-            ))}
-          </Submenu>
-        </li>
-        <li>
-          <MenuTitle
-            onClick={() => setSubmenu('countries')}
-            $isActive={submenu === 'countries'}
-          >
-            <span>Países</span>
-            <ChevronDownCircle />
-          </MenuTitle>
+        {countries?.nodes.length ? (
+          <li>
+            <MenuTitle
+              onClick={() => setSubmenu('genres')}
+              $isActive={submenu === 'genres'}
+            >
+              <span>Gêneros</span>
+              <ChevronDownCircle />
+            </MenuTitle>
 
-          <Submenu hidden>
-            {countries?.map((country) => (
-              <li key={country.id}>
-                <Link href={`/pais/${country.slug}`}>
-                  <CardMenu title={country.title} />
-                </Link>
-              </li>
-            ))}
-          </Submenu>
-        </li>
-        <li>
-          <MenuTitle
-            onClick={() => setSubmenu('releases')}
-            $isActive={submenu === 'releases'}
-          >
-            <span>Ano de lançamento</span>
-            <ChevronDownCircle />
-          </MenuTitle>
+            <Submenu hidden>
+              {genres?.nodes.map((genre) => (
+                <li key={genre.id}>
+                  <Link href={`/genero/${genre.slug}`}>
+                    <CardMenu title={genre.title || ''} />
+                  </Link>
+                </li>
+              ))}
+            </Submenu>
+          </li>
+        ) : (
+          ''
+        )}
 
-          <Submenu hidden>
-            {releases?.map((year) => (
-              <li key={year.id}>
-                <Link href={`/ano/${year.title}`}>
-                  <CardMenu title={year.title} />
-                </Link>
-              </li>
-            ))}
-          </Submenu>
-        </li>
+        {countries?.nodes.length ? (
+          <li>
+            <MenuTitle
+              onClick={() => setSubmenu('countries')}
+              $isActive={submenu === 'countries'}
+            >
+              <span>Países</span>
+              <ChevronDownCircle />
+            </MenuTitle>
+
+            <Submenu hidden>
+              {countries?.nodes.map((country) => (
+                <li key={country.id}>
+                  <Link href={`/pais/${country.slug}`}>
+                    <CardMenu title={country.title || ''} />
+                  </Link>
+                </li>
+              ))}
+            </Submenu>
+          </li>
+        ) : (
+          ''
+        )}
+        {releases?.nodes.length ? (
+          <li>
+            <MenuTitle
+              onClick={() => setSubmenu('releases')}
+              $isActive={submenu === 'releases'}
+            >
+              <span>Ano de lançamento</span>
+              <ChevronDownCircle />
+            </MenuTitle>
+
+            <Submenu hidden>
+              {releases?.nodes.map((year) => (
+                <li key={year.id}>
+                  <Link href={`/ano/${year.title}`}>
+                    <CardMenu title={year.title || ''} />
+                  </Link>
+                </li>
+              ))}
+            </Submenu>
+          </li>
+        ) : (
+          ''
+        )}
       </MenuList>
 
       <MenuFooter>

@@ -3,42 +3,47 @@ import { gql } from 'graphql-request'
 export const GET_ALBUMS = gql`
   query getAlbums {
     albums {
-      id
-      title
-      slug
-      artist
-      cover {
-        url
+      nodes {
+        id
+        title
+        slug
+        acf {
+          artist
+        }
+        featuredImage {
+          node {
+            sourceUrl
+          }
+        }
       }
     }
   }
 `
 
 export const GET_ALBUM_BY_SLUG = gql`
-  query getAlbumBySlug($slug: String) {
-    album(where: { slug: $slug }) {
-      artist
+  query getAlbumBySlug($id: ID!) {
+    album(id: $id, idType: URI) {
+      title
       content
-      genres {
-        slug
-        title
+      acf {
+        amazon
+        artist
+        country
+        deezer
+        download
+        released
+        tracklist {
+          title
+          duration
+        }
+        wikipedia
       }
-      country {
-        title
-        slug
-      }
-      cover {
-        url
+      featuredImage {
+        node {
+          sourceUrl
+        }
       }
       slug
-      social
-      stage
-      title
-      tracklist
-      released {
-        title
-      }
-      label
       id
     }
   }
@@ -46,24 +51,33 @@ export const GET_ALBUM_BY_SLUG = gql`
 
 export const GET_AUTOCOMPLETE_BY_SEARCH = gql`
   query getAutocompleteBySearch($search: String) {
-    albums(where: { title_starts_with: $search }, first: 2) {
-      id
-      title
-      slug
+    albums(where: { search: $search }, first: 2) {
+      nodes {
+        id
+        title
+        slug
+      }
     }
-    genres(where: { title_starts_with: $search }, first: 2) {
-      id
-      title
-      slug
+    genres(where: { search: $search }, first: 2) {
+      nodes {
+        id
+        title
+        slug
+      }
     }
-    countries(where: { title_starts_with: $search }, first: 2) {
-      id
-      title
-      slug
+    countries(where: { search: $search }, first: 2) {
+      nodes {
+        id
+        title
+        slug
+      }
     }
-    releases(where: { title_starts_with: $search }, first: 2) {
-      id
-      title
+    releases(where: { search: $search }, first: 2) {
+      nodes {
+        id
+        title
+        slug
+      }
     }
   }
 `
@@ -71,27 +85,40 @@ export const GET_AUTOCOMPLETE_BY_SEARCH = gql`
 export const GET_MENU_CATEGORIES = gql`
   query getMenuCategories {
     albums {
-      id
-      title
-      artist
-      slug
-      cover {
-        url
+      nodes {
+        id
+        title
+        acf {
+          artist
+        }
+        slug
+        featuredImage {
+          node {
+            sourceUrl
+          }
+        }
       }
     }
     genres {
-      id
-      title
-      slug
+      nodes {
+        id
+        title
+        slug
+      }
     }
     countries {
-      id
-      title
-      slug
+      nodes {
+        id
+        title
+        slug
+      }
     }
     releases {
-      id
-      title
+      nodes {
+        id
+        title
+        slug
+      }
     }
   }
 `

@@ -22,7 +22,7 @@ module.exports = withPWA({
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'media.graphassets.com'
+        hostname: 'core.bandas1album.com.br'
       }
     ]
   }

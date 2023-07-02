@@ -32,10 +32,10 @@ export default function TabsSearch() {
         })
         .then((response) => {
           if (
-            response.albums.length ||
-            response.countries.length ||
-            response.genres.length ||
-            response.releases.length
+            response.albums?.nodes.length ||
+            response.countries?.nodes.length ||
+            response.genres?.nodes.length ||
+            response.releases?.nodes.length
           )
             return setAutocomplete(response)
 
@@ -72,36 +72,36 @@ export default function TabsSearch() {
         ''
       )}
 
-      {autocomplete?.albums.length ||
-      autocomplete?.genres.length ||
-      autocomplete?.countries.length ||
-      autocomplete?.releases.length ? (
+      {autocomplete?.albums?.nodes.length ||
+      autocomplete?.genres?.nodes.length ||
+      autocomplete?.countries?.nodes.length ||
+      autocomplete?.releases?.nodes.length ? (
         <SearchAutocomplete className="m-tabs-search__autocomplete">
-          {autocomplete?.albums.map((album) => (
+          {autocomplete?.albums?.nodes.map((album) => (
             <li key={album.id}>
               <Link href={`/album/${album.slug}`}>
                 Álbuns / <strong>{album.title}</strong>
               </Link>
             </li>
           ))}
-          {autocomplete?.genres.map((genre) => (
+          {autocomplete?.genres?.nodes.map((genre) => (
             <li key={genre.id}>
               <Link href={`/genero/${genre.slug}`}>
                 Gêneros / <strong>{genre.title}</strong>
               </Link>
             </li>
           ))}
-          {autocomplete?.countries.map((country) => (
+          {autocomplete?.countries?.nodes.map((country) => (
             <li key={country.id}>
               <Link href={`/pais/${country.slug}`}>
                 Países / <strong>{country.title}</strong>
               </Link>
             </li>
           ))}
-          {autocomplete?.releases.map((released) => (
+          {autocomplete?.releases?.nodes.map((released) => (
             <li key={released.id}>
-              <Link href={`/lancamento/${released.year}`}>
-                Lançamento / <strong>{released.year}</strong>
+              <Link href={`/lancamento/${released.title}`}>
+                Lançamento / <strong>{released.title}</strong>
               </Link>
             </li>
           ))}

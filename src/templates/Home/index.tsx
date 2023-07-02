@@ -1,10 +1,10 @@
-import { AlbumProps } from '@/types'
 import ListAlbums from '@/components/ListAlbums'
 import Head from 'next/head'
 import { NextSeo } from 'next-seo'
+import { Album } from '@/graphql/generated/graphql'
 
 type HomeTemplateProps = {
-  albums: AlbumProps[]
+  albums: Album[]
 }
 
 export default function HomeTemplate({ albums }: HomeTemplateProps) {
