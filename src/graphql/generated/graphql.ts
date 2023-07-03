@@ -212,18 +212,24 @@ export type Album_Acf = AcfFieldGroup & {
   __typename?: 'Album_Acf';
   amazon?: Maybe<Scalars['String']['output']>;
   artist?: Maybe<Scalars['String']['output']>;
-  country?: Maybe<Scalars['String']['output']>;
+  country?: Maybe<Array<Maybe<Album_Acf_Country>>>;
   deezer?: Maybe<Scalars['String']['output']>;
   download?: Maybe<Scalars['String']['output']>;
   /** The name of the ACF Field Group */
   fieldGroupName?: Maybe<Scalars['String']['output']>;
-  label?: Maybe<Scalars['String']['output']>;
+  genre?: Maybe<Array<Maybe<Album_Acf_Genre>>>;
   lastfm?: Maybe<Scalars['String']['output']>;
-  released?: Maybe<Scalars['String']['output']>;
+  released?: Maybe<Array<Maybe<Album_Acf_Released>>>;
   spotify?: Maybe<Scalars['String']['output']>;
   tracklist?: Maybe<Array<Maybe<Album_Acf_Tracklist>>>;
   wikipedia?: Maybe<Scalars['String']['output']>;
 };
+
+export type Album_Acf_Country = Country;
+
+export type Album_Acf_Genre = Genre;
+
+export type Album_Acf_Released = Released;
 
 /** Field Group */
 export type Album_Acf_Tracklist = AcfFieldGroup & {
@@ -276,8 +282,6 @@ export enum AvatarRatingEnum {
 /** The category type */
 export type Category = DatabaseIdentifier & HierarchicalNode & HierarchicalTermNode & MenuItemLinkable & Node & TermNode & UniformResourceIdentifiable & {
   __typename?: 'Category';
-  /** Added to the GraphQL Schema because the ACF Field Group &quot;Opções - Gênero&quot; was set to Show in GraphQL. */
-  acfCategory?: Maybe<Category_Acfcategory>;
   /** The ancestors of the node. Default ordered as lowest (closest to the child) to highest (closest to the root). */
   ancestors?: Maybe<CategoryToAncestorsCategoryConnection>;
   /**
@@ -734,14 +738,6 @@ export type CategoryToTaxonomyConnectionEdge = Edge & OneToOneConnection & Taxon
   cursor?: Maybe<Scalars['String']['output']>;
   /** The node of the connection, without the edges */
   node: Taxonomy;
-};
-
-/** Field Group */
-export type Category_Acfcategory = AcfFieldGroup & {
-  __typename?: 'Category_Acfcategory';
-  banner?: Maybe<MediaItem>;
-  /** The name of the ACF Field Group */
-  fieldGroupName?: Maybe<Scalars['String']['output']>;
 };
 
 /** A Comment object */
@@ -1634,6 +1630,8 @@ export enum ContentTypesOfTagEnum {
 /** The country type */
 export type Country = ContentNode & DatabaseIdentifier & HierarchicalContentNode & HierarchicalNode & MenuItemLinkable & Node & NodeWithContentEditor & NodeWithFeaturedImage & NodeWithTemplate & NodeWithTitle & Previewable & UniformResourceIdentifiable & {
   __typename?: 'Country';
+  /** Added to the GraphQL Schema because the ACF Field Group &quot;Opções - País de lançamento&quot; was set to Show in GraphQL. */
+  acfCountry?: Maybe<Country_Acfcountry>;
   /** Returns ancestors of the node. Default ordered as lowest (closest to the child) to highest (closest to the root). */
   ancestors?: Maybe<HierarchicalContentNodeToContentNodeAncestorsConnection>;
   /** Connection between the HierarchicalContentNode type and the ContentNode type */
@@ -1813,6 +1811,16 @@ export type CountryToPreviewConnectionEdge = CountryConnectionEdge & Edge & OneT
   /** The node of the connection, without the edges */
   node: Country;
 };
+
+/** Field Group */
+export type Country_Acfcountry = AcfFieldGroup & {
+  __typename?: 'Country_Acfcountry';
+  albums?: Maybe<Array<Maybe<Country_Acfcountry_Albums>>>;
+  /** The name of the ACF Field Group */
+  fieldGroupName?: Maybe<Scalars['String']['output']>;
+};
+
+export type Country_Acfcountry_Albums = Album;
 
 /** Input for the createAlbum mutation. */
 export type CreateAlbumInput = {
@@ -2690,6 +2698,8 @@ export type GeneralSettings = {
 /** The genre type */
 export type Genre = ContentNode & DatabaseIdentifier & HierarchicalContentNode & HierarchicalNode & MenuItemLinkable & Node & NodeWithContentEditor & NodeWithFeaturedImage & NodeWithTemplate & NodeWithTitle & Previewable & UniformResourceIdentifiable & {
   __typename?: 'Genre';
+  /** Added to the GraphQL Schema because the ACF Field Group &quot;Opções - Ano de lançamento&quot; was set to Show in GraphQL. */
+  acfGenres?: Maybe<Genre_Acfgenres>;
   /** Returns ancestors of the node. Default ordered as lowest (closest to the child) to highest (closest to the root). */
   ancestors?: Maybe<HierarchicalContentNodeToContentNodeAncestorsConnection>;
   /** Connection between the HierarchicalContentNode type and the ContentNode type */
@@ -2869,6 +2879,16 @@ export type GenreToPreviewConnectionEdge = Edge & GenreConnectionEdge & OneToOne
   /** The node of the connection, without the edges */
   node: Genre;
 };
+
+/** Field Group */
+export type Genre_Acfgenres = AcfFieldGroup & {
+  __typename?: 'Genre_Acfgenres';
+  albums?: Maybe<Array<Maybe<Genre_Acfgenres_Albums>>>;
+  /** The name of the ACF Field Group */
+  fieldGroupName?: Maybe<Scalars['String']['output']>;
+};
+
+export type Genre_Acfgenres_Albums = Album;
 
 /** Content node with hierarchical (parent/child) relationships */
 export type HierarchicalContentNode = {
@@ -6139,6 +6159,8 @@ export enum RelationEnum {
 /** The released type */
 export type Released = ContentNode & DatabaseIdentifier & HierarchicalContentNode & HierarchicalNode & MenuItemLinkable & Node & NodeWithContentEditor & NodeWithFeaturedImage & NodeWithTemplate & NodeWithTitle & Previewable & UniformResourceIdentifiable & {
   __typename?: 'Released';
+  /** Added to the GraphQL Schema because the ACF Field Group &quot;Opções - Ano de lançamento&quot; was set to Show in GraphQL. */
+  acfGenres?: Maybe<Released_Acfgenres>;
   /** Returns ancestors of the node. Default ordered as lowest (closest to the child) to highest (closest to the root). */
   ancestors?: Maybe<HierarchicalContentNodeToContentNodeAncestorsConnection>;
   /** Connection between the HierarchicalContentNode type and the ContentNode type */
@@ -6318,6 +6340,16 @@ export type ReleasedToPreviewConnectionEdge = Edge & OneToOneConnection & Releas
   /** The node of the connection, without the edges */
   node: Released;
 };
+
+/** Field Group */
+export type Released_Acfgenres = AcfFieldGroup & {
+  __typename?: 'Released_Acfgenres';
+  albums?: Maybe<Array<Maybe<Released_Acfgenres_Albums>>>;
+  /** The name of the ACF Field Group */
+  fieldGroupName?: Maybe<Scalars['String']['output']>;
+};
+
+export type Released_Acfgenres_Albums = Album;
 
 /** Input for the resetUserPassword mutation. */
 export type ResetUserPasswordInput = {
@@ -10914,7 +10946,12 @@ export type WritingSettings = {
   useSmilies?: Maybe<Scalars['Boolean']['output']>;
 };
 
-export type GetAlbumsQueryVariables = Exact<{ [key: string]: never; }>;
+export type GetAlbumsQueryVariables = Exact<{
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+}>;
 
 
 export type GetAlbumsQuery = { __typename?: 'RootQuery', albums?: { __typename?: 'RootQueryToAlbumConnection', nodes: Array<{ __typename?: 'Album', id: string, title?: string | null, slug?: string | null, acf?: { __typename?: 'Album_Acf', artist?: string | null } | null, featuredImage?: { __typename?: 'NodeWithFeaturedImageToMediaItemConnectionEdge', node: { __typename?: 'MediaItem', sourceUrl?: string | null } } | null }> } | null };
@@ -10924,7 +10961,7 @@ export type GetAlbumBySlugQueryVariables = Exact<{
 }>;
 
 
-export type GetAlbumBySlugQuery = { __typename?: 'RootQuery', album?: { __typename?: 'Album', title?: string | null, content?: string | null, slug?: string | null, id: string, acf?: { __typename?: 'Album_Acf', amazon?: string | null, artist?: string | null, country?: string | null, deezer?: string | null, download?: string | null, released?: string | null, wikipedia?: string | null, tracklist?: Array<{ __typename?: 'Album_Acf_tracklist', title?: string | null, duration?: string | null } | null> | null } | null, featuredImage?: { __typename?: 'NodeWithFeaturedImageToMediaItemConnectionEdge', node: { __typename?: 'MediaItem', sourceUrl?: string | null } } | null } | null };
+export type GetAlbumBySlugQuery = { __typename?: 'RootQuery', album?: { __typename?: 'Album', title?: string | null, content?: string | null, slug?: string | null, id: string, acf?: { __typename?: 'Album_Acf', amazon?: string | null, artist?: string | null, deezer?: string | null, download?: string | null, wikipedia?: string | null, tracklist?: Array<{ __typename?: 'Album_Acf_tracklist', title?: string | null, duration?: string | null } | null> | null } | null, featuredImage?: { __typename?: 'NodeWithFeaturedImageToMediaItemConnectionEdge', node: { __typename?: 'MediaItem', sourceUrl?: string | null } } | null } | null };
 
 export type GetAutocompleteBySearchQueryVariables = Exact<{
   search?: InputMaybe<Scalars['String']['input']>;
@@ -10939,8 +10976,8 @@ export type GetMenuCategoriesQueryVariables = Exact<{ [key: string]: never; }>;
 export type GetMenuCategoriesQuery = { __typename?: 'RootQuery', albums?: { __typename?: 'RootQueryToAlbumConnection', nodes: Array<{ __typename?: 'Album', id: string, title?: string | null, slug?: string | null, acf?: { __typename?: 'Album_Acf', artist?: string | null } | null, featuredImage?: { __typename?: 'NodeWithFeaturedImageToMediaItemConnectionEdge', node: { __typename?: 'MediaItem', sourceUrl?: string | null } } | null }> } | null, genres?: { __typename?: 'RootQueryToGenreConnection', nodes: Array<{ __typename?: 'Genre', id: string, title?: string | null, slug?: string | null }> } | null, countries?: { __typename?: 'RootQueryToCountryConnection', nodes: Array<{ __typename?: 'Country', id: string, title?: string | null, slug?: string | null }> } | null, releases?: { __typename?: 'RootQueryToReleasedConnection', nodes: Array<{ __typename?: 'Released', id: string, title?: string | null, slug?: string | null }> } | null };
 
 
-export const GetAlbumsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"getAlbums"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"albums"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"slug"}},{"kind":"Field","name":{"kind":"Name","value":"acf"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"artist"}}]}},{"kind":"Field","name":{"kind":"Name","value":"featuredImage"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"sourceUrl"}}]}}]}}]}}]}}]}}]} as unknown as DocumentNode<GetAlbumsQuery, GetAlbumsQueryVariables>;
-export const GetAlbumBySlugDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"getAlbumBySlug"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"album"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}},{"kind":"Argument","name":{"kind":"Name","value":"idType"},"value":{"kind":"EnumValue","value":"URI"}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"content"}},{"kind":"Field","name":{"kind":"Name","value":"acf"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"amazon"}},{"kind":"Field","name":{"kind":"Name","value":"artist"}},{"kind":"Field","name":{"kind":"Name","value":"country"}},{"kind":"Field","name":{"kind":"Name","value":"deezer"}},{"kind":"Field","name":{"kind":"Name","value":"download"}},{"kind":"Field","name":{"kind":"Name","value":"released"}},{"kind":"Field","name":{"kind":"Name","value":"tracklist"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"duration"}}]}},{"kind":"Field","name":{"kind":"Name","value":"wikipedia"}}]}},{"kind":"Field","name":{"kind":"Name","value":"featuredImage"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"sourceUrl"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"slug"}},{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<GetAlbumBySlugQuery, GetAlbumBySlugQueryVariables>;
+export const GetAlbumsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"getAlbums"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"first"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"last"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"after"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"before"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"albums"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"first"},"value":{"kind":"Variable","name":{"kind":"Name","value":"first"}}},{"kind":"Argument","name":{"kind":"Name","value":"last"},"value":{"kind":"Variable","name":{"kind":"Name","value":"last"}}},{"kind":"Argument","name":{"kind":"Name","value":"after"},"value":{"kind":"Variable","name":{"kind":"Name","value":"after"}}},{"kind":"Argument","name":{"kind":"Name","value":"before"},"value":{"kind":"Variable","name":{"kind":"Name","value":"before"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"slug"}},{"kind":"Field","name":{"kind":"Name","value":"acf"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"artist"}}]}},{"kind":"Field","name":{"kind":"Name","value":"featuredImage"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"sourceUrl"}}]}}]}}]}}]}}]}}]} as unknown as DocumentNode<GetAlbumsQuery, GetAlbumsQueryVariables>;
+export const GetAlbumBySlugDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"getAlbumBySlug"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"album"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}},{"kind":"Argument","name":{"kind":"Name","value":"idType"},"value":{"kind":"EnumValue","value":"URI"}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"content"}},{"kind":"Field","name":{"kind":"Name","value":"acf"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"amazon"}},{"kind":"Field","name":{"kind":"Name","value":"artist"}},{"kind":"Field","name":{"kind":"Name","value":"deezer"}},{"kind":"Field","name":{"kind":"Name","value":"download"}},{"kind":"Field","name":{"kind":"Name","value":"tracklist"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"duration"}}]}},{"kind":"Field","name":{"kind":"Name","value":"wikipedia"}}]}},{"kind":"Field","name":{"kind":"Name","value":"featuredImage"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"sourceUrl"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"slug"}},{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<GetAlbumBySlugQuery, GetAlbumBySlugQueryVariables>;
 export const GetAutocompleteBySearchDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"getAutocompleteBySearch"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"search"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"albums"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"search"},"value":{"kind":"Variable","name":{"kind":"Name","value":"search"}}}]}},{"kind":"Argument","name":{"kind":"Name","value":"first"},"value":{"kind":"IntValue","value":"2"}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"slug"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"genres"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"search"},"value":{"kind":"Variable","name":{"kind":"Name","value":"search"}}}]}},{"kind":"Argument","name":{"kind":"Name","value":"first"},"value":{"kind":"IntValue","value":"2"}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"slug"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"countries"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"search"},"value":{"kind":"Variable","name":{"kind":"Name","value":"search"}}}]}},{"kind":"Argument","name":{"kind":"Name","value":"first"},"value":{"kind":"IntValue","value":"2"}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"slug"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"releases"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"search"},"value":{"kind":"Variable","name":{"kind":"Name","value":"search"}}}]}},{"kind":"Argument","name":{"kind":"Name","value":"first"},"value":{"kind":"IntValue","value":"2"}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"slug"}}]}}]}}]}}]} as unknown as DocumentNode<GetAutocompleteBySearchQuery, GetAutocompleteBySearchQueryVariables>;
 export const GetMenuCategoriesDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"getMenuCategories"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"albums"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"acf"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"artist"}}]}},{"kind":"Field","name":{"kind":"Name","value":"slug"}},{"kind":"Field","name":{"kind":"Name","value":"featuredImage"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"sourceUrl"}}]}}]}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"genres"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"slug"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"countries"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"slug"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"releases"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"slug"}}]}}]}}]}}]} as unknown as DocumentNode<GetMenuCategoriesQuery, GetMenuCategoriesQueryVariables>;
 /** All built-in and custom scalars, mapped to their actual values */
@@ -11148,18 +11185,24 @@ export type Album_Acf = AcfFieldGroup & {
   __typename?: 'Album_Acf';
   amazon?: Maybe<Scalars['String']['output']>;
   artist?: Maybe<Scalars['String']['output']>;
-  country?: Maybe<Scalars['String']['output']>;
+  country?: Maybe<Array<Maybe<Album_Acf_Country>>>;
   deezer?: Maybe<Scalars['String']['output']>;
   download?: Maybe<Scalars['String']['output']>;
   /** The name of the ACF Field Group */
   fieldGroupName?: Maybe<Scalars['String']['output']>;
-  label?: Maybe<Scalars['String']['output']>;
+  genre?: Maybe<Array<Maybe<Album_Acf_Genre>>>;
   lastfm?: Maybe<Scalars['String']['output']>;
-  released?: Maybe<Scalars['String']['output']>;
+  released?: Maybe<Array<Maybe<Album_Acf_Released>>>;
   spotify?: Maybe<Scalars['String']['output']>;
   tracklist?: Maybe<Array<Maybe<Album_Acf_Tracklist>>>;
   wikipedia?: Maybe<Scalars['String']['output']>;
 };
+
+export type Album_Acf_Country = Country;
+
+export type Album_Acf_Genre = Genre;
+
+export type Album_Acf_Released = Released;
 
 /** Field Group */
 export type Album_Acf_Tracklist = AcfFieldGroup & {
@@ -11212,8 +11255,6 @@ export enum AvatarRatingEnum {
 /** The category type */
 export type Category = DatabaseIdentifier & HierarchicalNode & HierarchicalTermNode & MenuItemLinkable & Node & TermNode & UniformResourceIdentifiable & {
   __typename?: 'Category';
-  /** Added to the GraphQL Schema because the ACF Field Group &quot;Opções - Gênero&quot; was set to Show in GraphQL. */
-  acfCategory?: Maybe<Category_Acfcategory>;
   /** The ancestors of the node. Default ordered as lowest (closest to the child) to highest (closest to the root). */
   ancestors?: Maybe<CategoryToAncestorsCategoryConnection>;
   /**
@@ -11670,14 +11711,6 @@ export type CategoryToTaxonomyConnectionEdge = Edge & OneToOneConnection & Taxon
   cursor?: Maybe<Scalars['String']['output']>;
   /** The node of the connection, without the edges */
   node: Taxonomy;
-};
-
-/** Field Group */
-export type Category_Acfcategory = AcfFieldGroup & {
-  __typename?: 'Category_Acfcategory';
-  banner?: Maybe<MediaItem>;
-  /** The name of the ACF Field Group */
-  fieldGroupName?: Maybe<Scalars['String']['output']>;
 };
 
 /** A Comment object */
@@ -12570,6 +12603,8 @@ export enum ContentTypesOfTagEnum {
 /** The country type */
 export type Country = ContentNode & DatabaseIdentifier & HierarchicalContentNode & HierarchicalNode & MenuItemLinkable & Node & NodeWithContentEditor & NodeWithFeaturedImage & NodeWithTemplate & NodeWithTitle & Previewable & UniformResourceIdentifiable & {
   __typename?: 'Country';
+  /** Added to the GraphQL Schema because the ACF Field Group &quot;Opções - País de lançamento&quot; was set to Show in GraphQL. */
+  acfCountry?: Maybe<Country_Acfcountry>;
   /** Returns ancestors of the node. Default ordered as lowest (closest to the child) to highest (closest to the root). */
   ancestors?: Maybe<HierarchicalContentNodeToContentNodeAncestorsConnection>;
   /** Connection between the HierarchicalContentNode type and the ContentNode type */
@@ -12749,6 +12784,16 @@ export type CountryToPreviewConnectionEdge = CountryConnectionEdge & Edge & OneT
   /** The node of the connection, without the edges */
   node: Country;
 };
+
+/** Field Group */
+export type Country_Acfcountry = AcfFieldGroup & {
+  __typename?: 'Country_Acfcountry';
+  albums?: Maybe<Array<Maybe<Country_Acfcountry_Albums>>>;
+  /** The name of the ACF Field Group */
+  fieldGroupName?: Maybe<Scalars['String']['output']>;
+};
+
+export type Country_Acfcountry_Albums = Album;
 
 /** Input for the createAlbum mutation. */
 export type CreateAlbumInput = {
@@ -13626,6 +13671,8 @@ export type GeneralSettings = {
 /** The genre type */
 export type Genre = ContentNode & DatabaseIdentifier & HierarchicalContentNode & HierarchicalNode & MenuItemLinkable & Node & NodeWithContentEditor & NodeWithFeaturedImage & NodeWithTemplate & NodeWithTitle & Previewable & UniformResourceIdentifiable & {
   __typename?: 'Genre';
+  /** Added to the GraphQL Schema because the ACF Field Group &quot;Opções - Ano de lançamento&quot; was set to Show in GraphQL. */
+  acfGenres?: Maybe<Genre_Acfgenres>;
   /** Returns ancestors of the node. Default ordered as lowest (closest to the child) to highest (closest to the root). */
   ancestors?: Maybe<HierarchicalContentNodeToContentNodeAncestorsConnection>;
   /** Connection between the HierarchicalContentNode type and the ContentNode type */
@@ -13805,6 +13852,16 @@ export type GenreToPreviewConnectionEdge = Edge & GenreConnectionEdge & OneToOne
   /** The node of the connection, without the edges */
   node: Genre;
 };
+
+/** Field Group */
+export type Genre_Acfgenres = AcfFieldGroup & {
+  __typename?: 'Genre_Acfgenres';
+  albums?: Maybe<Array<Maybe<Genre_Acfgenres_Albums>>>;
+  /** The name of the ACF Field Group */
+  fieldGroupName?: Maybe<Scalars['String']['output']>;
+};
+
+export type Genre_Acfgenres_Albums = Album;
 
 /** Content node with hierarchical (parent/child) relationships */
 export type HierarchicalContentNode = {
@@ -17075,6 +17132,8 @@ export enum RelationEnum {
 /** The released type */
 export type Released = ContentNode & DatabaseIdentifier & HierarchicalContentNode & HierarchicalNode & MenuItemLinkable & Node & NodeWithContentEditor & NodeWithFeaturedImage & NodeWithTemplate & NodeWithTitle & Previewable & UniformResourceIdentifiable & {
   __typename?: 'Released';
+  /** Added to the GraphQL Schema because the ACF Field Group &quot;Opções - Ano de lançamento&quot; was set to Show in GraphQL. */
+  acfGenres?: Maybe<Released_Acfgenres>;
   /** Returns ancestors of the node. Default ordered as lowest (closest to the child) to highest (closest to the root). */
   ancestors?: Maybe<HierarchicalContentNodeToContentNodeAncestorsConnection>;
   /** Connection between the HierarchicalContentNode type and the ContentNode type */
@@ -17254,6 +17313,16 @@ export type ReleasedToPreviewConnectionEdge = Edge & OneToOneConnection & Releas
   /** The node of the connection, without the edges */
   node: Released;
 };
+
+/** Field Group */
+export type Released_Acfgenres = AcfFieldGroup & {
+  __typename?: 'Released_Acfgenres';
+  albums?: Maybe<Array<Maybe<Released_Acfgenres_Albums>>>;
+  /** The name of the ACF Field Group */
+  fieldGroupName?: Maybe<Scalars['String']['output']>;
+};
+
+export type Released_Acfgenres_Albums = Album;
 
 /** Input for the resetUserPassword mutation. */
 export type ResetUserPasswordInput = {
@@ -21850,7 +21919,12 @@ export type WritingSettings = {
   useSmilies?: Maybe<Scalars['Boolean']['output']>;
 };
 
-export type GetAlbumsQueryVariables = Exact<{ [key: string]: never; }>;
+export type GetAlbumsQueryVariables = Exact<{
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+}>;
 
 
 export type GetAlbumsQuery = { __typename?: 'RootQuery', albums?: { __typename?: 'RootQueryToAlbumConnection', nodes: Array<{ __typename?: 'Album', id: string, title?: string | null, slug?: string | null, acf?: { __typename?: 'Album_Acf', artist?: string | null } | null, featuredImage?: { __typename?: 'NodeWithFeaturedImageToMediaItemConnectionEdge', node: { __typename?: 'MediaItem', sourceUrl?: string | null } } | null }> } | null };
@@ -21860,7 +21934,7 @@ export type GetAlbumBySlugQueryVariables = Exact<{
 }>;
 
 
-export type GetAlbumBySlugQuery = { __typename?: 'RootQuery', album?: { __typename?: 'Album', title?: string | null, content?: string | null, slug?: string | null, id: string, acf?: { __typename?: 'Album_Acf', amazon?: string | null, artist?: string | null, country?: string | null, deezer?: string | null, download?: string | null, released?: string | null, wikipedia?: string | null, tracklist?: Array<{ __typename?: 'Album_Acf_tracklist', title?: string | null, duration?: string | null } | null> | null } | null, featuredImage?: { __typename?: 'NodeWithFeaturedImageToMediaItemConnectionEdge', node: { __typename?: 'MediaItem', sourceUrl?: string | null } } | null } | null };
+export type GetAlbumBySlugQuery = { __typename?: 'RootQuery', album?: { __typename?: 'Album', title?: string | null, content?: string | null, slug?: string | null, id: string, acf?: { __typename?: 'Album_Acf', amazon?: string | null, artist?: string | null, deezer?: string | null, download?: string | null, wikipedia?: string | null, tracklist?: Array<{ __typename?: 'Album_Acf_tracklist', title?: string | null, duration?: string | null } | null> | null } | null, featuredImage?: { __typename?: 'NodeWithFeaturedImageToMediaItemConnectionEdge', node: { __typename?: 'MediaItem', sourceUrl?: string | null } } | null } | null };
 
 export type GetAutocompleteBySearchQueryVariables = Exact<{
   search?: InputMaybe<Scalars['String']['input']>;

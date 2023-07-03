@@ -1,8 +1,8 @@
 import { gql } from 'graphql-request'
 
 export const GET_ALBUMS = gql`
-  query getAlbums {
-    albums {
+  query getAlbums($first: Int, $last: Int, $after: String, $before: String) {
+    albums(first: $first, last: $last, after: $after, before: $before) {
       nodes {
         id
         title
@@ -28,10 +28,8 @@ export const GET_ALBUM_BY_SLUG = gql`
       acf {
         amazon
         artist
-        country
         deezer
         download
-        released
         tracklist {
           title
           duration
