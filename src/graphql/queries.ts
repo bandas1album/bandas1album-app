@@ -1,8 +1,12 @@
 import { gql } from 'graphql-request'
 
 export const GET_ALBUMS = gql`
-  query getAlbums($first: Int, $last: Int, $after: String, $before: String) {
-    albums(first: $first, last: $last, after: $after, before: $before) {
+  query getAlbums($first: Int!, $after: String) {
+    albums(first: $first, after: $after) {
+      pageInfo {
+        hasNextPage
+        endCursor
+      }
       nodes {
         id
         title
