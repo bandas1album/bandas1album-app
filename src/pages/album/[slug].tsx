@@ -17,7 +17,9 @@ export default function PageAlbum({ title }: AlbumTemplateProps) {
 }
 
 export async function getStaticPaths() {
-  const data = await client.request<GetAlbumsQuery>(GET_ALBUMS)
+  const data = await client.request<GetAlbumsQuery>(GET_ALBUMS, {
+    first: 1
+  })
 
   const paths = data.albums?.nodes.map((album) => ({
     params: {

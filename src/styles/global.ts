@@ -31,16 +31,16 @@ html,body, #__next {
 
 * {
   box-sizing: border-box;
+  font-family: 'Montserrat', sans-serif;
 }
 
 html {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  font-size: 16px;
 }
 
 body {
-  font-family: 'Montserrat', sans-serif;
-  font-size: 16px;
   font-weight: 400;
   line-height: normal;
   background-color: var(--color-primary);

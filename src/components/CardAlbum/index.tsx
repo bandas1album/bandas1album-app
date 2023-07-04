@@ -1,5 +1,4 @@
-import Link from 'next/link'
-import { Card, CardImage } from './styles'
+import { Card, CardImage, CardLink, CardTitle } from './styles'
 import Image from 'next/image'
 
 type CardAlbumProps = {
@@ -10,19 +9,26 @@ type CardAlbumProps = {
 }
 
 const CardAlbum = ({ artist, cover, slug, title }: CardAlbumProps) => (
-  <Link href={`/album/${slug}`} title={title}>
+  <CardLink prefetch href={`/album/${slug}`} title={title}>
     <Card>
       <CardImage>
-        <Image
-          src={cover}
-          alt={`Álbum ${title} de ${artist}`}
-          width="160"
-          height="160"
-          priority={true}
-        ></Image>
+        {cover ? (
+          <Image
+            src={cover}
+            alt={`Álbum ${title} de ${artist}`}
+            width="160"
+            height="160"
+            priority={true}
+          ></Image>
+        ) : (
+          <CardTitle>
+            <strong>{title}</strong>
+            <span>{artist}</span>
+          </CardTitle>
+        )}
       </CardImage>
     </Card>
-  </Link>
+  </CardLink>
 )
 
 export default CardAlbum
