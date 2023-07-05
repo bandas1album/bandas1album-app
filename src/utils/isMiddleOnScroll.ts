@@ -2,7 +2,7 @@ export const isMiddleOnScroll = (element: HTMLElement): boolean => {
   const listPosition = element.scrollTop + element.clientHeight
   const listTotal = element.scrollHeight
 
-  if ((listPosition / listTotal) * 100 > 80) {
+  if ((listPosition / listTotal) * 100 > 50) {
     return true
   }
 
