@@ -12,6 +12,7 @@ ${normalize}
   --color-secondary: #922909;
   --color-tertiary: #402e32;
   --color-light: #fff;
+  --color-warning: #EB8A65;
 }
 
 [data-theme="dark"] {
@@ -22,6 +23,7 @@ ${normalize}
   --color-secondary: #00c5df;
   --color-tertiary: #e8d5b5;
   --color-light: #fff;
+  --color-warning: #EB8A65;
 }
 
 html,body, #__next {

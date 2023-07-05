@@ -47,6 +47,7 @@ export default function Tabs() {
               tab: 'search'
             })
           }
+          $active={isOpenedSearch}
         >
           <Search aria-hidden="true" />
         </TabsButton>
@@ -71,6 +72,7 @@ export default function Tabs() {
               tab: 'menu'
             })
           }}
+          $active={isOpenedMenu}
         >
           <Menu aria-hidden="true" />
         </TabsButton>

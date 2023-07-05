@@ -49,7 +49,8 @@ export const TabsItem = styled.div<{ $opened: boolean }>`
       : ''}
 `
 
-export const TabsButton = styled(Button)`
+export const TabsButton = styled(Button)<{ $active: boolean }>`
+  position: relative;
   display: flex;
   color: var(--color-primary);
 
@@ -64,6 +65,19 @@ export const TabsButton = styled(Button)`
   svg {
     width: 32px;
     height: 32px;
+  }
+
+  &::after {
+    content: ${(props) => (props.$active ? '""' : 'none')};
+    position: absolute;
+    bottom: -12px;
+    left: 0;
+    right: 0;
+    width: 6px;
+    height: 6px;
+    margin: 0 auto;
+    border-radius: 50%;
+    background-color: var(--color-warning);
   }
 `
 
