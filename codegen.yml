@@ -9,5 +9,3 @@ generates:
       - "typescript-operations"
       - add:
           content: '/* eslint-disable */'
-    config:
-      maybe: "T"

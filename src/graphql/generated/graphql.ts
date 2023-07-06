@@ -10879,7 +10879,7 @@ export type UserToUserRoleConnectionPageInfo = PageInfo & UserRoleConnectionPage
   hasPreviousPage: Scalars['Boolean']['output'];
   /** When paginating backwards, the cursor to continue. */
   startCursor?: Maybe<Scalars['String']['output']>;
-};
+}
 
 /** Field to order the connection by */
 export enum UsersConnectionOrderbyEnum {
