@@ -30,8 +30,8 @@ export const GET_ALBUM_BY_SLUG = gql`
       title
       content
       acf {
-        amazon
         artist
+        amazon
         deezer
         download
         tracklist {
@@ -39,6 +39,27 @@ export const GET_ALBUM_BY_SLUG = gql`
           duration
         }
         wikipedia
+        genre {
+          ... on Genre {
+            id
+            slug
+            title
+          }
+        }
+        country {
+          ... on Country {
+            id
+            slug
+            title
+          }
+        }
+        released {
+          ... on Released {
+            id
+            slug
+            title
+          }
+        }
       }
       featuredImage {
         node {

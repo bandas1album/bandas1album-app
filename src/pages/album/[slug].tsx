@@ -3,17 +3,17 @@ import { GET_ALBUM_BY_SLUG, GET_ALBUMS } from '@/graphql/queries'
 import { GetStaticProps } from 'next'
 import { useRouter } from 'next/router'
 import {
+  Album,
   GetAlbumBySlugQuery,
   GetAlbumsQuery
 } from '@/graphql/generated/graphql'
-import AlbumTemplate, { AlbumTemplateProps } from '@/templates/Album'
+import AlbumTemplate from '@/templates/Album'
 
-export default function PageAlbum({ title }: AlbumTemplateProps) {
+export default function PageAlbum(album: Album) {
   const router = useRouter()
-
   if (router.isFallback) return null
 
-  return <AlbumTemplate title={title} />
+  return <AlbumTemplate {...album} />
 }
 
 export async function getStaticPaths() {
@@ -41,8 +41,6 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   if (!album) return { notFound: true }
 
   return {
-    props: {
-      title: album.title
-    }
+    props: album
   }
 }
