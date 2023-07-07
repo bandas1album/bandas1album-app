@@ -15,10 +15,10 @@ export default function HomeTemplate({ nodes, pageInfo }: AlbumConnection) {
   const [loading, setLoading] = useState(false)
   const [albums, setAlbums] = useState<AlbumConnection['nodes']>(nodes)
   const [hasNextPage, setHasNextPage] = useState<boolean | undefined>(
-    pageInfo.hasNextPage
+    pageInfo.hasNextPage || false
   )
   const [endCursor, setEndCursor] = useState<string | null | undefined>(
-    pageInfo.endCursor
+    pageInfo.endCursor || ''
   )
 
   const handleScroll = (e: React.UIEvent<HTMLUListElement>): void => {

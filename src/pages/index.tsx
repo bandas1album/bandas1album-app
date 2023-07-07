@@ -4,14 +4,8 @@ import { GET_ALBUMS } from '@/graphql/queries'
 import HomeTemplate from '@/templates/Home'
 import { GetStaticProps } from 'next'
 
-export default function Home(albums: AlbumConnection) {
-  return (
-    <HomeTemplate
-      nodes={albums.nodes}
-      pageInfo={albums.pageInfo}
-      edges={albums.edges}
-    />
-  )
+export default function Home({ nodes, pageInfo, edges }: AlbumConnection) {
+  return <HomeTemplate nodes={nodes} pageInfo={pageInfo} edges={edges} />
 }
 
 export const getStaticProps: GetStaticProps = async () => {
@@ -22,7 +16,8 @@ export const getStaticProps: GetStaticProps = async () => {
 
   return {
     props: {
-      albums
+      nodes: albums?.nodes,
+      pageInfo: albums?.pageInfo
     }
   }
 }
