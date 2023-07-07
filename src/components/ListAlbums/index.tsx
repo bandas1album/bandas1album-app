@@ -1,10 +1,10 @@
 import React from 'react'
 import CardAlbum from '../CardAlbum'
 import { List } from './styles'
-import { RootQueryToAlbumConnection } from '@/graphql/generated/graphql'
+import { AlbumConnection } from '@/graphql/generated/graphql'
 
 type ListAlbumsProps = {
-  albums: RootQueryToAlbumConnection['nodes']
+  albums: AlbumConnection['nodes']
   handleScroll: (e: React.UIEvent<HTMLUListElement>) => void
 }
 

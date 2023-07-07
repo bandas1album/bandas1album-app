@@ -5,21 +5,15 @@ import { isMiddleOnScroll } from '@/utils/isMiddleOnScroll'
 import { useState } from 'react'
 import {
   Album,
-  GetAlbumsQuery,
-  RootQueryToAlbumConnection
+  AlbumConnection,
+  GetAlbumsQuery
 } from '@/graphql/generated/graphql'
 import { GET_ALBUMS } from '@/graphql/queries'
 import client from '@/graphql/client'
 
-type HomeTemplateProps = {
-  nodes: RootQueryToAlbumConnection['nodes']
-  pageInfo: RootQueryToAlbumConnection['pageInfo']
-}
-
-export default function HomeTemplate({ nodes, pageInfo }: HomeTemplateProps) {
+export default function HomeTemplate({ nodes, pageInfo }: AlbumConnection) {
   const [loading, setLoading] = useState(false)
-  const [albums, setAlbums] =
-    useState<RootQueryToAlbumConnection['nodes']>(nodes)
+  const [albums, setAlbums] = useState<AlbumConnection['nodes']>(nodes)
   const [hasNextPage, setHasNextPage] = useState<boolean | undefined>(
     pageInfo.hasNextPage
   )
@@ -37,14 +31,14 @@ export default function HomeTemplate({ nodes, pageInfo }: HomeTemplateProps) {
 
   const getAlbums = async (cursor: string | null | undefined) => {
     setLoading(true)
-    const response = await client.request<GetAlbumsQuery>(GET_ALBUMS, {
+    const { albums } = await client.request<GetAlbumsQuery>(GET_ALBUMS, {
       first: 96,
       after: cursor
     })
-    const responseList = response.albums?.nodes as Album[]
+    const responseList = albums?.nodes as Album[]
     setAlbums((albums) => [...albums, ...responseList])
-    setHasNextPage(response.albums?.pageInfo.hasNextPage)
-    setEndCursor(response.albums?.pageInfo.endCursor)
+    setHasNextPage(albums?.pageInfo.hasNextPage)
+    setEndCursor(albums?.pageInfo.endCursor)
     setLoading(false)
   }
 
