@@ -9,7 +9,7 @@ type CardAlbumProps = {
 }
 
 const CardAlbum = ({ artist, cover, slug, title }: CardAlbumProps) => (
-  <CardLink prefetch href={`/album/${slug}`} title={title}>
+  <CardLink href={`/album/${slug}`} title={title}>
     <Card>
       <CardImage>
         {cover ? (
