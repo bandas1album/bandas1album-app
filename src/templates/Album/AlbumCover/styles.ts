@@ -8,6 +8,7 @@ export const Cover = styled.figure`
   height: 100%;
   max-height: 480px;
   margin: 0;
+  overflow: hidden;
 
   &::after {
     content: '';
