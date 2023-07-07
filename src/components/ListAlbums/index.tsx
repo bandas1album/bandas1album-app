@@ -1,43 +1,14 @@
-import client from '@/graphql/client'
-import { GET_ALBUMS } from '@/graphql/queries'
-import { Album, GetAlbumsQuery } from '@/graphql/generated/graphql'
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import CardAlbum from '../CardAlbum'
 import { List } from './styles'
-import { isMiddleOnScroll } from '@/utils/isMiddleOnScroll'
+import { RootQueryToAlbumConnection } from '@/graphql/generated/graphql'
 
-export default function ListAlbums() {
-  const [loading, setLoading] = useState(false)
-  const [albums, setAlbums] = useState<Album[]>([])
-  const [hasNextPage, setHasNextPage] = useState<boolean | undefined>(false)
-  const [endCursor, setEndCursor] = useState<string | null | undefined>('')
+type ListAlbumsProps = {
+  albums: RootQueryToAlbumConnection['nodes']
+  handleScroll: (e: React.UIEvent<HTMLUListElement>) => void
+}
 
-  const handleScroll = (e: React.UIEvent<HTMLUListElement>): void => {
-    const $el = e.target as HTMLUListElement
-
-    if (isMiddleOnScroll($el) && hasNextPage && !loading) {
-      getAlbums(endCursor)
-    }
-  }
-
-  const getAlbums = async (cursor: string | null | undefined) => {
-    setLoading(true)
-    const response = await client.request<GetAlbumsQuery>(GET_ALBUMS, {
-      first: 96,
-      after: cursor
-    })
-
-    const responseList = response.albums?.nodes as Album[]
-    setAlbums((albums) => [...albums, ...responseList])
-    setHasNextPage(response.albums?.pageInfo.hasNextPage)
-    setEndCursor(response.albums?.pageInfo.endCursor)
-    setLoading(false)
-  }
-
-  useEffect(() => {
-    getAlbums(null)
-  }, [])
-
+export default function ListAlbums({ albums, handleScroll }: ListAlbumsProps) {
   return (
     <>
       <List onScroll={handleScroll}>

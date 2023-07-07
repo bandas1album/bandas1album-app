@@ -3,6 +3,6 @@ import ListAlbums from '.'
 
 describe('<ListAlbums />', () => {
   it('should render the component', () => {
-    render(<ListAlbums />)
+    render(<ListAlbums albums={[]} handleScroll={() => ''} />)
   })
 })
