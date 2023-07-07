@@ -18,7 +18,7 @@ const CardAlbum = ({ artist, cover, slug, title }: CardAlbumProps) => (
             alt={`Álbum ${title} de ${artist}`}
             width="160"
             height="160"
-            priority={true}
+            loading="lazy"
           ></Image>
         ) : (
           <CardTitle>

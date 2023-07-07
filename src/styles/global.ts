@@ -28,7 +28,6 @@ ${normalize}
 
 html,body, #__next {
   min-height: 100%;
-  overflow: hidden;
 }
 
 * {

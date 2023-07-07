@@ -6,7 +6,6 @@ import AlbumInfo from './AlbumInfo'
 import { jsonLdScriptProps } from 'react-schemaorg'
 import { MusicAlbum } from 'schema-dts'
 import AlbumTracklist from './AlbumTracklist'
-import { AlbumWrapper } from './styles'
 
 export default function AlbumTemplate({
   title,
@@ -40,24 +39,22 @@ export default function AlbumTemplate({
         />
       </Head>
 
-      <AlbumWrapper>
-        <ButtonBack />
-        <AlbumCover image={featuredImage?.node.sourceUrl} title={title} />
-        <AlbumInfo
-          title={title}
-          artist={acf?.artist}
-          year={acf?.released}
-          genre={acf?.genre}
-          country={acf?.country}
-          amazon={acf?.amazon}
-          deezer={acf?.deezer}
-          download={acf?.download}
-          lastfm={acf?.lastfm}
-          spotify={acf?.spotify}
-          wikipedia={acf?.wikipedia}
-        />
-        <AlbumTracklist list={acf?.tracklist} />
-      </AlbumWrapper>
+      <ButtonBack />
+      <AlbumCover image={featuredImage?.node.sourceUrl} title={title} />
+      <AlbumInfo
+        title={title}
+        artist={acf?.artist}
+        year={acf?.released}
+        genre={acf?.genre}
+        country={acf?.country}
+        amazon={acf?.amazon}
+        deezer={acf?.deezer}
+        download={acf?.download}
+        lastfm={acf?.lastfm}
+        spotify={acf?.spotify}
+        wikipedia={acf?.wikipedia}
+      />
+      <AlbumTracklist list={acf?.tracklist} />
     </>
   )
 }

@@ -2,7 +2,7 @@ import ListAlbums from '@/components/ListAlbums'
 import Head from 'next/head'
 import { NextSeo } from 'next-seo'
 import { isMiddleOnScroll } from '@/utils/isMiddleOnScroll'
-import { useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import {
   Album,
   AlbumConnection,
@@ -21,13 +21,11 @@ export default function HomeTemplate({ nodes, pageInfo }: AlbumConnection) {
     pageInfo.endCursor || ''
   )
 
-  const handleScroll = (e: React.UIEvent<HTMLUListElement>): void => {
-    const $el = e.target as HTMLUListElement
-
-    if (isMiddleOnScroll($el) && hasNextPage && !loading) {
+  const handleScroll = useCallback((): void => {
+    if (isMiddleOnScroll() && hasNextPage && !loading) {
       getAlbums(endCursor)
     }
-  }
+  }, [hasNextPage, endCursor, loading])
 
   const getAlbums = async (cursor: string | null | undefined) => {
     setLoading(true)
@@ -41,6 +39,14 @@ export default function HomeTemplate({ nodes, pageInfo }: AlbumConnection) {
     setEndCursor(albums?.pageInfo.endCursor)
     setLoading(false)
   }
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll, { passive: true })
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+    }
+  })
 
   return (
     <>

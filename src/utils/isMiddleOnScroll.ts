@@ -1,8 +1,12 @@
-export const isMiddleOnScroll = (element: HTMLElement): boolean => {
-  const listPosition = element.scrollTop + element.clientHeight
-  const listTotal = element.scrollHeight
+export const isMiddleOnScroll = (): boolean => {
+  const scrollTop = window.scrollY || document.documentElement.scrollTop
+  const windowHeight =
+    window.innerHeight || document.documentElement.clientHeight
+  const documentHeight = document.documentElement.scrollHeight
 
-  if ((listPosition / listTotal) * 100 > 50) {
+  const scrollPercentage = ((scrollTop + windowHeight) / documentHeight) * 100
+
+  if (scrollPercentage >= 50) {
     return true
   }
 
