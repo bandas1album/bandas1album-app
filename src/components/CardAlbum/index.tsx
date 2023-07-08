@@ -6,7 +6,7 @@ type CardAlbumProps = {
   title: string
   artist: string
   cover: string
-  loading: string
+  loading: 'eager' | 'lazy' | undefined
 }
 
 const CardAlbum = ({ artist, cover, slug, title, loading }: CardAlbumProps) => (
