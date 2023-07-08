@@ -12,7 +12,7 @@ export const getStaticProps: GetStaticProps = async () => {
   const { data } = await client.query({
     query: GET_ALBUMS,
     variables: {
-      first: 96,
+      first: 48,
       after: null
     }
   })

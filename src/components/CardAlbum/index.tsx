@@ -6,9 +6,10 @@ type CardAlbumProps = {
   title: string
   artist: string
   cover: string
+  loading: string
 }
 
-const CardAlbum = ({ artist, cover, slug, title }: CardAlbumProps) => (
+const CardAlbum = ({ artist, cover, slug, title, loading }: CardAlbumProps) => (
   <CardLink href={`/album/${slug}`} title={title}>
     <Card>
       <CardImage>
@@ -18,7 +19,7 @@ const CardAlbum = ({ artist, cover, slug, title }: CardAlbumProps) => (
             alt={`Álbum ${title} de ${artist}`}
             width={160}
             height={160}
-            loading="lazy"
+            loading={loading}
           ></Image>
         ) : (
           <CardTitle>

@@ -6,9 +6,14 @@ import { AlbumConnection } from '@/graphql/generated/graphql'
 type ListAlbumsProps = {
   albums: AlbumConnection['nodes']
   handleScroll: (e: React.UIEvent<HTMLUListElement>) => void
+  loading: string
 }
 
-export default function ListAlbums({ albums, handleScroll }: ListAlbumsProps) {
+export default function ListAlbums({
+  albums,
+  handleScroll,
+  loading
+}: ListAlbumsProps) {
   return (
     <>
       <List onScroll={handleScroll}>
@@ -22,6 +27,7 @@ export default function ListAlbums({ albums, handleScroll }: ListAlbumsProps) {
                 ''
               }
               title={album.title || ''}
+              loading={loading}
             />
           </li>
         ))}

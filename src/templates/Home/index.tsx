@@ -8,6 +8,7 @@ import { GET_ALBUMS } from '@/graphql/queries'
 import client from '@/graphql/client'
 
 export default function HomeTemplate({ nodes, pageInfo }: AlbumConnection) {
+  const [firstLoading, setFirstLoading] = useState(true)
   const [loading, setLoading] = useState(false)
   const [albums, setAlbums] = useState<AlbumConnection['nodes']>(nodes)
   const [hasNextPage, setHasNextPage] = useState<boolean | undefined>(
@@ -37,6 +38,7 @@ export default function HomeTemplate({ nodes, pageInfo }: AlbumConnection) {
     setHasNextPage(data.albums?.pageInfo.hasNextPage)
     setEndCursor(data.albums?.pageInfo.endCursor)
     setLoading(false)
+    setFirstLoading(false)
   }
 
   useEffect(() => {
@@ -67,7 +69,11 @@ export default function HomeTemplate({ nodes, pageInfo }: AlbumConnection) {
           ]
         }}
       />
-      <ListAlbums albums={albums} handleScroll={handleScroll} />
+      <ListAlbums
+        albums={albums}
+        handleScroll={handleScroll}
+        loading={firstLoading ? 'eager' : 'lazy'}
+      />
     </>
   )
 }
