@@ -6,7 +6,7 @@ import { AlbumConnection } from '@/graphql/generated/graphql'
 type ListAlbumsProps = {
   albums: AlbumConnection['nodes']
   handleScroll: (e: React.UIEvent<HTMLUListElement>) => void
-  loading: string
+  loading: 'eager' | 'lazy' | undefined
 }
 
 export default function ListAlbums({
