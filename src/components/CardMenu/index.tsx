@@ -12,7 +12,13 @@ export function CardMenu({ image, title, subtitle }: CardMenuProps) {
     <Card>
       {image ? (
         <CardImage>
-          <Image src={image} alt="" width="48" height="48" loading="lazy" />
+          <Image
+            src={image}
+            alt={title}
+            width={48}
+            height={48}
+            loading="lazy"
+          />
         </CardImage>
       ) : (
         ''

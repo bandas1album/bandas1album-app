@@ -16,7 +16,11 @@ export const GET_ALBUMS = gql`
         }
         featuredImage {
           node {
-            sourceUrl
+            mediaDetails {
+              sizes {
+                sourceUrl
+              }
+            }
           }
         }
       }

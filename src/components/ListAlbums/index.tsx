@@ -17,7 +17,10 @@ export default function ListAlbums({ albums, handleScroll }: ListAlbumsProps) {
             <CardAlbum
               artist={album.acf?.artist || ''}
               slug={album.slug || ''}
-              cover={album.featuredImage?.node.sourceUrl || ''}
+              cover={
+                album.featuredImage?.node.mediaDetails?.sizes?.[0]?.sourceUrl ||
+                ''
+              }
               title={album.title || ''}
             />
           </li>

@@ -16,8 +16,8 @@ const CardAlbum = ({ artist, cover, slug, title }: CardAlbumProps) => (
           <Image
             src={cover}
             alt={`Álbum ${title} de ${artist}`}
-            width="160"
-            height="160"
+            width={160}
+            height={160}
             loading="lazy"
           ></Image>
         ) : (
