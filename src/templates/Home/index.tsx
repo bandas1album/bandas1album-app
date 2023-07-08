@@ -3,11 +3,7 @@ import Head from 'next/head'
 import { NextSeo } from 'next-seo'
 import { isMiddleOnScroll } from '@/utils/isMiddleOnScroll'
 import { useCallback, useEffect, useState } from 'react'
-import {
-  Album,
-  AlbumConnection,
-  GetAlbumsQuery
-} from '@/graphql/generated/graphql'
+import { Album, AlbumConnection } from '@/graphql/generated/graphql'
 import { GET_ALBUMS } from '@/graphql/queries'
 import client from '@/graphql/client'
 
@@ -29,14 +25,17 @@ export default function HomeTemplate({ nodes, pageInfo }: AlbumConnection) {
 
   const getAlbums = async (cursor: string | null | undefined) => {
     setLoading(true)
-    const { albums } = await client.request<GetAlbumsQuery>(GET_ALBUMS, {
-      first: 96,
-      after: cursor
+    const { data } = await client.query({
+      query: GET_ALBUMS,
+      variables: {
+        first: 96,
+        after: cursor
+      }
     })
-    const responseList = albums?.nodes as Album[]
+    const responseList = data.albums?.nodes as Album[]
     setAlbums((albums) => [...albums, ...responseList])
-    setHasNextPage(albums?.pageInfo.hasNextPage)
-    setEndCursor(albums?.pageInfo.endCursor)
+    setHasNextPage(data.albums?.pageInfo.hasNextPage)
+    setEndCursor(data.albums?.pageInfo.endCursor)
     setLoading(false)
   }
 

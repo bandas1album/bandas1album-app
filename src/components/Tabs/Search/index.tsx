@@ -27,17 +27,22 @@ export default function TabsSearch() {
 
     if (search.length) {
       client
-        .request<GetAutocompleteBySearchQuery>(GET_AUTOCOMPLETE_BY_SEARCH, {
-          search: search
+        .query({
+          query: GET_AUTOCOMPLETE_BY_SEARCH,
+          variables: {
+            search: search
+          }
         })
         .then((response) => {
+          const data = response.data as GetAutocompleteBySearchQuery
+
           if (
-            response.albums?.nodes.length ||
-            response.countries?.nodes.length ||
-            response.genres?.nodes.length ||
-            response.releases?.nodes.length
+            data.albums?.nodes.length ||
+            data.countries?.nodes.length ||
+            data.genres?.nodes.length ||
+            data.releases?.nodes.length
           )
-            return setAutocomplete(response)
+            return setAutocomplete(data)
 
           return setError(true)
         })

@@ -9,10 +9,14 @@ export default function Home({ nodes, pageInfo, edges }: AlbumConnection) {
 }
 
 export const getStaticProps: GetStaticProps = async () => {
-  const { albums } = await client.request<GetAlbumsQuery>(GET_ALBUMS, {
-    first: 96,
-    after: null
+  const { data } = await client.query({
+    query: GET_ALBUMS,
+    variables: {
+      first: 96,
+      after: null
+    }
   })
+  const { albums } = data as GetAlbumsQuery
 
   return {
     props: {

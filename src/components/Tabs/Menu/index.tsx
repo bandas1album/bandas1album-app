@@ -27,12 +27,13 @@ export default function TabsMenu() {
   useEffect(() => {
     if (!opened) {
       client
-        .request<GetMenuCategoriesQuery>(GET_MENU_CATEGORIES)
+        .query({ query: GET_MENU_CATEGORIES })
         .then((response) => {
-          setAlbums(response.albums)
-          setGenres(response.genres)
-          setCountries(response.countries)
-          setReleases(response.releases)
+          const data = response.data as GetMenuCategoriesQuery
+          setAlbums(data.albums)
+          setGenres(data.genres)
+          setCountries(data.countries)
+          setReleases(data.releases)
         })
         .catch((error) => console.error(error))
     }

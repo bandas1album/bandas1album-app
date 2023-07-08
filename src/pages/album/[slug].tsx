@@ -17,11 +17,15 @@ export default function PageAlbum(album: Album) {
 }
 
 export async function getStaticPaths() {
-  const data = await client.request<GetAlbumsQuery>(GET_ALBUMS, {
-    first: 1
+  const { data } = await client.query({
+    query: GET_ALBUMS,
+    variables: {
+      first: 1
+    }
   })
+  const { albums } = data as GetAlbumsQuery
 
-  const paths = data.albums?.nodes.map((album) => ({
+  const paths = albums?.nodes.map((album) => ({
     params: {
       slug: album.slug
     }
@@ -31,12 +35,13 @@ export async function getStaticPaths() {
 }
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
-  const { album } = await client.request<GetAlbumBySlugQuery>(
-    GET_ALBUM_BY_SLUG,
-    {
+  const { data } = await client.query({
+    query: GET_ALBUM_BY_SLUG,
+    variables: {
       id: `${params?.slug}`
     }
-  )
+  })
+  const { album } = data as GetAlbumBySlugQuery
 
   if (!album) return { notFound: true }
 
