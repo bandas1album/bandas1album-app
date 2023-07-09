@@ -7,8 +7,14 @@ import SEO from '../../next-seo.config'
 import { DefaultSeo } from 'next-seo'
 import Tabs from '@/components/Tabs'
 import Script from 'next/script'
+import { useRouter } from 'next/router'
+import { useEffect } from 'react'
 
 export default function App({ Component, pageProps }: AppProps) {
+  const router = useRouter()
+  useEffect(() => {
+    router.prefetch = async () => void {}
+  }, [router])
   return (
     <>
       <Head>
