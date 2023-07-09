@@ -4,7 +4,8 @@ const nextConfig = {
   reactStrictMode: true,
   eslint: {
     dirs: ['src']
-  }
+  },
+  appDir: false
 }
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
