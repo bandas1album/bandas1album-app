@@ -2,7 +2,7 @@ export default {
   additionalLinkTags: [
     {
       rel: 'icon',
-      href: '/favicon.ico'
+      href: '/logo.png'
     },
     {
       rel: 'apple-touch-icon',

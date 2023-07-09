@@ -3,12 +3,12 @@
   "short_name": "Bandas de 1 Álbum",
   "icons": [
     {
-      "src": "/img/icon-192.png",
+      "src": "/logo.png",
       "type": "image/png",
       "sizes": "192x192"
     },
     {
-      "src": "/img/icon-512.png",
+      "src": "/logo.png",
       "type": "image/png",
       "sizes": "512x512"
     }
