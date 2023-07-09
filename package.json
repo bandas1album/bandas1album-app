@@ -1,6 +1,6 @@
 {
   "name": "bandas1album-app",
-  "version": "2.0.5",
+  "version": "2.0.15",
   "private": true,
   "scripts": {
     "dev": "next dev",
