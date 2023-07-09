@@ -60,7 +60,7 @@ export default function TabsMenu() {
             <Submenu hidden>
               {albums?.nodes.map((album) => (
                 <li key={album.id}>
-                  <Link href={`/album/${album.slug}`}>
+                  <Link prefetch={false} href={`/album/${album.slug}`}>
                     <CardMenu
                       image={album.featuredImage?.node.sourceUrl || ''}
                       title={album.title || ''}
