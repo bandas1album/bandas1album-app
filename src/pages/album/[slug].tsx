@@ -1,21 +1,24 @@
 import client from '@/graphql/client'
-import { GET_ALBUM_BY_SLUG, GET_ALBUMS } from '@/graphql/queries'
+import { GET_ALBUM_BY_ID, GET_ALBUMS } from '@/graphql/queries'
 import { GetStaticProps } from 'next'
 import { useRouter } from 'next/router'
 import {
   AlbumEntityResponse,
-  GetAlbumBySlugQuery,
+  GetAlbumByIdQuery,
   GetAlbumsQuery
 } from '@/graphql/generated/graphql'
 import AlbumTemplate from '@/templates/Album'
 import { ApolloError } from '@apollo/client'
 
-export default function PageAlbum(album: AlbumEntityResponse) {
-  const router = useRouter()
+type TPageAlbum = {
+  album: AlbumEntityResponse
+}
 
+export default function PageAlbum({ album }: TPageAlbum) {
+  const router = useRouter()
   if (router.isFallback) return <p>Loading...</p>
 
-  return <AlbumTemplate {...album.data} />
+  return album && <AlbumTemplate {...album.data} />
 }
 
 export async function getStaticPaths() {
@@ -30,7 +33,8 @@ export async function getStaticPaths() {
 
     const paths = albums?.data.map((album) => ({
       params: {
-        slug: album.attributes?.slug
+        slug: album.attributes?.slug,
+        id: album.id
       }
     }))
 
@@ -44,12 +48,12 @@ export async function getStaticPaths() {
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   try {
     const { data } = await client.query({
-      query: GET_ALBUM_BY_SLUG,
+      query: GET_ALBUM_BY_ID,
       variables: {
-        id: `${params?.slug}`
+        id: `${params?.id}`
       }
     })
-    const { album } = data as GetAlbumBySlugQuery
+    const { album } = data as GetAlbumByIdQuery
 
     if (!album) return { notFound: true }
 

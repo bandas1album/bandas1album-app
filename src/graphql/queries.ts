@@ -30,8 +30,8 @@ export const GET_ALBUMS = gql`
   }
 `
 
-export const GET_ALBUM_BY_SLUG = gql`
-  query getAlbumBySlug($id: ID) {
+export const GET_ALBUM_BY_ID = gql`
+  query getAlbumById($id: ID) {
     album(id: $id) {
       data {
         id
