@@ -1,10 +1,10 @@
 import React from 'react'
 import CardAlbum from '../CardAlbum'
 import { List } from './styles'
-import { AlbumConnection } from '@/graphql/generated/graphql'
+import { AlbumEntity } from '@/graphql/generated/graphql'
 
 type ListAlbumsProps = {
-  albums: AlbumConnection['nodes']
+  albums: Array<AlbumEntity>
   handleScroll: (e: React.UIEvent<HTMLUListElement>) => void
   loading: 'eager' | 'lazy' | undefined
 }
@@ -20,13 +20,10 @@ export default function ListAlbums({
         {albums.map((album) => (
           <li key={`album-${album.id}`}>
             <CardAlbum
-              artist={album.acf?.artist || ''}
-              slug={album.slug || ''}
-              cover={
-                album.featuredImage?.node.mediaDetails?.sizes?.[0]?.sourceUrl ||
-                ''
-              }
-              title={album.title || ''}
+              artist={album.attributes?.artist || ''}
+              slug={album.attributes?.slug || ''}
+              cover={album.attributes?.cover.data?.attributes?.url || ''}
+              title={album.attributes?.title || ''}
               loading={loading}
             />
           </li>

@@ -1,4 +1,4 @@
-import { Country, Genre, Maybe, Released } from '@/graphql/generated/graphql'
+import { CountryEntity, GenreEntity, Maybe } from '@/graphql/generated/graphql'
 import {
   Infos,
   InfosArtist,
@@ -11,12 +11,7 @@ import {
   InfosTags,
   InfosTitle
 } from './styles'
-import {
-  CalendarClear,
-  Location,
-  PlayCircle,
-  Pricetag
-} from '@styled-icons/ionicons-solid'
+import { Location, PlayCircle, Pricetag } from '@styled-icons/ionicons-solid'
 import {
   Amazon,
   Deezer,
@@ -30,9 +25,9 @@ import { useState } from 'react'
 type AlbumInfoProps = {
   title: Maybe<string> | undefined
   artist: Maybe<string> | undefined
-  year: Maybe<Maybe<Released>[]> | undefined
-  country: Maybe<Maybe<Country>[]> | undefined
-  genre: Maybe<Maybe<Genre>[]> | undefined
+  year: Maybe<string> | undefined
+  country: Maybe<CountryEntity> | undefined
+  genre: GenreEntity[] | undefined
   amazon: Maybe<string> | undefined
   deezer: Maybe<string> | undefined
   download: Maybe<string> | undefined
@@ -44,7 +39,6 @@ type AlbumInfoProps = {
 export default function AlbumInfo({
   title,
   artist,
-  year,
   country,
   genre,
   amazon,
@@ -129,22 +123,17 @@ export default function AlbumInfo({
         </InfosArtist>
       </InfosHeader>
       <InfosTags>
-        {year?.map((item) => (
-          <InfosTag key={item?.id} href={`/ano/${item?.title}`}>
-            <CalendarClear />
-            {item?.title}
-          </InfosTag>
-        ))}
-        {country?.map((item) => (
-          <InfosTag key={item?.id} href={`/pais/${item?.slug}`}>
-            <Location />
-            {item?.title}
-          </InfosTag>
-        ))}
-        {genre?.map((item) => (
-          <InfosTag key={item?.id} href={`/genero/${item?.slug}`}>
+        <InfosTag key={country?.id} href={`/pais/${country?.attributes?.slug}`}>
+          <Location />
+          {country?.attributes?.title}
+        </InfosTag>
+        {genre?.map((item, index) => (
+          <InfosTag
+            key={`genre-${index}`}
+            href={`/genero/${item?.attributes?.slug}`}
+          >
             <Pricetag />
-            <span>{item?.title}</span>
+            <span>{item.attributes?.title}</span>
           </InfosTag>
         ))}
       </InfosTags>

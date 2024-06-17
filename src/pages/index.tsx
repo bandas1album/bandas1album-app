@@ -1,11 +1,20 @@
 import client from '@/graphql/client'
-import { AlbumConnection, GetAlbumsQuery } from '@/graphql/generated/graphql'
+import {
+  AlbumEntity,
+  GetAlbumsQuery,
+  Pagination
+} from '@/graphql/generated/graphql'
 import { GET_ALBUMS } from '@/graphql/queries'
 import HomeTemplate from '@/templates/Home'
 import { GetServerSideProps } from 'next'
 
-export default function Home({ nodes, pageInfo, edges }: AlbumConnection) {
-  return <HomeTemplate nodes={nodes} pageInfo={pageInfo} edges={edges} />
+type THome = {
+  nodes: Array<AlbumEntity>
+  pageInfo: Pagination
+}
+
+export default function Home({ nodes, pageInfo }: THome) {
+  return <HomeTemplate nodes={nodes} pageInfo={pageInfo} />
 }
 
 export const getServerSideProps: GetServerSideProps = async () => {
@@ -20,8 +29,8 @@ export const getServerSideProps: GetServerSideProps = async () => {
 
   return {
     props: {
-      nodes: albums?.nodes,
-      pageInfo: albums?.pageInfo
+      nodes: albums?.data,
+      pageInfo: albums?.meta.pagination
     }
   }
 }

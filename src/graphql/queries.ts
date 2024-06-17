@@ -1,24 +1,26 @@
 import { gql } from '@apollo/client'
 
 export const GET_ALBUMS = gql`
-  query getAlbums($first: Int!, $after: String) {
-    albums(first: $first, after: $after) {
-      pageInfo {
-        hasNextPage
-        endCursor
-      }
-      nodes {
-        id
-        title
-        slug
-        acf {
-          artist
+  query getAlbums($first: Int!, $after: Int) {
+    albums(pagination: { pageSize: $first, start: $after }) {
+      meta {
+        pagination {
+          total
+          page
+          pageSize
+          pageCount
         }
-        featuredImage {
-          node {
-            mediaDetails {
-              sizes {
-                sourceUrl
+      }
+      data {
+        id
+        attributes {
+          title
+          slug
+          artist
+          cover {
+            data {
+              attributes {
+                url
               }
             }
           }
@@ -29,81 +31,76 @@ export const GET_ALBUMS = gql`
 `
 
 export const GET_ALBUM_BY_SLUG = gql`
-  query getAlbumBySlug($id: ID!) {
-    album(id: $id, idType: URI) {
-      title
-      content
-      acf {
-        artist
-        amazon
-        deezer
-        download
-        tracklist {
+  query getAlbumBySlug($id: ID) {
+    album(id: $id) {
+      data {
+        id
+        attributes {
+          slug
           title
-          duration
-        }
-        wikipedia
-        genre {
-          ... on Genre {
-            id
-            slug
-            title
+          content
+          artist
+          social
+          tracklist
+          genres {
+            data {
+              id
+              attributes {
+                slug
+                title
+              }
+            }
           }
-        }
-        country {
-          ... on Country {
-            id
-            slug
-            title
+          country {
+            data {
+              id
+              attributes {
+                slug
+                title
+              }
+            }
           }
-        }
-        released {
-          ... on Released {
-            id
-            slug
-            title
+          released
+          cover {
+            data {
+              attributes {
+                url
+              }
+            }
           }
         }
       }
-      featuredImage {
-        node {
-          sourceUrl
-        }
-      }
-      slug
-      id
     }
   }
 `
 
 export const GET_AUTOCOMPLETE_BY_SEARCH = gql`
-  query getAutocompleteBySearch($search: String) {
-    albums(where: { search: $search }, first: 2) {
-      nodes {
+  query getAutocompleteBySearch($search: StringFilterInput) {
+    albums(filters: { title: $search }, pagination: { pageSize: 2 }) {
+      data {
         id
-        title
-        slug
+        attributes {
+          title
+          slug
+        }
       }
     }
-    genres(where: { search: $search }, first: 2) {
-      nodes {
+    genres(filters: { title: $search }, pagination: { pageSize: 2 }) {
+      data {
         id
-        title
-        slug
+        attributes {
+          title
+          slug
+        }
       }
     }
-    countries(where: { search: $search }, first: 2) {
-      nodes {
+    countries(filters: { title: $search }, pagination: { pageSize: 2 }) {
+      data {
         id
-        title
-        slug
-      }
-    }
-    releases(where: { search: $search }, first: 2) {
-      nodes {
-        id
-        title
-        slug
+        attributes {
+          title
+          slug
+        }
       }
     }
   }
@@ -112,39 +109,38 @@ export const GET_AUTOCOMPLETE_BY_SEARCH = gql`
 export const GET_MENU_CATEGORIES = gql`
   query getMenuCategories {
     albums {
-      nodes {
+      data {
         id
-        title
-        acf {
+        attributes {
+          title
           artist
-        }
-        slug
-        featuredImage {
-          node {
-            sourceUrl
+          slug
+          cover {
+            data {
+              attributes {
+                url
+              }
+            }
           }
         }
       }
     }
     genres {
-      nodes {
+      data {
         id
-        title
-        slug
+        attributes {
+          title
+          slug
+        }
       }
     }
     countries {
-      nodes {
+      data {
         id
-        title
-        slug
-      }
-    }
-    releases {
-      nodes {
-        id
-        title
-        slug
+        attributes {
+          title
+          slug
+        }
       }
     }
   }

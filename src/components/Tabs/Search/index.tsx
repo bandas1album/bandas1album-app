@@ -30,17 +30,18 @@ export default function TabsSearch() {
         .query({
           query: GET_AUTOCOMPLETE_BY_SEARCH,
           variables: {
-            search: search
+            search: {
+              containsi: search
+            }
           }
         })
         .then((response) => {
           const data = response.data as GetAutocompleteBySearchQuery
 
           if (
-            data.albums?.nodes.length ||
-            data.countries?.nodes.length ||
-            data.genres?.nodes.length ||
-            data.releases?.nodes.length
+            data.albums?.data.length ||
+            data.countries?.data.length ||
+            data.genres?.data.length
           )
             return setAutocomplete(data)
 
@@ -77,36 +78,28 @@ export default function TabsSearch() {
         ''
       )}
 
-      {autocomplete?.albums?.nodes.length ||
-      autocomplete?.genres?.nodes.length ||
-      autocomplete?.countries?.nodes.length ||
-      autocomplete?.releases?.nodes.length ? (
+      {autocomplete?.albums?.data.length ||
+      autocomplete?.genres?.data.length ||
+      autocomplete?.countries?.data.length ? (
         <SearchAutocomplete className="m-tabs-search__autocomplete">
-          {autocomplete?.albums?.nodes.map((album) => (
+          {autocomplete?.albums?.data.map((album) => (
             <li key={album.id}>
-              <Link href={`/album/${album.slug}`}>
-                Álbuns / <strong>{album.title}</strong>
+              <Link href={`/album/${album.attributes?.slug}`}>
+                Álbuns / <strong>{album?.attributes?.title}</strong>
               </Link>
             </li>
           ))}
-          {autocomplete?.genres?.nodes.map((genre) => (
+          {autocomplete?.genres?.data.map((genre) => (
             <li key={genre.id}>
-              <Link href={`/genero/${genre.slug}`}>
-                Gêneros / <strong>{genre.title}</strong>
+              <Link href={`/genero/${genre.attributes?.slug}`}>
+                Gêneros / <strong>{genre.attributes?.title}</strong>
               </Link>
             </li>
           ))}
-          {autocomplete?.countries?.nodes.map((country) => (
+          {autocomplete?.countries?.data.map((country) => (
             <li key={country.id}>
-              <Link href={`/pais/${country.slug}`}>
-                Países / <strong>{country.title}</strong>
-              </Link>
-            </li>
-          ))}
-          {autocomplete?.releases?.nodes.map((released) => (
-            <li key={released.id}>
-              <Link href={`/lancamento/${released.title}`}>
-                Lançamento / <strong>{released.title}</strong>
+              <Link href={`/pais/${country.attributes?.slug}`}>
+                Países / <strong>{country.attributes?.title}</strong>
               </Link>
             </li>
           ))}

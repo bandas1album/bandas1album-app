@@ -20,11 +20,6 @@ module.exports = withPWA({
     disable: !isProd
   },
   images: {
-    remotePatterns: [
-      {
-        protocol: 'http',
-        hostname: 'core.bandas1album.com.br'
-      }
-    ]
+    domains: ['res.cloudinary.com']
   }
 })

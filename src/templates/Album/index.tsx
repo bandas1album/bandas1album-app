@@ -1,5 +1,5 @@
 import Head from 'next/head'
-import { Album } from '@/graphql/generated/graphql'
+import { AlbumEntity } from '@/graphql/generated/graphql'
 import ButtonBack from '@/components/Buttons/ButtonBack'
 import AlbumCover from './AlbumCover'
 import AlbumInfo from './AlbumInfo'
@@ -7,54 +7,56 @@ import { jsonLdScriptProps } from 'react-schemaorg'
 import { MusicAlbum } from 'schema-dts'
 import AlbumTracklist from './AlbumTracklist'
 
-export default function AlbumTemplate({
-  title,
-  featuredImage,
-  acf,
-  slug
-}: Album) {
+export default function AlbumTemplate({ attributes }: AlbumEntity) {
   return (
     <>
       <Head>
-        <title>{title} | Bandas de 1 Álbum</title>
+        <title>{attributes?.title} | Bandas de 1 Álbum</title>
         <script
           {...jsonLdScriptProps<MusicAlbum>({
             '@context': 'https://schema.org',
             '@type': 'MusicAlbum',
             byArtist: {
               '@type': 'MusicGroup',
-              name: acf?.artist || ''
+              name: attributes?.artist || ''
             },
-            genre: acf?.genre ? acf?.genre[0]?.title || '' : '',
-            image: featuredImage?.node.sourceUrl || '',
-            name: title || '',
-            numTracks: acf?.tracklist?.length,
-            track: acf?.tracklist?.map((track) => ({
-              '@type': 'MusicRecording',
-              duration: track?.duration || '',
-              name: track?.title || ''
-            })),
-            url: `/album/${slug}`
+            genre: attributes?.genres?.data.length
+              ? attributes.genres.data[0].attributes?.title || ''
+              : '',
+            image: attributes?.cover.data?.attributes?.url || '',
+            name: attributes?.title || '',
+            numTracks: attributes?.tracklist.length,
+            track: attributes?.tracklist?.map(
+              (track: { title: string; duration: string }) => ({
+                '@type': 'MusicRecording',
+                duration: track?.duration || '',
+                name: track?.title || ''
+              })
+            ),
+            url: `/album/${attributes?.slug}`
           })}
         />
       </Head>
 
       <ButtonBack />
-      <AlbumCover image={featuredImage?.node.sourceUrl} title={title} />
-      <AlbumInfo
-        title={title}
-        artist={acf?.artist}
-        year={acf?.released}
-        genre={acf?.genre}
-        country={acf?.country}
-        amazon={acf?.amazon}
-        deezer={acf?.deezer}
-        download={acf?.download}
-        lastfm={acf?.lastfm}
-        spotify={acf?.spotify}
-        wikipedia={acf?.wikipedia}
+      <AlbumCover
+        image={attributes?.cover.data?.attributes?.url}
+        title={attributes?.title}
       />
-      <AlbumTracklist list={acf?.tracklist} />
+      <AlbumInfo
+        title={attributes?.title}
+        artist={attributes?.artist}
+        year={attributes?.released}
+        genre={attributes?.genres?.data}
+        country={attributes?.country?.data}
+        amazon={attributes?.social?.amazon}
+        deezer={attributes?.social?.deezer}
+        download={attributes?.social?.download}
+        lastfm={attributes?.social?.lastfm}
+        spotify={attributes?.social?.spotify}
+        wikipedia={attributes?.social?.wikipedia}
+      />
+      <AlbumTracklist list={attributes?.tracklist} />
     </>
   )
 }

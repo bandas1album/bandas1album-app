@@ -3,20 +3,23 @@ import Head from 'next/head'
 import { NextSeo } from 'next-seo'
 import { isMiddleOnScroll } from '@/utils/isMiddleOnScroll'
 import { useCallback, useEffect, useState } from 'react'
-import { Album, AlbumConnection } from '@/graphql/generated/graphql'
+import { AlbumEntity, Pagination } from '@/graphql/generated/graphql'
 import { GET_ALBUMS } from '@/graphql/queries'
 import client from '@/graphql/client'
 
-export default function HomeTemplate({ nodes, pageInfo }: AlbumConnection) {
+type THomeTemplate = {
+  nodes: Array<AlbumEntity>
+  pageInfo: Pagination
+}
+
+export default function HomeTemplate({ nodes, pageInfo }: THomeTemplate) {
   const [firstLoading, setFirstLoading] = useState(true)
   const [loading, setLoading] = useState(false)
-  const [albums, setAlbums] = useState<AlbumConnection['nodes']>(nodes)
+  const [albums, setAlbums] = useState<Array<AlbumEntity>>(nodes)
   const [hasNextPage, setHasNextPage] = useState<boolean | undefined>(
-    pageInfo.hasNextPage || false
+    pageInfo.total > pageInfo.page * pageInfo.pageSize
   )
-  const [endCursor, setEndCursor] = useState<string | null | undefined>(
-    pageInfo.endCursor || ''
-  )
+  const [endCursor, setEndCursor] = useState<string | null | undefined>('')
 
   const handleScroll = useCallback((): void => {
     if (isMiddleOnScroll() && hasNextPage && !loading) {
@@ -33,7 +36,7 @@ export default function HomeTemplate({ nodes, pageInfo }: AlbumConnection) {
         after: cursor
       }
     })
-    const responseList = data.albums?.nodes as Album[]
+    const responseList = data.albums?.nodes as AlbumEntity[]
     setAlbums((albums) => [...albums, ...responseList])
     setHasNextPage(data.albums?.pageInfo.hasNextPage)
     setEndCursor(data.albums?.pageInfo.endCursor)

@@ -22,7 +22,6 @@ export default function TabsMenu() {
   const [genres, setGenres] = useState<GetMenuCategoriesQuery['genres']>()
   const [countries, setCountries] =
     useState<GetMenuCategoriesQuery['countries']>()
-  const [releases, setReleases] = useState<GetMenuCategoriesQuery['releases']>()
 
   useEffect(() => {
     if (!opened) {
@@ -33,7 +32,6 @@ export default function TabsMenu() {
           setAlbums(data.albums)
           setGenres(data.genres)
           setCountries(data.countries)
-          setReleases(data.releases)
         })
         .catch((error) => console.error(error))
     }
@@ -46,7 +44,7 @@ export default function TabsMenu() {
   return (
     <MenuNav>
       <MenuList>
-        {albums?.nodes.length ? (
+        {albums?.data?.length ? (
           <li>
             <MenuTitle
               onClick={() => setSubmenu('albums')}
@@ -58,13 +56,18 @@ export default function TabsMenu() {
             </MenuTitle>
 
             <Submenu hidden>
-              {albums?.nodes.map((album) => (
+              {albums?.data.map((album) => (
                 <li key={album.id}>
-                  <Link prefetch={false} href={`/album/${album.slug}`}>
+                  <Link
+                    prefetch={false}
+                    href={`/album/${album.attributes?.slug}`}
+                  >
                     <CardMenu
-                      image={album.featuredImage?.node.sourceUrl || ''}
-                      title={album.title || ''}
-                      subtitle={album?.acf?.artist || ''}
+                      image={
+                        album.attributes?.cover.data?.attributes?.url || ''
+                      }
+                      title={album.attributes?.title || ''}
+                      subtitle={album?.attributes?.artist || ''}
                     />
                   </Link>
                 </li>
@@ -75,7 +78,7 @@ export default function TabsMenu() {
           ''
         )}
 
-        {countries?.nodes.length ? (
+        {countries?.data.length ? (
           <li>
             <MenuTitle
               onClick={() => setSubmenu('genres')}
@@ -87,10 +90,10 @@ export default function TabsMenu() {
             </MenuTitle>
 
             <Submenu hidden>
-              {genres?.nodes.map((genre) => (
+              {genres?.data.map((genre) => (
                 <li key={genre.id}>
-                  <Link href={`/genero/${genre.slug}`}>
-                    <CardMenu title={genre.title || ''} />
+                  <Link href={`/genero/${genre.attributes?.slug}`}>
+                    <CardMenu title={genre.attributes?.title || ''} />
                   </Link>
                 </li>
               ))}
@@ -100,7 +103,7 @@ export default function TabsMenu() {
           ''
         )}
 
-        {countries?.nodes.length ? (
+        {countries?.data.length ? (
           <li>
             <MenuTitle
               onClick={() => setSubmenu('countries')}
@@ -112,34 +115,10 @@ export default function TabsMenu() {
             </MenuTitle>
 
             <Submenu hidden>
-              {countries?.nodes.map((country) => (
+              {countries?.data.map((country) => (
                 <li key={country.id}>
-                  <Link href={`/pais/${country.slug}`}>
-                    <CardMenu title={country.title || ''} />
-                  </Link>
-                </li>
-              ))}
-            </Submenu>
-          </li>
-        ) : (
-          ''
-        )}
-        {releases?.nodes.length ? (
-          <li>
-            <MenuTitle
-              onClick={() => setSubmenu('releases')}
-              onBlur={() => setSubmenu('')}
-              $isActive={submenu === 'releases'}
-            >
-              <span>Ano de lançamento</span>
-              <ChevronDownCircle />
-            </MenuTitle>
-
-            <Submenu hidden>
-              {releases?.nodes.map((year) => (
-                <li key={year.id}>
-                  <Link href={`/ano/${year.title}`}>
-                    <CardMenu title={year.title || ''} />
+                  <Link href={`/pais/${country.attributes?.slug}`}>
+                    <CardMenu title={country.attributes?.title || ''} />
                   </Link>
                 </li>
               ))}
