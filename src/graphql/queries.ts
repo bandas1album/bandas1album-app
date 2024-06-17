@@ -14,9 +14,8 @@ export const GET_ALBUMS = gql`
       data {
         id
         attributes {
-          title
           slug
-          artist
+          title
           cover {
             data {
               attributes {
@@ -30,9 +29,20 @@ export const GET_ALBUMS = gql`
   }
 `
 
-export const GET_ALBUM_BY_ID = gql`
-  query getAlbumById($id: ID) {
-    album(id: $id) {
+export const GET_ALBUM_BY_SLUG = gql`
+  query getAlbumBySlug($first: Int!, $after: Int, $slug: StringFilterInput) {
+    albums(
+      pagination: { pageSize: $first, start: $after }
+      filters: { slug: $slug }
+    ) {
+      meta {
+        pagination {
+          total
+          page
+          pageSize
+          pageCount
+        }
+      }
       data {
         id
         attributes {
