@@ -25,14 +25,16 @@ export default function AlbumTemplate({ attributes }: AlbumEntity) {
               : '',
             image: attributes?.cover.data?.attributes?.url || '',
             name: attributes?.title || '',
-            numTracks: attributes?.tracklist.length,
-            track: attributes?.tracklist?.map(
-              (track: { title: string; duration: string }) => ({
-                '@type': 'MusicRecording',
-                duration: track?.duration || '',
-                name: track?.title || ''
-              })
-            ),
+            numTracks: attributes?.tracklist && attributes?.tracklist.length,
+            track:
+              attributes?.tracklist &&
+              attributes?.tracklist?.map(
+                (track: { title: string; duration: string }) => ({
+                  '@type': 'MusicRecording',
+                  duration: track?.duration || '',
+                  name: track?.title || ''
+                })
+              ),
             url: `/album/${attributes?.slug}`
           })}
         />
@@ -56,7 +58,7 @@ export default function AlbumTemplate({ attributes }: AlbumEntity) {
         spotify={attributes?.social?.spotify}
         wikipedia={attributes?.social?.wikipedia}
       />
-      <AlbumTracklist list={attributes?.tracklist} />
+      {attributes?.tracklist && <AlbumTracklist list={attributes?.tracklist} />}
     </>
   )
 }
