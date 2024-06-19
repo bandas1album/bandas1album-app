@@ -48,18 +48,13 @@ export default function AlbumInfo({
   spotify,
   wikipedia
 }: AlbumInfoProps) {
-  const [openedLinks, setOpenedLinks] = useState(false)
-
   return (
     <Infos>
       <InfosLinks>
-        <InfosLinksButton
-          onClick={() => setOpenedLinks(!openedLinks)}
-          onBlur={() => setOpenedLinks(false)}
-        >
+        <InfosLinksButton>
           <PlayCircle />
         </InfosLinksButton>
-        <InfosLinksList $opened={openedLinks}>
+        <InfosLinksList $opened={true}>
           {amazon ? (
             <li>
               <InfosLink href={amazon || ''} title="Amazon">
