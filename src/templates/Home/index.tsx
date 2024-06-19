@@ -32,7 +32,7 @@ export default function HomeTemplate({ nodes, pageInfo }: THomeTemplate) {
     const { data } = await client.query<GetAlbumsQuery>({
       query: GET_ALBUMS,
       variables: {
-        perPage: 48,
+        perPage: 96,
         page: currentPage && currentPage + 1
       }
     })
