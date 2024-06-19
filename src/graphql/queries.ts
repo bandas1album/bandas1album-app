@@ -1,8 +1,8 @@
 import { gql } from '@apollo/client'
 
 export const GET_ALBUMS = gql`
-  query getAlbums($first: Int!, $after: Int) {
-    albums(pagination: { pageSize: $first, start: $after }) {
+  query getAlbums($perPage: Int!, $page: Int) {
+    albums(pagination: { pageSize: $perPage, page: $page }) {
       meta {
         pagination {
           total

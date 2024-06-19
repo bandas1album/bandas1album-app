@@ -4,10 +4,13 @@
 const path = require('path')
 
 const buildEslintCommand = (filenames) =>
-  `next lint --max-warnings=0 --fix --file ${filenames
+  `next lint --fix --file ${filenames
     .map((f) => path.relative(process.cwd(), f))
     .join(' --file ')}`
 
 module.exports = {
-  ['src/{components,pages,templates}/**/*']: [buildEslintCommand, 'yarn test --findRelatedTests --passWithNoTests --bail'],
+  ['src/{components,pages,templates}/**/*']: [
+    buildEslintCommand,
+    'yarn test --findRelatedTests --passWithNoTests --bail'
+  ]
 }

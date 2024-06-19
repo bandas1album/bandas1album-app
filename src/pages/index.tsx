@@ -21,8 +21,8 @@ export const getServerSideProps: GetServerSideProps = async () => {
   const { data } = await client.query({
     query: GET_ALBUMS,
     variables: {
-      first: 48,
-      after: null
+      perPage: 48,
+      page: 1
     }
   })
   const { albums } = data as GetAlbumsQuery

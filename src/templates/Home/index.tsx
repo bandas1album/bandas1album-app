@@ -3,7 +3,11 @@ import Head from 'next/head'
 import { NextSeo } from 'next-seo'
 import { isMiddleOnScroll } from '@/utils/isMiddleOnScroll'
 import { useCallback, useEffect, useState } from 'react'
-import { AlbumEntity, Pagination } from '@/graphql/generated/graphql'
+import {
+  AlbumEntity,
+  GetAlbumsQuery,
+  Pagination
+} from '@/graphql/generated/graphql'
 import { GET_ALBUMS } from '@/graphql/queries'
 import client from '@/graphql/client'
 
@@ -16,33 +20,43 @@ export default function HomeTemplate({ nodes, pageInfo }: THomeTemplate) {
   const [firstLoading, setFirstLoading] = useState(true)
   const [loading, setLoading] = useState(false)
   const [albums, setAlbums] = useState<Array<AlbumEntity>>(nodes)
-  const [hasNextPage, setHasNextPage] = useState<boolean | undefined>(
-    pageInfo.total > pageInfo.page * pageInfo.pageSize
+  const [currentPage, setCurrentPage] = useState<number | undefined>(
+    pageInfo.page
   )
-  const [endCursor, setEndCursor] = useState<string | null | undefined>('')
+  const [hasNextPage, setHasNextPage] = useState<boolean | undefined>(
+    pageInfo.pageCount > pageInfo.page
+  )
 
-  const handleScroll = useCallback((): void => {
-    if (isMiddleOnScroll() && hasNextPage && !loading) {
-      getAlbums(endCursor)
-    }
-  }, [hasNextPage, endCursor, loading])
-
-  const getAlbums = async (cursor: string | null | undefined) => {
+  const getAlbums = async () => {
     setLoading(true)
-    const { data } = await client.query({
+    const { data } = await client.query<GetAlbumsQuery>({
       query: GET_ALBUMS,
       variables: {
-        first: 96,
-        after: cursor
+        perPage: 48,
+        page: currentPage && currentPage + 1
       }
     })
-    const responseList = data.albums?.nodes as AlbumEntity[]
+    const responseList = data.albums?.data as AlbumEntity[]
     setAlbums((albums) => [...albums, ...responseList])
-    setHasNextPage(data.albums?.pageInfo.hasNextPage)
-    setEndCursor(data.albums?.pageInfo.endCursor)
+    if (
+      data.albums?.meta.pagination?.pageCount &&
+      data.albums?.meta.pagination?.page
+    ) {
+      setHasNextPage(
+        data.albums?.meta.pagination?.pageCount <
+          data.albums?.meta.pagination?.page
+      )
+    }
+    setCurrentPage(data.albums?.meta.pagination?.page)
     setLoading(false)
     setFirstLoading(false)
   }
+
+  const handleScroll = useCallback((): void => {
+    if (isMiddleOnScroll() && hasNextPage && !loading) {
+      getAlbums()
+    }
+  }, [hasNextPage, currentPage, loading])
 
   useEffect(() => {
     window.addEventListener('scroll', handleScroll, { passive: true })
