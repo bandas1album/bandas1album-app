@@ -1,6 +1,6 @@
 import { styled } from 'styled-components'
 
-export const Cover = styled.figure`
+export const Cover = styled.figure<{ $bg: string }>`
   position: relative;
   display: flex;
   align-items: center;
@@ -9,6 +9,21 @@ export const Cover = styled.figure`
   max-height: 480px;
   margin: 0;
   overflow: hidden;
+
+  &::before {
+    content: '';
+    display: block;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    z-index: -1;
+    top: 0;
+    left: 0;
+    background-image: ${(props) => props.$bg};
+    background-repeat: no-repeat;
+    background-size: cover;
+    filter: blur(20px);
+  }
 
   &::after {
     content: '';
@@ -23,10 +38,9 @@ export const Cover = styled.figure`
   }
 
   img {
-    width: 100%;
-    height: 100%;
+    max-width: 100%;
+    height: auto;
     display: block;
-    object-fit: cover;
-    object-position: center;
+    margin: 0 auto;
   }
 `
