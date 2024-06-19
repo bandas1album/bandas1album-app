@@ -20,7 +20,7 @@ export async function getStaticPaths() {
   const { data } = await client.query({
     query: GET_ALBUMS,
     variables: {
-      first: 1
+      perPage: 1
     }
   })
   const { albums } = data as GetAlbumsQuery
