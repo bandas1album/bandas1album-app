@@ -1,3 +1,4 @@
+import { ResultOf } from '@graphql-typed-document-node/core'
 import { styled } from 'styled-components'
 
 export const Cover = styled.figure<{ $bg: string }>`
@@ -13,13 +14,13 @@ export const Cover = styled.figure<{ $bg: string }>`
   &::before {
     content: '';
     display: block;
-    width: 100%;
-    height: 100%;
     position: absolute;
     z-index: -1;
     top: 0;
     left: 0;
-    background-image: ${(props) => props.$bg};
+    width: 100%;
+    height: 100%;
+    background-image: url(${(props) => props.$bg});
     background-repeat: no-repeat;
     background-size: cover;
     filter: blur(20px);
