@@ -45,17 +45,13 @@ export default function TabsMenu() {
     <MenuNav>
       <MenuList>
         {albums?.data?.length ? (
-          <li>
-            <MenuTitle
-              onClick={() => setSubmenu('albums')}
-              onBlur={() => setSubmenu('')}
-              $isActive={submenu === 'albums'}
-            >
+          <details>
+            <MenuTitle>
               <span>Álbuns</span>
               <ChevronDownCircle />
             </MenuTitle>
 
-            <Submenu hidden>
+            <Submenu>
               {albums?.data.map((album) => (
                 <li key={album.id}>
                   <Link
@@ -73,23 +69,19 @@ export default function TabsMenu() {
                 </li>
               ))}
             </Submenu>
-          </li>
+          </details>
         ) : (
           ''
         )}
 
         {countries?.data.length ? (
-          <li>
-            <MenuTitle
-              onClick={() => setSubmenu('genres')}
-              onBlur={() => setSubmenu('')}
-              $isActive={submenu === 'genres'}
-            >
+          <details>
+            <MenuTitle>
               <span>Gêneros</span>
               <ChevronDownCircle />
             </MenuTitle>
 
-            <Submenu hidden>
+            <Submenu>
               {genres?.data.map((genre) => (
                 <li key={genre.id}>
                   <Link href={`/genero/${genre.attributes?.slug}`}>
@@ -98,23 +90,19 @@ export default function TabsMenu() {
                 </li>
               ))}
             </Submenu>
-          </li>
+          </details>
         ) : (
           ''
         )}
 
         {countries?.data.length ? (
-          <li>
-            <MenuTitle
-              onClick={() => setSubmenu('countries')}
-              onBlur={() => setSubmenu('')}
-              $isActive={submenu === 'countries'}
-            >
+          <details>
+            <MenuTitle>
               <span>Países</span>
               <ChevronDownCircle />
             </MenuTitle>
 
-            <Submenu hidden>
+            <Submenu>
               {countries?.data.map((country) => (
                 <li key={country.id}>
                   <Link href={`/pais/${country.attributes?.slug}`}>
@@ -123,7 +111,7 @@ export default function TabsMenu() {
                 </li>
               ))}
             </Submenu>
-          </li>
+          </details>
         ) : (
           ''
         )}

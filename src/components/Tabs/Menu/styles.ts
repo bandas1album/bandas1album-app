@@ -1,4 +1,3 @@
-import { Button } from '../../../styles/resets'
 import { styled } from 'styled-components'
 
 export const MenuNav = styled.nav`
@@ -12,14 +11,29 @@ export const MenuNav = styled.nav`
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
 `
 
-export const MenuList = styled.ul`
+export const MenuList = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
   margin: 0 0 48px 0;
-  padding: 0;
-  list-style: none;
   flex: 1;
 
   > li:not(:last-child) {
     margin-bottom: 16px;
+  }
+
+  [open] {
+    summary {
+      background-color: var(--color-primary-tint);
+    }
+
+    svg {
+      transform: rotate(180deg);
+    }
+
+    ul {
+      display: block;
+    }
   }
 `
 
@@ -31,6 +45,7 @@ export const Submenu = styled.ul`
   list-style: none;
   background-color: var(--color-primary);
   border-radius: 0 0 16px 16px;
+  cursor: pointer;
 
   > li {
     &:not(:last-child) {
@@ -44,7 +59,7 @@ export const Submenu = styled.ul`
   }
 `
 
-export const MenuTitle = styled(Button)<{ $isActive: boolean }>`
+export const MenuTitle = styled.summary`
   position: relative;
   z-index: 1;
   display: flex;
@@ -53,8 +68,7 @@ export const MenuTitle = styled(Button)<{ $isActive: boolean }>`
   height: 40px;
   padding: 0 24px;
   border-radius: 20px;
-  background-color: ${(props) =>
-    props.$isActive ? 'var(--color-primary-tint)' : 'var(--color-primary)'};
+  background-color: var(--color-primary);
   text-transform: uppercase;
   font-weight: 600;
   color: var(--color-light);
@@ -62,12 +76,7 @@ export const MenuTitle = styled(Button)<{ $isActive: boolean }>`
   svg {
     width: 24px;
     margin-left: auto;
-    transform: ${(props) =>
-      props.$isActive ? 'rotate(180deg)' : 'rotate(0deg)'};
-  }
-
-  + ${Submenu} {
-    display: ${(props) => (props.$isActive ? 'block' : 'none')};
+    transform: rotate(0deg);
   }
 `
 

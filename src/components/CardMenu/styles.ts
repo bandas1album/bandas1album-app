@@ -12,6 +12,10 @@ export const Card = styled.article`
     background-color: var(--color-primary-shade);
     box-shadow: 0 0 0 4px var(--color-primary-shade);
   }
+
+  &:hover h2 {
+    text-decoration: underline;
+  }
 `
 
 export const CardImage = styled.figure`
