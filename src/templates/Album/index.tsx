@@ -57,6 +57,7 @@ export default function AlbumTemplate({ attributes }: AlbumEntity) {
         lastfm={attributes?.social?.lastfm}
         spotify={attributes?.social?.spotify}
         wikipedia={attributes?.social?.wikipedia}
+        youtube={attributes?.social?.youtube}
       />
       {attributes?.tracklist && <AlbumTracklist list={attributes?.tracklist} />}
     </>

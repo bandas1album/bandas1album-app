@@ -17,10 +17,10 @@ import {
   Deezer,
   Lastfm,
   Spotify,
-  WikipediaW
+  WikipediaW,
+  Youtube
 } from '@styled-icons/fa-brands'
 import { Download } from '@styled-icons/ionicons-outline'
-import { useState } from 'react'
 
 type AlbumInfoProps = {
   title: Maybe<string> | undefined
@@ -33,6 +33,7 @@ type AlbumInfoProps = {
   download: Maybe<string> | undefined
   spotify: Maybe<string> | undefined
   lastfm: Maybe<string> | undefined
+  youtube: Maybe<string> | undefined
   wikipedia: Maybe<string> | undefined
 }
 
@@ -46,6 +47,7 @@ export default function AlbumInfo({
   download,
   lastfm,
   spotify,
+  youtube,
   wikipedia
 }: AlbumInfoProps) {
   return (
@@ -57,7 +59,7 @@ export default function AlbumInfo({
         <InfosLinksList $opened={true}>
           {amazon ? (
             <li>
-              <InfosLink href={amazon || ''} title="Amazon">
+              <InfosLink target="_blank" href={amazon || ''} title="Amazon">
                 <Amazon />
               </InfosLink>
             </li>
@@ -66,7 +68,7 @@ export default function AlbumInfo({
           )}
           {deezer ? (
             <li>
-              <InfosLink href={deezer || ''} title="Deezer">
+              <InfosLink target="_blank" href={deezer || ''} title="Deezer">
                 <Deezer />
               </InfosLink>
             </li>
@@ -75,7 +77,7 @@ export default function AlbumInfo({
           )}
           {download ? (
             <li>
-              <InfosLink href={download || ''} title="Download">
+              <InfosLink target="_blank" href={download || ''} title="Download">
                 <Download />
               </InfosLink>
             </li>
@@ -84,7 +86,7 @@ export default function AlbumInfo({
           )}
           {lastfm ? (
             <li>
-              <InfosLink href={lastfm || ''} title="Last.fm">
+              <InfosLink target="_blank" href={lastfm || ''} title="Last.fm">
                 <Lastfm />
               </InfosLink>
             </li>
@@ -93,8 +95,17 @@ export default function AlbumInfo({
           )}
           {spotify ? (
             <li>
-              <InfosLink href={spotify || ''} title="Spotify">
+              <InfosLink target="_blank" href={spotify || ''} title="Spotify">
                 <Spotify />
+              </InfosLink>
+            </li>
+          ) : (
+            ''
+          )}
+          {youtube ? (
+            <li>
+              <InfosLink target="_blank" href={youtube || ''} title="YouTube">
+                <Youtube />
               </InfosLink>
             </li>
           ) : (
@@ -102,7 +113,11 @@ export default function AlbumInfo({
           )}
           {wikipedia ? (
             <li>
-              <InfosLink href={wikipedia || ''} title="Wikipedia">
+              <InfosLink
+                target="_blank"
+                href={wikipedia || ''}
+                title="Wikipedia"
+              >
                 <WikipediaW />
               </InfosLink>
             </li>
