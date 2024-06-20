@@ -26,7 +26,7 @@ export default function Tabs() {
         aria-expanded={isOpenedSearch ? true : false}
         $opened={isOpenedSearch ? true : false}
       >
-        <TabsSearch />
+        <TabsSearch focus={isOpenedSearch} />
       </TabsItem>
       <TabsItem
         aria-label="Aba de menu"

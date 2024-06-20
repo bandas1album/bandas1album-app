@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { debounce } from 'lodash'
 import { HelpCircle } from '@styled-icons/ionicons-outline'
 import {
@@ -14,7 +14,8 @@ import { GET_AUTOCOMPLETE_BY_SEARCH } from '@/graphql/queries'
 import client from '@/graphql/client'
 import Link from 'next/link'
 
-export default function TabsSearch() {
+export default function TabsSearch({ focus }: { focus: boolean }) {
+  const inputRef = useRef(null)
   const [search, setSearch] = useState('')
   const [autocomplete, setAutocomplete] = useState<
     GetAutocompleteBySearchQuery | undefined
@@ -51,10 +52,15 @@ export default function TabsSearch() {
     }
   }, [search])
 
+  useEffect(() => {
+    inputRef.current.focus()
+  }, [focus])
+
   return (
     <SearchForm className="m-tabs-search">
       <SearchControl className="m-tabs-search__control">
         <SearchInput
+          ref={inputRef}
           onChange={debounce((e) => setSearch(e.target.value), 500)}
           type="text"
           placeholder="Faça sua busca"
@@ -63,9 +69,9 @@ export default function TabsSearch() {
         <SearchHelp
           type="button"
           className="m-tabs-search__help"
-          aria-label="Você pode pesquisar por álbum, banda, gênero, país e ano de lançamento."
+          title="Você pode pesquisar por álbum, banda, gênero, país e ano de lançamento."
         >
-          <HelpCircle />
+          <HelpCircle aria-hidden="true" />
         </SearchHelp>
       </SearchControl>
 
