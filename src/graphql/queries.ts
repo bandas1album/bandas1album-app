@@ -84,6 +84,43 @@ export const GET_ALBUM_BY_SLUG = gql`
   }
 `
 
+export const GET_ALBUMS_BY_CATEGORY = gql`
+  query getAlbumsByCategory(
+    $perPage: Int!
+    $page: Int
+    $genre: StringFilterInput
+    $country: StringFilterInput
+  ) {
+    albums(
+      pagination: { pageSize: $perPage, page: $page }
+      filters: { genres: { slug: $genre }, country: { slug: $country } }
+    ) {
+      meta {
+        pagination {
+          total
+          page
+          pageSize
+          pageCount
+        }
+      }
+      data {
+        id
+        attributes {
+          slug
+          title
+          cover {
+            data {
+              attributes {
+                url
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`
+
 export const GET_AUTOCOMPLETE_BY_SEARCH = gql`
   query getAutocompleteBySearch($search: StringFilterInput) {
     albums(filters: { title: $search }, pagination: { pageSize: 2 }) {
