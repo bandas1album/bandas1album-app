@@ -15,7 +15,7 @@ import client from '@/graphql/client'
 import Link from 'next/link'
 
 export default function TabsSearch({ focus }: { focus: boolean }) {
-  const inputRef = useRef(null)
+  const inputRef = useRef<HTMLInputElement>(null)
   const [search, setSearch] = useState('')
   const [autocomplete, setAutocomplete] = useState<
     GetAutocompleteBySearchQuery | undefined
@@ -53,7 +53,7 @@ export default function TabsSearch({ focus }: { focus: boolean }) {
   }, [search])
 
   useEffect(() => {
-    inputRef.current.focus()
+    inputRef.current?.focus()
   }, [focus])
 
   return (
