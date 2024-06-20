@@ -45,7 +45,6 @@ export const Submenu = styled.ul`
   list-style: none;
   background-color: var(--color-primary);
   border-radius: 0 0 16px 16px;
-  cursor: pointer;
 
   > li {
     &:not(:last-child) {
@@ -72,6 +71,7 @@ export const MenuTitle = styled.summary`
   text-transform: uppercase;
   font-weight: 600;
   color: var(--color-light);
+  cursor: pointer;
 
   svg {
     width: 24px;
