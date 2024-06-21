@@ -37,14 +37,15 @@ export const MenuList = styled.div`
   }
 `
 
-export const Submenu = styled.ul`
+export const Submenu = styled.ul<{ $loading: boolean }>`
   max-height: 240px;
-  overflow-y: auto;
+  overflow-y: ${(props) => (props.$loading ? 'hidden' : 'auto')};
   margin: -24px 0 0 0;
   padding: 48px 24px 24px;
   list-style: none;
   background-color: var(--color-primary);
   border-radius: 0 0 16px 16px;
+  opacity: ${(props) => (props.$loading ? '.5' : '1')};
 
   > li {
     &:not(:last-child) {

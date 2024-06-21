@@ -12,47 +12,160 @@ import { Spotify, Instagram } from '@styled-icons/fa-brands'
 import { ChevronDownCircle } from '@styled-icons/ionicons-outline'
 import { CardMenu } from '@/components/CardMenu'
 import client from '@/graphql/client'
-import { GetMenuCategoriesQuery } from '@/graphql/generated/graphql'
-import { GET_MENU_CATEGORIES } from '@/graphql/queries'
+import {
+  AlbumEntity,
+  CountryEntity,
+  GenreEntity,
+  GetMenuAlbumsQuery,
+  GetMenuCountriesQuery,
+  GetMenuGenresQuery
+} from '@/graphql/generated/graphql'
+import {
+  GET_MENU_ALBUMS,
+  GET_MENU_COUNTRIES,
+  GET_MENU_GENRES
+} from '@/graphql/queries'
 
 export default function TabsMenu() {
-  const [opened, setOpened] = useState(false)
-  const [albums, setAlbums] = useState<GetMenuCategoriesQuery['albums']>()
-  const [genres, setGenres] = useState<GetMenuCategoriesQuery['genres']>()
-  const [countries, setCountries] =
-    useState<GetMenuCategoriesQuery['countries']>()
+  const [albums, setAlbums] = useState<AlbumEntity[]>([])
+  const [albumsPage, setAlbumsPage] = useState<number | undefined>(1)
+  const [albumsHasNextPage, setAlbumsHasNextPage] = useState<boolean>()
+  const [albumsIsLoading, setAlbumsIsLoading] = useState<boolean>(false)
+  const [genres, setGenres] = useState<GenreEntity[]>([])
+  const [genresPage, setGenresPage] = useState(1)
+  const [genresHasNextPage, setGenresHasNextPage] = useState<boolean>()
+  const [genresIsLoading, setGenresIsLoading] = useState<boolean>(false)
+  const [countries, setCountries] = useState<CountryEntity[]>([])
+  const [countriesPage, setCountriesPage] = useState(1)
+  const [countriesHasNextPage, setCountriesHasNextPage] = useState<boolean>()
+  const [countriesIsLoading, setCountriesIsLoading] = useState<boolean>(false)
+
   const year = new Date().getFullYear()
 
-  useEffect(() => {
-    if (!opened) {
-      client
-        .query({ query: GET_MENU_CATEGORIES })
-        .then((response) => {
-          const data = response.data as GetMenuCategoriesQuery
-          setAlbums(data.albums)
-          setGenres(data.genres)
-          setCountries(data.countries)
-        })
-        .catch((error) => console.error(error))
-    }
+  const getAlbums = (page = 1) => {
+    setAlbumsIsLoading(true)
+    client
+      .query<GetMenuAlbumsQuery>({
+        query: GET_MENU_ALBUMS,
+        variables: {
+          perPage: 10,
+          page: page
+        }
+      })
+      .then((response) => {
+        const responseList = response.data.albums?.data as AlbumEntity[]
+        setAlbums((current) => [...current, ...responseList])
 
-    return () => {
-      setOpened(true)
+        if (response.data.albums?.meta.pagination) {
+          setAlbumsPage(response.data.albums?.meta.pagination.page)
+          setAlbumsHasNextPage(
+            response.data.albums?.meta.pagination.pageCount >
+              response.data.albums?.meta.pagination.page
+          )
+        }
+        setAlbumsIsLoading(false)
+      })
+      .catch((error) => {
+        console.error(error)
+        setAlbumsIsLoading(false)
+      })
+  }
+
+  const getGenres = (page = 1) => {
+    setGenresIsLoading(true)
+    client
+      .query<GetMenuGenresQuery>({
+        query: GET_MENU_GENRES,
+        variables: {
+          perPage: 10,
+          page: page
+        }
+      })
+      .then((response) => {
+        const responseList = response.data.genres?.data as GenreEntity[]
+        setGenres((current) => [...current, ...responseList])
+
+        if (response.data.genres?.meta.pagination) {
+          setGenresPage(response.data.genres?.meta.pagination.page)
+          setGenresHasNextPage(
+            response.data.genres?.meta.pagination.pageCount >
+              response.data.genres?.meta.pagination.page
+          )
+        }
+        setGenresIsLoading(false)
+      })
+      .catch((error) => {
+        console.error(error)
+        setGenresIsLoading(false)
+      })
+  }
+
+  const getCountries = (page = 1) => {
+    setCountriesIsLoading(true)
+    client
+      .query<GetMenuCountriesQuery>({
+        query: GET_MENU_COUNTRIES,
+        variables: {
+          perPage: 10,
+          page: page
+        }
+      })
+      .then((response) => {
+        const responseList = response.data.countries?.data as CountryEntity[]
+        setCountries((current) => [...current, ...responseList])
+
+        if (response.data.countries?.meta.pagination) {
+          setCountriesPage(response.data.countries?.meta.pagination.page)
+          setCountriesHasNextPage(
+            response.data.countries?.meta.pagination.pageCount >
+              response.data.countries?.meta.pagination.page
+          )
+        }
+        setCountriesIsLoading(false)
+      })
+      .catch((error) => {
+        console.error(error)
+        setCountriesIsLoading(false)
+      })
+  }
+
+  const handleScroll = (
+    el: EventTarget,
+    hasNextPage: boolean | undefined,
+    fn: () => void
+  ) => {
+    const $list = el as HTMLUListElement
+    const isEnd = $list.scrollTop + $list.clientHeight >= $list.scrollHeight
+    if (isEnd && hasNextPage) {
+      fn()
     }
-  }, [opened])
+  }
+
+  useEffect(() => {
+    getAlbums()
+    getGenres()
+    getCountries()
+  }, [])
 
   return (
     <MenuNav>
       <MenuList>
-        {albums?.data?.length ? (
+        {albums?.length ? (
           <details>
             <MenuTitle>
               <span>Álbuns</span>
               <ChevronDownCircle />
             </MenuTitle>
 
-            <Submenu>
-              {albums?.data.map((album) => (
+            <Submenu
+              $loading={albumsIsLoading}
+              onScroll={(e) =>
+                handleScroll(e.target, albumsHasNextPage, () => {
+                  getAlbums(albumsPage && albumsPage + 1)
+                })
+              }
+            >
+              {albums?.map((album) => (
                 <li key={album.id}>
                   <Link
                     prefetch={false}
@@ -74,15 +187,22 @@ export default function TabsMenu() {
           ''
         )}
 
-        {countries?.data.length ? (
+        {countries?.length ? (
           <details>
             <MenuTitle>
               <span>Gêneros</span>
               <ChevronDownCircle />
             </MenuTitle>
 
-            <Submenu>
-              {genres?.data.map((genre) => (
+            <Submenu
+              $loading={genresIsLoading}
+              onScroll={(e) =>
+                handleScroll(e.target, genresHasNextPage, () => {
+                  getGenres(genresPage && genresPage + 1)
+                })
+              }
+            >
+              {genres?.map((genre) => (
                 <li key={genre.id}>
                   <Link href={`/genero/${genre.attributes?.slug}`}>
                     <CardMenu title={genre.attributes?.title || ''} />
@@ -95,15 +215,22 @@ export default function TabsMenu() {
           ''
         )}
 
-        {countries?.data.length ? (
+        {countries?.length ? (
           <details>
             <MenuTitle>
               <span>Países</span>
               <ChevronDownCircle />
             </MenuTitle>
 
-            <Submenu>
-              {countries?.data.map((country) => (
+            <Submenu
+              $loading={countriesIsLoading}
+              onScroll={(e) =>
+                handleScroll(e.target, countriesHasNextPage, () => {
+                  getCountries(countriesPage && countriesPage + 1)
+                })
+              }
+            >
+              {countries?.map((country) => (
                 <li key={country.id}>
                   <Link href={`/pais/${country.attributes?.slug}`}>
                     <CardMenu title={country.attributes?.title || ''} />

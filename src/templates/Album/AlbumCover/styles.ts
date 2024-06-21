@@ -1,4 +1,3 @@
-import { ResultOf } from '@graphql-typed-document-node/core'
 import { styled } from 'styled-components'
 
 export const Cover = styled.figure<{ $bg: string }>`

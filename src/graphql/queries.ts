@@ -153,9 +153,17 @@ export const GET_AUTOCOMPLETE_BY_SEARCH = gql`
   }
 `
 
-export const GET_MENU_CATEGORIES = gql`
-  query getMenuCategories {
-    albums {
+export const GET_MENU_ALBUMS = gql`
+  query getMenuAlbums($page: Int, $perPage: Int) {
+    albums(pagination: { pageSize: $perPage, page: $page }) {
+      meta {
+        pagination {
+          total
+          page
+          pageSize
+          pageCount
+        }
+      }
       data {
         id
         attributes {
@@ -172,7 +180,20 @@ export const GET_MENU_CATEGORIES = gql`
         }
       }
     }
-    genres {
+  }
+`
+
+export const GET_MENU_GENRES = gql`
+  query getMenuGenres($page: Int, $perPage: Int) {
+    genres(pagination: { pageSize: $perPage, page: $page }) {
+      meta {
+        pagination {
+          total
+          page
+          pageSize
+          pageCount
+        }
+      }
       data {
         id
         attributes {
@@ -181,7 +202,20 @@ export const GET_MENU_CATEGORIES = gql`
         }
       }
     }
-    countries {
+  }
+`
+
+export const GET_MENU_COUNTRIES = gql`
+  query getMenuCountries($page: Int, $perPage: Int) {
+    countries(pagination: { pageSize: $perPage, page: $page }) {
+      meta {
+        pagination {
+          total
+          page
+          pageSize
+          pageCount
+        }
+      }
       data {
         id
         attributes {
