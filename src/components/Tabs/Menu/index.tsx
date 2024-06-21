@@ -17,11 +17,11 @@ import { GET_MENU_CATEGORIES } from '@/graphql/queries'
 
 export default function TabsMenu() {
   const [opened, setOpened] = useState(false)
-  const [submenu, setSubmenu] = useState('albums')
   const [albums, setAlbums] = useState<GetMenuCategoriesQuery['albums']>()
   const [genres, setGenres] = useState<GetMenuCategoriesQuery['genres']>()
   const [countries, setCountries] =
     useState<GetMenuCategoriesQuery['countries']>()
+  const year = new Date().getFullYear()
 
   useEffect(() => {
     if (!opened) {
@@ -118,7 +118,7 @@ export default function TabsMenu() {
       </MenuList>
 
       <MenuFooter>
-        <strong>Bandas 1 Álbum © 2023</strong>
+        <strong>Bandas 1 Álbum © {year}</strong>
 
         <ul>
           <li>
