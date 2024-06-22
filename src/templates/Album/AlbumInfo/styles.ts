@@ -30,7 +30,7 @@ export const InfosLinks = styled.div`
   gap: 24px;
 `
 
-export const InfosLinksButton = styled(Button)`
+export const InfosLinksButton = styled.div`
   position: absolute;
   z-index: 1;
   width: 60px;
@@ -38,7 +38,6 @@ export const InfosLinksButton = styled(Button)`
   border-radius: 50%;
   color: var(--color-primary-shade);
   background-color: var(--color-light);
-  cursor: pointer;
 
   svg {
     width: 80px;
@@ -105,15 +104,13 @@ export const InfosTags = styled.div`
   gap: 16px;
 `
 
-export const InfosTag = styled(Link)`
+export const InfosTag = styled.div`
   display: inline-flex;
   align-items: center;
   width: fit-content;
-  color: var(--color-light);
-  text-decoration: none;
   gap: 8px;
 
-  &:hover {
+  a:hover {
     text-decoration: underline;
   }
 
@@ -121,4 +118,11 @@ export const InfosTag = styled(Link)`
     width: 16px;
     height: 16px;
   }
+
+  a {
+    color: var(--color-light);
+    text-decoration: none;
+  }
 `
+
+export const InfosContent = styled.div``

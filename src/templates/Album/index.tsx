@@ -48,16 +48,11 @@ export default function AlbumTemplate({ attributes }: AlbumEntity) {
       <AlbumInfo
         title={attributes?.title}
         artist={attributes?.artist}
-        year={attributes?.released}
         genre={attributes?.genres?.data}
         country={attributes?.country?.data}
-        amazon={attributes?.social?.amazon}
-        deezer={attributes?.social?.deezer}
-        download={attributes?.social?.download}
-        lastfm={attributes?.social?.lastfm}
-        spotify={attributes?.social?.spotify}
-        wikipedia={attributes?.social?.wikipedia}
-        youtube={attributes?.social?.youtube}
+        social={attributes?.social}
+        year={new Date(attributes?.released).getFullYear().toString()}
+        content={attributes?.content}
       />
       {attributes?.tracklist && <AlbumTracklist list={attributes?.tracklist} />}
     </>

@@ -2,6 +2,7 @@ import { CountryEntity, GenreEntity, Maybe } from '@/graphql/generated/graphql'
 import {
   Infos,
   InfosArtist,
+  InfosContent,
   InfosHeader,
   InfosLink,
   InfosLinks,
@@ -11,7 +12,12 @@ import {
   InfosTags,
   InfosTitle
 } from './styles'
-import { Location, PlayCircle, Pricetag } from '@styled-icons/ionicons-solid'
+import {
+  CalendarClear,
+  Location,
+  PlayCircle,
+  Pricetag
+} from '@styled-icons/ionicons-solid'
 import {
   Amazon,
   Deezer,
@@ -21,6 +27,8 @@ import {
   Youtube
 } from '@styled-icons/fa-brands'
 import { Download } from '@styled-icons/ionicons-outline'
+import Link from 'next/link'
+import { marked } from 'marked'
 
 type AlbumInfoProps = {
   title: Maybe<string> | undefined
@@ -28,13 +36,10 @@ type AlbumInfoProps = {
   year: Maybe<string> | undefined
   country: Maybe<CountryEntity> | undefined
   genre: GenreEntity[] | undefined
-  amazon: Maybe<string> | undefined
-  deezer: Maybe<string> | undefined
-  download: Maybe<string> | undefined
-  spotify: Maybe<string> | undefined
-  lastfm: Maybe<string> | undefined
-  youtube: Maybe<string> | undefined
-  wikipedia: Maybe<string> | undefined
+  social: {
+    [key: string]: string
+  }
+  content: Maybe<string> | undefined
 }
 
 export default function AlbumInfo({
@@ -42,13 +47,9 @@ export default function AlbumInfo({
   artist,
   country,
   genre,
-  amazon,
-  deezer,
-  download,
-  lastfm,
-  spotify,
-  youtube,
-  wikipedia
+  year,
+  social,
+  content
 }: AlbumInfoProps) {
   return (
     <Infos>
@@ -57,65 +58,89 @@ export default function AlbumInfo({
           <PlayCircle />
         </InfosLinksButton>
         <InfosLinksList $opened={true}>
-          {amazon ? (
+          {social?.amazon ? (
             <li>
-              <InfosLink target="_blank" href={amazon || ''} title="Amazon">
+              <InfosLink
+                target="_blank"
+                href={social?.amazon || ''}
+                title="Amazon"
+              >
                 <Amazon />
               </InfosLink>
             </li>
           ) : (
             ''
           )}
-          {deezer ? (
+          {social?.deezer ? (
             <li>
-              <InfosLink target="_blank" href={deezer || ''} title="Deezer">
+              <InfosLink
+                target="_blank"
+                href={social?.deezer || ''}
+                title="Deezer"
+              >
                 <Deezer />
               </InfosLink>
             </li>
           ) : (
             ''
           )}
-          {download ? (
+          {social?.download ? (
             <li>
-              <InfosLink target="_blank" href={download || ''} title="Download">
+              <InfosLink
+                target="_blank"
+                href={social?.download || ''}
+                title="Download"
+              >
                 <Download />
               </InfosLink>
             </li>
           ) : (
             ''
           )}
-          {lastfm ? (
+          {social?.lastfm ? (
             <li>
-              <InfosLink target="_blank" href={lastfm || ''} title="Last.fm">
+              <InfosLink
+                target="_blank"
+                href={social?.lastfm || ''}
+                title="Last.fm"
+              >
                 <Lastfm />
               </InfosLink>
             </li>
           ) : (
             ''
           )}
-          {spotify ? (
+          {social?.spotify ? (
             <li>
-              <InfosLink target="_blank" href={spotify || ''} title="Spotify">
+              <InfosLink
+                target="_blank"
+                href={social?.spotify || ''}
+                title="Spotify"
+              >
                 <Spotify />
               </InfosLink>
             </li>
           ) : (
             ''
           )}
-          {youtube ? (
+          {social?.youtube ? (
             <li>
-              <InfosLink target="_blank" href={youtube || ''} title="YouTube">
+              <InfosLink
+                target="_blank"
+                href={social?.youtube || ''}
+                title="YouTube"
+              >
                 <Youtube />
               </InfosLink>
             </li>
           ) : (
             ''
           )}
-          {wikipedia ? (
+          {social?.wikipedia ? (
             <li>
               <InfosLink
                 target="_blank"
-                href={wikipedia || ''}
+                href={social?.wikipedia || ''}
                 title="Wikipedia"
               >
                 <WikipediaW />
@@ -133,20 +158,32 @@ export default function AlbumInfo({
         </InfosArtist>
       </InfosHeader>
       <InfosTags>
-        <InfosTag key={country?.id} href={`/pais/${country?.attributes?.slug}`}>
-          <Location />
-          {country?.attributes?.title}
+        <InfosTag>
+          <CalendarClear />
+          <Link href={`/ano/${year}`}>{year}</Link>
         </InfosTag>
-        {genre?.map((item, index) => (
-          <InfosTag
-            key={`genre-${index}`}
-            href={`/genero/${item?.attributes?.slug}`}
-          >
-            <Pricetag />
-            <span>{item.attributes?.title}</span>
-          </InfosTag>
-        ))}
+        <InfosTag>
+          <Location />
+          <Link href={`/pais/${country?.attributes?.slug}`}>
+            {country?.attributes?.title}
+          </Link>
+        </InfosTag>
+        <InfosTag>
+          <Pricetag />
+          {genre?.map((item, index) => (
+            <>
+              <Link
+                key={`genre-${index}`}
+                href={`/genero/${item?.attributes?.slug}`}
+              >
+                {item.attributes?.title}
+                {index + 1 < genre.length && ', '}
+              </Link>
+            </>
+          ))}
+        </InfosTag>
       </InfosTags>
+      <InfosContent>{content}</InfosContent>
     </Infos>
   )
 }
