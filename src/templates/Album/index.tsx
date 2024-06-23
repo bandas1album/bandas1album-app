@@ -52,7 +52,7 @@ export default function AlbumTemplate({ attributes }: AlbumEntity) {
         country={attributes?.country?.data}
         social={attributes?.social}
         year={new Date(attributes?.released).getFullYear().toString()}
-        content={attributes?.content}
+        content={attributes?.content as string | TrustedHTML}
       />
       {attributes?.tracklist && <AlbumTracklist list={attributes?.tracklist} />}
     </>

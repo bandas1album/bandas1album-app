@@ -39,7 +39,7 @@ type AlbumInfoProps = {
   social: {
     [key: string]: string
   }
-  content: Maybe<string> | undefined
+  content: string | TrustedHTML
 }
 
 export default function AlbumInfo({
@@ -183,7 +183,11 @@ export default function AlbumInfo({
           ))}
         </InfosTag>
       </InfosTags>
-      <InfosContent>{content}</InfosContent>
+      <InfosContent
+        dangerouslySetInnerHTML={{
+          __html: content
+        }}
+      ></InfosContent>
     </Infos>
   )
 }

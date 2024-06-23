@@ -123,7 +123,7 @@ export default function CategoryTemplate({
           />
         </>
       ) : (
-        'Nenhum álbum foi encontrado.'
+        <p>Nenhum álbum foi encontrado.</p>
       )}
     </>
   )
