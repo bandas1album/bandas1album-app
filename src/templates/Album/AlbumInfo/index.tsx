@@ -184,7 +184,7 @@ export default function AlbumInfo({
         </InfosTag>
       </InfosTags>
       <InfosContent>
-        <Markdown>{content}</Markdown>
+        <Markdown skipHtml={true}>{content}</Markdown>
       </InfosContent>
     </Infos>
   )
