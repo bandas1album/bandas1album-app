@@ -8,12 +8,12 @@ export function AlbumInfoContent({
 }: {
   content: string | TrustedHTML
 }) {
-  const markedContent = marked(content as string) as string | TrustedHTML
+  const rawMarkup = marked(content as string)
 
   return (
     <InfosContent
       dangerouslySetInnerHTML={{
-        __html: markedContent
+        __html: rawMarkup as string | TrustedHTML
       }}
     ></InfosContent>
   )
