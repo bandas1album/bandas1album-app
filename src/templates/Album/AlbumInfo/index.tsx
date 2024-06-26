@@ -51,6 +51,8 @@ export default function AlbumInfo({
   social,
   content
 }: AlbumInfoProps) {
+  const markedContent: string | TrustedHTML = marked(content as string)
+
   return (
     <Infos>
       <InfosLinks>
@@ -185,7 +187,7 @@ export default function AlbumInfo({
       </InfosTags>
       <InfosContent
         dangerouslySetInnerHTML={{
-          __html: content
+          __html: markedContent
         }}
       ></InfosContent>
     </Infos>
