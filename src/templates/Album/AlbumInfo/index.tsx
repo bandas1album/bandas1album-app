@@ -51,7 +51,7 @@ export default function AlbumInfo({
   social,
   content
 }: AlbumInfoProps) {
-  const markedContent: string | TrustedHTML = marked(content as string)
+  const markedContent = marked(content as string) as string | TrustedHTML
 
   return (
     <Infos>
