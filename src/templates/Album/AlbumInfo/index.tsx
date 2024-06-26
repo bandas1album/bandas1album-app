@@ -2,7 +2,6 @@ import { CountryEntity, GenreEntity, Maybe } from '@/graphql/generated/graphql'
 import {
   Infos,
   InfosArtist,
-  InfosContent,
   InfosHeader,
   InfosLink,
   InfosLinks,
@@ -28,7 +27,7 @@ import {
 } from '@styled-icons/fa-brands'
 import { Download } from '@styled-icons/ionicons-outline'
 import Link from 'next/link'
-import { marked } from 'marked'
+import { AlbumInfoContent } from './AlbumInfoContent'
 
 type AlbumInfoProps = {
   title: Maybe<string> | undefined
@@ -51,8 +50,6 @@ export default function AlbumInfo({
   social,
   content
 }: AlbumInfoProps) {
-  const markedContent = marked(content as string) as string | TrustedHTML
-
   return (
     <Infos>
       <InfosLinks>
@@ -185,11 +182,7 @@ export default function AlbumInfo({
           ))}
         </InfosTag>
       </InfosTags>
-      <InfosContent
-        dangerouslySetInnerHTML={{
-          __html: markedContent
-        }}
-      ></InfosContent>
+      <AlbumInfoContent content={content}></AlbumInfoContent>
     </Infos>
   )
 }
