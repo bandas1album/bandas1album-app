@@ -1,4 +1,3 @@
-import { Button } from '@/styles/resets'
 import Link from 'next/link'
 import { styled } from 'styled-components'
 

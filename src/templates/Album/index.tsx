@@ -6,6 +6,7 @@ import AlbumInfo from './AlbumInfo'
 import { jsonLdScriptProps } from 'react-schemaorg'
 import { MusicAlbum } from 'schema-dts'
 import AlbumTracklist from './AlbumTracklist'
+import DisqusComments from '@/components/DisqusComments'
 
 export default function AlbumTemplate({ attributes }: AlbumEntity) {
   return (
@@ -55,6 +56,11 @@ export default function AlbumTemplate({ attributes }: AlbumEntity) {
         content={attributes?.content}
       />
       {attributes?.tracklist && <AlbumTracklist list={attributes?.tracklist} />}
+      <DisqusComments
+        slug={attributes?.slug}
+        id={attributes?.slug}
+        title={attributes?.title}
+      ></DisqusComments>
     </>
   )
 }
