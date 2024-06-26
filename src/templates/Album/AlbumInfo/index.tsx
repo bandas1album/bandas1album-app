@@ -2,6 +2,7 @@ import { CountryEntity, GenreEntity, Maybe } from '@/graphql/generated/graphql'
 import {
   Infos,
   InfosArtist,
+  InfosContent,
   InfosHeader,
   InfosLink,
   InfosLinks,
@@ -27,7 +28,7 @@ import {
 } from '@styled-icons/fa-brands'
 import { Download } from '@styled-icons/ionicons-outline'
 import Link from 'next/link'
-import { AlbumInfoContent } from './AlbumInfoContent'
+import Markdown from 'react-markdown'
 
 type AlbumInfoProps = {
   title: Maybe<string> | undefined
@@ -38,7 +39,7 @@ type AlbumInfoProps = {
   social: {
     [key: string]: string
   }
-  content: string | TrustedHTML
+  content: Maybe<string> | undefined
 }
 
 export default function AlbumInfo({
@@ -182,7 +183,9 @@ export default function AlbumInfo({
           ))}
         </InfosTag>
       </InfosTags>
-      <AlbumInfoContent content={content}></AlbumInfoContent>
+      <InfosContent>
+        <Markdown>{content}</Markdown>
+      </InfosContent>
     </Infos>
   )
 }
