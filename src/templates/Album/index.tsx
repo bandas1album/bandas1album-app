@@ -14,25 +14,6 @@ export default function AlbumTemplate({ attributes }: AlbumEntity) {
     <>
       <Head>
         <title>{attributes?.title} | Bandas de 1 Álbum</title>
-        <NextSeo
-          title={`${attributes?.title} | Bandas de 1 Álbum`}
-          description={`Ouça agora o álbum de ${
-            attributes?.genres?.data[0].attributes?.title
-          } "${attributes?.title}", único disco lançado por ${
-            attributes?.artist
-          } em ${new Date(attributes?.released).getFullYear().toString()}`}
-          openGraph={{
-            url: `https://bandas1album.com.br/album/${attributes?.slug}`,
-            images: [
-              {
-                url: attributes?.cover.data?.attributes?.url || '',
-                width: 1280,
-                height: 720,
-                alt: `Capa do álbum ${attributes?.title} de ${attributes?.artist}`
-              }
-            ]
-          }}
-        />
         <script
           {...jsonLdScriptProps<MusicAlbum>({
             '@context': 'https://schema.org',
@@ -60,6 +41,25 @@ export default function AlbumTemplate({ attributes }: AlbumEntity) {
           })}
         />
       </Head>
+      <NextSeo
+        title={`${attributes?.title} | Bandas de 1 Álbum`}
+        description={`Ouça agora o álbum de ${
+          attributes?.genres?.data[0].attributes?.title
+        } "${attributes?.title}", único disco lançado por ${
+          attributes?.artist
+        } em ${new Date(attributes?.released).getFullYear().toString()}`}
+        openGraph={{
+          url: `https://bandas1album.com.br/album/${attributes?.slug}`,
+          images: [
+            {
+              url: attributes?.cover.data?.attributes?.url || '',
+              width: 1280,
+              height: 720,
+              alt: `Capa do álbum ${attributes?.title} de ${attributes?.artist}`
+            }
+          ]
+        }}
+      />
 
       <ButtonBack />
       <AlbumCover
