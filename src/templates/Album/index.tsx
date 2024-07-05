@@ -7,12 +7,21 @@ import { jsonLdScriptProps } from 'react-schemaorg'
 import { MusicAlbum } from 'schema-dts'
 import AlbumTracklist from './AlbumTracklist'
 import DisqusComments from '@/components/DisqusComments'
+import { NextSeo } from 'next-seo'
 
 export default function AlbumTemplate({ attributes }: AlbumEntity) {
   return (
     <>
       <Head>
         <title>{attributes?.title} | Bandas de 1 Álbum</title>
+        <NextSeo
+          title={`${attributes?.title} | Bandas de 1 Álbum`}
+          description={`Ouça agora o álbum de ${
+            attributes?.genres?.data[0].attributes?.title
+          } "${attributes?.title}", único disco lançado por ${
+            attributes?.artist
+          } em ${new Date(attributes?.released).getFullYear().toString()}`}
+        />
         <script
           {...jsonLdScriptProps<MusicAlbum>({
             '@context': 'https://schema.org',
