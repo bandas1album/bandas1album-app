@@ -21,6 +21,17 @@ export default function AlbumTemplate({ attributes }: AlbumEntity) {
           } "${attributes?.title}", único disco lançado por ${
             attributes?.artist
           } em ${new Date(attributes?.released).getFullYear().toString()}`}
+          openGraph={{
+            url: `https://bandas1album.com.br/album/${attributes?.slug}`,
+            images: [
+              {
+                url: attributes?.cover.data?.attributes?.url || '',
+                width: 1280,
+                height: 720,
+                alt: `Capa do álbum ${attributes?.title} de ${attributes?.artist}`
+              }
+            ]
+          }}
         />
         <script
           {...jsonLdScriptProps<MusicAlbum>({

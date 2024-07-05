@@ -141,7 +141,7 @@ export default function CategoryTemplate({
         title={`${pageMeta?.title} ‹ ${pageMeta?.type} | Bandas de 1 Álbum`}
         description={`Ouça todas as bandas e artistas que lançaram apenas um álbum filtrados por ${pageMeta?.type} › ${pageMeta?.title} no Bandas de 1 Álbum.`}
         openGraph={{
-          url: 'https://bandas1album.com.br/',
+          url: `https://bandas1album.com.br/${params.category}/${params.slug}`,
           images: [
             {
               url: '/cover.png',
