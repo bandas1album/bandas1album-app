@@ -1,4 +1,4 @@
-import { Album, Maybe } from '@/graphql/generated/graphql'
+import { Maybe } from '@/graphql/generated/graphql'
 import { DiscussionEmbed } from 'disqus-react'
 import { CommentsWrapper } from './styles'
 
