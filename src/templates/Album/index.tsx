@@ -47,7 +47,7 @@ export default function AlbumTemplate({ attributes }: AlbumEntity) {
           attributes?.genres?.data[0].attributes?.title
         } "${attributes?.title}", único disco lançado por ${
           attributes?.artist
-        } em ${new Date(attributes?.released).getFullYear().toString()}`}
+        } em ${new Date(attributes?.released).getFullYear().toString()}.`}
         openGraph={{
           url: `https://bandas1album.com.br/album/${attributes?.slug}`,
           images: [
