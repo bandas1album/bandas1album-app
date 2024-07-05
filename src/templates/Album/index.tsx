@@ -59,6 +59,7 @@ export default function AlbumTemplate({ attributes }: AlbumEntity) {
             }
           ]
         }}
+        canonical={`https://bandas1album.com.br/album/${attributes?.slug}`}
       />
 
       <ButtonBack />

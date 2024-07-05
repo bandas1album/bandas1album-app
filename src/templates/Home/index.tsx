@@ -74,6 +74,7 @@ export default function HomeTemplate({ nodes, pageInfo }: THomeTemplate) {
       <NextSeo
         title="Bandas de 1 Álbum"
         description="O projeto Bandas de 1 Álbum eterniza bandas e artistas que lançaram apenas um álbum na carreira."
+        canonical="https://bandas1album.com.br/"
         openGraph={{
           url: 'https://bandas1album.com.br/',
           images: [
