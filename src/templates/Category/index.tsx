@@ -6,9 +6,10 @@ import { useCallback, useEffect, useState } from 'react'
 import {
   AlbumEntity,
   GetAlbumsByCategoryQuery,
+  GetPageInfoQuery,
   Pagination
 } from '@/graphql/generated/graphql'
-import { GET_ALBUMS_BY_CATEGORY } from '@/graphql/queries'
+import { GET_ALBUMS_BY_CATEGORY, GET_PAGE_INFO } from '@/graphql/queries'
 import client from '@/graphql/client'
 
 type TCategoryTemplate = {
@@ -34,6 +35,37 @@ export default function CategoryTemplate({
   const [hasNextPage, setHasNextPage] = useState<boolean | undefined>(
     pageInfo.pageCount > pageInfo.page
   )
+  const [pageMeta, setPageMeta] = useState<{
+    title: string | null | undefined
+    type: string
+  }>()
+
+  const getPageInfo = async (slug: string) => {
+    const payload = {
+      query: GET_PAGE_INFO,
+      variables: {
+        slug: {
+          eq: slug
+        }
+      }
+    }
+
+    const { data } = await client.query<GetPageInfoQuery>(payload)
+
+    if (data.countries?.data.length) {
+      setPageMeta({
+        title: data.countries.data[0].attributes?.title,
+        type: 'País'
+      })
+    }
+
+    if (data.genres?.data.length) {
+      setPageMeta({
+        title: data.genres.data[0].attributes?.title,
+        type: 'Gênero'
+      })
+    }
+  }
 
   const getAlbums = async () => {
     setLoading(true)
@@ -91,17 +123,23 @@ export default function CategoryTemplate({
   })
 
   useEffect(() => {
+    getPageInfo(params?.slug)
+  }, [params])
+
+  useEffect(() => {
     setAlbums(nodes)
   }, [nodes])
 
   return (
     <>
       <Head>
-        <title>Bandas de 1 Álbum</title>
+        <title>
+          {pageMeta?.title} ‹ {pageMeta?.type} | Bandas de 1 Álbum
+        </title>
       </Head>
       <NextSeo
-        title="Bandas de 1 Álbum"
-        description="Eternizando bandas e artistas que lançaram apenas um álbum."
+        title={`${pageMeta?.title} ‹ ${pageMeta?.type} | Bandas de 1 Álbum`}
+        description={`Ouça todas as bandas e artistas que lançaram apenas um álbum filtrados por ${pageMeta?.type} › ${pageMeta?.title} no Bandas de 1 Álbum.`}
         openGraph={{
           url: 'https://bandas1album.com.br/',
           images: [

@@ -1,5 +1,27 @@
 import { gql } from '@apollo/client'
 
+export const GET_PAGE_INFO = gql`
+  query getPageInfo($slug: StringFilterInput) {
+    genres(filters: { slug: $slug }) {
+      data {
+        id
+        attributes {
+          title
+        }
+      }
+    }
+
+    countries(filters: { slug: $slug }) {
+      data {
+        id
+        attributes {
+          title
+        }
+      }
+    }
+  }
+`
+
 export const GET_ALBUMS = gql`
   query getAlbums($perPage: Int!, $page: Int) {
     albums(pagination: { pageSize: $perPage, page: $page }) {
