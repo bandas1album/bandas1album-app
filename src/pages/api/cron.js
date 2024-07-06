@@ -1,9 +1,19 @@
-export default function handler(req, res) {
-  if (
-    req.headers.get('Authorization') !== `Bearer ${process.env.CRON_SECRET}`
-  ) {
-    return res.status(401).end('Unauthorized')
-  }
+import { exec } from 'child_process'
 
-  res.status(200).end('Hello Cron!')
+export default function handler(req, res) {
+  const command = 'node generate-sitemap.js'
+
+  exec(command, (error, stdout, stderr) => {
+    if (error) {
+      console.error(`Erro ao executar o comando: ${error.message}`)
+      return
+    }
+
+    if (stderr) {
+      console.error(`Erro: ${stderr}`)
+      return
+    }
+
+    console.log(`Resultado:\n${stdout}`)
+  })
 }
