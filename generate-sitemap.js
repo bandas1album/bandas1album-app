@@ -55,7 +55,7 @@ async function fetchPages() {
   }
 }
 
-export default async function generateSitemap() {
+async function generateSitemap() {
   const { albums, countries, genres } = await fetchPages()
   const sitemap = new SitemapStream({ hostname: 'https://bandas1album.com.br' })
 
@@ -98,3 +98,5 @@ export default async function generateSitemap() {
 }
 
 generateSitemap()
+
+module.exports.generateSitemap = generateSitemap
