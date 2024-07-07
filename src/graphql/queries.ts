@@ -174,6 +174,38 @@ export const GET_ALBUMS_BY_CATEGORY = gql`
   }
 `
 
+export const GET_ALBUMS_BY_YEAR = gql`
+  query getAlbumsByYear($perPage: Int!, $page: Int, $year: Date) {
+    albums(
+      pagination: { pageSize: $perPage, page: $page }
+      filters: { released: { contains: $year } }
+    ) {
+      meta {
+        pagination {
+          total
+          page
+          pageSize
+          pageCount
+        }
+      }
+      data {
+        id
+        attributes {
+          slug
+          title
+          cover {
+            data {
+              attributes {
+                url
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`
+
 export const GET_AUTOCOMPLETE_BY_SEARCH = gql`
   query getAutocompleteBySearch($search: StringFilterInput) {
     albums(filters: { title: $search }, pagination: { pageSize: 2 }) {

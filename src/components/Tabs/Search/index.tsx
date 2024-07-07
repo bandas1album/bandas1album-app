@@ -69,7 +69,7 @@ export default function TabsSearch({ focus }: { focus: boolean }) {
         <SearchHelp
           type="button"
           className="m-tabs-search__help"
-          title="Você pode pesquisar por álbum, banda, gênero, país e ano de lançamento."
+          title="Você pode pesquisar por álbum, banda/artista, gênero ou país."
         >
           <HelpCircle aria-hidden="true" />
         </SearchHelp>
@@ -77,7 +77,7 @@ export default function TabsSearch({ focus }: { focus: boolean }) {
 
       {error ? (
         <SearchError>
-          Não foi possível encontrar o álbum, país, gênero ou ano de lançamento
+          Não foi possível encontrar o álbum, banda/artista, gênero ou país
           buscado.
         </SearchError>
       ) : (
@@ -105,7 +105,7 @@ export default function TabsSearch({ focus }: { focus: boolean }) {
           {autocomplete?.countries?.data.map((country) => (
             <li key={country.id}>
               <Link href={`/pais/${country.attributes?.slug}`}>
-                Países / <strong>{country.attributes?.title}</strong>
+                País / <strong>{country.attributes?.title}</strong>
               </Link>
             </li>
           ))}
