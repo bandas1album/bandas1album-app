@@ -11,6 +11,7 @@ import {
 } from '@/graphql/generated/graphql'
 import { GET_ALBUMS_BY_CATEGORY, GET_PAGE_INFO } from '@/graphql/queries'
 import client from '@/graphql/client'
+import PageHeader from '@/components/PageHeader'
 
 type TCategoryTemplate = {
   nodes: Array<AlbumEntity>
@@ -155,6 +156,9 @@ export default function CategoryTemplate({
       />
       {albums ? (
         <>
+          <PageHeader>
+            {pageMeta?.type} › {pageMeta?.title}
+          </PageHeader>
           <ListAlbums
             albums={albums}
             handleScroll={handleScroll}

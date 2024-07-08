@@ -10,6 +10,8 @@ import {
 } from '@/graphql/generated/graphql'
 import { GET_ALBUMS_BY_YEAR } from '@/graphql/queries'
 import client from '@/graphql/client'
+import ButtonBack from '@/components/Buttons/ButtonBack'
+import PageHeader from '@/components/PageHeader'
 
 type TYearTemplate = {
   nodes: Array<AlbumEntity>
@@ -104,6 +106,7 @@ export default function YearTemplate({
       />
       {albums ? (
         <>
+          <PageHeader>Ano de lançamento › {params.slug}</PageHeader>
           <ListAlbums
             albums={albums}
             handleScroll={handleScroll}
