@@ -10,10 +10,15 @@ import DisqusComments from '@/components/DisqusComments'
 import { NextSeo } from 'next-seo'
 
 export default function AlbumTemplate({ attributes }: AlbumEntity) {
+  const pageTitle =
+    attributes?.title === attributes?.artist
+      ? attributes?.title
+      : `${attributes?.artist} - ${attributes?.title}`
+
   return (
     <>
       <Head>
-        <title>{attributes?.title} | Bandas de 1 Álbum</title>
+        <title>{pageTitle} | Bandas de 1 Álbum</title>
         <script
           {...jsonLdScriptProps<MusicAlbum>({
             '@context': 'https://schema.org',
@@ -42,7 +47,7 @@ export default function AlbumTemplate({ attributes }: AlbumEntity) {
         />
       </Head>
       <NextSeo
-        title={`${attributes?.title} | Bandas de 1 Álbum`}
+        title={`${pageTitle} | Bandas de 1 Álbum`}
         description={`Ouça agora o álbum de ${
           attributes?.genres?.data[0].attributes?.title
         } "${attributes?.title}", único disco lançado por ${
