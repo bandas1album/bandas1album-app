@@ -32,6 +32,7 @@ const GET_ALL_PAGES = gql`
         attributes {
           slug
           updatedAt
+          released
         }
       }
     }
@@ -57,6 +58,7 @@ async function fetchPages() {
 
 async function generateSitemap() {
   const { albums, countries, genres } = await fetchPages()
+  const years = []
   const sitemap = new SitemapStream({ hostname: 'https://bandas1album.com.br' })
 
   const writeStream = createWriteStream('public/sitemap.xml')
@@ -69,6 +71,14 @@ async function generateSitemap() {
       changefreq: 'weekly',
       lastmod: new Date(album.attributes?.updatedAt)
     })
+  })
+
+  albums?.data.map((album) => {
+    const year = album.attributes.released.split('-')[0]
+
+    if (!years.includes(year)) {
+      years.push(year)
+    }
   })
 
   countries?.data.map((country) => {
@@ -84,6 +94,14 @@ async function generateSitemap() {
       url: `/genero/${genre.attributes?.slug}`,
       changefreq: 'weekly',
       lastmod: new Date(genre.attributes?.updatedAt)
+    })
+  })
+
+  years?.map((year) => {
+    sitemap.write({
+      url: `/ano/${year}`,
+      changefreq: 'weekly',
+      lastmod: new Date()
     })
   })
 
