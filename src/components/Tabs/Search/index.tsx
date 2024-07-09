@@ -91,7 +91,12 @@ export default function TabsSearch({ focus }: { focus: boolean }) {
           {autocomplete?.albums?.data.map((album) => (
             <li key={album.id}>
               <Link href={`/album/${album.attributes?.slug}`}>
-                Álbuns / <strong>{album?.attributes?.title}</strong>
+                Álbuns /{' '}
+                <strong>
+                  {album?.attributes?.title === album.attributes?.artist
+                    ? album?.attributes?.title
+                    : `${album.attributes?.artist} - ${album?.attributes?.title}`}
+                </strong>
               </Link>
             </li>
           ))}

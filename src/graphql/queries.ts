@@ -208,11 +208,15 @@ export const GET_ALBUMS_BY_YEAR = gql`
 
 export const GET_AUTOCOMPLETE_BY_SEARCH = gql`
   query getAutocompleteBySearch($search: StringFilterInput) {
-    albums(filters: { title: $search }, pagination: { pageSize: 2 }) {
+    albums(
+      filters: { title: $search, artist: $search }
+      pagination: { pageSize: 2 }
+    ) {
       data {
         id
         attributes {
           title
+          artist
           slug
         }
       }
