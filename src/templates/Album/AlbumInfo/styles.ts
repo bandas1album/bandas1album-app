@@ -107,6 +107,7 @@ export const InfosTag = styled.div`
   display: inline-flex;
   align-items: center;
   width: fit-content;
+  flex-wrap: wrap;
   gap: 8px;
 
   a:hover {
