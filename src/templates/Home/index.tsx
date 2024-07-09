@@ -14,9 +14,10 @@ import client from '@/graphql/client'
 type THomeTemplate = {
   nodes: Array<AlbumEntity>
   pageInfo: Pagination
+  sort: string
 }
 
-export default function HomeTemplate({ nodes, pageInfo }: THomeTemplate) {
+export default function HomeTemplate({ nodes, pageInfo, sort }: THomeTemplate) {
   const [firstLoading, setFirstLoading] = useState(true)
   const [loading, setLoading] = useState(false)
   const [albums, setAlbums] = useState<Array<AlbumEntity>>(nodes)
@@ -33,7 +34,8 @@ export default function HomeTemplate({ nodes, pageInfo }: THomeTemplate) {
       query: GET_ALBUMS,
       variables: {
         perPage: 96,
-        page: currentPage && currentPage + 1
+        page: currentPage && currentPage + 1,
+        sort
       }
     })
     const responseList = data.albums?.data as AlbumEntity[]

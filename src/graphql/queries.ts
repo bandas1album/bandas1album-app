@@ -54,8 +54,8 @@ export const GET_PAGE_INFO = gql`
 `
 
 export const GET_ALBUMS = gql`
-  query getAlbums($perPage: Int!, $page: Int) {
-    albums(pagination: { pageSize: $perPage, page: $page }) {
+  query getAlbums($perPage: Int!, $page: Int, $sort: [String]) {
+    albums(pagination: { pageSize: $perPage, page: $page }, sort: $sort) {
       meta {
         pagination {
           total
