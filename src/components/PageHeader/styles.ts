@@ -4,12 +4,13 @@ export const Header = styled.header`
   position: relative;
   display: flex;
   align-items: center;
-  justify-content: flex-end;
   height: 64px;
+  padding-left: 64px;
   padding-right: 16px;
   background-color: var(--color-primary-tint);
 
   @media (min-width: 376px) {
+    padding-left: 0;
     justify-content: center;
   }
 `
