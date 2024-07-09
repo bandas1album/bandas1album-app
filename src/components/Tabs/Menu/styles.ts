@@ -83,13 +83,14 @@ export const MenuTitle = styled.summary`
 
 export const MenuFooter = styled.footer`
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   margin-bottom: 16px;
   line-height: 16px;
+  text-align: center;
 
   strong {
     font-size: 12px;
-    color: var(--color-primary-tint);
+    color: var(--color-light);
   }
 
   ul {

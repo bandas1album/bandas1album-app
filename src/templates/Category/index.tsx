@@ -156,9 +156,12 @@ export default function CategoryTemplate({
       />
       {albums ? (
         <>
-          <PageHeader>
-            {pageMeta?.type} › {pageMeta?.title}
-          </PageHeader>
+          {pageMeta?.title && (
+            <PageHeader>
+              {pageMeta?.type} › {pageMeta?.title}
+            </PageHeader>
+          )}
+
           <ListAlbums
             albums={albums}
             handleScroll={handleScroll}

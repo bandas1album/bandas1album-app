@@ -9,7 +9,7 @@ export const Header = styled.header`
   padding-right: 16px;
   background-color: var(--color-primary-tint);
 
-  @media (min-width: 414px) {
+  @media (min-width: 376px) {
     justify-content: center;
   }
 `

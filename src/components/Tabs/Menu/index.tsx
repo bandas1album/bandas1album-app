@@ -245,16 +245,7 @@ export default function TabsMenu() {
       </MenuList>
 
       <MenuFooter>
-        <strong>Bandas 1 Álbum © {year}</strong>
-
-        <ul>
-          <li>
-            <Link href="/termos">Termos</Link>
-          </li>
-          <li>
-            <Link href="/privacidade">Privacidade</Link>
-          </li>
-        </ul>
+        <strong>Bandas de 1 Álbum © {year}</strong>
       </MenuFooter>
 
       <MenuSocial>
