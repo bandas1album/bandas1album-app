@@ -19,15 +19,7 @@ export default function Home({ nodes, pageInfo, sort }: THome) {
 }
 
 export const getServerSideProps: GetServerSideProps = async () => {
-  const sort = [
-    'title',
-    'released',
-    'artist',
-    'id',
-    'country',
-    'createdAt',
-    'updatedAt'
-  ]
+  const sort = ['title', 'released', 'artist', 'id', 'createdAt', 'updatedAt']
   const sortSelected = sort[Math.floor(Math.random() * sort.length)]
   const { data } = await client.query({
     query: GET_ALBUMS,

@@ -100,7 +100,7 @@ export default function CategoryTemplate({
       data.albums?.meta.pagination?.page
     ) {
       setHasNextPage(
-        data.albums?.meta.pagination?.pageCount <
+        data.albums?.meta.pagination?.pageCount >
           data.albums?.meta.pagination?.page
       )
     }

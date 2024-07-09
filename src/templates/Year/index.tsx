@@ -56,7 +56,7 @@ export default function YearTemplate({
       data.albums?.meta.pagination?.page
     ) {
       setHasNextPage(
-        data.albums?.meta.pagination?.pageCount <
+        data.albums?.meta.pagination?.pageCount >
           data.albums?.meta.pagination?.page
       )
     }

@@ -39,13 +39,14 @@ export default function HomeTemplate({ nodes, pageInfo, sort }: THomeTemplate) {
       }
     })
     const responseList = data.albums?.data as AlbumEntity[]
+
     setAlbums((albums) => [...albums, ...responseList])
     if (
       data.albums?.meta.pagination?.pageCount &&
       data.albums?.meta.pagination?.page
     ) {
       setHasNextPage(
-        data.albums?.meta.pagination?.pageCount <
+        data.albums?.meta.pagination?.pageCount >
           data.albums?.meta.pagination?.page
       )
     }

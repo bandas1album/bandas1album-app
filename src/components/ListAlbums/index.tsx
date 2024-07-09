@@ -14,10 +14,21 @@ export default function ListAlbums({
   handleScroll,
   loading
 }: ListAlbumsProps) {
+  const uniqueIds = new Set()
+
+  const uniqueAlbums = albums.filter((album) => {
+    if (uniqueIds.has(album.id)) {
+      return false
+    } else {
+      uniqueIds.add(album.id)
+      return true
+    }
+  })
+
   return (
     <>
       <List onScroll={handleScroll}>
-        {albums.map((album) => (
+        {uniqueAlbums.map((album) => (
           <li key={`album-${album.id}`}>
             <CardAlbum
               artist={album.attributes?.artist || ''}
