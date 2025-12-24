@@ -1,57 +1,22 @@
-import client from '@/graphql/client'
-import { GET_ALBUMS_BY_CATEGORY } from '@/graphql/queries'
-import { GetServerSideProps } from 'next'
-import {
-  AlbumEntity,
-  GetAlbumsQuery,
-  Pagination
-} from '@/graphql/generated/graphql'
 import CategoryTemplate from '@/templates/Category'
+import { useGetAlbums } from '@/api/album/get_all'
+import { useRouter } from 'next/router'
 
-type TGenre = {
-  nodes: Array<AlbumEntity>
-  pageInfo: Pagination
-  params: {
-    category: string
-    slug: string
-  }
-}
+export default function PageGenre() {
+  const {query, isReady} = useRouter()
 
-export default function PageGenre({ nodes, pageInfo, params }: TGenre) {
-  return <CategoryTemplate nodes={nodes} pageInfo={pageInfo} params={params} />
-}
+  const { data: albums } = useGetAlbums({
+    page: 1,
+    per_page: 99,
+    order_by: 'date',
+    order: 'DESC',
+    taxonomy: {
+      category: query.category as string,
+      slug: query.slug as string
+    },
+  }, isReady)
 
-export const getServerSideProps: GetServerSideProps = async ({ params }) => {
-  const payload = {
-    query: GET_ALBUMS_BY_CATEGORY,
-    variables: {
-      perPage: 96,
-      page: 1,
-      genre: {
-        contains: '' as string | string[] | undefined
-      },
-      country: {
-        contains: '' as string | string[] | undefined
-      }
-    }
-  }
-
-  if (params?.category === 'genero') {
-    payload.variables.genre.contains = params?.slug
-  }
-
-  if (params?.category === 'pais') {
-    payload.variables.country.contains = params?.slug
-  }
-
-  const { data } = await client.query(payload)
-  const { albums } = data as GetAlbumsQuery
-
-  return {
-    props: {
-      nodes: albums?.data,
-      pageInfo: albums?.meta.pagination,
-      params: params
-    }
-  }
+  return (
+    <CategoryTemplate {...albums} />
+  )
 }

@@ -11,31 +11,17 @@ import Link from 'next/link'
 import { Spotify, Instagram } from '@styled-icons/fa-brands'
 import { ChevronDownCircle } from '@styled-icons/ionicons-outline'
 import { CardMenu } from '@/components/CardMenu'
-import client from '@/graphql/client'
-import {
-  AlbumEntity,
-  CountryEntity,
-  GenreEntity,
-  GetMenuAlbumsQuery,
-  GetMenuCountriesQuery,
-  GetMenuGenresQuery
-} from '@/graphql/generated/graphql'
-import {
-  GET_MENU_ALBUMS,
-  GET_MENU_COUNTRIES,
-  GET_MENU_GENRES
-} from '@/graphql/queries'
 
 export default function TabsMenu() {
-  const [albums, setAlbums] = useState<AlbumEntity[]>([])
+  const [albums, setAlbums] = useState<any[]>([])
   const [albumsPage, setAlbumsPage] = useState<number | undefined>(1)
   const [albumsHasNextPage, setAlbumsHasNextPage] = useState<boolean>()
   const [albumsIsLoading, setAlbumsIsLoading] = useState<boolean>(false)
-  const [genres, setGenres] = useState<GenreEntity[]>([])
+  const [genres, setGenres] = useState<any[]>([])
   const [genresPage, setGenresPage] = useState(1)
   const [genresHasNextPage, setGenresHasNextPage] = useState<boolean>()
   const [genresIsLoading, setGenresIsLoading] = useState<boolean>(false)
-  const [countries, setCountries] = useState<CountryEntity[]>([])
+  const [countries, setCountries] = useState<any[]>([])
   const [countriesPage, setCountriesPage] = useState(1)
   const [countriesHasNextPage, setCountriesHasNextPage] = useState<boolean>()
   const [countriesIsLoading, setCountriesIsLoading] = useState<boolean>(false)
@@ -43,90 +29,15 @@ export default function TabsMenu() {
   const year = new Date().getFullYear()
 
   const getAlbums = (page = 1) => {
-    setAlbumsIsLoading(true)
-    client
-      .query<GetMenuAlbumsQuery>({
-        query: GET_MENU_ALBUMS,
-        variables: {
-          perPage: 10,
-          page: page
-        }
-      })
-      .then((response) => {
-        const responseList = response.data.albums?.data as AlbumEntity[]
-        setAlbums((current) => [...current, ...responseList])
-
-        if (response.data.albums?.meta.pagination) {
-          setAlbumsPage(response.data.albums?.meta.pagination.page)
-          setAlbumsHasNextPage(
-            response.data.albums?.meta.pagination.pageCount >
-              response.data.albums?.meta.pagination.page
-          )
-        }
-        setAlbumsIsLoading(false)
-      })
-      .catch((error) => {
-        console.error(error)
-        setAlbumsIsLoading(false)
-      })
+    // setAlbumsIsLoading(false)
   }
 
   const getGenres = (page = 1) => {
-    setGenresIsLoading(true)
-    client
-      .query<GetMenuGenresQuery>({
-        query: GET_MENU_GENRES,
-        variables: {
-          perPage: 10,
-          page: page
-        }
-      })
-      .then((response) => {
-        const responseList = response.data.genres?.data as GenreEntity[]
-        setGenres((current) => [...current, ...responseList])
-
-        if (response.data.genres?.meta.pagination) {
-          setGenresPage(response.data.genres?.meta.pagination.page)
-          setGenresHasNextPage(
-            response.data.genres?.meta.pagination.pageCount >
-              response.data.genres?.meta.pagination.page
-          )
-        }
-        setGenresIsLoading(false)
-      })
-      .catch((error) => {
-        console.error(error)
-        setGenresIsLoading(false)
-      })
+    // setGenresIsLoading(true)
   }
 
   const getCountries = (page = 1) => {
-    setCountriesIsLoading(true)
-    client
-      .query<GetMenuCountriesQuery>({
-        query: GET_MENU_COUNTRIES,
-        variables: {
-          perPage: 10,
-          page: page
-        }
-      })
-      .then((response) => {
-        const responseList = response.data.countries?.data as CountryEntity[]
-        setCountries((current) => [...current, ...responseList])
-
-        if (response.data.countries?.meta.pagination) {
-          setCountriesPage(response.data.countries?.meta.pagination.page)
-          setCountriesHasNextPage(
-            response.data.countries?.meta.pagination.pageCount >
-              response.data.countries?.meta.pagination.page
-          )
-        }
-        setCountriesIsLoading(false)
-      })
-      .catch((error) => {
-        console.error(error)
-        setCountriesIsLoading(false)
-      })
+    // setCountriesIsLoading(true)
   }
 
   const handleScroll = (

@@ -7,12 +7,14 @@ import SEO from '../../next-seo.config'
 import { DefaultSeo } from 'next-seo'
 import Tabs from '@/components/Tabs'
 import { useRouter } from 'next/router'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import Script from 'next/script'
 import * as gtag from '../../gtag'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
 export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter()
+  const [queryClient] =  useState(() => new QueryClient())
 
   useEffect(() => {
     router.prefetch = async () => void {}
@@ -52,18 +54,20 @@ export default function App({ Component, pageProps }: AppProps) {
       />
       <DefaultSeo {...SEO} />
       <GlobalStyles />
-      <main role="main">
-        <NextNProgress
-          color="#a58a67"
-          startPosition={0.3}
-          stopDelayMs={200}
-          height={3}
-          showOnShallow={true}
-        />
+      <QueryClientProvider client={queryClient}>
+        <main role="main">
+          <NextNProgress
+            color="#a58a67"
+            startPosition={0.3}
+            stopDelayMs={200}
+            height={3}
+            showOnShallow={true}
+          />
 
-        <Component {...pageProps} />
-        <Tabs />
-      </main>
+          <Component {...pageProps} />
+          <Tabs />
+        </main>
+      </QueryClientProvider>
     </>
   )
 }

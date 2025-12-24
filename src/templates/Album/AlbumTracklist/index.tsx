@@ -1,8 +1,7 @@
-import { Maybe, Scalars } from '@/graphql/generated/graphql'
 import { List, ListTitle, ListWrapper } from './styles'
 
 type AlbumTrackListProps = {
-  list: Maybe<Scalars['JSON']['output']> | undefined
+  list: any | undefined
 }
 
 export default function AlbumTracklist({ list }: AlbumTrackListProps) {
@@ -13,13 +12,13 @@ export default function AlbumTracklist({ list }: AlbumTrackListProps) {
         {list?.map(
           (
             track: {
-              title: string
+              name: string
               duration: string
             },
             index: number
           ) => (
             <li key={`track-${index}`}>
-              <strong>{track?.title}</strong>
+              <strong>{track?.name}</strong>
               <span>{track?.duration}</span>
             </li>
           )

@@ -1,15 +1,8 @@
+import { Album } from '@/api/types/Album'
 import { Card, CardImage, CardLink, CardTitle } from './styles'
 import Image from 'next/image'
 
-type CardAlbumProps = {
-  slug: string
-  title: string
-  artist: string
-  cover: string
-  loading: 'eager' | 'lazy' | undefined
-}
-
-const CardAlbum = ({ artist, cover, slug, title, loading }: CardAlbumProps) => (
+const CardAlbum = ({ artist, cover, slug, title }: Album) => (
   <CardLink prefetch={false} href={`/album/${slug}`} title={title}>
     <Card>
       <CardImage>
@@ -19,7 +12,7 @@ const CardAlbum = ({ artist, cover, slug, title, loading }: CardAlbumProps) => (
             alt={`Álbum ${title} de ${artist}`}
             width={160}
             height={160}
-            loading={loading}
+            loading="lazy"
           ></Image>
         ) : (
           <CardTitle>

@@ -1,5 +1,4 @@
 import Head from 'next/head'
-import { AlbumEntity } from '@/graphql/generated/graphql'
 import ButtonBack from '@/components/Buttons/ButtonBack'
 import AlbumCover from './AlbumCover'
 import AlbumInfo from './AlbumInfo'
@@ -9,11 +8,11 @@ import AlbumTracklist from './AlbumTracklist'
 import DisqusComments from '@/components/DisqusComments'
 import { NextSeo } from 'next-seo'
 
-export default function AlbumTemplate({ attributes }: AlbumEntity) {
+export default function AlbumTemplate(data: any) {
   const pageTitle =
-    attributes?.title === attributes?.artist
-      ? attributes?.title
-      : `${attributes?.artist} - ${attributes?.title}`
+    data?.title === data?.artist
+      ? data?.title
+      : `${data?.artist} - ${data?.title}`
 
   return (
     <>
@@ -25,67 +24,67 @@ export default function AlbumTemplate({ attributes }: AlbumEntity) {
             '@type': 'MusicAlbum',
             byArtist: {
               '@type': 'MusicGroup',
-              name: attributes?.artist || ''
+              name: data?.artist || ''
             },
-            genre: attributes?.genres?.data.length
-              ? attributes.genres.data[0].attributes?.title || ''
+            genre: data?.genres?.length
+              ? data.genres?.[0]?.title || ''
               : '',
-            image: attributes?.cover.data?.attributes?.url || '',
-            name: attributes?.title || '',
-            numTracks: attributes?.tracklist && attributes?.tracklist.length,
+            image: data?.cover || '',
+            name: data?.title || '',
+            numTracks: data?.tracklist && data?.tracklist.length,
             track:
-              attributes?.tracklist &&
-              attributes?.tracklist?.map(
+              data?.tracklist &&
+              data?.tracklist?.map(
                 (track: { title: string; duration: string }) => ({
                   '@type': 'MusicRecording',
                   duration: track?.duration || '',
                   name: track?.title || ''
                 })
               ),
-            url: `/album/${attributes?.slug}`
+            url: `/album/${data?.slug}`
           })}
         />
       </Head>
       <NextSeo
         title={`${pageTitle} | Bandas de 1 Álbum`}
         description={`Ouça agora o álbum de ${
-          attributes?.genres?.data[0].attributes?.title
-        } "${attributes?.title}", único disco lançado por ${
-          attributes?.artist
-        } em ${new Date(attributes?.released).getFullYear().toString()}.`}
+          data?.genres?.[0]?.title
+        } "${data?.title}", único disco lançado por ${
+          data?.artist
+        } em ${new Date(data?.released).getFullYear().toString()}.`}
         openGraph={{
-          url: `https://bandas1album.com.br/album/${attributes?.slug}`,
+          url: `https://bandas1album.com.br/album/${data?.slug}`,
           images: [
             {
-              url: attributes?.cover.data?.attributes?.url || '',
+              url: data?.cover || '',
               width: 1280,
               height: 720,
-              alt: `Capa do álbum ${attributes?.title} de ${attributes?.artist}`
+              alt: `Capa do álbum ${data?.title} de ${data?.artist}`
             }
           ]
         }}
-        canonical={`https://bandas1album.com.br/album/${attributes?.slug}`}
+        canonical={`https://bandas1album.com.br/album/${data?.slug}`}
       />
 
       <ButtonBack />
       <AlbumCover
-        image={attributes?.cover.data?.attributes?.url}
-        title={attributes?.title}
+        image={data?.cover}
+        title={data?.title}
       />
       <AlbumInfo
-        title={attributes?.title}
-        artist={attributes?.artist}
-        genre={attributes?.genres?.data}
-        country={attributes?.country?.data}
-        social={attributes?.social}
-        year={attributes?.released.split('-')[0]}
-        content={attributes?.content}
+        title={data?.title}
+        artist={data?.artist}
+        genre={data?.genres}
+        country={data?.country}
+        social={data?.links}
+        year={data?.released?.split('-')[0]}
+        content={data?.content}
       />
-      {attributes?.tracklist && <AlbumTracklist list={attributes?.tracklist} />}
+      {data?.tracklist && <AlbumTracklist list={data?.tracklist} />}
       <DisqusComments
-        slug={attributes?.slug}
-        id={attributes?.slug}
-        title={attributes?.title}
+        slug={data?.slug}
+        id={data?.slug}
+        title={data?.title}
       ></DisqusComments>
     </>
   )

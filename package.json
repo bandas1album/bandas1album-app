@@ -4,19 +4,17 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build && yarn generate-sitemap",
+    "build": "next build",
     "start": "next start",
     "lint": "next lint --max-warnings=0",
     "test": "jest",
-    "test:watch": "yarn test --watch",
-    "codegen": "graphql-codegen --config codegen.yml",
-    "generate-sitemap": "node generate-sitemap.js"
+    "test:watch": "yarn test --watch"
   },
   "dependencies": {
-    "@apollo/client": "^3.7.17",
     "@styled-icons/fa-brands": "^10.47.0",
     "@styled-icons/ionicons-outline": "^10.46.0",
     "@styled-icons/ionicons-solid": "^10.46.0",
+    "@tanstack/react-query": "^5.90.12",
     "@types/node": "20.2.5",
     "@types/react": "18.2.9",
     "@types/react-dom": "18.2.4",
@@ -26,8 +24,6 @@
     "dotenv": "^16.4.5",
     "eslint": "^8.42.0",
     "eslint-config-next": "^14.2.4",
-    "graphql": "^16.7.1",
-    "graphql-request": "^6.1.0",
     "lint-staged": "^15.2.7",
     "lodash": "^4.17.21",
     "next": "^14.2.4",

@@ -1,4 +1,3 @@
-import { CountryEntity, GenreEntity, Maybe } from '@/graphql/generated/graphql'
 import {
   Infos,
   InfosArtist,
@@ -31,15 +30,15 @@ import Link from 'next/link'
 import Markdown from 'react-markdown'
 
 type AlbumInfoProps = {
-  title: Maybe<string> | undefined
-  artist: Maybe<string> | undefined
-  year: Maybe<string> | undefined
-  country: Maybe<CountryEntity> | undefined
-  genre: GenreEntity[] | undefined
+  title: string | undefined
+  artist: string | undefined
+  year: string | undefined
+  country: any | undefined
+  genre: any[] | undefined
   social: {
     [key: string]: string
   }
-  content: Maybe<string> | undefined
+  content: string | undefined
 }
 
 export default function AlbumInfo({
@@ -160,12 +159,12 @@ export default function AlbumInfo({
       <InfosTags>
         <InfosTag>
           <CalendarClear />
-          <Link href={`/ano/${year}`}>{year}</Link>
+          <Link href={`/year/${year}`}>{year}</Link>
         </InfosTag>
         <InfosTag>
           <Location />
-          <Link href={`/pais/${country?.attributes?.slug}`}>
-            {country?.attributes?.title}
+          <Link href={`/country/${country?.slug}`}>
+            {country?.title}
           </Link>
         </InfosTag>
         <InfosTag>
@@ -174,9 +173,9 @@ export default function AlbumInfo({
             <>
               <Link
                 key={`genre-${index}`}
-                href={`/genero/${item?.attributes?.slug}`}
+                href={`/genre/${item?.slug}`}
               >
-                {item.attributes?.title}
+                {item?.title}
                 {index + 1 < genre.length && ', '}
               </Link>
             </>

@@ -20,6 +20,6 @@ module.exports = withPWA({
     disable: !isProd
   },
   images: {
-    domains: ['res.cloudinary.com']
+    domains: ['res.cloudinary.com', 'bandas1album-api.test']
   }
 })

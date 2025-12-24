@@ -1,74 +1,14 @@
 import ListAlbums from '@/components/ListAlbums'
 import Head from 'next/head'
 import { NextSeo } from 'next-seo'
-import { isMiddleOnScroll } from '@/utils/isMiddleOnScroll'
-import { useCallback, useEffect, useState } from 'react'
-import {
-  AlbumEntity,
-  GetAlbumsQuery,
-  Pagination
-} from '@/graphql/generated/graphql'
-import { GET_ALBUMS } from '@/graphql/queries'
-import client from '@/graphql/client'
+import { GetAlbumsResponse } from '@/api/album/GetAlbums/types'
 
 type THomeTemplate = {
-  nodes: Array<AlbumEntity>
-  pageInfo: Pagination
-  sort: string
+  albums: GetAlbumsResponse['data']
+  pagination: GetAlbumsResponse['meta'] | []
 }
 
-export default function HomeTemplate({ nodes, pageInfo, sort }: THomeTemplate) {
-  const [firstLoading, setFirstLoading] = useState(true)
-  const [loading, setLoading] = useState(false)
-  const [albums, setAlbums] = useState<Array<AlbumEntity>>(nodes)
-  const [currentPage, setCurrentPage] = useState<number | undefined>(
-    pageInfo.page
-  )
-  const [hasNextPage, setHasNextPage] = useState<boolean | undefined>(
-    pageInfo.pageCount > pageInfo.page
-  )
-
-  const getAlbums = async () => {
-    setLoading(true)
-    const { data } = await client.query<GetAlbumsQuery>({
-      query: GET_ALBUMS,
-      variables: {
-        perPage: 96,
-        page: currentPage && currentPage + 1,
-        sort
-      }
-    })
-    const responseList = data.albums?.data as AlbumEntity[]
-
-    setAlbums((albums) => [...albums, ...responseList])
-    if (
-      data.albums?.meta.pagination?.pageCount &&
-      data.albums?.meta.pagination?.page
-    ) {
-      setHasNextPage(
-        data.albums?.meta.pagination?.pageCount >
-          data.albums?.meta.pagination?.page
-      )
-    }
-    setCurrentPage(data.albums?.meta.pagination?.page)
-    setLoading(false)
-    setFirstLoading(false)
-  }
-
-  const handleScroll = useCallback((): void => {
-    if (isMiddleOnScroll() && hasNextPage && !loading) {
-      getAlbums()
-    }
-  }, [hasNextPage, currentPage, loading])
-
-  useEffect(() => {
-    window.addEventListener('scroll', handleScroll, { passive: true })
-
-    return () => {
-      window.removeEventListener('scroll', handleScroll)
-    }
-  })
-
+export default function HomeTemplate({ albums }: THomeTemplate) {
   return (
     <>
       <Head>
@@ -92,8 +32,6 @@ export default function HomeTemplate({ nodes, pageInfo, sort }: THomeTemplate) {
       />
       <ListAlbums
         albums={albums}
-        handleScroll={handleScroll}
-        loading={firstLoading ? 'eager' : 'lazy'}
       />
     </>
   )
