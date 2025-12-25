@@ -15,7 +15,7 @@ export const MenuList = styled.div`
   display: flex;
   flex-direction: column;
   gap: 16px;
-  margin: 0 0 48px 0;
+  margin: 0;
   flex: 1;
 
   > li:not(:last-child) {
