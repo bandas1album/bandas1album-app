@@ -140,7 +140,7 @@ export default function TabsMenu() {
         </details>
       </MenuList>
 
-      <MenuFooter>
+      {/* <MenuFooter>
         <strong>Bandas de 1 Álbum © {year}</strong>
       </MenuFooter>
 
@@ -163,7 +163,7 @@ export default function TabsMenu() {
             <Spotify />
           </a>
         </li>
-      </MenuSocial>
+      </MenuSocial> */}
     </MenuNav>
   )
 }
