@@ -10,12 +10,12 @@ export type AlbumCountry = {
 }
 
 export type AlbumLinks = {
-  amazon: string,
-  deezer: string,
-  lastfm: string,
-  spotify: string,
-  youtube: string,
-  wikipedia: string,
+  amazon: string
+  deezer: string
+  lastfm: string
+  spotify: string
+  youtube: string
+  wikipedia: string
   download: string
 }
 
@@ -25,16 +25,16 @@ export type AlbumTrack = {
 }
 
 export type Album = {
-  author?: string,
-  slug: string,
-  title: string,
-  description?: string,
-  cover: string,
-  artist?: string,
-  genres?: AlbumGenre[],
-  released?: string,
-  country?: AlbumCountry,
-  label?: string,
-  links?: AlbumLinks,
+  author?: string
+  slug: string
+  title: string
+  description?: string
+  cover: string
+  artist?: string
+  genres?: AlbumGenre[]
+  released?: string
+  country?: AlbumCountry
+  label?: string
+  links?: AlbumLinks
   tracklist?: AlbumTrack[]
 }

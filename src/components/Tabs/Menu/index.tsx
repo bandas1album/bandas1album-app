@@ -11,148 +11,133 @@ import Link from 'next/link'
 import { Spotify, Instagram } from '@styled-icons/fa-brands'
 import { ChevronDownCircle } from '@styled-icons/ionicons-outline'
 import { CardMenu } from '@/components/CardMenu'
+import { useGetMenu } from '@/api/GetMenu'
+import { handleScroll } from '@/utils/handleScroll'
 
 export default function TabsMenu() {
-  const [albums, setAlbums] = useState<any[]>([])
-  const [albumsPage, setAlbumsPage] = useState<number | undefined>(1)
-  const [albumsHasNextPage, setAlbumsHasNextPage] = useState<boolean>()
-  const [albumsIsLoading, setAlbumsIsLoading] = useState<boolean>(false)
-  const [genres, setGenres] = useState<any[]>([])
-  const [genresPage, setGenresPage] = useState(1)
-  const [genresHasNextPage, setGenresHasNextPage] = useState<boolean>()
-  const [genresIsLoading, setGenresIsLoading] = useState<boolean>(false)
-  const [countries, setCountries] = useState<any[]>([])
-  const [countriesPage, setCountriesPage] = useState(1)
-  const [countriesHasNextPage, setCountriesHasNextPage] = useState<boolean>()
-  const [countriesIsLoading, setCountriesIsLoading] = useState<boolean>(false)
+  const {
+    data: albums,
+    isFetching: albumsIsLoading,
+    refetch: getAlbums,
+    fetchNextPage: getAlbumsNextPage
+  } = useGetMenu('album')
+  const {
+    data: genres,
+    isFetching: genresIsLoading,
+    refetch: getGenres,
+    fetchNextPage: getGenresNextPage
+  } = useGetMenu('genre')
+  const {
+    data: countries,
+    isFetching: countriesIsLoading,
+    refetch: getCountries,
+    fetchNextPage: getCountriesNextPage
+  } = useGetMenu('country')
+  const {
+    data: years,
+    isFetching: yearsIsLoading,
+    refetch: getYears,
+    fetchNextPage: getYearsNextPage
+  } = useGetMenu('released')
 
   const year = new Date().getFullYear()
-
-  const getAlbums = (page = 1) => {
-    // setAlbumsIsLoading(false)
-  }
-
-  const getGenres = (page = 1) => {
-    // setGenresIsLoading(true)
-  }
-
-  const getCountries = (page = 1) => {
-    // setCountriesIsLoading(true)
-  }
-
-  const handleScroll = (
-    el: EventTarget,
-    hasNextPage: boolean | undefined,
-    fn: () => void
-  ) => {
-    const $list = el as HTMLUListElement
-    const isEnd = $list.scrollTop + $list.clientHeight >= $list.scrollHeight
-    if (isEnd && hasNextPage) {
-      fn()
-    }
-  }
-
-  useEffect(() => {
-    getAlbums()
-    getGenres()
-    getCountries()
-  }, [])
 
   return (
     <MenuNav>
       <MenuList>
-        {albums?.length ? (
-          <details>
-            <MenuTitle>
-              <span>Álbuns</span>
-              <ChevronDownCircle />
-            </MenuTitle>
+        <details onClick={() => getAlbums()}>
+          <MenuTitle>
+            <span>Álbuns</span>
+            <ChevronDownCircle />
+          </MenuTitle>
 
-            <Submenu
-              $loading={albumsIsLoading}
-              onScroll={(e) =>
-                handleScroll(e.target, albumsHasNextPage, () => {
-                  getAlbums(albumsPage && albumsPage + 1)
-                })
-              }
-            >
-              {albums?.map((album) => (
-                <li key={album.id}>
-                  <Link
-                    prefetch={false}
-                    href={`/album/${album.attributes?.slug}`}
-                  >
+          <Submenu
+            $loading={albumsIsLoading}
+            onScroll={(e) => handleScroll(e.target, () => getAlbumsNextPage())}
+          >
+            {albums?.pages?.map((page) =>
+              page.data?.map((album) => (
+                <li key={album.slug}>
+                  <Link prefetch={false} href={`/album/${album?.slug}`}>
                     <CardMenu
-                      image={
-                        album.attributes?.cover.data?.attributes?.url || ''
-                      }
-                      title={album.attributes?.title || ''}
-                      subtitle={album?.attributes?.artist || ''}
+                      image={album.cover || ''}
+                      title={album.title || ''}
+                      subtitle={album?.artist || ''}
                     />
                   </Link>
                 </li>
-              ))}
-            </Submenu>
-          </details>
-        ) : (
-          ''
-        )}
+              ))
+            )}
+          </Submenu>
+        </details>
 
-        {countries?.length ? (
-          <details>
-            <MenuTitle>
-              <span>Gêneros</span>
-              <ChevronDownCircle />
-            </MenuTitle>
+        <details onClick={() => getGenres()}>
+          <MenuTitle>
+            <span>Gêneros</span>
+            <ChevronDownCircle />
+          </MenuTitle>
 
-            <Submenu
-              $loading={genresIsLoading}
-              onScroll={(e) =>
-                handleScroll(e.target, genresHasNextPage, () => {
-                  getGenres(genresPage && genresPage + 1)
-                })
-              }
-            >
-              {genres?.map((genre) => (
-                <li key={genre.id}>
-                  <Link href={`/genero/${genre.attributes?.slug}`}>
-                    <CardMenu title={genre.attributes?.title || ''} />
+          <Submenu
+            $loading={genresIsLoading}
+            onScroll={(e) => handleScroll(e.target, () => getGenresNextPage())}
+          >
+            {genres?.pages.map((page) =>
+              page.data?.map((genre) => (
+                <li key={genre.slug}>
+                  <Link href={`/genre/${genre.slug}`}>
+                    <CardMenu title={genre.title || ''} />
                   </Link>
                 </li>
-              ))}
-            </Submenu>
-          </details>
-        ) : (
-          ''
-        )}
+              ))
+            )}
+          </Submenu>
+        </details>
 
-        {countries?.length ? (
-          <details>
-            <MenuTitle>
-              <span>Países</span>
-              <ChevronDownCircle />
-            </MenuTitle>
+        <details onClick={() => getCountries()}>
+          <MenuTitle>
+            <span>País de lançamento</span>
+            <ChevronDownCircle />
+          </MenuTitle>
 
-            <Submenu
-              $loading={countriesIsLoading}
-              onScroll={(e) =>
-                handleScroll(e.target, countriesHasNextPage, () => {
-                  getCountries(countriesPage && countriesPage + 1)
-                })
-              }
-            >
-              {countries?.map((country) => (
-                <li key={country.id}>
-                  <Link href={`/pais/${country.attributes?.slug}`}>
-                    <CardMenu title={country.attributes?.title || ''} />
+          <Submenu
+            $loading={countriesIsLoading}
+            onScroll={(e) =>
+              handleScroll(e.target, () => getCountriesNextPage())
+            }
+          >
+            {countries?.pages.map((page) =>
+              page.data?.map((country) => (
+                <li key={country.slug}>
+                  <Link href={`/country/${country.slug}`}>
+                    <CardMenu title={country?.title || ''} />
                   </Link>
                 </li>
-              ))}
-            </Submenu>
-          </details>
-        ) : (
-          ''
-        )}
+              ))
+            )}
+          </Submenu>
+        </details>
+
+        <details onClick={() => getYears()}>
+          <MenuTitle>
+            <span>Ano de lançamento</span>
+            <ChevronDownCircle />
+          </MenuTitle>
+
+          <Submenu
+            $loading={yearsIsLoading}
+            onScroll={(e) => handleScroll(e.target, () => getYearsNextPage())}
+          >
+            {years?.pages.map((page) =>
+              page.data?.map((year) => (
+                <li key={year.slug}>
+                  <Link href={`/year/${year.slug}`}>
+                    <CardMenu title={year?.title || ''} />
+                  </Link>
+                </li>
+              ))
+            )}
+          </Submenu>
+        </details>
       </MenuList>
 
       <MenuFooter>

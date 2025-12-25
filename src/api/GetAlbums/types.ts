@@ -1,4 +1,4 @@
-import { Album } from "@/api/types/Album"
+import { Album } from '@/api/types/Album'
 
 export type GetAlbumsResponse = {
   data?: Album[] | undefined
@@ -13,7 +13,7 @@ export type GetAlbumsResponse = {
       page: number
       per_page: number
       total_pages: number
-      total_items: number 
+      total_items: number
     }
   }
 }

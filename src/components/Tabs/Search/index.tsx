@@ -10,25 +10,31 @@ import {
   SearchInput
 } from './styles'
 import Link from 'next/link'
+import { useGetAlbumsSearch } from '@/api/GetAlbumsSearch'
 
 export default function TabsSearch({ focus }: { focus: boolean }) {
   const inputRef = useRef<HTMLInputElement>(null)
   const [search, setSearch] = useState('')
-  const [autocomplete, setAutocomplete] = useState<any>([])
   const [error, setError] = useState(false)
+  const { refetch, data: autocomplete } = useGetAlbumsSearch(search)
 
   useEffect(() => {
     setError(false)
-    setAutocomplete(undefined)
 
     if (search.length) {
-      // if (
-      //       data.albums?.data.length ||
-      //       data.countries?.data.length ||
-      //       data.genres?.data.length
-      //     )
-      //       return setAutocomplete(data)
-      //     return setError(true)
+      refetch()
+        .then((res) => {
+          if (
+            !res.data?.data?.albums &&
+            !res.data?.data?.genres &&
+            !res.data?.data?.countries
+          ) {
+            setError(true)
+          }
+        })
+        .catch(() => {
+          setError(true)
+        })
     }
   }, [search])
 
@@ -64,33 +70,33 @@ export default function TabsSearch({ focus }: { focus: boolean }) {
         ''
       )}
 
-      {autocomplete?.albums?.data.length ||
-      autocomplete?.genres?.data.length ||
-      autocomplete?.countries?.data.length ? (
+      {autocomplete?.data?.albums?.length ||
+      autocomplete?.data?.genres?.length ||
+      autocomplete?.data?.countries?.length ? (
         <SearchAutocomplete className="m-tabs-search__autocomplete">
-          {autocomplete?.albums?.data.map((album: any) => (
-            <li key={album.id}>
-              <Link href={`/album/${album.attributes?.slug}`}>
+          {autocomplete.data.albums?.map((album: any) => (
+            <li key={album.slug}>
+              <Link href={`/album/${album.slug}`}>
                 Álbuns /{' '}
                 <strong>
-                  {album?.attributes?.title === album.attributes?.artist
-                    ? album?.attributes?.title
-                    : `${album.attributes?.artist} - ${album?.attributes?.title}`}
+                  {album.title === album.artist
+                    ? album.title
+                    : `${album.artist} - ${album.title}`}
                 </strong>
               </Link>
             </li>
           ))}
-          {autocomplete?.genres?.data.map((genre: any) => (
-            <li key={genre.id}>
-              <Link href={`/genero/${genre.attributes?.slug}`}>
-                Gêneros / <strong>{genre.attributes?.title}</strong>
+          {autocomplete.data.genres?.map((genre: any) => (
+            <li key={genre.slug}>
+              <Link href={`/genre/${genre.slug}`}>
+                Gêneros / <strong>{genre.title}</strong>
               </Link>
             </li>
           ))}
-          {autocomplete?.countries?.data.map((country: any) => (
-            <li key={country.id}>
-              <Link href={`/pais/${country.attributes?.slug}`}>
-                País / <strong>{country.attributes?.title}</strong>
+          {autocomplete.data.countries?.map((country: any) => (
+            <li key={country.slug}>
+              <Link href={`/country/${country.slug}`}>
+                País / <strong>{country.title}</strong>
               </Link>
             </li>
           ))}

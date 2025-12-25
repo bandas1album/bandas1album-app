@@ -1,8 +1,8 @@
-import { useGetAlbums } from '@/api/album/get_all'
+import { useGetAlbums } from '@/api/GetAlbums'
 import HomeTemplate from '@/templates/Home'
 
 export default function Home() {
-  const {data: albums} = useGetAlbums({
+  const { data: albums } = useGetAlbums({
     page: 1,
     per_page: 99,
     order_by: 'date',
@@ -10,9 +10,6 @@ export default function Home() {
   })
 
   return (
-    <HomeTemplate
-      albums={albums?.data || []}
-      pagination={albums?.meta || []}
-    />
+    <HomeTemplate albums={albums?.data || []} pagination={albums?.meta || []} />
   )
 }

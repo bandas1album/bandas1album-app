@@ -4,16 +4,14 @@ import { List } from './styles'
 import { Album } from '@/api/types/Album'
 
 type ListAlbumsProps = {
-  albums: Album[]
+  albums: Album[] | undefined
 }
 
-export default function ListAlbums({
-  albums,
-}: ListAlbumsProps) {
+export default function ListAlbums({ albums }: ListAlbumsProps) {
   return (
     <>
       <List>
-        {albums.map((album) => (
+        {albums?.map((album) => (
           <li key={`album-${album.slug}`}>
             <CardAlbum
               artist={album.artist || ''}

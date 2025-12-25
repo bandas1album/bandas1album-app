@@ -14,7 +14,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
 export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter()
-  const [queryClient] =  useState(() => new QueryClient())
+  const [queryClient] = useState(() => new QueryClient())
 
   useEffect(() => {
     router.prefetch = async () => void {}

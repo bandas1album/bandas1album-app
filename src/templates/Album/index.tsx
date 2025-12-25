@@ -26,9 +26,7 @@ export default function AlbumTemplate(data: any) {
               '@type': 'MusicGroup',
               name: data?.artist || ''
             },
-            genre: data?.genres?.length
-              ? data.genres?.[0]?.title || ''
-              : '',
+            genre: data?.genres?.length ? data.genres?.[0]?.title || '' : '',
             image: data?.cover || '',
             name: data?.title || '',
             numTracks: data?.tracklist && data?.tracklist.length,
@@ -47,11 +45,13 @@ export default function AlbumTemplate(data: any) {
       </Head>
       <NextSeo
         title={`${pageTitle} | Bandas de 1 Álbum`}
-        description={`Ouça agora o álbum de ${
-          data?.genres?.[0]?.title
-        } "${data?.title}", único disco lançado por ${
-          data?.artist
-        } em ${new Date(data?.released).getFullYear().toString()}.`}
+        description={`Ouça agora o álbum de ${data?.genres?.[0]?.title} "${
+          data?.title
+        }", único disco lançado por ${data?.artist} em ${new Date(
+          data?.released
+        )
+          .getFullYear()
+          .toString()}.`}
         openGraph={{
           url: `https://bandas1album.com.br/album/${data?.slug}`,
           images: [
@@ -67,10 +67,7 @@ export default function AlbumTemplate(data: any) {
       />
 
       <ButtonBack />
-      <AlbumCover
-        image={data?.cover}
-        title={data?.title}
-      />
+      <AlbumCover image={data?.cover} title={data?.title} />
       <AlbumInfo
         title={data?.title}
         artist={data?.artist}

@@ -1,7 +1,7 @@
 import ListAlbums from '@/components/ListAlbums'
 import Head from 'next/head'
 import { NextSeo } from 'next-seo'
-import { GetAlbumsResponse } from '@/api/album/GetAlbums/types'
+import { GetAlbumsResponse } from '@/api/GetAlbums/types'
 
 type THomeTemplate = {
   albums: GetAlbumsResponse['data']
@@ -30,9 +30,7 @@ export default function HomeTemplate({ albums }: THomeTemplate) {
           ]
         }}
       />
-      <ListAlbums
-        albums={albums}
-      />
+      <ListAlbums albums={albums} />
     </>
   )
 }
