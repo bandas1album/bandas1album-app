@@ -36,7 +36,7 @@ export default function TabsSearch({ focus }: { focus: boolean }) {
           setError(true)
         })
     }
-  }, [search])
+  }, [search, refetch])
 
   useEffect(() => {
     inputRef.current?.focus()

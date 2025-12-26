@@ -1,4 +1,4 @@
-import { useInfiniteQuery, useQuery } from '@tanstack/react-query'
+import { useInfiniteQuery } from '@tanstack/react-query'
 import { GetMenuParams, GetMenuResponse } from './types'
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || ''

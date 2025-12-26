@@ -1,14 +1,5 @@
-import { useEffect, useState } from 'react'
-import {
-  MenuFooter,
-  MenuList,
-  MenuNav,
-  MenuSocial,
-  MenuTitle,
-  Submenu
-} from './styles'
+import { MenuList, MenuNav, MenuTitle, Submenu } from './styles'
 import Link from 'next/link'
-import { Spotify, Instagram } from '@styled-icons/fa-brands'
 import { ChevronDownCircle } from '@styled-icons/ionicons-outline'
 import { CardMenu } from '@/components/CardMenu'
 import { useGetMenu } from '@/api/GetMenu'
@@ -39,8 +30,6 @@ export default function TabsMenu() {
     refetch: getYears,
     fetchNextPage: getYearsNextPage
   } = useGetMenu('released')
-
-  const year = new Date().getFullYear()
 
   return (
     <MenuNav>

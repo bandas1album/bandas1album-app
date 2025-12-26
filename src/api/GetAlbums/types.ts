@@ -2,7 +2,7 @@ import { Album } from '@/api/types/Album'
 
 export type GetAlbumsResponse = {
   data?: Album[] | undefined
-  meta?: {
+  meta: {
     context: {
       type: string
       page: string

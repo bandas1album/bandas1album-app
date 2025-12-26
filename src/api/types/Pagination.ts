@@ -1,5 +1,5 @@
 export type PaginationParams = {
-  page: number
+  pageParam: number
   per_page: number
   order: 'ASC' | 'DESC'
   order_by:

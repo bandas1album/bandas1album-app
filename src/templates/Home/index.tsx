@@ -1,14 +1,44 @@
 import ListAlbums from '@/components/ListAlbums'
 import Head from 'next/head'
 import { NextSeo } from 'next-seo'
-import { GetAlbumsResponse } from '@/api/GetAlbums/types'
+import { useGetAlbums } from '@/api/GetAlbums'
+import { useEffect, useRef } from 'react'
 
-type THomeTemplate = {
-  albums: GetAlbumsResponse['data']
-  pagination: GetAlbumsResponse['meta'] | []
-}
+export default function HomeTemplate() {
+  const loadMoreRef = useRef<HTMLDivElement | null>(null)
+  const {
+    data: albums,
+    fetchNextPage,
+    isFetchingNextPage,
+    hasNextPage
+  } = useGetAlbums({
+    pageParam: 1,
+    per_page: 99,
+    order_by: 'date',
+    order: 'DESC'
+  })
 
-export default function HomeTemplate({ albums }: THomeTemplate) {
+  useEffect(() => {
+    if (!loadMoreRef.current) return
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && hasNextPage && !isFetchingNextPage) {
+          fetchNextPage()
+        }
+      },
+      {
+        root: null, // window
+        rootMargin: '200px', // começa antes de chegar no fim
+        threshold: 0
+      }
+    )
+
+    observer.observe(loadMoreRef.current)
+
+    return () => observer.disconnect()
+  }, [fetchNextPage, hasNextPage, isFetchingNextPage])
+
   return (
     <>
       <Head>
@@ -31,6 +61,7 @@ export default function HomeTemplate({ albums }: THomeTemplate) {
         }}
       />
       <ListAlbums albums={albums} />
+      <div ref={loadMoreRef} />
     </>
   )
 }
