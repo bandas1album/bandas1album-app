@@ -7,6 +7,7 @@ import { MusicAlbum } from 'schema-dts'
 import AlbumTracklist from './AlbumTracklist'
 import DisqusComments from '@/components/DisqusComments'
 import { NextSeo } from 'next-seo'
+import { decodeBrokenUnicode } from '@/utils/decodeUnicode'
 
 export default function AlbumTemplate(data: any) {
   const pageTitle =
@@ -36,7 +37,7 @@ export default function AlbumTemplate(data: any) {
                 (track: { title: string; duration: string }) => ({
                   '@type': 'MusicRecording',
                   duration: track?.duration || '',
-                  name: track?.title || ''
+                  name: decodeBrokenUnicode(track?.title) || ''
                 })
               ),
             url: `/album/${data?.slug}`

@@ -1,3 +1,4 @@
+import { decodeBrokenUnicode } from '@/utils/decodeUnicode'
 import { List, ListTitle, ListWrapper } from './styles'
 
 type AlbumTrackListProps = {
@@ -18,7 +19,7 @@ export default function AlbumTracklist({ list }: AlbumTrackListProps) {
             index: number
           ) => (
             <li key={`track-${index}`}>
-              <strong>{track?.name}</strong>
+              <strong>{decodeBrokenUnicode(track?.name)}</strong>
               <span>{track?.duration}</span>
             </li>
           )
