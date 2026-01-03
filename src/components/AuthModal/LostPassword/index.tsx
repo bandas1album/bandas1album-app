@@ -1,7 +1,7 @@
 import { Input } from '@/components/Input'
 import * as S from '../styles'
 import { ButtonFull } from '@/components/Buttons/ButtonFull'
-import { AlertCircle, Person } from '@styled-icons/ionicons-solid'
+import { AlertCircle, ArrowBack, Person } from '@styled-icons/ionicons-solid'
 import { useEffect, useState } from 'react'
 import { TLostPasswordParams } from '@/api/Auth/LostPassword/types'
 import { useRouter } from 'next/router'
@@ -77,6 +77,14 @@ export const AuthLostPassword = ({
             type="submit"
             disabled={isSubmitting}
             label={isSubmitting ? 'Enviando...' : 'Enviar link de recuperação'}
+          ></ButtonFull>
+          <ButtonFull
+            type="button"
+            style="text"
+            disabled={isSubmitting}
+            label="Voltar para o login"
+            icon={<ArrowBack />}
+            onClick={() => open('login')}
           ></ButtonFull>
 
           {isError && (
