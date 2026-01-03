@@ -85,7 +85,7 @@ export const AuthModal = () => {
         <S.CloseModal onClick={() => close()}>
           <Close />
         </S.CloseModal>
-        
+
         {['login', 'signup', 'lost', 'reset'].includes(view) && (
           <img src="/logo.svg" />
         )}
