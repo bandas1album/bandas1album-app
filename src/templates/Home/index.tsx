@@ -1,7 +1,7 @@
 import ListAlbums from '@/components/ListAlbums'
 import Head from 'next/head'
 import { NextSeo } from 'next-seo'
-import { useGetAlbums } from '@/api/GetAlbums'
+import { useGetAlbums } from '@/api/Albums/GetAlbums'
 import { useEffect, useRef } from 'react'
 
 export default function HomeTemplate() {

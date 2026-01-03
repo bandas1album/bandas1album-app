@@ -4,7 +4,7 @@ import { styled } from 'styled-components'
 export const SearchForm = styled.form`
   padding-bottom: 40px;
   border-radius: 16px 16px 0 0;
-  background-color: var(--color-primary);
+  background-color: var(--color-primary-500);
   overflow: hidden;
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
 `
@@ -18,12 +18,12 @@ export const SearchInput = styled(Input)`
   height: 48px;
   padding: 0 24px;
   font-weight: 500;
-  background-color: var(--color-primary);
+  background-color: var(--color-primary-500);
   color: var(--color-light);
   transition: 0.2s background-color ease;
 
   &:focus {
-    background-color: var(--color-primary-shade);
+    background-color: var(--color-primary-700);
   }
 
   &::placeholder {

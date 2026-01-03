@@ -11,6 +11,8 @@ import { useEffect, useState } from 'react'
 import Script from 'next/script'
 import * as gtag from '../../gtag'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { AuthUIProvider } from '@/contexts/AuthUIContext'
+import { AuthProvider } from '@/contexts/AuthContext'
 
 export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter()
@@ -21,12 +23,14 @@ export default function App({ Component, pageProps }: AppProps) {
     const handleRouteChange = (url: string) => {
       gtag.pageview(url)
     }
+
     router.events.on('routeChangeComplete', handleRouteChange)
 
     return () => {
       router.events.off('routeChangeComplete', handleRouteChange)
     }
   }, [router])
+
   return (
     <>
       <Head>
@@ -55,18 +59,23 @@ export default function App({ Component, pageProps }: AppProps) {
       <DefaultSeo {...SEO} />
       <GlobalStyles />
       <QueryClientProvider client={queryClient}>
-        <main role="main">
-          <NextNProgress
-            color="#a58a67"
-            startPosition={0.3}
-            stopDelayMs={200}
-            height={3}
-            showOnShallow={true}
-          />
+        <AuthProvider>
+          <AuthUIProvider>
+            <main role="main">
+              <NextNProgress
+                color="#a58a67"
+                startPosition={0.3}
+                stopDelayMs={200}
+                height={3}
+                showOnShallow={true}
+              />
 
-          <Component {...pageProps} />
-          <Tabs />
-        </main>
+              <Component {...pageProps} />
+
+              <Tabs />
+            </main>
+          </AuthUIProvider>
+        </AuthProvider>
       </QueryClientProvider>
     </>
   )

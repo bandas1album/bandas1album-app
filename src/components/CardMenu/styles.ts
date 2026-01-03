@@ -9,8 +9,8 @@ export const Card = styled.article`
   gap: 0 12px;
 
   &:has(img):hover {
-    background-color: var(--color-primary-shade);
-    box-shadow: 0 0 0 4px var(--color-primary-shade);
+    background-color: var(--color-primary-700);
+    box-shadow: 0 0 0 4px var(--color-primary-700);
   }
 
   &:hover h2 {

@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router'
 import AlbumTemplate from '@/templates/Album'
-import { useGetAlbumBySlug } from '@/api/GetAlbumBySlug'
+import { useGetAlbumBySlug } from '@/api/Albums/GetAlbumBySlug'
 
 export default function PageAlbum() {
   const { query } = useRouter()

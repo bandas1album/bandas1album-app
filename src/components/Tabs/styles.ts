@@ -2,14 +2,14 @@ import styled from 'styled-components'
 import { Button } from '../../styles/resets'
 
 export const TabsPanel = styled.header`
-  position: fixed;
+  position: sticky;
   bottom: 16px;
   left: 0;
   right: 0;
   z-index: 2;
   width: calc(100% - 32px);
   max-width: 768px;
-  margin: 0 auto;
+  margin: 64px auto 0;
 `
 
 export const TabsWrapper = styled.div<{ $opened: boolean }>`
@@ -30,7 +30,7 @@ export const TabsWrapper = styled.div<{ $opened: boolean }>`
 export const TabsItem = styled.div<{ $opened: boolean }>`
   display: block;
   position: absolute;
-  bottom: 80px;
+  bottom: 120px;
   left: 0;
   right: 0;
   width: 100%;
@@ -40,26 +40,25 @@ export const TabsItem = styled.div<{ $opened: boolean }>`
   transform: translateY(50%);
 
   ${(props) =>
-    props.$opened
-      ? `
+    props.$opened &&
+    `
     pointer-events: all;
     opacity: 1;
-    transform: translateY(0);
-  `
-      : ''}
+    transform: translateY(40px);
+  `}
 `
 
 export const TabsButton = styled(Button)<{ $active: boolean }>`
   position: relative;
   display: flex;
-  color: var(--color-primary);
+  color: var(--color-primary-500);
 
   &:hover {
-    color: var(--color-primary-tint);
+    color: var(--color-primary-300);
   }
 
   &:active {
-    color: var(--color-primary-shade);
+    color: var(--color-primary-400);
   }
 
   svg {
@@ -77,7 +76,7 @@ export const TabsButton = styled(Button)<{ $active: boolean }>`
     height: 6px;
     margin: 0 auto;
     border-radius: 50%;
-    background-color: var(--color-warning);
+    background-color: var(--color-warning-500);
   }
 `
 

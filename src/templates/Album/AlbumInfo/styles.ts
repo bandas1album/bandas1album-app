@@ -7,7 +7,7 @@ export const Infos = styled.article`
   flex-direction: column;
   gap: 24px;
   padding: 56px 32px 32px;
-  background-color: var(--color-primary-tint);
+  background-color: var(--color-primary-400);
 `
 
 export const InfosHeader = styled.header`
@@ -35,7 +35,7 @@ export const InfosLinksButton = styled.div`
   width: 60px;
   height: 60px;
   border-radius: 50%;
-  color: var(--color-primary-shade);
+  color: var(--color-primary-700);
   background-color: var(--color-light);
 
   svg {
@@ -69,7 +69,7 @@ export const InfosLinksList = styled.ul<{ $opened: boolean }>`
   overflow-y: auto;
   padding-left: 80px;
   padding-right: 32px;
-  background-color: var(--color-primary);
+  background-color: var(--color-primary-500);
   border-radius: 48px;
   list-style: none;
   opacity: ${(props) => (props.$opened ? '1' : '0')};

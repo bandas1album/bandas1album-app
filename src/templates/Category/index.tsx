@@ -2,10 +2,10 @@ import ListAlbums from '@/components/ListAlbums'
 import Head from 'next/head'
 import { NextSeo } from 'next-seo'
 import PageHeader from '@/components/PageHeader'
-import { GetAlbumsResponse } from '@/api/GetAlbums/types'
+import { GetAlbumsResponse } from '@/api/Albums/GetAlbums/types'
 import { useRouter } from 'next/router'
 import { useEffect, useRef, useState } from 'react'
-import { useGetAlbums } from '@/api/GetAlbums'
+import { useGetAlbums } from '@/api/Albums/GetAlbums'
 
 export default function CategoryTemplate() {
   const { query } = useRouter()

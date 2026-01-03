@@ -10,7 +10,7 @@ import {
   SearchInput
 } from './styles'
 import Link from 'next/link'
-import { useGetAlbumsSearch } from '@/api/GetAlbumsSearch'
+import { useGetAlbumsSearch } from '@/api/Albums/GetAlbumsSearch'
 
 export default function TabsSearch({ focus }: { focus: boolean }) {
   const inputRef = useRef<HTMLInputElement>(null)

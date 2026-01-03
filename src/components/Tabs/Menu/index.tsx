@@ -2,7 +2,7 @@ import { MenuList, MenuNav, MenuTitle, Submenu } from './styles'
 import Link from 'next/link'
 import { ChevronDownCircle } from '@styled-icons/ionicons-outline'
 import { CardMenu } from '@/components/CardMenu'
-import { useGetMenu } from '@/api/GetMenu'
+import { useGetMenu } from '@/api/Menu/GetMenu'
 import { handleScroll } from '@/utils/handleScroll'
 
 export default function TabsMenu() {

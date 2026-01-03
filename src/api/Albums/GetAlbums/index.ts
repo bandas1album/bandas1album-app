@@ -1,6 +1,6 @@
 import { useInfiniteQuery } from '@tanstack/react-query'
 import { GetAlbumsResponse } from './types'
-import { PaginationParams } from '../types/Pagination'
+import { PaginationParams } from '../../types/Pagination'
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || ''
 

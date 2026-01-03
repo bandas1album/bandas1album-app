@@ -8,7 +8,7 @@ export const Card = styled.article`
   width: 100%;
   height: 100%;
   border-radius: 8px;
-  background-color: var(--color-primary-shade);
+  background-color: var(--color-primary-700);
 
   &::after {
     content: '';

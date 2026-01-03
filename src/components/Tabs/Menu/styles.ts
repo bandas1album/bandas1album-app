@@ -7,7 +7,7 @@ export const MenuNav = styled.nav`
   max-height: calc(100vh - 80px - 32px);
   padding: 24px 24px 56px;
   border-radius: 16px 16px 0 0;
-  background-color: var(--color-primary-shade);
+  background-color: var(--color-primary-700);
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
 `
 
@@ -24,7 +24,7 @@ export const MenuList = styled.div`
 
   [open] {
     summary {
-      background-color: var(--color-primary-tint);
+      background-color: var(--color-primary-400);
     }
 
     svg {
@@ -43,7 +43,7 @@ export const Submenu = styled.ul<{ $loading: boolean }>`
   margin: -24px 0 0 0;
   padding: 48px 24px 24px;
   list-style: none;
-  background-color: var(--color-primary);
+  background-color: var(--color-primary-500);
   border-radius: 0 0 16px 16px;
   opacity: ${(props) => (props.$loading ? '.5' : '1')};
 
@@ -68,7 +68,7 @@ export const MenuTitle = styled.summary`
   height: 40px;
   padding: 0 24px;
   border-radius: 20px;
-  background-color: var(--color-primary);
+  background-color: var(--color-primary-500);
   text-transform: uppercase;
   font-weight: 600;
   color: var(--color-light);
@@ -110,7 +110,7 @@ export const MenuFooter = styled.footer`
   }
 
   a {
-    color: var(--color-primary-tint);
+    color: var(--color-primary-300);
     text-decoration: none;
 
     &:hover {
@@ -129,7 +129,7 @@ export const MenuSocial = styled.ul`
   margin: 0;
   padding: 8px 0;
   list-style: none;
-  background-color: var(--color-primary);
+  background-color: var(--color-primary-500);
   border-radius: 20px;
   gap: 24px;
 

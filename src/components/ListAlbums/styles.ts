@@ -8,8 +8,7 @@ export const List = styled.ul`
   margin: 0;
   padding: 8px;
   list-style: none;
-  /* height: 100vh;
-  overflow-y: auto; */
+  flex: 1;
 
   li {
     aspect-ratio: 1/1;

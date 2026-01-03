@@ -7,7 +7,7 @@ export const Header = styled.header`
   height: 64px;
   padding-left: 64px;
   padding-right: 16px;
-  background-color: var(--color-primary-tint);
+  background-color: var(--color-primary-400);
 
   @media (min-width: 376px) {
     padding-left: 0;

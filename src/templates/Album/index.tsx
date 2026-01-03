@@ -8,6 +8,8 @@ import AlbumTracklist from './AlbumTracklist'
 import DisqusComments from '@/components/DisqusComments'
 import { NextSeo } from 'next-seo'
 import { decodeBrokenUnicode } from '@/utils/decodeUnicode'
+import { AlbumUserActions } from './AlbumUserActions'
+import * as S from './styles'
 
 export default function AlbumTemplate(data: any) {
   const pageTitle =
@@ -68,22 +70,26 @@ export default function AlbumTemplate(data: any) {
       />
 
       <ButtonBack />
-      <AlbumCover image={data?.cover} title={data?.title} />
-      <AlbumInfo
-        title={data?.title}
-        artist={data?.artist}
-        genre={data?.genres}
-        country={data?.country}
-        social={data?.links}
-        year={data?.released?.split('-')[0]}
-        content={data?.content}
-      />
-      {data?.tracklist && <AlbumTracklist list={data?.tracklist} />}
-      <DisqusComments
-        slug={data?.slug}
-        id={data?.slug}
-        title={data?.title}
-      ></DisqusComments>
+
+      <S.AlbumContent>
+        <AlbumUserActions id={data?.id}></AlbumUserActions>
+        <AlbumCover image={data?.cover} title={data?.title} />
+        <AlbumInfo
+          title={data?.title}
+          artist={data?.artist}
+          genre={data?.genres}
+          country={data?.country}
+          social={data?.links}
+          year={data?.released?.split('-')[0]}
+          content={data?.content}
+        />
+        {data?.tracklist && <AlbumTracklist list={data?.tracklist} />}
+        <DisqusComments
+          slug={data?.slug}
+          id={data?.slug}
+          title={data?.title}
+        ></DisqusComments>
+      </S.AlbumContent>
     </>
   )
 }
