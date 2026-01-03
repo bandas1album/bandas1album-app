@@ -12,7 +12,7 @@ import { useRouter } from 'next/router'
 import { useAuthUI } from '@/contexts/AuthUIContext'
 
 type TResetPassword = {
-  onSubmit: (form: any) => void
+  onSubmit: (form: TResetPasswordParams) => void
   isError: boolean
   isSuccess: boolean
   isSubmitting: boolean

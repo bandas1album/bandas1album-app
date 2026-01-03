@@ -28,6 +28,7 @@ import {
 import { Download } from '@styled-icons/ionicons-outline'
 import Link from 'next/link'
 import Markdown from 'react-markdown'
+import { decodeBrokenUnicode } from '@/utils/decodeUnicode'
 
 type AlbumInfoProps = {
   title: string | undefined
@@ -170,7 +171,7 @@ export default function AlbumInfo({
           {genre?.map((item, index) => (
             <>
               <Link key={`genre-${index}`} href={`/genre/${item?.slug}`}>
-                {item?.title}
+                {decodeBrokenUnicode(item?.title)}
                 {index + 1 < genre.length && ', '}
               </Link>
             </>

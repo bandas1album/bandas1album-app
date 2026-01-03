@@ -2,6 +2,7 @@ import { useAuth } from '@/contexts/AuthContext'
 import * as W from '../styles'
 import * as S from './styles'
 import { Exit, Headset, Pencil, Push, Star } from '@styled-icons/ionicons-solid'
+import Image from 'next/image'
 
 export default function AuthProfile() {
   const { logout, user } = useAuth()
@@ -10,7 +11,7 @@ export default function AuthProfile() {
       <W.ViewTitle>Profile</W.ViewTitle>
       <S.UserInfos>
         <S.Avatar>
-          <img src={user?.avatar} alt={user?.name} />
+          <Image src={user?.avatar || ''} alt={user?.name || ''} />
           <S.AvatarEdit>
             <Pencil size={16} />
           </S.AvatarEdit>

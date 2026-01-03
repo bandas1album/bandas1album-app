@@ -1,5 +1,4 @@
 import Head from 'next/head'
-import ButtonBack from '@/components/Buttons/ButtonBack'
 import AlbumCover from './AlbumCover'
 import AlbumInfo from './AlbumInfo'
 import { jsonLdScriptProps } from 'react-schemaorg'
@@ -10,6 +9,7 @@ import { NextSeo } from 'next-seo'
 import { decodeBrokenUnicode } from '@/utils/decodeUnicode'
 import { AlbumUserActions } from './AlbumUserActions'
 import * as S from './styles'
+import PageHeader from '@/components/PageHeader'
 
 export default function AlbumTemplate(data: any) {
   const pageTitle =
@@ -69,14 +69,14 @@ export default function AlbumTemplate(data: any) {
         canonical={`https://bandas1album.com.br/album/${data?.slug}`}
       />
 
-      <ButtonBack />
+      <PageHeader>{pageTitle}</PageHeader>
 
       <S.AlbumContent>
         <AlbumUserActions id={data?.id}></AlbumUserActions>
         <AlbumCover image={data?.cover} title={data?.title} />
         <AlbumInfo
-          title={data?.title}
-          artist={data?.artist}
+          title={decodeBrokenUnicode(data?.title)}
+          artist={decodeBrokenUnicode(data?.artist)}
           genre={data?.genres}
           country={data?.country}
           social={data?.links}

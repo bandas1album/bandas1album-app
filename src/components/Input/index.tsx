@@ -34,9 +34,7 @@ export const Input = ({
         ></S.FormInput>
       </S.FormControl>
 
-      {/* {message && (
-        <S.FormControlMessage>{message}</S.FormControlMessage>
-      )} */}
+      {message && <S.FormControlMessage>{message}</S.FormControlMessage>}
     </S.FormControlWrapper>
   )
 }

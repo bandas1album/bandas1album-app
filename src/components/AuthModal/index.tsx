@@ -15,6 +15,7 @@ import { TLostPasswordParams } from '@/api/Auth/LostPassword/types'
 import { AuthLostPassword } from './LostPassword'
 import { TResetPasswordParams } from '@/api/Auth/ResetPassword/types'
 import { Close } from '@styled-icons/ionicons-solid'
+import Image from 'next/image'
 
 export const AuthModal = () => {
   const { login } = useAuth()
@@ -28,7 +29,6 @@ export const AuthModal = () => {
     mutateAsync: mutateSignup,
     isPending: signupIsPending,
     isError: signupIsError,
-    data: dataSignup,
     isSuccess: signupIsSuccess,
     reset: resetSignup
   } = useCreateUser()
@@ -87,7 +87,12 @@ export const AuthModal = () => {
         </S.CloseModal>
 
         {['login', 'signup', 'lost', 'reset'].includes(view) && (
-          <img src="/logo.svg" />
+          <Image
+            src="/logo.svg"
+            width={80}
+            height={80}
+            alt="Bandas de 1 Álbum"
+          />
         )}
 
         <S.AuthContainer>

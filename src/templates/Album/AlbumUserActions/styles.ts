@@ -3,7 +3,7 @@ import styled from 'styled-components'
 
 export const Actions = styled.div`
   position: absolute;
-  top: 16px;
+  top: 80px;
   right: 16px;
   z-index: 1;
   display: flex;

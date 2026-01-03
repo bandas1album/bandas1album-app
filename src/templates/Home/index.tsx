@@ -3,6 +3,7 @@ import Head from 'next/head'
 import { NextSeo } from 'next-seo'
 import { useGetAlbums } from '@/api/Albums/GetAlbums'
 import { useEffect, useRef } from 'react'
+import PageHeader from '@/components/PageHeader'
 
 export default function HomeTemplate() {
   const loadMoreRef = useRef<HTMLDivElement | null>(null)
@@ -60,8 +61,11 @@ export default function HomeTemplate() {
           ]
         }}
       />
-      <ListAlbums albums={albums} />
-      <div ref={loadMoreRef} />
+      <>
+        <PageHeader hideBack={true}>Bandas de 1 Álbum</PageHeader>
+        <ListAlbums albums={albums} />
+        <div ref={loadMoreRef} />
+      </>
     </>
   )
 }

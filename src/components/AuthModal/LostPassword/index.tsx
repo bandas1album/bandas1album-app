@@ -2,9 +2,8 @@ import { Input } from '@/components/Input'
 import * as S from '../styles'
 import { ButtonFull } from '@/components/Buttons/ButtonFull'
 import { AlertCircle, ArrowBack, Person } from '@styled-icons/ionicons-solid'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { TLostPasswordParams } from '@/api/Auth/LostPassword/types'
-import { useRouter } from 'next/router'
 import { useAuthUI } from '@/contexts/AuthUIContext'
 
 type TLostPassword = {

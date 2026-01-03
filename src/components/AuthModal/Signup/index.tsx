@@ -9,7 +9,7 @@ import { TCreateUserParams } from '@/api/Auth/CreateUser/types'
 
 type TAuthSignup = {
   reset: () => void
-  onSubmit: (form: any) => void
+  onSubmit: (form: TCreateUserParams) => void
   isSubmitting: boolean
   isError: boolean
   isSuccess: boolean
