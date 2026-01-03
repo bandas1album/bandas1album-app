@@ -75,11 +75,11 @@ export const AuthDrawer = styled.aside<{ $open: boolean }>`
   left: 0;
   display: flex;
   align-items: center;
-  justify-content: center;
   flex-direction: column;
+  gap: 24px;
   width: ${(props) => (props.$open ? '100%' : '0')};
-  height: 100%;
-  overflow: hidden;
+  height: -webkit-fill-available;
+  overflow: auto;
   padding: 24px 0;
   z-index: 9;
   background-color: var(--color-light);
