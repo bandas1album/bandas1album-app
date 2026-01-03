@@ -2,6 +2,30 @@ import styled from 'styled-components'
 import { SwitchWrapper } from '../Switch/styles'
 import { Button } from '@/styles/resets'
 
+export const CloseModal = styled(Button)`
+  position: absolute;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  top: 8px;
+  left: 8px;
+  z-index: 10;
+  background-color: transparent;
+  color: var(--color-primary-500);
+  border-radius: 4px;
+
+  &:hover {
+    color: var(--color-primary-400);
+    background-color: var(--color-primary-50);
+  }
+
+  svg {
+    width: 24px;
+  }
+`
+
 export const AuthContainer = styled.div`
   width: 100%;
   margin: 24px auto auto;
@@ -41,7 +65,9 @@ export const CloseButton = styled(ToggleButton)`
   }
 `
 
-export const AuthOverlay = styled.div``
+export const AuthOverlay = styled.div`
+  position: relative;
+`
 
 export const AuthDrawer = styled.aside<{ $open: boolean }>`
   position: fixed;

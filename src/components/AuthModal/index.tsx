@@ -14,6 +14,7 @@ import { useResetPassword } from '@/api/Auth/ResetPassword'
 import { TLostPasswordParams } from '@/api/Auth/LostPassword/types'
 import { AuthLostPassword } from './LostPassword'
 import { TResetPasswordParams } from '@/api/Auth/ResetPassword/types'
+import { Close } from '@styled-icons/ionicons-solid'
 
 export const AuthModal = () => {
   const { login } = useAuth()
@@ -81,6 +82,10 @@ export const AuthModal = () => {
       ></S.OpenButton>
 
       <S.AuthDrawer $open={isOpen}>
+        <S.CloseModal onClick={() => close()}>
+          <Close />
+        </S.CloseModal>
+        
         {['login', 'signup', 'lost', 'reset'].includes(view) && (
           <img src="/logo.svg" />
         )}
