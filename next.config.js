@@ -23,7 +23,8 @@ module.exports = withPWA({
     domains: [
       'res.cloudinary.com',
       'bandas1album-api.test',
-      'api.bandas1album.com.br'
+      'api.bandas1album.com.br',
+      'secure.gravatar.com'
     ]
   }
 })

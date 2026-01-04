@@ -11,7 +11,7 @@ export default function AuthProfile() {
       <W.ViewTitle>Profile</W.ViewTitle>
       <S.UserInfos>
         <S.Avatar>
-          <Image src={user?.avatar || ''} alt={user?.name || ''} />
+          <Image width={80} height={80} src={user?.avatar || ''} alt={user?.name || ''} />
           <S.AvatarEdit>
             <Pencil size={16} />
           </S.AvatarEdit>
