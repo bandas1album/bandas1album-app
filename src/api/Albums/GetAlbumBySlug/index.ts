@@ -19,10 +19,18 @@ export const getAlbumBySlug = async (slug: string) => {
   return res.json() as Promise<Album>
 }
 
-export const useGetAlbumBySlug = (slug: string) => {
+export const useGetAlbumBySlug = (
+  slug: string,
+  initialFromServer?: Album | null
+) => {
+  const initialMatches =
+    initialFromServer != null && initialFromServer.slug === slug
+
   return useQuery({
     queryKey: ['album-by-slug', slug],
     queryFn: () => getAlbumBySlug(slug),
-    enabled: Boolean(slug)
+    enabled: Boolean(slug),
+    initialData: initialMatches ? initialFromServer : undefined,
+    initialDataUpdatedAt: initialMatches ? Date.now() : undefined
   })
 }

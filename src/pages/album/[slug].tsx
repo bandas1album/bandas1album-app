@@ -1,3 +1,6 @@
+import type { GetServerSideProps } from 'next'
+import type { Album } from '@/api/types/Album'
+import { fetchAlbumBySlug } from '@/lib/seo/serverAlbum'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import AlbumTemplate from '@/templates/Album'
@@ -12,15 +15,32 @@ function isNotFoundError(error: unknown): boolean {
   )
 }
 
-export default function PageAlbum() {
+type PageProps = {
+  album: Album
+}
+
+export const getServerSideProps: GetServerSideProps<PageProps> = async (
+  context
+) => {
+  const raw = context.params?.slug
+  const slug = typeof raw === 'string' ? raw.trim() : ''
+  if (!slug) return { notFound: true }
+
+  const album = await fetchAlbumBySlug(slug)
+  if (!album) return { notFound: true }
+
+  return { props: { album } }
+}
+
+export default function PageAlbum({ album: ssrAlbum }: PageProps) {
   const router = useRouter()
-  const slug = typeof router.query.slug === 'string' ? router.query.slug : ''
+  const slugFromQuery =
+    typeof router.query.slug === 'string' ? router.query.slug : ''
+  const slug = slugFromQuery || ssrAlbum.slug
 
-  const { data, isPending, isError, error } = useGetAlbumBySlug(slug)
+  const { data, isPending, isError, error } = useGetAlbumBySlug(slug, ssrAlbum)
 
-  if (!router.isReady) {
-    return null
-  }
+  const resolved = data ?? (ssrAlbum.slug === slug ? ssrAlbum : undefined)
 
   if (!slug) {
     return (
@@ -33,22 +53,28 @@ export default function PageAlbum() {
     )
   }
 
-  if (isPending) {
+  if (!router.isReady && !resolved) {
+    return null
+  }
+
+  if (isPending && !resolved) {
     return (
       <>
         <Head>
           <title>Carregando… | Bandas de 1 Álbum</title>
+          <meta name="robots" content="noindex,follow" />
         </Head>
         <p>Carregando…</p>
       </>
     )
   }
 
-  if (isError) {
+  if (isError && !resolved) {
     return (
       <>
         <Head>
           <title>Erro | Bandas de 1 Álbum</title>
+          <meta name="robots" content="noindex,follow" />
         </Head>
         <p role="alert">
           {isNotFoundError(error)
@@ -59,5 +85,9 @@ export default function PageAlbum() {
     )
   }
 
-  return <AlbumTemplate {...data} />
+  if (!resolved) {
+    return null
+  }
+
+  return <AlbumTemplate {...resolved} />
 }

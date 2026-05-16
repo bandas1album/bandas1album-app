@@ -6,8 +6,19 @@ import { GetAlbumsResponse } from '@/api/Albums/GetAlbums/types'
 import { useRouter } from 'next/router'
 import { useEffect, useRef, useState } from 'react'
 import { useGetAlbums } from '@/api/Albums/GetAlbums'
+import { SITE_URL, absoluteUrl } from '@/lib/seo/site'
 
-export default function CategoryTemplate() {
+export type CategoryTemplateProps = {
+  initialSeo?: {
+    title: string
+    description: string
+    canonicalPath: string
+  }
+}
+
+export default function CategoryTemplate({
+  initialSeo
+}: CategoryTemplateProps) {
   const { query } = useRouter()
   const loadMoreRef = useRef<HTMLDivElement | null>(null)
   const [meta, setMeta] = useState<GetAlbumsResponse['meta'] | null>(null)
@@ -56,22 +67,36 @@ export default function CategoryTemplate() {
     }
   }, [category])
 
+  const path =
+    typeof query.category === 'string' && typeof query.slug === 'string'
+      ? `/${query.category}/${query.slug}`
+      : initialSeo?.canonicalPath ?? '/'
+
+  const pageTitle = meta?.context?.title
+    ? `${meta.context.title} ‹ ${meta.context.page} | Bandas de 1 Álbum`
+    : initialSeo?.title ?? 'Bandas de 1 Álbum'
+
+  const pageDescription = meta?.context?.title
+    ? `Ouça todas as bandas e artistas que lançaram apenas um álbum filtrados por ${meta.context.page} › ${meta.context.title} no Bandas de 1 Álbum.`
+    : initialSeo?.description ??
+      'Bandas e artistas que lançaram apenas um álbum na carreira.'
+
+  const canonicalUrl = `${SITE_URL}${path}`
+
   return (
     <>
       <Head>
-        <title>
-          {meta?.context?.title} ‹ {meta?.context?.page} | Bandas de 1 Álbum
-        </title>
+        <title>{pageTitle}</title>
       </Head>
       <NextSeo
-        title={`${meta?.context?.title} ‹ ${meta?.context?.page} | Bandas de 1 Álbum`}
-        description={`Ouça todas as bandas e artistas que lançaram apenas um álbum filtrados por ${meta?.context?.page} › ${meta?.context?.title} no Bandas de 1 Álbum.`}
-        canonical={`https://bandas1album.com.br/${query.category}/${query.slug}`}
+        title={pageTitle}
+        description={pageDescription}
+        canonical={canonicalUrl}
         openGraph={{
-          url: `https://bandas1album.com.br/${query.category}/${query.slug}`,
+          url: canonicalUrl,
           images: [
             {
-              url: '/cover.png',
+              url: absoluteUrl('/cover.png'),
               width: 1280,
               height: 720,
               alt: 'Bandas de 1 Álbum'

@@ -4,6 +4,26 @@ import { NextSeo } from 'next-seo'
 import { useGetAlbums } from '@/api/Albums/GetAlbums'
 import { useEffect, useRef } from 'react'
 import PageHeader from '@/components/PageHeader'
+import { SITE_URL, absoluteUrl } from '@/lib/seo/site'
+
+const SITE_STRUCTURED_DATA = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: 'Bandas de 1 Álbum',
+  url: SITE_URL,
+  description:
+    'Descubra bandas e artistas que lançaram apenas um álbum na carreira — explore por gênero, país ou ano de lançamento.',
+  inLanguage: 'pt-BR',
+  publisher: {
+    '@type': 'Organization',
+    name: 'Bandas de 1 Álbum',
+    url: SITE_URL,
+    logo: {
+      '@type': 'ImageObject',
+      url: `${SITE_URL}/logo.png`
+    }
+  }
+}
 
 export default function HomeTemplate() {
   const loadMoreRef = useRef<HTMLDivElement | null>(null)
@@ -44,16 +64,25 @@ export default function HomeTemplate() {
     <>
       <Head>
         <title>Bandas de 1 Álbum</title>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(SITE_STRUCTURED_DATA)
+          }}
+        />
       </Head>
       <NextSeo
         title="Bandas de 1 Álbum"
         description="O projeto Bandas de 1 Álbum eterniza bandas e artistas que lançaram apenas um álbum na carreira."
-        canonical="https://bandas1album.com.br/"
+        canonical={`${SITE_URL}/`}
         openGraph={{
-          url: 'https://bandas1album.com.br/',
+          type: 'website',
+          locale: 'pt_BR',
+          url: `${SITE_URL}/`,
+          siteName: 'Bandas de 1 Álbum',
           images: [
             {
-              url: '/cover.png',
+              url: absoluteUrl('/cover.png'),
               width: 1280,
               height: 720,
               alt: 'Bandas de 1 Álbum'

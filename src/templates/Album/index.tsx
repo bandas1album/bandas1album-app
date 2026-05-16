@@ -11,6 +11,7 @@ import { AlbumUserActions } from './AlbumUserActions'
 import * as S from './styles'
 import PageHeader from '@/components/PageHeader'
 import type { Album } from '@/api/types/Album'
+import { SITE_URL, absoluteUrl } from '@/lib/seo/site'
 
 export default function AlbumTemplate(data: Album) {
   const pageTitle =
@@ -31,7 +32,9 @@ export default function AlbumTemplate(data: Album) {
               name: data?.artist || ''
             },
             genre: data?.genres?.length ? data.genres?.[0]?.title || '' : '',
-            image: data?.cover || '',
+            image: data?.cover
+              ? absoluteUrl(data.cover)
+              : absoluteUrl('/cover.png'),
             name: data?.title || '',
             numTracks: data?.tracklist && data?.tracklist.length,
             track:
@@ -41,7 +44,7 @@ export default function AlbumTemplate(data: Album) {
                 duration: track.duration || '',
                 name: decodeBrokenUnicode(track.name) || ''
               })),
-            url: `/album/${data?.slug}`
+            url: `${SITE_URL}/album/${data.slug}`
           })}
         />
       </Head>
@@ -53,17 +56,20 @@ export default function AlbumTemplate(data: Album) {
           data?.released ? new Date(data.released).getFullYear().toString() : ''
         }.`}
         openGraph={{
-          url: `https://bandas1album.com.br/album/${data?.slug}`,
+          type: 'website',
+          url: `${SITE_URL}/album/${data.slug}`,
           images: [
             {
-              url: data?.cover || '',
+              url: data?.cover
+                ? absoluteUrl(data.cover)
+                : absoluteUrl('/cover.png'),
               width: 1280,
               height: 720,
               alt: `Capa do álbum ${data?.title} de ${data?.artist}`
             }
           ]
         }}
-        canonical={`https://bandas1album.com.br/album/${data?.slug}`}
+        canonical={`${SITE_URL}/album/${data.slug}`}
       />
 
       <PageHeader>{pageTitle}</PageHeader>

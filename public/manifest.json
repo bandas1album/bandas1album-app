@@ -14,7 +14,7 @@
     }
   ],
   "background_color": "#06092B",
-  "description": "",
+  "description": "Bandas e artistas que lançaram apenas um álbum na carreira.",
   "display": "fullscreen",
   "start_url": "/",
   "theme_color": "#06092B"
