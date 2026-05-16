@@ -34,7 +34,10 @@ export const AuthUIProvider = ({ children }: { children: React.ReactNode }) => {
   }, [token])
 
   useEffect(() => {
-    if (window.location.search.includes('?key=')) {
+    if (typeof window === 'undefined') return
+    const p = new URLSearchParams(window.location.search)
+    const hasResetKey = p.has('key') || p.has('rp_key') || p.has('reset_key')
+    if (hasResetKey) {
       open('reset')
     }
   }, [open])

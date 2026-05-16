@@ -6,7 +6,7 @@ import {
   ArrowBack,
   LockClosed
 } from '@styled-icons/ionicons-solid'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { TResetPasswordParams } from '@/api/Auth/ResetPassword/types'
 import { useRouter } from 'next/router'
 import { useAuthUI } from '@/contexts/AuthUIContext'
@@ -35,6 +35,14 @@ export const AuthResetPassword = ({
     login: router.query.login as string,
     password: ''
   })
+
+  useEffect(() => {
+    setForm((fields) => ({
+      ...fields,
+      key: router.query.key as string,
+      login: router.query.login as string
+    }))
+  }, [router])
 
   return (
     <>
