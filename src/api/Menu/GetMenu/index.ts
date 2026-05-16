@@ -1,14 +1,14 @@
 import { useInfiniteQuery } from '@tanstack/react-query'
 import { GetMenuParams, GetMenuResponse } from './types'
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || ''
+import { apiBaseUrl } from '@/lib/apiBaseUrl'
 
 const getMenu = async ({ pageParam = 1, type }: GetMenuParams) => {
   const params = new URLSearchParams({
     type,
     page: String(pageParam)
   })
-  const res = await fetch(`${API_URL}/api/menu?${params.toString()}`)
+  const res = await fetch(`${apiBaseUrl}/api/menu?${params.toString()}`)
 
   if (!res.ok) {
     throw new Error('Failed to fetch albums')

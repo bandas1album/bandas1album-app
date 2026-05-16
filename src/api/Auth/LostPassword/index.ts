@@ -1,14 +1,13 @@
 import { useMutation } from '@tanstack/react-query'
+import { apiBaseUrl } from '@/lib/apiBaseUrl'
 import { TLostPasswordParams, TLostPasswordResponse } from './types'
-
-const API_URL = process.env.NEXT_PUBLIC_API_URL || ''
 
 export const lostPassword = async (params: TLostPasswordParams) => {
   const body = new FormData()
   body.append('login', params.login)
   body.append('url', params.url)
 
-  const res = await fetch(`${API_URL}/api/auth/lost-password`, {
+  const res = await fetch(`${apiBaseUrl}/api/auth/lost-password`, {
     method: 'POST',
     body
   })

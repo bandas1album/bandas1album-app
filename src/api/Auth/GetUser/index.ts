@@ -1,10 +1,9 @@
 import { useQuery } from '@tanstack/react-query'
+import { apiBaseUrl } from '@/lib/apiBaseUrl'
 import { TGetUserResponse } from './types'
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || ''
-
 export const getUser = async (token: string) => {
-  const res = await fetch(`${API_URL}/api/user`, {
+  const res = await fetch(`${apiBaseUrl}/api/user`, {
     headers: {
       Authorization: `Bearer ${token}`
     }

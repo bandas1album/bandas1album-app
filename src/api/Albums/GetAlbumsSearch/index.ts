@@ -1,13 +1,15 @@
 import { useQuery } from '@tanstack/react-query'
 import { GetAlbumsSearchResponse } from './types'
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || ''
+import { apiBaseUrl } from '@/lib/apiBaseUrl'
 
 const getAlbumsSearch = async (q: string) => {
   const params = new URLSearchParams({
     q: String(q)
   })
-  const res = await fetch(`${API_URL}/api/albums/search?${params.toString()}`)
+  const res = await fetch(
+    `${apiBaseUrl}/api/albums/search?${params.toString()}`
+  )
 
   if (!res.ok) {
     throw new Error('Failed to fetch albums')

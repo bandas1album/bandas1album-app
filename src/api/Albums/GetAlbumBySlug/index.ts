@@ -1,10 +1,10 @@
 import { Album } from '@/api/types/Album'
 import { useQuery } from '@tanstack/react-query'
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || ''
+import { apiBaseUrl } from '@/lib/apiBaseUrl'
 
 export const getAlbumBySlug = async (slug: string) => {
-  const res = await fetch(`${API_URL}/api/album/${slug}`)
+  const res = await fetch(`${apiBaseUrl}/api/album/${slug}`)
 
   if (res.status === 404) {
     const err = new Error('Album not found') as Error & { status: number }

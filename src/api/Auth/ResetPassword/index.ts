@@ -1,7 +1,6 @@
 import { useMutation } from '@tanstack/react-query'
+import { apiBaseUrl } from '@/lib/apiBaseUrl'
 import { TResetPasswordParams, TResetPasswordResponse } from './types'
-
-const API_URL = process.env.NEXT_PUBLIC_API_URL || ''
 
 export const resetPassword = async (params: TResetPasswordParams) => {
   const body = new FormData()
@@ -9,7 +8,7 @@ export const resetPassword = async (params: TResetPasswordParams) => {
   body.append('password', params.password)
   body.append('key', params.key)
 
-  const res = await fetch(`${API_URL}/api/auth/reset-password`, {
+  const res = await fetch(`${apiBaseUrl}/api/auth/reset-password`, {
     method: 'POST',
     body
   })

@@ -1,14 +1,14 @@
 import { useMutation } from '@tanstack/react-query'
 import { TPatchAlbumFlagsParams, TPatchAlbumFlagsResponse } from './types'
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || ''
+import { apiBaseUrl } from '@/lib/apiBaseUrl'
 
 export const patchAlbumFlags = async ({
   type,
   id,
   token
 }: TPatchAlbumFlagsParams) => {
-  const res = await fetch(`${API_URL}/api/album/${id}/${type}`, {
+  const res = await fetch(`${apiBaseUrl}/api/album/${id}/${type}`, {
     method: 'PATCH',
     headers: {
       Authorization: `Bearer ${token}`

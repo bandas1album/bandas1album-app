@@ -2,7 +2,7 @@ import { useInfiniteQuery } from '@tanstack/react-query'
 import { GetAlbumsResponse } from './types'
 import { PaginationParams } from '../../types/Pagination'
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || ''
+import { apiBaseUrl } from '@/lib/apiBaseUrl'
 
 const getAlbums = async ({
   pageParam,
@@ -19,7 +19,7 @@ const getAlbums = async ({
     category: String(taxonomy?.category),
     slug: String(taxonomy?.slug)
   })
-  const res = await fetch(`${API_URL}/api/albums?${params.toString()}`)
+  const res = await fetch(`${apiBaseUrl}/api/albums?${params.toString()}`)
 
   if (!res.ok) {
     throw new Error('Failed to fetch albums')

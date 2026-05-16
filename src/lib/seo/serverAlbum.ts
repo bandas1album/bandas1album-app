@@ -1,12 +1,11 @@
 import type { Album } from '@/api/types/Album'
 import type { GetAlbumsResponse } from '@/api/Albums/GetAlbums/types'
 import type { GetMenuResponse } from '@/api/Menu/GetMenu/types'
-
-const API_URL = process.env.NEXT_PUBLIC_API_URL || ''
+import { apiBaseUrl } from '@/lib/apiBaseUrl'
 
 /** Server-only: 404 → null, other errors → throw */
 export async function fetchAlbumBySlug(slug: string): Promise<Album | null> {
-  const res = await fetch(`${API_URL}/api/album/${encodeURIComponent(slug)}`)
+  const res = await fetch(`${apiBaseUrl}/api/album/${encodeURIComponent(slug)}`)
 
   if (res.status === 404) return null
   if (!res.ok) throw new Error(`Album fetch failed: ${res.status}`)
@@ -23,7 +22,7 @@ async function fetchAlbumsPage(page: number): Promise<GetAlbumsResponse> {
     category: 'undefined',
     slug: 'undefined'
   })
-  const res = await fetch(`${API_URL}/api/albums?${params}`)
+  const res = await fetch(`${apiBaseUrl}/api/albums?${params}`)
   if (!res.ok) throw new Error(`Albums list failed: ${res.status}`)
   return res.json() as Promise<GetAlbumsResponse>
 }
@@ -36,7 +35,7 @@ async function fetchMenuPage(
     type,
     page: String(page)
   })
-  const res = await fetch(`${API_URL}/api/menu?${params}`)
+  const res = await fetch(`${apiBaseUrl}/api/menu?${params}`)
   if (!res.ok) throw new Error(`Menu fetch failed: ${res.status}`)
   return res.json() as Promise<GetMenuResponse>
 }
@@ -54,7 +53,7 @@ export async function fetchCategoryFirstPage(
     category,
     slug
   })
-  const res = await fetch(`${API_URL}/api/albums?${params}`)
+  const res = await fetch(`${apiBaseUrl}/api/albums?${params}`)
   if (res.status === 404) return null
   if (!res.ok) throw new Error(`Category fetch failed: ${res.status}`)
   return res.json() as Promise<GetAlbumsResponse>

@@ -1,7 +1,6 @@
 import { useMutation } from '@tanstack/react-query'
+import { apiBaseUrl } from '@/lib/apiBaseUrl'
 import { TCreateUserParams, TCreateUserResponse } from './types'
-
-const API_URL = process.env.NEXT_PUBLIC_API_URL || ''
 
 export const createUser = async (params: TCreateUserParams) => {
   const body = new FormData()
@@ -10,7 +9,7 @@ export const createUser = async (params: TCreateUserParams) => {
   body.append('email', params.email)
   body.append('password', params.password)
 
-  const res = await fetch(`${API_URL}/api/user`, {
+  const res = await fetch(`${apiBaseUrl}/api/user`, {
     method: 'POST',
     body
   })
