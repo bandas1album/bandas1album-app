@@ -28,9 +28,25 @@ const getAlbums = async ({
   return res.json() as Promise<GetAlbumsResponse>
 }
 
+const albumsListQueryKey = (params: PaginationParams) =>
+  [
+    'albums',
+    {
+      per_page: params.per_page,
+      order: params.order,
+      order_by: params.order_by,
+      taxonomy: params.taxonomy
+        ? {
+            category: params.taxonomy.category,
+            slug: params.taxonomy.slug
+          }
+        : null
+    }
+  ] as const
+
 export const useGetAlbums = (params: PaginationParams) => {
   return useInfiniteQuery({
-    queryKey: ['albums', params.taxonomy?.slug],
+    queryKey: albumsListQueryKey(params),
     queryFn: ({ pageParam = 1 }) => getAlbums({ ...params, pageParam }),
     getNextPageParam: (lastPage) => {
       const { page, total_pages } = lastPage.meta.pagination

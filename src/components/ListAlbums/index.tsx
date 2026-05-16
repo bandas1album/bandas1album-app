@@ -12,7 +12,7 @@ export default function ListAlbums({ albums }: ListAlbumsProps) {
   return (
     <>
       <List>
-        {albums?.pages.map((page) =>
+        {albums?.pages?.map((page) =>
           page.data?.map((album) => (
             <li key={`album-${album.slug}`}>
               <CardAlbum

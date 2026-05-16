@@ -1,14 +1,28 @@
 import { fireEvent, render, screen } from '@testing-library/react'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
 import Tabs from '.'
 
+const renderTabs = () => {
+  const client = new QueryClient({
+    defaultOptions: {
+      queries: { retry: false }
+    }
+  })
+  return render(
+    <QueryClientProvider client={client}>
+      <Tabs />
+    </QueryClientProvider>
+  )
+}
+
 describe('<Tabs/>', () => {
   it('should render the component', () => {
-    render(<Tabs />)
+    renderTabs()
   })
 
   it('should open tab search on clicking search icon', async () => {
-    render(<Tabs />)
+    renderTabs()
 
     fireEvent.click(screen.getByLabelText('Abrir aba de busca'))
 
@@ -18,7 +32,7 @@ describe('<Tabs/>', () => {
   })
 
   it('should close tab search on clicking search icon', async () => {
-    render(<Tabs />)
+    renderTabs()
 
     fireEvent.click(screen.getByLabelText('Abrir aba de busca'))
 
@@ -30,7 +44,7 @@ describe('<Tabs/>', () => {
   })
 
   it('should open tab menu on clicking menu icon', async () => {
-    render(<Tabs />)
+    renderTabs()
 
     fireEvent.click(screen.getByLabelText('Abrir aba de menu'))
 
@@ -40,7 +54,7 @@ describe('<Tabs/>', () => {
   })
 
   it('should close tab menu on clicking menu icon', async () => {
-    render(<Tabs />)
+    renderTabs()
 
     fireEvent.click(screen.getByLabelText('Abrir aba de menu'))
 
@@ -52,7 +66,7 @@ describe('<Tabs/>', () => {
   })
 
   it('should close search tab on clicking logo', async () => {
-    render(<Tabs />)
+    renderTabs()
 
     fireEvent.click(screen.getByLabelText('Voltar para a homepage'))
 
@@ -61,7 +75,7 @@ describe('<Tabs/>', () => {
   })
 
   it('should close menu tab on clicking logo', async () => {
-    render(<Tabs />)
+    renderTabs()
 
     fireEvent.click(screen.getByLabelText('Voltar para a homepage'))
 

@@ -11,6 +11,17 @@ import {
 } from './styles'
 import Link from 'next/link'
 import { useGetAlbumsSearch } from '@/api/Albums/GetAlbumsSearch'
+import type { GetAlbumsSearchResponse } from '@/api/Albums/GetAlbumsSearch/types'
+
+type SearchAlbum = NonNullable<
+  NonNullable<NonNullable<GetAlbumsSearchResponse['data']>['albums']>[number]
+>
+type SearchGenre = NonNullable<
+  NonNullable<NonNullable<GetAlbumsSearchResponse['data']>['genres']>[number]
+>
+type SearchCountry = NonNullable<
+  NonNullable<NonNullable<GetAlbumsSearchResponse['data']>['countries']>[number]
+>
 
 export default function TabsSearch({ focus }: { focus: boolean }) {
   const inputRef = useRef<HTMLInputElement>(null)
@@ -74,7 +85,7 @@ export default function TabsSearch({ focus }: { focus: boolean }) {
       autocomplete?.data?.genres?.length ||
       autocomplete?.data?.countries?.length ? (
         <SearchAutocomplete className="m-tabs-search__autocomplete">
-          {autocomplete.data.albums?.map((album: any) => (
+          {autocomplete.data.albums?.map((album: SearchAlbum) => (
             <li key={album.slug}>
               <Link href={`/album/${album.slug}`}>
                 Álbuns /{' '}
@@ -86,14 +97,14 @@ export default function TabsSearch({ focus }: { focus: boolean }) {
               </Link>
             </li>
           ))}
-          {autocomplete.data.genres?.map((genre: any) => (
+          {autocomplete.data.genres?.map((genre: SearchGenre) => (
             <li key={genre.slug}>
               <Link href={`/genre/${genre.slug}`}>
                 Gêneros / <strong>{genre.title}</strong>
               </Link>
             </li>
           ))}
-          {autocomplete.data.countries?.map((country: any) => (
+          {autocomplete.data.countries?.map((country: SearchCountry) => (
             <li key={country.slug}>
               <Link href={`/country/${country.slug}`}>
                 País / <strong>{country.title}</strong>

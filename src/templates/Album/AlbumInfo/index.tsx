@@ -29,16 +29,15 @@ import { Download } from '@styled-icons/ionicons-outline'
 import Link from 'next/link'
 import Markdown from 'react-markdown'
 import { decodeBrokenUnicode } from '@/utils/decodeUnicode'
+import type { AlbumCountry, AlbumGenre, AlbumLinks } from '@/api/types/Album'
 
 type AlbumInfoProps = {
   title: string | undefined
   artist: string | undefined
   year: string | undefined
-  country: any | undefined
-  genre: any[] | undefined
-  social: {
-    [key: string]: string
-  }
+  country: AlbumCountry | undefined
+  genre: AlbumGenre[] | undefined
+  social: AlbumLinks | undefined
   content: string | undefined
 }
 

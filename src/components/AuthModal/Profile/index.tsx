@@ -11,7 +11,12 @@ export default function AuthProfile() {
       <W.ViewTitle>Profile</W.ViewTitle>
       <S.UserInfos>
         <S.Avatar>
-          <Image width={80} height={80} src={user?.avatar || ''} alt={user?.name || ''} />
+          <Image
+            width={80}
+            height={80}
+            src={user?.avatar || ''}
+            alt={user?.name || ''}
+          />
           <S.AvatarEdit>
             <Pencil size={16} />
           </S.AvatarEdit>
@@ -19,6 +24,7 @@ export default function AuthProfile() {
         <S.Name>{user?.name.split(' ')[0]}</S.Name>
         <S.Email>{user?.email}</S.Email>
       </S.UserInfos>
+
       <S.UserStats>
         <S.Stat>
           <S.StatIcon>
@@ -42,6 +48,7 @@ export default function AuthProfile() {
           <S.StatTitle>Álbuns publicados</S.StatTitle>
         </S.Stat>
       </S.UserStats>
+
       <S.UserMenu>
         <S.UserMenuItem onClick={() => logout()}>
           <Exit />

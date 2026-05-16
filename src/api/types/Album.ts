@@ -25,10 +25,12 @@ export type AlbumTrack = {
 }
 
 export type Album = {
+  id?: number
   author?: string
   slug: string
   title: string
   description?: string
+  content?: string
   cover: string
   artist?: string
   genres?: AlbumGenre[]

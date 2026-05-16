@@ -19,7 +19,6 @@ export default function App({ Component, pageProps }: AppProps) {
   const [queryClient] = useState(() => new QueryClient())
 
   useEffect(() => {
-    router.prefetch = async () => void {}
     const handleRouteChange = (url: string) => {
       gtag.pageview(url)
     }

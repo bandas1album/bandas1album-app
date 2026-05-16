@@ -1,8 +1,14 @@
-import { createContext, useContext, useEffect, useState } from 'react'
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState
+} from 'react'
 import { AuthUIContextType, AuthView } from './types'
 import { AuthModal } from '@/components/AuthModal'
 import * as S from './styles'
-import { AuthProvider, useAuth } from '../AuthContext'
+import { useAuth } from '../AuthContext'
 
 const AuthUIContext = createContext<AuthUIContextType | null>(null)
 
@@ -11,10 +17,13 @@ export const AuthUIProvider = ({ children }: { children: React.ReactNode }) => {
   const [isOpen, setIsOpen] = useState(false)
   const [view, setView] = useState<AuthView>('login')
 
-  const open = (view: AuthView = 'login') => {
-    setView(token ? 'profile' : view)
-    setIsOpen(true)
-  }
+  const open = useCallback(
+    (nextView: AuthView = 'login') => {
+      setView(token ? 'profile' : nextView)
+      setIsOpen(true)
+    },
+    [token]
+  )
 
   const close = () => setIsOpen(false)
 
@@ -28,7 +37,7 @@ export const AuthUIProvider = ({ children }: { children: React.ReactNode }) => {
     if (window.location.search.includes('?key=')) {
       open('reset')
     }
-  }, [])
+  }, [open])
 
   return (
     <AuthUIContext.Provider value={{ isOpen, view, open, close, setView }}>

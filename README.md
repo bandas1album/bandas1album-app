@@ -6,7 +6,7 @@ Eternizando bandas e artistas que lançaram apenas um álbum.
 
 ## Rodando localmente
 
-Para rodar o projeto localmente utilize o NVM para instalar a versão 18 do NodeJS e instale as dependências com `yarn` e `yarn dev` para subir o projeto, podendo ser acessado na porta http://localhost:3000/
+Use o NVM para instalar a versão do Node indicada em `package.json` (`engines`, hoje **24.x**), instale as dependências com `yarn` e rode `yarn dev`. O app fica em http://localhost:3000/
 
 ## Tarefas
 

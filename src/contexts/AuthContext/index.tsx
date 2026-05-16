@@ -1,8 +1,14 @@
-import { createContext, useContext, useEffect, useState } from 'react'
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState
+} from 'react'
 import { AuthState } from './types'
 import { useGetUser } from '@/api/Auth/GetUser'
 
-const AuthContext = createContext<AuthState>(null!)
+const AuthContext = createContext<AuthState | undefined>(undefined)
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [token, setToken] = useState<string | null>(null)
@@ -21,20 +27,20 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   }, [])
 
+  const logout = useCallback(() => {
+    setToken(null)
+    localStorage.removeItem('@bandas1album/token')
+  }, [])
+
   useEffect(() => {
     if (error) {
       logout()
     }
-  }, [error])
+  }, [error, logout])
 
-  const login = (token: string, user?: any) => {
+  const login = (token: string) => {
     setToken(token)
     localStorage.setItem('@bandas1album/token', token)
-  }
-
-  const logout = () => {
-    setToken(null)
-    localStorage.removeItem('@bandas1album/token')
   }
 
   return (
@@ -57,6 +63,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 export const useAuth = () => {
   const ctx = useContext(AuthContext)
 
-  if (!ctx) throw new Error('useAuth must be used within AuthProvider')
+  if (ctx === undefined)
+    throw new Error('useAuth must be used within AuthProvider')
   return ctx
 }

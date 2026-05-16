@@ -1,4 +1,5 @@
 import * as S from './style'
+import type { ChangeEvent, ReactNode } from 'react'
 
 type TInput = {
   label: string
@@ -6,8 +7,8 @@ type TInput = {
   type: string
   required: boolean
   message?: string
-  icon?: React.ReactNode
-  onChange: (e: any) => void
+  icon?: ReactNode
+  onChange: (e: ChangeEvent<HTMLInputElement>) => void
 }
 
 export const Input = ({

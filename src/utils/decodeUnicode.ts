@@ -1,5 +1,5 @@
-export const decodeBrokenUnicode = (str: string) => {
-  if (!str || typeof str !== 'string') return str
+export const decodeBrokenUnicode = (str: string | undefined) => {
+  if (!str || typeof str !== 'string') return str ?? ''
 
   try {
     // 1. Corrige unicode quebrado

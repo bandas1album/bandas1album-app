@@ -7,7 +7,7 @@ export type AuthState = {
   refetchUser: (
     options?: RefetchOptions
   ) => Promise<QueryObserverResult<TGetUserResponse, Error>>
-  login: (token: string, user?: any) => void
+  login: (token: string) => void
   logout: () => void
   isAuthenticated: boolean
   isLoading: boolean

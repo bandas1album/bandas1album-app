@@ -7,7 +7,7 @@ import { TLostPasswordParams } from '@/api/Auth/LostPassword/types'
 import { useAuthUI } from '@/contexts/AuthUIContext'
 
 type TLostPassword = {
-  onSubmit: (form: any) => void
+  onSubmit: (form: TLostPasswordParams) => void
   reset: () => void
   isError: boolean
   isSuccess: boolean

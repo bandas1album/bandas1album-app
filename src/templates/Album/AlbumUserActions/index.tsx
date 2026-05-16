@@ -11,7 +11,6 @@ import { useGetAlbumFlags } from '@/api/Albums/GetAlbumFlags'
 import { useAuth } from '@/contexts/AuthContext'
 import { useAuthUI } from '@/contexts/AuthUIContext'
 import { usePatchAlbumFlags } from '@/api/Albums/PatchAlbumFlags'
-import { useGetUser } from '@/api/Auth/GetUser'
 
 type TAlbumUserActions = {
   id: number

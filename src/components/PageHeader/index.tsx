@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import ButtonBack from '../Buttons/ButtonBack'
 import { Header, HeaderTitle } from './styles'
-import { useRouter } from 'next/router'
 
 export default function PageHeader({
   children,

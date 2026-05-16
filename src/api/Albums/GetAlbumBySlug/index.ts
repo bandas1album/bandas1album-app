@@ -6,6 +6,12 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL || ''
 export const getAlbumBySlug = async (slug: string) => {
   const res = await fetch(`${API_URL}/api/album/${slug}`)
 
+  if (res.status === 404) {
+    const err = new Error('Album not found') as Error & { status: number }
+    err.status = 404
+    throw err
+  }
+
   if (!res.ok) {
     throw new Error('Failed to fetch album')
   }
@@ -17,6 +23,6 @@ export const useGetAlbumBySlug = (slug: string) => {
   return useQuery({
     queryKey: ['album-by-slug', slug],
     queryFn: () => getAlbumBySlug(slug),
-    enabled: true
+    enabled: Boolean(slug)
   })
 }

@@ -55,7 +55,7 @@ export const AuthModal = () => {
     try {
       const res = await mutateLogin(form)
 
-      login(res.token, { ...res })
+      login(res.token)
       open('profile')
     } catch {
       console.log('Error')

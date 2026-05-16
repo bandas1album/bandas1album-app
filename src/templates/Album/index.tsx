@@ -10,8 +10,9 @@ import { decodeBrokenUnicode } from '@/utils/decodeUnicode'
 import { AlbumUserActions } from './AlbumUserActions'
 import * as S from './styles'
 import PageHeader from '@/components/PageHeader'
+import type { Album } from '@/api/types/Album'
 
-export default function AlbumTemplate(data: any) {
+export default function AlbumTemplate(data: Album) {
   const pageTitle =
     data?.title === data?.artist
       ? data?.title
@@ -35,13 +36,11 @@ export default function AlbumTemplate(data: any) {
             numTracks: data?.tracklist && data?.tracklist.length,
             track:
               data?.tracklist &&
-              data?.tracklist?.map(
-                (track: { title: string; duration: string }) => ({
-                  '@type': 'MusicRecording',
-                  duration: track?.duration || '',
-                  name: decodeBrokenUnicode(track?.title) || ''
-                })
-              ),
+              data.tracklist.map((track) => ({
+                '@type': 'MusicRecording',
+                duration: track.duration || '',
+                name: decodeBrokenUnicode(track.name) || ''
+              })),
             url: `/album/${data?.slug}`
           })}
         />
@@ -50,11 +49,9 @@ export default function AlbumTemplate(data: any) {
         title={`${pageTitle} | Bandas de 1 Álbum`}
         description={`Ouça agora o álbum de ${data?.genres?.[0]?.title} "${
           data?.title
-        }", único disco lançado por ${data?.artist} em ${new Date(
-          data?.released
-        )
-          .getFullYear()
-          .toString()}.`}
+        }", único disco lançado por ${data?.artist} em ${
+          data?.released ? new Date(data.released).getFullYear().toString() : ''
+        }.`}
         openGraph={{
           url: `https://bandas1album.com.br/album/${data?.slug}`,
           images: [
@@ -72,7 +69,7 @@ export default function AlbumTemplate(data: any) {
       <PageHeader>{pageTitle}</PageHeader>
 
       <S.AlbumContent>
-        <AlbumUserActions id={data?.id}></AlbumUserActions>
+        {data.id != null && <AlbumUserActions id={data.id} />}
         <AlbumCover image={data?.cover} title={data?.title} />
         <AlbumInfo
           title={decodeBrokenUnicode(data?.title)}
