@@ -9,6 +9,7 @@ import { AuthUIContextType, AuthView } from './types'
 import { AuthModal } from '@/components/AuthModal'
 import * as S from './styles'
 import { useAuth } from '../AuthContext'
+import { gaEvent } from '@/lib/gtag'
 
 const AuthUIContext = createContext<AuthUIContextType | null>(null)
 
@@ -38,6 +39,7 @@ export const AuthUIProvider = ({ children }: { children: React.ReactNode }) => {
     const p = new URLSearchParams(window.location.search)
     const hasResetKey = p.has('key') || p.has('rp_key') || p.has('reset_key')
     if (hasResetKey) {
+      gaEvent('password_reset_open', { source: 'email_link' })
       open('reset')
     }
   }, [open])

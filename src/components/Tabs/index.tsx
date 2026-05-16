@@ -10,6 +10,7 @@ import { Search, Menu } from '@styled-icons/ionicons-outline'
 import TabsSearch from './Search'
 import { useState } from 'react'
 import TabsMenu from './Menu'
+import { gaEvent } from '@/lib/gtag'
 
 export default function Tabs() {
   const [openedTabs, setOpenedTabs] = useState({
@@ -40,13 +41,16 @@ export default function Tabs() {
           aria-label={
             isOpenedSearch ? 'Fechar aba de busca' : 'Abrir aba de busca'
           }
-          onClick={() =>
+          onClick={() => {
+            const closing = openedTabs.tab === 'search' && openedTabs.state
+            if (!closing) {
+              gaEvent('open_panel', { panel: 'search' })
+            }
             setOpenedTabs({
-              state:
-                openedTabs.tab === 'search' && openedTabs.state ? false : true,
+              state: closing ? false : true,
               tab: 'search'
             })
-          }
+          }}
           $active={isOpenedSearch}
         >
           <Search aria-hidden="true" />
@@ -66,9 +70,12 @@ export default function Tabs() {
         <TabsButton
           aria-label={isOpenedMenu ? 'Fechar aba de menu' : 'Abrir aba de menu'}
           onClick={() => {
+            const closing = openedTabs.tab === 'menu' && openedTabs.state
+            if (!closing) {
+              gaEvent('open_panel', { panel: 'menu' })
+            }
             setOpenedTabs({
-              state:
-                openedTabs.tab === 'menu' && openedTabs.state ? false : true,
+              state: closing ? false : true,
               tab: 'menu'
             })
           }}

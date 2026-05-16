@@ -12,6 +12,7 @@ import {
 import Link from 'next/link'
 import { useGetAlbumsSearch } from '@/api/Albums/GetAlbumsSearch'
 import type { GetAlbumsSearchResponse } from '@/api/Albums/GetAlbumsSearch/types'
+import { gaEvent } from '@/lib/gtag'
 
 type SearchAlbum = NonNullable<
   NonNullable<NonNullable<GetAlbumsSearchResponse['data']>['albums']>[number]
@@ -35,11 +36,27 @@ export default function TabsSearch({ focus }: { focus: boolean }) {
     if (search.length) {
       refetch()
         .then((res) => {
-          if (
-            !res.data?.data?.albums &&
-            !res.data?.data?.genres &&
-            !res.data?.data?.countries
-          ) {
+          const hasAlbums = !!(
+            res.data?.data?.albums && res.data.data.albums.length
+          )
+          const hasGenres = !!(
+            res.data?.data?.genres && res.data.data.genres.length
+          )
+          const hasCountries = !!(
+            res.data?.data?.countries && res.data.data.countries.length
+          )
+          const hasResults = hasAlbums || hasGenres || hasCountries
+          const term = search.trim()
+
+          if (term.length >= 2) {
+            if (hasResults) {
+              gaEvent('search', { search_term: term.slice(0, 100) })
+            } else {
+              gaEvent('search_no_results', { search_term: term.slice(0, 100) })
+            }
+          }
+
+          if (!hasResults) {
             setError(true)
           }
         })

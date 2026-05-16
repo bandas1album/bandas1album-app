@@ -3,6 +3,7 @@ import * as W from '../styles'
 import * as S from './styles'
 import { Exit, Headset, Pencil, Push, Star } from '@styled-icons/ionicons-solid'
 import Image from 'next/image'
+import { gaEvent } from '@/lib/gtag'
 
 export default function AuthProfile() {
   const { logout, user } = useAuth()
@@ -50,7 +51,12 @@ export default function AuthProfile() {
       </S.UserStats>
 
       <S.UserMenu>
-        <S.UserMenuItem onClick={() => logout()}>
+        <S.UserMenuItem
+          onClick={() => {
+            gaEvent('logout', { method: 'client' })
+            logout()
+          }}
+        >
           <Exit />
           <span>Sair</span>
         </S.UserMenuItem>

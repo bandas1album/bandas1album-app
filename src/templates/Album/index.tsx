@@ -75,7 +75,9 @@ export default function AlbumTemplate(data: Album) {
       <PageHeader>{pageTitle}</PageHeader>
 
       <S.AlbumContent>
-        {data.id != null && <AlbumUserActions id={data.id} />}
+        {data.id != null && (
+          <AlbumUserActions id={data.id} albumSlug={data.slug} />
+        )}
         <AlbumCover image={data?.cover} title={data?.title} />
         <AlbumInfo
           title={decodeBrokenUnicode(data?.title)}

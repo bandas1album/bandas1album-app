@@ -11,12 +11,14 @@ import { useGetAlbumFlags } from '@/api/Albums/GetAlbumFlags'
 import { useAuth } from '@/contexts/AuthContext'
 import { useAuthUI } from '@/contexts/AuthUIContext'
 import { usePatchAlbumFlags } from '@/api/Albums/PatchAlbumFlags'
+import { gaEvent } from '@/lib/gtag'
 
 type TAlbumUserActions = {
   id: number
+  albumSlug?: string
 }
 
-export const AlbumUserActions = ({ id }: TAlbumUserActions) => {
+export const AlbumUserActions = ({ id, albumSlug }: TAlbumUserActions) => {
   const { token, refetchUser } = useAuth()
   const { open } = useAuthUI()
   const { data: isFavorited, refetch: refetchFavorited } = useGetAlbumFlags({
@@ -33,23 +35,41 @@ export const AlbumUserActions = ({ id }: TAlbumUserActions) => {
 
   const doFavorite = () => {
     if (!token) {
+      gaEvent('login_prompt', { reason: 'album_favorite', album_id: id })
       return open('login')
     }
+
+    const willActivate = !isFavorited?.active
 
     mutateFlag({ id, token, type: 'favorited' }).then(() => {
       refetchFavorited()
       refetchUser()
+      gaEvent('album_engagement', {
+        type: 'favorited',
+        active: willActivate,
+        album_id: id,
+        ...(albumSlug ? { album_slug: albumSlug } : {})
+      })
     })
   }
 
   const doListened = () => {
     if (!token) {
+      gaEvent('login_prompt', { reason: 'album_listened', album_id: id })
       return open('login')
     }
+
+    const willActivate = !isListened?.active
 
     mutateFlag({ id, token, type: 'listened' }).then(() => {
       refetchListened()
       refetchUser()
+      gaEvent('album_engagement', {
+        type: 'listened',
+        active: willActivate,
+        album_id: id,
+        ...(albumSlug ? { album_slug: albumSlug } : {})
+      })
     })
   }
 

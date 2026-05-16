@@ -9,7 +9,7 @@ import Tabs from '@/components/Tabs'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import Script from 'next/script'
-import * as gtag from '../../gtag'
+import * as gtag from '@/lib/gtag'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { AuthUIProvider } from '@/contexts/AuthUIContext'
 import { AuthProvider } from '@/contexts/AuthContext'
@@ -17,6 +17,10 @@ import { AuthProvider } from '@/contexts/AuthContext'
 export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter()
   const [queryClient] = useState(() => new QueryClient())
+
+  useEffect(() => {
+    gtag.pageview(`${window.location.pathname}${window.location.search ?? ''}`)
+  }, [])
 
   useEffect(() => {
     const handleRouteChange = (url: string) => {

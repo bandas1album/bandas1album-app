@@ -16,6 +16,7 @@ import { AuthLostPassword } from './LostPassword'
 import { TResetPasswordParams } from '@/api/Auth/ResetPassword/types'
 import { Close } from '@styled-icons/ionicons-solid'
 import Image from 'next/image'
+import { gaEvent } from '@/lib/gtag'
 
 export const AuthModal = () => {
   const { login } = useAuth()
@@ -56,6 +57,7 @@ export const AuthModal = () => {
       const res = await mutateLogin(form)
 
       login(res.token)
+      gaEvent('login', { method: 'password' })
       open('profile')
     } catch {
       console.log('Error')
@@ -63,22 +65,37 @@ export const AuthModal = () => {
   }
 
   const handleSignup = (form: TCreateUserParams) => {
-    mutateSignup(form)
+    mutateSignup(form, {
+      onSuccess: () => {
+        gaEvent('sign_up', { method: 'email' })
+      }
+    })
   }
 
   const handleLost = (form: TLostPasswordParams) => {
-    mutateLost(form)
+    mutateLost(form, {
+      onSuccess: () => {
+        gaEvent('password_reset_request', { channel: 'email' })
+      }
+    })
   }
 
   const handleReset = (form: TResetPasswordParams) => {
-    mutateReset(form)
+    mutateReset(form, {
+      onSuccess: () => {
+        gaEvent('password_reset_complete', { result: 'success' })
+      }
+    })
   }
 
   return (
     <S.AuthOverlay>
       <S.OpenButton
         aria-label="Abrir modal de login"
-        onClick={() => open('login')}
+        onClick={() => {
+          gaEvent('open_auth_modal', { trigger: 'floating_button' })
+          open('login')
+        }}
       ></S.OpenButton>
 
       <S.AuthDrawer $open={isOpen}>
@@ -146,6 +163,9 @@ export const AuthModal = () => {
               href="https://nubank.com.br/pagar/4tc3b/eSpPDeBif2"
               target="_blank"
               rel="noopener noreferrer"
+              onClick={() =>
+                gaEvent('click_contribute', { destination: 'nubank_pix' })
+              }
             >
               contribua
             </a>{' '}
