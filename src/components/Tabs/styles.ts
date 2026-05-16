@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import { Button } from '../../styles/resets'
 
 export const TabsPanel = styled.header`
-  position: sticky;
+  position: absolute;
   bottom: 16px;
   left: 0;
   right: 0;
