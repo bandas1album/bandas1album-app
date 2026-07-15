@@ -13,6 +13,7 @@ import {
 } from './styles'
 import {
   CalendarClear,
+  Cart,
   Location,
   PlayCircle,
   Pricetag
@@ -64,7 +65,7 @@ export default function AlbumInfo({
                 href={social?.amazon || ''}
                 title="Amazon"
               >
-                <Amazon />
+                <Cart />
               </InfosLink>
             </li>
           ) : (
