@@ -1,4 +1,11 @@
-import { MenuFooter, MenuList, MenuNav, MenuSocial, MenuTitle, Submenu } from './styles'
+import { 
+  MenuFooter,
+  MenuList,
+  MenuNav,
+  MenuSocial,
+  MenuTitle,
+  Submenu
+} from './styles'
 import Link from 'next/link'
 import { ChevronDownCircle } from '@styled-icons/ionicons-outline'
 import { CardMenu } from '@/components/CardMenu'

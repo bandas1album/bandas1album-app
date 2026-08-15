@@ -19,7 +19,6 @@ import {
   Pricetag
 } from '@styled-icons/ionicons-solid'
 import {
-  Amazon,
   Deezer,
   Lastfm,
   Spotify,
