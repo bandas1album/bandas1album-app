@@ -1,9 +1,10 @@
-import { MenuList, MenuNav, MenuTitle, Submenu } from './styles'
+import { MenuFooter, MenuList, MenuNav, MenuSocial, MenuTitle, Submenu } from './styles'
 import Link from 'next/link'
 import { ChevronDownCircle } from '@styled-icons/ionicons-outline'
 import { CardMenu } from '@/components/CardMenu'
 import { useGetMenu } from '@/api/Menu/GetMenu'
 import { handleScroll } from '@/utils/handleScroll'
+import { Instagram, Spotify, Tiktok, Youtube } from '@styled-icons/fa-brands'
 
 export default function TabsMenu() {
   const {
@@ -31,10 +32,12 @@ export default function TabsMenu() {
     fetchNextPage: getYearsNextPage
   } = useGetMenu('released')
 
+  const year = new Date().getFullYear()
+
   return (
     <MenuNav>
       <MenuList>
-        <details onClick={() => getAlbums()}>
+        <details name="menu" onClick={() => getAlbums()}>
           <MenuTitle>
             <span>Álbuns</span>
             <ChevronDownCircle />
@@ -60,7 +63,7 @@ export default function TabsMenu() {
           </Submenu>
         </details>
 
-        <details onClick={() => getGenres()}>
+        <details name="menu" onClick={() => getGenres()}>
           <MenuTitle>
             <span>Gêneros</span>
             <ChevronDownCircle />
@@ -82,7 +85,7 @@ export default function TabsMenu() {
           </Submenu>
         </details>
 
-        <details onClick={() => getCountries()}>
+        <details name="menu" onClick={() => getCountries()}>
           <MenuTitle>
             <span>País de lançamento</span>
             <ChevronDownCircle />
@@ -106,7 +109,7 @@ export default function TabsMenu() {
           </Submenu>
         </details>
 
-        <details onClick={() => getYears()}>
+        <details name="menu" onClick={() => getYears()}>
           <MenuTitle>
             <span>Ano de lançamento</span>
             <ChevronDownCircle />
@@ -129,8 +132,8 @@ export default function TabsMenu() {
         </details>
       </MenuList>
 
-      {/* <MenuFooter>
-        <strong>Bandas de 1 Álbum © {year}</strong>
+      <MenuFooter>
+        <strong>Bandas de 1 Álbum © 2021-{year}</strong>
       </MenuFooter>
 
       <MenuSocial>
@@ -145,6 +148,24 @@ export default function TabsMenu() {
         </li>
         <li>
           <a
+            href="https://tiktok.com/@bandas1album"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <Tiktok />
+          </a>
+        </li>
+        <li>
+          <a
+            href="https://www.youtube.com/@bandas1album"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <Youtube />
+          </a>
+        </li>
+        <li>
+          <a
             href="https://open.spotify.com/user/ryyq8vjpuf4vgfgll9zoecplr?si=09LFT22HQaaRIgfIkIatEw"
             target="_blank"
             rel="noopener noreferrer"
@@ -152,7 +173,7 @@ export default function TabsMenu() {
             <Spotify />
           </a>
         </li>
-      </MenuSocial> */}
+      </MenuSocial>
     </MenuNav>
   )
 }

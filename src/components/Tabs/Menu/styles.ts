@@ -84,7 +84,7 @@ export const MenuTitle = styled.summary`
 export const MenuFooter = styled.footer`
   display: flex;
   justify-content: center;
-  margin-bottom: 16px;
+  margin: 24px auto 16px;
   line-height: 16px;
   text-align: center;
 
