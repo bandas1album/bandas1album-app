@@ -188,7 +188,6 @@ export default function TabsMenu() {
             rel="noopener noreferrer"
           >
             <Heart />
-
             Apoie o projeto
           </a>
         </li>
