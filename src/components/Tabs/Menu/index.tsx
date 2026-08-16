@@ -12,6 +12,7 @@ import { CardMenu } from '@/components/CardMenu'
 import { useGetMenu } from '@/api/Menu/GetMenu'
 import { handleScroll } from '@/utils/handleScroll'
 import { Instagram, Spotify, Tiktok, Youtube } from '@styled-icons/fa-brands'
+import { Heart } from '@styled-icons/ionicons-solid'
 
 export default function TabsMenu() {
   const {
@@ -178,6 +179,17 @@ export default function TabsMenu() {
             rel="noopener noreferrer"
           >
             <Spotify />
+          </a>
+        </li>
+        <li>
+          <a
+            href="https://livepix.gg/bandas1album"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <Heart />
+
+            Apoie o projeto
           </a>
         </li>
       </MenuSocial>

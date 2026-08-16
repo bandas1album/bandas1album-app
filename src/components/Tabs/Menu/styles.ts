@@ -137,7 +137,16 @@ export const MenuSocial = styled.ul`
     display: flex;
     align-items: center;
     justify-content: center;
+    gap: 8px;
     color: var(--color-light);
+    font-size: 14px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: transform 0.2s ease-in-out;
+
+    &:hover {
+      transform: scale(0.5);
+    }
   }
 
   svg {
