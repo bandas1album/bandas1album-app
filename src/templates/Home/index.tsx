@@ -26,14 +26,6 @@ const SITE_STRUCTURED_DATA = {
 }
 
 export default function HomeTemplate() {
-  const orders = ['ASC', 'DESC']
-  const orderBy = ['ID', 'date', 'title', 'modified', 'comment_count']
-
-  const [randomParams] = useState(() => ({
-    order: orders[Math.floor(Math.random() * orders.length)],
-    order_by: orderBy[Math.floor(Math.random() * orderBy.length)]
-  }))
-
   const loadMoreRef = useRef<HTMLDivElement | null>(null)
   const {
     data: albums,
@@ -43,8 +35,8 @@ export default function HomeTemplate() {
   } = useGetAlbums({
     pageParam: 1,
     per_page: 99,
-    order_by: randomParams.order_by,
-    order: randomParams.order
+    order_by: 'date',
+    order: 'DESC'
   })
 
   useEffect(() => {
@@ -57,8 +49,8 @@ export default function HomeTemplate() {
         }
       },
       {
-        root: null, // window
-        rootMargin: '200px', // começa antes de chegar no fim
+        root: null,
+        rootMargin: '200px',
         threshold: 0
       }
     )
