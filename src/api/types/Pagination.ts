@@ -1,20 +1,8 @@
 export type PaginationParams = {
   pageParam: number
   per_page: number
-  order: 'ASC' | 'DESC'
-  order_by:
-    | 'none'
-    | 'ID'
-    | 'author'
-    | 'title'
-    | 'name'
-    | 'type'
-    | 'date'
-    | 'modified'
-    | 'parent'
-    | 'rand'
-    | 'comment_count'
-    | 'relevance'
+  order: string
+  order_by: string
   taxonomy?: {
     category: string
     slug: string

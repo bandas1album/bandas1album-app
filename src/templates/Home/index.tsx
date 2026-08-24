@@ -26,6 +26,9 @@ const SITE_STRUCTURED_DATA = {
 }
 
 export default function HomeTemplate() {
+  const orders = ['ASC', 'DESC']
+  const orderBy = ['ID', 'date', 'title', 'modified', 'comment_count']
+
   const loadMoreRef = useRef<HTMLDivElement | null>(null)
   const {
     data: albums,
@@ -35,8 +38,8 @@ export default function HomeTemplate() {
   } = useGetAlbums({
     pageParam: 1,
     per_page: 99,
-    order_by: 'date',
-    order: 'DESC'
+    order_by: orderBy[Math.floor(Math.random() * orderBy.length)],
+    order: orders[Math.floor(Math.random() * orders.length)]
   })
 
   useEffect(() => {
