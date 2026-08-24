@@ -2,7 +2,7 @@ import ListAlbums from '@/components/ListAlbums'
 import Head from 'next/head'
 import { NextSeo } from 'next-seo'
 import { useGetAlbums } from '@/api/Albums/GetAlbums'
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import PageHeader from '@/components/PageHeader'
 import { SITE_URL, absoluteUrl } from '@/lib/seo/site'
 
@@ -29,6 +29,11 @@ export default function HomeTemplate() {
   const orders = ['ASC', 'DESC']
   const orderBy = ['ID', 'date', 'title', 'modified', 'comment_count']
 
+  const [randomParams] = useState(() => ({
+    order: orders[Math.floor(Math.random() * orders.length)],
+    order_by: orderBy[Math.floor(Math.random() * orderBy.length)]
+  }))
+
   const loadMoreRef = useRef<HTMLDivElement | null>(null)
   const {
     data: albums,
@@ -38,8 +43,8 @@ export default function HomeTemplate() {
   } = useGetAlbums({
     pageParam: 1,
     per_page: 99,
-    order_by: orderBy[Math.floor(Math.random() * orderBy.length)],
-    order: orders[Math.floor(Math.random() * orders.length)]
+    order_by: randomParams.order_by,
+    order: randomParams.order
   })
 
   useEffect(() => {
