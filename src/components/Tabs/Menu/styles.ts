@@ -9,6 +9,7 @@ export const MenuNav = styled.nav`
   border-radius: 16px 16px 0 0;
   background-color: var(--color-primary-700);
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  user-select: none;
 `
 
 export const MenuList = styled.div`
@@ -38,10 +39,10 @@ export const MenuList = styled.div`
 `
 
 export const Submenu = styled.ul<{ $loading: boolean }>`
-  max-height: 240px;
+  max-height: 200px;
   overflow-y: ${(props) => (props.$loading ? 'hidden' : 'auto')};
   margin: -24px 0 0 0;
-  padding: 48px 24px 24px;
+  padding: 40px 24px 24px;
   list-style: none;
   background-color: var(--color-primary-500);
   border-radius: 0 0 16px 16px;
@@ -83,14 +84,31 @@ export const MenuTitle = styled.summary`
 
 export const MenuFooter = styled.footer`
   display: flex;
+  flex-direction: column;
   justify-content: center;
-  margin: 24px auto 16px;
+  gap: 8px;
+  margin: 16px auto 0;
   line-height: 16px;
   text-align: center;
 
   strong {
     font-size: 12px;
     color: var(--color-light);
+  }
+
+  a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    color: var(--color-light);
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 600;
+
+    svg {
+      width: 16px;
+    }
   }
 
   ul {
@@ -126,7 +144,7 @@ export const MenuSocial = styled.ul`
   justify-content: center;
   width: 100%;
   height: 40px;
-  margin: 0;
+  margin: 16px 0 0;
   padding: 8px 0;
   list-style: none;
   background-color: var(--color-primary-500);

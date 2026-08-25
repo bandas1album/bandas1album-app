@@ -140,16 +140,13 @@ export default function TabsMenu() {
         </details>
       </MenuList>
 
-      <MenuFooter>
-        <strong>Bandas de 1 Álbum © 2021-{year}</strong>
-      </MenuFooter>
-
       <MenuSocial>
         <li>
           <a
             href="https://instagram.com/bandas1album"
             target="_blank"
             rel="noopener noreferrer"
+            title="Instagram"
           >
             <Instagram />
           </a>
@@ -159,6 +156,7 @@ export default function TabsMenu() {
             href="https://tiktok.com/@bandas1album"
             target="_blank"
             rel="noopener noreferrer"
+            title="TikTok"
           >
             <Tiktok />
           </a>
@@ -168,6 +166,7 @@ export default function TabsMenu() {
             href="https://www.youtube.com/@bandas1album"
             target="_blank"
             rel="noopener noreferrer"
+            title="YouTube"
           >
             <Youtube />
           </a>
@@ -177,6 +176,7 @@ export default function TabsMenu() {
             href="https://open.spotify.com/user/ryyq8vjpuf4vgfgll9zoecplr?si=09LFT22HQaaRIgfIkIatEw"
             target="_blank"
             rel="noopener noreferrer"
+            title="Spotify"
           >
             <Spotify />
           </a>
@@ -186,12 +186,16 @@ export default function TabsMenu() {
             href="https://livepix.gg/bandas1album"
             target="_blank"
             rel="noopener noreferrer"
+            title="Apoie o projeto com Livepix"
           >
             <Heart />
-            Apoie o projeto
           </a>
         </li>
       </MenuSocial>
+
+      <MenuFooter>
+        <strong>Bandas de 1 Álbum © 2021-{year}</strong>
+      </MenuFooter>
     </MenuNav>
   )
 }

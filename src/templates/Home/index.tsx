@@ -2,7 +2,7 @@ import ListAlbums from '@/components/ListAlbums'
 import Head from 'next/head'
 import { NextSeo } from 'next-seo'
 import { useGetAlbums } from '@/api/Albums/GetAlbums'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef } from 'react'
 import PageHeader from '@/components/PageHeader'
 import { SITE_URL, absoluteUrl } from '@/lib/seo/site'
 
