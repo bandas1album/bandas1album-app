@@ -138,14 +138,16 @@ export default function TabsSearch({ focus }: { focus: boolean }) {
           {autocomplete.data.genres?.map((genre: SearchGenre) => (
             <li key={genre.slug}>
               <Link href={`/genre/${genre.slug}`}>
-                Gêneros / <strong>{highlightMatch(genre.title || '', search)}</strong>
+                Gêneros /{' '}
+                <strong>{highlightMatch(genre.title || '', search)}</strong>
               </Link>
             </li>
           ))}
           {autocomplete.data.countries?.map((country: SearchCountry) => (
             <li key={country.slug}>
               <Link href={`/country/${country.slug}`}>
-                País / <strong>{highlightMatch(country.title || '', search)}</strong>
+                País /{' '}
+                <strong>{highlightMatch(country.title || '', search)}</strong>
               </Link>
             </li>
           ))}
