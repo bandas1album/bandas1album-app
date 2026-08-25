@@ -24,6 +24,24 @@ type SearchCountry = NonNullable<
   NonNullable<NonNullable<GetAlbumsSearchResponse['data']>['countries']>[number]
 >
 
+// Envolve em <u> os trechos do texto que casam com o termo buscado
+// (case-insensitive), destacando o que foi digitado no input.
+function highlightMatch(text: string, term: string) {
+  const query = term.trim()
+  if (!query) return text
+
+  const escaped = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+  const parts = text.split(new RegExp(`(${escaped})`, 'gi'))
+
+  return parts.map((part, index) =>
+    part.toLowerCase() === query.toLowerCase() ? (
+      <u key={index}>{part}</u>
+    ) : (
+      part
+    )
+  )
+}
+
 export default function TabsSearch({ focus }: { focus: boolean }) {
   const inputRef = useRef<HTMLInputElement>(null)
   const [search, setSearch] = useState('')
@@ -107,9 +125,12 @@ export default function TabsSearch({ focus }: { focus: boolean }) {
               <Link href={`/album/${album.slug}`}>
                 Álbuns /{' '}
                 <strong>
-                  {album.title === album.artist
-                    ? album.title
-                    : `${album.artist} - ${album.title}`}
+                  {highlightMatch(
+                    album.title === album.artist
+                      ? album.title || ''
+                      : `${album.artist} - ${album.title}`,
+                    search
+                  )}
                 </strong>
               </Link>
             </li>
@@ -117,14 +138,14 @@ export default function TabsSearch({ focus }: { focus: boolean }) {
           {autocomplete.data.genres?.map((genre: SearchGenre) => (
             <li key={genre.slug}>
               <Link href={`/genre/${genre.slug}`}>
-                Gêneros / <strong>{genre.title}</strong>
+                Gêneros / <strong>{highlightMatch(genre.title || '', search)}</strong>
               </Link>
             </li>
           ))}
           {autocomplete.data.countries?.map((country: SearchCountry) => (
             <li key={country.slug}>
               <Link href={`/country/${country.slug}`}>
-                País / <strong>{country.title}</strong>
+                País / <strong>{highlightMatch(country.title || '', search)}</strong>
               </Link>
             </li>
           ))}

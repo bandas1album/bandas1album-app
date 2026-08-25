@@ -8,7 +8,7 @@ import {
 } from './styles'
 import { Search, Menu } from '@styled-icons/ionicons-outline'
 import TabsSearch from './Search'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import TabsMenu from './Menu'
 import { gaEvent } from '@/lib/gtag'
 
@@ -19,6 +19,36 @@ export default function Tabs() {
   })
   const isOpenedSearch = openedTabs.state && openedTabs.tab === 'search'
   const isOpenedMenu = openedTabs.state && openedTabs.tab === 'menu'
+
+  // Mantém o painel acima do teclado virtual no mobile. Quando o teclado abre,
+  // apenas o visual viewport encolhe (não o layout viewport), então o painel
+  // ancorado no rodapé fica escondido atrás do teclado. Aqui medimos a altura
+  // do teclado e expomos como uma CSS var usada no `bottom` do TabsPanel.
+  useEffect(() => {
+    const vv = window.visualViewport
+    if (!vv) return
+
+    const update = () => {
+      const keyboard = Math.max(
+        0,
+        window.innerHeight - vv.height - vv.offsetTop
+      )
+      document.documentElement.style.setProperty(
+        '--keyboard-offset',
+        `${keyboard}px`
+      )
+    }
+
+    vv.addEventListener('resize', update)
+    vv.addEventListener('scroll', update)
+    update()
+
+    return () => {
+      vv.removeEventListener('resize', update)
+      vv.removeEventListener('scroll', update)
+      document.documentElement.style.removeProperty('--keyboard-offset')
+    }
+  }, [])
 
   return (
     <TabsPanel>
