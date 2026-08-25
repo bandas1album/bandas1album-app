@@ -123,11 +123,9 @@ export default function TabsSearch({ focus }: { focus: boolean }) {
         ''
       )}
 
-      {autocomplete?.data?.albums?.length ||
-      autocomplete?.data?.genres?.length ||
-      autocomplete?.data?.countries?.length ? (
-        <SearchAutocomplete className="m-tabs-search__autocomplete">
-          {autocomplete.data.albums?.map((album: SearchAlbum) => (
+      <SearchAutocomplete className="m-tabs-search__autocomplete">
+        {autocomplete?.data?.albums?.length &&
+          autocomplete.data.albums?.map((album: SearchAlbum) => (
             <li key={album.slug}>
               <Link href={`/album/${album.slug}`}>
                 Álbuns /{' '}
@@ -142,7 +140,9 @@ export default function TabsSearch({ focus }: { focus: boolean }) {
               </Link>
             </li>
           ))}
-          {autocomplete.data.genres?.map((genre: SearchGenre) => (
+
+        {autocomplete?.data?.genres?.length &&
+          autocomplete.data.genres?.map((genre: SearchGenre) => (
             <li key={genre.slug}>
               <Link href={`/genre/${genre.slug}`}>
                 Gêneros /{' '}
@@ -150,7 +150,9 @@ export default function TabsSearch({ focus }: { focus: boolean }) {
               </Link>
             </li>
           ))}
-          {autocomplete.data.countries?.map((country: SearchCountry) => (
+
+        {autocomplete?.data?.countries?.length &&
+          autocomplete.data.countries?.map((country: SearchCountry) => (
             <li key={country.slug}>
               <Link href={`/country/${country.slug}`}>
                 País /{' '}
@@ -158,10 +160,7 @@ export default function TabsSearch({ focus }: { focus: boolean }) {
               </Link>
             </li>
           ))}
-        </SearchAutocomplete>
-      ) : (
-        ''
-      )}
+      </SearchAutocomplete>
     </SearchForm>
   )
 }
