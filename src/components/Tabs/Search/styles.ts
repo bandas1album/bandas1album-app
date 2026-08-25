@@ -2,7 +2,6 @@ import { Button, Input } from '../../../styles/resets'
 import { styled } from 'styled-components'
 
 export const SearchForm = styled.form`
-  padding-bottom: 40px;
   border-radius: 16px 16px 0 0;
   background-color: var(--color-primary-500);
   overflow: hidden;
@@ -79,8 +78,10 @@ export const SearchHelp = styled(Button)`
 `
 
 export const SearchAutocomplete = styled.ul`
+  max-height: 200px;
+  overflow-y: auto;
   margin: 0;
-  padding: 24px;
+  padding: 24px 24px 56px;
   list-style: none;
   font-weight: 500;
 

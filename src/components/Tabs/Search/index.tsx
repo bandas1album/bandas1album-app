@@ -85,7 +85,14 @@ export default function TabsSearch({ focus }: { focus: boolean }) {
   }, [search, refetch])
 
   useEffect(() => {
-    inputRef.current?.focus()
+    // Ao abrir a busca, foca o input (abre o teclado no mobile).
+    // Ao fechar pelo toggle, remove o foco para dispensar o teclado —
+    // o que faz o visualViewport voltar ao normal e zerar o offset.
+    if (focus) {
+      inputRef.current?.focus()
+    } else {
+      inputRef.current?.blur()
+    }
   }, [focus])
 
   return (
