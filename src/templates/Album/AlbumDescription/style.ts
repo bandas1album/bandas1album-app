@@ -12,4 +12,12 @@ export const AlbumDescriptionContainer = styled.div`
   gap: 16px;
   padding: 32px 24px 0;
   line-height: 150%;
+
+  p:first-child {
+    margin-top: 0;
+  }
+
+  p:last-child {
+    margin-bottom: 0;
+  }
 `
