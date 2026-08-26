@@ -4,5 +4,13 @@
       "path": "/api/cron/generate-sitemap",
       "schedule": "0 0 * * *"
     }
-  ]
+  ],
+  "functions": {
+    "src/pages/api/cron/generate-sitemap.ts": {
+      "maxDuration": 60
+    },
+    "src/pages/sitemap.xml.tsx": {
+      "maxDuration": 60
+    }
+  }
 }

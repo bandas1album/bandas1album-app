@@ -1,5 +1,4 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { collectSitemapPaths } from '@/lib/seo/serverAlbum'
 import { SITE_URL } from '@/lib/seo/site'
 
 function isAuthorized(req: NextApiRequest): boolean {
@@ -9,8 +8,8 @@ function isAuthorized(req: NextApiRequest): boolean {
 }
 
 /**
- * Vercel Cron (see vercel.json): validates sitemap sources and warms
- * the on-demand /sitemap.xml route in the CDN cache.
+ * Vercel Cron (see vercel.json): warms the on-demand /sitemap.xml route
+ * in the CDN cache (generation runs once inside that route).
  */
 export default async function handler(
   req: NextApiRequest,
@@ -26,7 +25,6 @@ export default async function handler(
   }
 
   try {
-    const paths = await collectSitemapPaths()
     const warmRes = await fetch(`${SITE_URL}/sitemap.xml`)
 
     if (!warmRes.ok) {
@@ -35,8 +33,8 @@ export default async function handler(
 
     return res.status(200).json({
       ok: true,
-      urls: paths.length,
-      warmed: true
+      warmed: true,
+      status: warmRes.status
     })
   } catch (e) {
     console.error('[cron generate-sitemap]', e)

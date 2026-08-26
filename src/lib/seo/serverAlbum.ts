@@ -82,15 +82,31 @@ export type SitemapUrl = {
   lastmod?: string
 }
 
-/** Collect indexable paths for sitemap (paths only, leading slash). */
-export async function collectSitemapPaths(): Promise<SitemapUrl[]> {
-  const out: SitemapUrl[] = [{ url: '/', changefreq: 'daily', priority: 1 }]
+async function fetchAllAlbumPages(): Promise<GetAlbumsResponse[]> {
+  const first = await fetchAlbumsPage(1)
+  const totalPages = first.meta?.pagination?.total_pages ?? 1
+  if (totalPages <= 1) return [first]
 
-  let page = 1
-  let totalPages = 1
-  while (page <= totalPages) {
-    const body = await fetchAlbumsPage(page)
-    totalPages = body.meta?.pagination?.total_pages ?? 1
+  const rest = await Promise.all(
+    Array.from({ length: totalPages - 1 }, (_, i) => fetchAlbumsPage(i + 2))
+  )
+  return [first, ...rest]
+}
+
+async function fetchAllMenuPages(type: string): Promise<GetMenuResponse[]> {
+  const first = await fetchMenuPage(type, 1)
+  const totalPages = first.meta?.pagination?.total_pages ?? 1
+  if (totalPages <= 1) return [first]
+
+  const rest = await Promise.all(
+    Array.from({ length: totalPages - 1 }, (_, i) => fetchMenuPage(type, i + 2))
+  )
+  return [first, ...rest]
+}
+
+function albumPagesToSitemapUrls(pages: GetAlbumsResponse[]): SitemapUrl[] {
+  const out: SitemapUrl[] = []
+  for (const body of pages) {
     for (const album of body.data ?? []) {
       if (album?.slug) {
         out.push({
@@ -101,36 +117,43 @@ export async function collectSitemapPaths(): Promise<SitemapUrl[]> {
         })
       }
     }
-    page += 1
   }
+  return out
+}
 
-  async function addMenuPaths(
-    menuType: string,
-    urlSegment: string
-  ): Promise<void> {
-    let p = 1
-    let total = 1
-    while (p <= total) {
-      const body = await fetchMenuPage(menuType, p)
-      total = body.meta?.pagination?.total_pages ?? 1
-      for (const item of body.data ?? []) {
-        if (item?.slug) {
-          out.push({
-            url: `/${urlSegment}/${item.slug}`,
-            changefreq: 'weekly',
-            priority: 0.6
-          })
-        }
+function menuPagesToSitemapUrls(
+  pages: GetMenuResponse[],
+  urlSegment: string
+): SitemapUrl[] {
+  const out: SitemapUrl[] = []
+  for (const body of pages) {
+    for (const item of body.data ?? []) {
+      if (item?.slug) {
+        out.push({
+          url: `/${urlSegment}/${item.slug}`,
+          changefreq: 'weekly',
+          priority: 0.6
+        })
       }
-      p += 1
     }
   }
+  return out
+}
 
-  await Promise.all([
-    addMenuPaths('genre', 'genre'),
-    addMenuPaths('country', 'country'),
-    addMenuPaths('released', 'year')
+/** Collect indexable paths for sitemap (paths only, leading slash). */
+export async function collectSitemapPaths(): Promise<SitemapUrl[]> {
+  const [albumPages, genrePages, countryPages, yearPages] = await Promise.all([
+    fetchAllAlbumPages(),
+    fetchAllMenuPages('genre'),
+    fetchAllMenuPages('country'),
+    fetchAllMenuPages('released')
   ])
 
-  return out
+  return [
+    { url: '/', changefreq: 'daily', priority: 1 },
+    ...albumPagesToSitemapUrls(albumPages),
+    ...menuPagesToSitemapUrls(genrePages, 'genre'),
+    ...menuPagesToSitemapUrls(countryPages, 'country'),
+    ...menuPagesToSitemapUrls(yearPages, 'year')
+  ]
 }
