@@ -16,6 +16,7 @@ import {
   buildAlbumBreadcrumbItems,
   buildBreadcrumbListJsonLd
 } from '@/lib/seo/structuredData'
+import AlbumDescription from './AlbumDescription'
 
 export default function AlbumTemplate(data: Album) {
   const pageTitle =
@@ -100,8 +101,8 @@ export default function AlbumTemplate(data: Album) {
           country={data?.country}
           social={data?.links}
           year={data?.released?.split('-')[0]}
-          content={data?.content}
         />
+        {data?.description && <AlbumDescription title={data?.title} description={data?.description} />}
         {data?.tracklist && <AlbumTracklist list={data?.tracklist} />}
         <DisqusComments
           slug={data?.slug}
