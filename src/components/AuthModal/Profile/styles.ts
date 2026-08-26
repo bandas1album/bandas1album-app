@@ -12,13 +12,8 @@ export const Avatar = styled.div`
   width: 104px;
   height: 104px;
   margin: 0 auto 32px;
-
-  img {
-    display: block;
-    border-radius: 50%;
-    width: 100%;
-    height: 100%;
-  }
+  overflow: hidden;
+  border-radius: 50%;
 `
 
 export const AvatarEdit = styled.button`

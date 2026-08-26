@@ -10,10 +10,11 @@ const CardAlbum = ({ artist, cover, slug, title }: Album) => (
           <Image
             src={cover}
             alt={`Álbum ${title} de ${artist}`}
-            width={160}
-            height={160}
+            fill
+            sizes="(max-width: 768px) 50vw, 160px"
+            style={{ objectFit: 'cover' }}
             loading="lazy"
-          ></Image>
+          />
         ) : (
           <CardTitle>
             <strong>{title}</strong>

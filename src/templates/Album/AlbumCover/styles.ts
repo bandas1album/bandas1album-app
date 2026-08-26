@@ -4,8 +4,9 @@ export const Cover = styled.figure<{ $bg: string }>`
   position: relative;
   display: flex;
   align-items: center;
+  justify-content: center;
   width: 100%;
-  height: 100%;
+  aspect-ratio: 1/1;
   max-height: 480px;
   margin: 0;
   overflow: hidden;
@@ -35,12 +36,5 @@ export const Cover = styled.figure<{ $bg: string }>`
     display: block;
     background-color: rgba(0, 0, 0, 0.25);
     pointer-events: none;
-  }
-
-  img {
-    max-width: 100%;
-    height: auto;
-    display: block;
-    margin: 0 auto;
   }
 `

@@ -19,16 +19,12 @@ export const Card = styled.article`
 `
 
 export const CardImage = styled.figure`
+  position: relative;
   display: block;
   width: 48px;
   height: 48px;
   margin: 0;
-
-  img {
-    width: 100%;
-    height: 100%;
-    border-radius: 8px;
-  }
+  overflow: hidden;
 `
 
 export const CardTitle = styled.h2`

@@ -32,19 +32,14 @@ export const CardLink = styled(Link)`
 `
 
 export const CardImage = styled.figure`
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
   width: 100%;
   aspect-ratio: 1/1;
   margin: 0;
-  object-fit: cover;
-
-  img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
+  overflow: hidden;
 `
 
 export const CardTitle = styled.figcaption`

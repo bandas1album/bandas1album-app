@@ -13,10 +13,11 @@ export default function AuthProfile() {
       <S.UserInfos>
         <S.Avatar>
           <Image
-            width={80}
-            height={80}
+            fill
+            sizes="104px"
             src={user?.avatar || ''}
             alt={user?.name || ''}
+            style={{ objectFit: 'cover', borderRadius: '50%' }}
           />
           <S.AvatarEdit>
             <Pencil size={16} />

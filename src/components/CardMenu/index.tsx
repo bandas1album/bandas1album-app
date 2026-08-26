@@ -15,8 +15,9 @@ export function CardMenu({ image, title, subtitle }: CardMenuProps) {
           <Image
             src={image}
             alt={title}
-            width={48}
-            height={48}
+            fill
+            sizes="48px"
+            style={{ objectFit: 'cover', borderRadius: '8px' }}
             loading="lazy"
           />
         </CardImage>

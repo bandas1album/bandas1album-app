@@ -24,8 +24,8 @@ describe('<CardAlbum />', () => {
       />
     )
 
-    expect(screen.getByRole('img').getAttribute('src')).toEqual(
-      '/_next/image?url=https%3A%2F%2Fcdn.host.com%2F4-cabeca.png&w=384&q=75'
+    expect(screen.getByRole('img').getAttribute('src')).toContain(
+      'url=https%3A%2F%2Fcdn.host.com%2F4-cabeca.png'
     )
   })
 

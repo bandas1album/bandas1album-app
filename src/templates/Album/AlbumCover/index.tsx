@@ -9,7 +9,14 @@ type AlbumCoverProps = {
 export default function AlbumCover({ image, title }: AlbumCoverProps) {
   return (
     <Cover $bg={image || ''}>
-      <Image src={image || ''} alt={title || ''} width={428} height={428} />
+      <Image
+        src={image || ''}
+        alt={title || ''}
+        fill
+        sizes="(max-width: 768px) 100vw, 428px"
+        style={{ objectFit: 'contain' }}
+        priority
+      />
     </Cover>
   )
 }
