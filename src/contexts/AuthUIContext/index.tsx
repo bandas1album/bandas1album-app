@@ -44,6 +44,23 @@ export const AuthUIProvider = ({ children }: { children: React.ReactNode }) => {
     }
   }, [open])
 
+  useEffect(() => {
+    if (typeof window === 'undefined' || !isOpen) return
+
+    const isMobile = window.matchMedia('(max-width: 767px)').matches
+    if (!isMobile) return
+
+    const main = document.querySelector('main')
+    if (!main) return
+
+    const previousOverflow = main.style.overflow
+    main.style.overflow = 'hidden'
+
+    return () => {
+      main.style.overflow = previousOverflow
+    }
+  }, [isOpen])
+
   return (
     <AuthUIContext.Provider value={{ isOpen, view, open, close, setView }}>
       <S.AuthWrapper>

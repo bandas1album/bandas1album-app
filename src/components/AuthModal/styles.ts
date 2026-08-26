@@ -28,7 +28,10 @@ export const CloseModal = styled(Button)`
 
 export const AuthContainer = styled.div`
   width: 100%;
+  max-width: 320px;
+  min-width: 0;
   margin: 24px auto auto;
+  flex-shrink: 0;
 `
 
 export const ToggleButton = styled.button`
@@ -71,23 +74,37 @@ export const AuthOverlay = styled.div`
 
 export const AuthDrawer = styled.aside<{ $open: boolean }>`
   position: fixed;
-  top: 0;
-  left: 0;
+  inset: 0;
   display: flex;
-  align-items: center;
   flex-direction: column;
+  align-items: center;
   gap: 24px;
-  width: ${(props) => (props.$open ? '100%' : '0')};
-  height: -webkit-fill-available;
-  overflow: auto;
-  padding: 24px 0;
+  width: 100%;
+  max-width: 100vw;
+  height: 100dvh;
+  max-height: 100dvh;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  padding: max(16px, env(safe-area-inset-top)) 16px
+    max(16px, env(safe-area-inset-bottom));
   z-index: 9;
   background-color: var(--color-light);
   color: var(--color-primary-500);
+  box-sizing: border-box;
+  visibility: ${(props) => (props.$open ? 'visible' : 'hidden')};
+  pointer-events: ${(props) => (props.$open ? 'auto' : 'none')};
 
   @media (min-width: 768px) {
     position: relative;
+    inset: auto;
     width: ${(props) => (props.$open ? '400px' : '0')};
+    height: 100%;
+    max-height: none;
+    padding: 24px 0;
+    visibility: visible;
+    pointer-events: auto;
     transition: 0.2s width ease;
   }
 `
@@ -97,8 +114,9 @@ export const AuthForm = styled.form`
   flex-direction: column;
   gap: 8px;
   margin: 0 auto;
-  width: calc(100% - 40px);
+  width: 100%;
   max-width: 320px;
+  min-width: 0;
   text-align: center;
 
   ${SwitchWrapper} {
@@ -118,11 +136,15 @@ export const FormDescription = styled.p`
 `
 
 export const AuthInfo = styled.p`
-  padding: 0 24px;
+  width: 100%;
+  max-width: 320px;
+  min-width: 0;
+  padding: 0 8px;
   font-size: 0.75rem;
   color: rgba(0 0 0 / 40%);
   line-height: 1.5;
   text-align: center;
+  overflow-wrap: anywhere;
 
   a,
   span {
@@ -167,7 +189,11 @@ export const AuthForgot = styled(Button)`
 `
 
 export const ViewSuccess = styled.div`
-  padding: 0 40px;
+  width: 100%;
+  max-width: 320px;
+  min-width: 0;
+  padding: 0 8px;
+  box-sizing: border-box;
 `
 
 export const ViewTitle = styled.h1`
