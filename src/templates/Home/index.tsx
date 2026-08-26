@@ -7,9 +7,10 @@ import {
   useGetAlbums
 } from '@/api/Albums/GetAlbums'
 import type { GetAlbumsResponse } from '@/api/Albums/GetAlbums/types'
-import { useEffect, useRef } from 'react'
+import { useRef } from 'react'
 import PageHeader from '@/components/PageHeader'
 import PageEditorial from '@/components/PageEditorial'
+import { useInfiniteScrollLoadMore } from '@/hooks/useInfiniteScrollLoadMore'
 import { SITE_URL, absoluteUrl } from '@/lib/seo/site'
 import { getHomeContent, getHomeSeoDescription } from '@/lib/seo/listingMeta'
 import {
@@ -51,26 +52,11 @@ export default function HomeTemplate({ initialPage }: HomeTemplateProps) {
     initialData: toAlbumsInfiniteData(initialPage)
   })
 
-  useEffect(() => {
-    if (!loadMoreRef.current) return
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting && hasNextPage && !isFetchingNextPage) {
-          fetchNextPage()
-        }
-      },
-      {
-        root: null,
-        rootMargin: '200px',
-        threshold: 0
-      }
-    )
-
-    observer.observe(loadMoreRef.current)
-
-    return () => observer.disconnect()
-  }, [fetchNextPage, hasNextPage, isFetchingNextPage])
+  useInfiniteScrollLoadMore(loadMoreRef, {
+    hasNextPage: hasNextPage ?? false,
+    isFetchingNextPage,
+    fetchNextPage
+  })
 
   const pageMeta = albums?.pages[0]?.meta ?? initialPage.meta
   const editorialContent = getHomeContent(pageMeta)

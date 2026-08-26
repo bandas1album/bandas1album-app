@@ -70,7 +70,10 @@ export const useGetAlbums = (
     queryKey: albumsListQueryKey(params),
     queryFn: ({ pageParam = 1 }) => getAlbums({ ...params, pageParam }),
     getNextPageParam: (lastPage) => {
-      const { page, total_pages } = lastPage.meta.pagination
+      const pagination = lastPage.meta?.pagination
+      if (!pagination) return undefined
+
+      const { page, total_pages } = pagination
 
       if (page < total_pages) {
         return page + 1
@@ -80,6 +83,7 @@ export const useGetAlbums = (
     },
     initialPageParam: 1,
     initialData: options?.initialData,
+    initialDataUpdatedAt: options?.initialData ? Date.now() : undefined,
     staleTime: 60 * 1000
   })
 }

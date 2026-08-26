@@ -114,6 +114,19 @@ html, body, #__next, #__next > div {
   overflow: hidden;
 }
 
+#__next > div {
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
 * {
   box-sizing: border-box;
 }

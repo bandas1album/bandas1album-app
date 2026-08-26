@@ -4,7 +4,7 @@ import { NextSeo } from 'next-seo'
 import PageHeader from '@/components/PageHeader'
 import PageEditorial from '@/components/PageEditorial'
 import { GetAlbumsResponse } from '@/api/Albums/GetAlbums/types'
-import { useEffect, useRef } from 'react'
+import { useRef } from 'react'
 import {
   HOME_ALBUMS_PARAMS,
   toAlbumsInfiniteData,
@@ -21,6 +21,7 @@ import {
   buildCategoryBreadcrumbItems,
   flattenAlbumPages
 } from '@/lib/seo/structuredData'
+import { useInfiniteScrollLoadMore } from '@/hooks/useInfiniteScrollLoadMore'
 
 export type CategoryTemplateProps = {
   category: string
@@ -53,26 +54,11 @@ export default function CategoryTemplate({
     { initialData: toAlbumsInfiniteData(initialPage) }
   )
 
-  useEffect(() => {
-    if (!loadMoreRef.current) return
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting && hasNextPage && !isFetchingNextPage) {
-          fetchNextPage()
-        }
-      },
-      {
-        root: null, // window
-        rootMargin: '200px', // começa antes de chegar no fim
-        threshold: 0
-      }
-    )
-
-    observer.observe(loadMoreRef.current)
-
-    return () => observer.disconnect()
-  }, [fetchNextPage, hasNextPage, isFetchingNextPage])
+  useInfiniteScrollLoadMore(loadMoreRef, {
+    hasNextPage: hasNextPage ?? false,
+    isFetchingNextPage,
+    fetchNextPage
+  })
 
   const meta =
     categoryData?.pages[categoryData.pages.length - 1]?.meta ?? initialPage.meta
