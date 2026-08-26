@@ -13,6 +13,7 @@ import * as gtag from '@/lib/gtag'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { AuthUIProvider } from '@/contexts/AuthUIContext'
 import { AuthProvider } from '@/contexts/AuthContext'
+import { montserrat } from '@/lib/fonts'
 
 export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter()
@@ -35,13 +36,12 @@ export default function App({ Component, pageProps }: AppProps) {
   }, [router])
 
   return (
-    <>
+    <div className={montserrat.className}>
       <Head>
         <meta
           name="viewport"
           content="width=device-width, initial-scale=1, interactive-widget=resizes-content"
         />
-        <link rel="manifest" href="/manifest.json" />
         <meta name="theme-color" content="#292556" />
       </Head>
       <Script
@@ -83,6 +83,6 @@ export default function App({ Component, pageProps }: AppProps) {
           </AuthUIProvider>
         </AuthProvider>
       </QueryClientProvider>
-    </>
+    </div>
   )
 }

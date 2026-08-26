@@ -1,7 +1,6 @@
 import {
   Infos,
   InfosArtist,
-  InfosContent,
   InfosHeader,
   InfosLink,
   InfosLinks,
@@ -27,7 +26,6 @@ import {
 } from '@styled-icons/fa-brands'
 import { Download } from '@styled-icons/ionicons-outline'
 import Link from 'next/link'
-import Markdown from 'react-markdown'
 import { decodeBrokenUnicode } from '@/utils/decodeUnicode'
 import type { AlbumCountry, AlbumGenre, AlbumLinks } from '@/api/types/Album'
 
@@ -38,7 +36,6 @@ type AlbumInfoProps = {
   country: AlbumCountry | undefined
   genre: AlbumGenre[] | undefined
   social: AlbumLinks | undefined
-  content: string | undefined
 }
 
 export default function AlbumInfo({
@@ -47,8 +44,7 @@ export default function AlbumInfo({
   country,
   genre,
   year,
-  social,
-  content
+  social
 }: AlbumInfoProps) {
   return (
     <Infos>

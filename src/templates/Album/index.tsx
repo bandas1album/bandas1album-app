@@ -102,7 +102,12 @@ export default function AlbumTemplate(data: Album) {
           social={data?.links}
           year={data?.released?.split('-')[0]}
         />
-        {data?.description && <AlbumDescription title={data?.title} description={data?.description} />}
+        {data?.description && (
+          <AlbumDescription
+            title={data?.title}
+            description={data?.description}
+          />
+        )}
         {data?.tracklist && <AlbumTracklist list={data?.tracklist} />}
         <DisqusComments
           slug={data?.slug}

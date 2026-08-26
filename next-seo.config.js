@@ -14,12 +14,18 @@ export default {
   additionalLinkTags: [
     {
       rel: 'icon',
-      href: '/logo.png'
+      href: '/favicon/favicon.ico',
+      sizes: '48x48'
+    },
+    {
+      rel: 'icon',
+      href: '/favicon/favicon.svg',
+      type: 'image/svg+xml'
     },
     {
       rel: 'apple-touch-icon',
-      href: '/logo.png',
-      sizes: '76x76'
+      href: '/favicon/apple-touch-icon.png',
+      sizes: '180x180'
     },
     {
       rel: 'manifest',

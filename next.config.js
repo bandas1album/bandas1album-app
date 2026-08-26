@@ -9,8 +9,19 @@ const withPWA = require('next-pwa')({
 
 module.exports = withPWA({
   reactStrictMode: true,
+  compiler: {
+    styledComponents: true
+  },
   eslint: {
     dirs: ['src']
+  },
+  async rewrites() {
+    return [
+      {
+        source: '/favicon.ico',
+        destination: '/favicon/favicon.ico'
+      }
+    ]
   },
   images: {
     domains: [

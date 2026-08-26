@@ -3,19 +3,21 @@
   "short_name": "Bandas de 1 Álbum",
   "icons": [
     {
-      "src": "/logo.png",
+      "src": "/favicon/web-app-manifest-192x192.png",
       "type": "image/png",
-      "sizes": "192x192"
+      "sizes": "192x192",
+      "purpose": "maskable"
     },
     {
-      "src": "/logo.png",
+      "src": "/favicon/web-app-manifest-512x512.png",
       "type": "image/png",
-      "sizes": "512x512"
+      "sizes": "512x512",
+      "purpose": "maskable"
     }
   ],
-  "background_color": "#06092B",
+  "background_color": "#292556",
   "description": "Bandas e artistas que lançaram apenas um álbum na carreira.",
   "display": "fullscreen",
   "start_url": "/",
-  "theme_color": "#06092B"
+  "theme_color": "#292556"
 }
