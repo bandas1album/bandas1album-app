@@ -2,6 +2,7 @@ import type { GetServerSideProps } from 'next'
 import type { GetAlbumsResponse } from '@/api/Albums/GetAlbums/types'
 import CategoryTemplate from '@/templates/Category'
 import { fetchCategoryFirstPage } from '@/lib/seo/serverAlbum'
+import { getCategorySeoDescription } from '@/lib/seo/listingMeta'
 
 const VALID_CATEGORIES = new Set(['genre', 'country', 'year'])
 
@@ -55,9 +56,7 @@ export const getServerSideProps: GetServerSideProps<CategoryPageProps> = async (
       ? `${ctxMeta.title} ‹ ${ctxMeta.page} | Bandas de 1 Álbum`
       : `${slug} | Bandas de 1 Álbum`
 
-    const description = ctxMeta
-      ? `Ouça bandas e artistas que lançaram apenas um álbum filtrados por ${ctxMeta.page} › ${ctxMeta.title} no Bandas de 1 Álbum.`
-      : `Explore álbuns únicos no Bandas de 1 Álbum — arquivo de bandas que lançaram apenas um disco.`
+    const description = getCategorySeoDescription(data.meta)
 
     return {
       props: {

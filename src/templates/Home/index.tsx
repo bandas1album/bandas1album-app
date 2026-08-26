@@ -9,7 +9,9 @@ import {
 import type { GetAlbumsResponse } from '@/api/Albums/GetAlbums/types'
 import { useEffect, useRef } from 'react'
 import PageHeader from '@/components/PageHeader'
+import PageEditorial from '@/components/PageEditorial'
 import { SITE_URL, absoluteUrl } from '@/lib/seo/site'
+import { getHomeContent, getHomeSeoDescription } from '@/lib/seo/listingMeta'
 import {
   buildAlbumItemListJsonLd,
   flattenAlbumPages
@@ -70,6 +72,10 @@ export default function HomeTemplate({ initialPage }: HomeTemplateProps) {
     return () => observer.disconnect()
   }, [fetchNextPage, hasNextPage, isFetchingNextPage])
 
+  const pageMeta = albums?.pages[0]?.meta ?? initialPage.meta
+  const editorialContent = getHomeContent(pageMeta)
+  const seoDescription = getHomeSeoDescription(pageMeta)
+
   return (
     <>
       <Head>
@@ -94,7 +100,7 @@ export default function HomeTemplate({ initialPage }: HomeTemplateProps) {
       </Head>
       <NextSeo
         title="Bandas de 1 Álbum"
-        description="O projeto Bandas de 1 Álbum eterniza bandas e artistas que lançaram apenas um álbum na carreira."
+        description={seoDescription}
         canonical={`${SITE_URL}/`}
         openGraph={{
           type: 'website',
@@ -113,6 +119,7 @@ export default function HomeTemplate({ initialPage }: HomeTemplateProps) {
       />
       <>
         <PageHeader hideBack={true}>Bandas de 1 Álbum</PageHeader>
+        <PageEditorial content={editorialContent} variant="content" />
         <ListAlbums albums={albums} />
         <div ref={loadMoreRef} />
       </>

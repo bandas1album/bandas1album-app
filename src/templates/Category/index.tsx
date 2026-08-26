@@ -2,6 +2,7 @@ import ListAlbums from '@/components/ListAlbums'
 import Head from 'next/head'
 import { NextSeo } from 'next-seo'
 import PageHeader from '@/components/PageHeader'
+import PageEditorial from '@/components/PageEditorial'
 import { GetAlbumsResponse } from '@/api/Albums/GetAlbums/types'
 import { useEffect, useRef } from 'react'
 import {
@@ -10,6 +11,10 @@ import {
   useGetAlbums
 } from '@/api/Albums/GetAlbums'
 import { SITE_URL, absoluteUrl } from '@/lib/seo/site'
+import {
+  getCategoryIntro,
+  getCategorySeoDescription
+} from '@/lib/seo/listingMeta'
 import {
   buildAlbumItemListJsonLd,
   buildBreadcrumbListJsonLd,
@@ -78,10 +83,8 @@ export default function CategoryTemplate({
     ? `${meta.context.title} ‹ ${meta.context.page} | Bandas de 1 Álbum`
     : initialSeo?.title ?? 'Bandas de 1 Álbum'
 
-  const pageDescription = meta?.context?.title
-    ? `Ouça todas as bandas e artistas que lançaram apenas um álbum filtrados por ${meta.context.page} › ${meta.context.title} no Bandas de 1 Álbum.`
-    : initialSeo?.description ??
-      'Bandas e artistas que lançaram apenas um álbum na carreira.'
+  const pageDescription = getCategorySeoDescription(meta)
+  const introContent = getCategoryIntro(meta)
 
   const canonicalUrl = `${SITE_URL}${path}`
   const listName = meta?.context?.title
@@ -135,6 +138,7 @@ export default function CategoryTemplate({
             </PageHeader>
           )}
 
+          <PageEditorial content={introContent} variant="intro" />
           <ListAlbums albums={categoryData} />
         </>
       ) : (
