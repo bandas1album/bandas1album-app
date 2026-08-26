@@ -26,7 +26,6 @@ module.exports = {
 
     // Handle module aliases
     '^@/components/(.*)$': '<rootDir>/src/components/$1',
-    '^@/graphql/(.*)$': '<rootDir>/src/graphql/$1',
     '^@/pages/(.*)$': '<rootDir>/src/pages/$1',
     '^@/styles/(.*)$': '<rootDir>/src/styles/$1',
     '^@/templates/(.*)$': '<rootDir>/src/templates/$1',
@@ -36,11 +35,7 @@ module.exports = {
   },
   // Add more setup options before each test is run
   // setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
-  testPathIgnorePatterns: [
-    '<rootDir>/node_modules/',
-    '<rootDir>/.next/',
-    '<rootDir>/src/graphql/'
-  ],
+  testPathIgnorePatterns: ['<rootDir>/node_modules/', '<rootDir>/.next/'],
   testEnvironment: 'jsdom',
   transform: {
     // Use babel-jest to transpile tests with the next/babel preset
