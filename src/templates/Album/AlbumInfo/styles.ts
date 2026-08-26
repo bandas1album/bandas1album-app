@@ -83,7 +83,7 @@ export const InfosLinksList = styled.ul<{ $opened: boolean }>`
   }
 `
 
-export const InfosTitle = styled.h1`
+export const InfosTitle = styled.h2`
   margin: 0;
   font-size: 1.5rem;
   line-height: 120%;

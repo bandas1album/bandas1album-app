@@ -12,6 +12,10 @@ import * as S from './styles'
 import PageHeader from '@/components/PageHeader'
 import type { Album } from '@/api/types/Album'
 import { SITE_URL, absoluteUrl } from '@/lib/seo/site'
+import {
+  buildAlbumBreadcrumbItems,
+  buildBreadcrumbListJsonLd
+} from '@/lib/seo/structuredData'
 
 export default function AlbumTemplate(data: Album) {
   const pageTitle =
@@ -47,6 +51,16 @@ export default function AlbumTemplate(data: Album) {
             url: `${SITE_URL}/album/${data.slug}`
           })}
         />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(
+              buildBreadcrumbListJsonLd(
+                buildAlbumBreadcrumbItems(data, pageTitle)
+              )
+            )
+          }}
+        />
       </Head>
       <NextSeo
         title={`${pageTitle} | Bandas de 1 Álbum`}
@@ -56,7 +70,7 @@ export default function AlbumTemplate(data: Album) {
           data?.released ? new Date(data.released).getFullYear().toString() : ''
         }.`}
         openGraph={{
-          type: 'website',
+          type: 'music.album',
           url: `${SITE_URL}/album/${data.slug}`,
           images: [
             {

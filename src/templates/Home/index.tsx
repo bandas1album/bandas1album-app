@@ -10,6 +10,10 @@ import type { GetAlbumsResponse } from '@/api/Albums/GetAlbums/types'
 import { useEffect, useRef } from 'react'
 import PageHeader from '@/components/PageHeader'
 import { SITE_URL, absoluteUrl } from '@/lib/seo/site'
+import {
+  buildAlbumItemListJsonLd,
+  flattenAlbumPages
+} from '@/lib/seo/structuredData'
 
 export type HomeTemplateProps = {
   initialPage: GetAlbumsResponse
@@ -74,6 +78,17 @@ export default function HomeTemplate({ initialPage }: HomeTemplateProps) {
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify(SITE_STRUCTURED_DATA)
+          }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(
+              buildAlbumItemListJsonLd(
+                flattenAlbumPages(initialPage),
+                'Bandas de 1 Álbum'
+              )
+            )
           }}
         />
       </Head>

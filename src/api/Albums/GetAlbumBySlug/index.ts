@@ -16,7 +16,8 @@ export const getAlbumBySlug = async (slug: string) => {
     throw new Error('Failed to fetch album')
   }
 
-  return res.json() as Promise<Album>
+  const album = (await res.json()) as Album
+  return { ...album, slug }
 }
 
 export const useGetAlbumBySlug = (

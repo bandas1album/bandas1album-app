@@ -10,6 +10,12 @@ import {
   useGetAlbums
 } from '@/api/Albums/GetAlbums'
 import { SITE_URL, absoluteUrl } from '@/lib/seo/site'
+import {
+  buildAlbumItemListJsonLd,
+  buildBreadcrumbListJsonLd,
+  buildCategoryBreadcrumbItems,
+  flattenAlbumPages
+} from '@/lib/seo/structuredData'
 
 export type CategoryTemplateProps = {
   category: string
@@ -78,11 +84,32 @@ export default function CategoryTemplate({
       'Bandas e artistas que lançaram apenas um álbum na carreira.'
 
   const canonicalUrl = `${SITE_URL}${path}`
+  const listName = meta?.context?.title
+    ? `${meta.context.page} › ${meta.context.title}`
+    : undefined
 
   return (
     <>
       <Head>
         <title>{pageTitle}</title>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(
+              buildBreadcrumbListJsonLd(
+                buildCategoryBreadcrumbItems(meta, path)
+              )
+            )
+          }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(
+              buildAlbumItemListJsonLd(flattenAlbumPages(initialPage), listName)
+            )
+          }}
+        />
       </Head>
       <NextSeo
         title={pageTitle}

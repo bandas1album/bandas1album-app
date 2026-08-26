@@ -16,6 +16,7 @@ function isNotFoundError(error: unknown): boolean {
 }
 
 type PageProps = {
+  slug: string
   album: Album
 }
 
@@ -29,20 +30,24 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async (
   const album = await fetchAlbumBySlug(slug)
   if (!album) return { notFound: true }
 
-  return { props: { album } }
+  return { props: { slug, album: { ...album, slug } } }
 }
 
-export default function PageAlbum({ album: ssrAlbum }: PageProps) {
+export default function PageAlbum({ slug, album: ssrAlbum }: PageProps) {
   const router = useRouter()
   const slugFromQuery =
     typeof router.query.slug === 'string' ? router.query.slug : ''
-  const slug = slugFromQuery || ssrAlbum.slug
+  const resolvedSlug = slugFromQuery || slug || ssrAlbum.slug
 
-  const { data, isPending, isError, error } = useGetAlbumBySlug(slug, ssrAlbum)
+  const { data, isPending, isError, error } = useGetAlbumBySlug(
+    resolvedSlug,
+    ssrAlbum
+  )
 
-  const resolved = data ?? (ssrAlbum.slug === slug ? ssrAlbum : undefined)
+  const resolved =
+    data ?? (ssrAlbum.slug === resolvedSlug ? ssrAlbum : undefined)
 
-  if (!slug) {
+  if (!resolvedSlug) {
     return (
       <>
         <Head>

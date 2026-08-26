@@ -10,7 +10,8 @@ export async function fetchAlbumBySlug(slug: string): Promise<Album | null> {
   if (res.status === 404) return null
   if (!res.ok) throw new Error(`Album fetch failed: ${res.status}`)
 
-  return res.json() as Promise<Album>
+  const album = (await res.json()) as Album
+  return { ...album, slug }
 }
 
 async function fetchAlbumsPage(page: number): Promise<GetAlbumsResponse> {
