@@ -1,10 +1,19 @@
 import ListAlbums from '@/components/ListAlbums'
 import Head from 'next/head'
 import { NextSeo } from 'next-seo'
-import { useGetAlbums } from '@/api/Albums/GetAlbums'
+import {
+  HOME_ALBUMS_PARAMS,
+  toAlbumsInfiniteData,
+  useGetAlbums
+} from '@/api/Albums/GetAlbums'
+import type { GetAlbumsResponse } from '@/api/Albums/GetAlbums/types'
 import { useEffect, useRef } from 'react'
 import PageHeader from '@/components/PageHeader'
 import { SITE_URL, absoluteUrl } from '@/lib/seo/site'
+
+export type HomeTemplateProps = {
+  initialPage: GetAlbumsResponse
+}
 
 const SITE_STRUCTURED_DATA = {
   '@context': 'https://schema.org',
@@ -25,18 +34,15 @@ const SITE_STRUCTURED_DATA = {
   }
 }
 
-export default function HomeTemplate() {
+export default function HomeTemplate({ initialPage }: HomeTemplateProps) {
   const loadMoreRef = useRef<HTMLDivElement | null>(null)
   const {
     data: albums,
     fetchNextPage,
     isFetchingNextPage,
     hasNextPage
-  } = useGetAlbums({
-    pageParam: 1,
-    per_page: 99,
-    order_by: 'date',
-    order: 'DESC'
+  } = useGetAlbums(HOME_ALBUMS_PARAMS, {
+    initialData: toAlbumsInfiniteData(initialPage)
   })
 
   useEffect(() => {

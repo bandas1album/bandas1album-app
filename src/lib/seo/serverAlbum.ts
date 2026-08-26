@@ -40,6 +40,21 @@ async function fetchMenuPage(
   return res.json() as Promise<GetMenuResponse>
 }
 
+/** First page of the home album listing (matches client list params). */
+export async function fetchAlbumsFirstPage(): Promise<GetAlbumsResponse> {
+  const params = new URLSearchParams({
+    page: '1',
+    per_page: '99',
+    order_by: 'date',
+    order: 'DESC',
+    category: 'undefined',
+    slug: 'undefined'
+  })
+  const res = await fetch(`${apiBaseUrl}/api/albums?${params}`)
+  if (!res.ok) throw new Error(`Albums list failed: ${res.status}`)
+  return res.json() as Promise<GetAlbumsResponse>
+}
+
 /** First page of taxonomy listing (genre / country / year). */
 export async function fetchCategoryFirstPage(
   category: string,

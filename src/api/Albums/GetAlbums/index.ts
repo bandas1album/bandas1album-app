@@ -1,8 +1,22 @@
-import { useInfiniteQuery } from '@tanstack/react-query'
+import { InfiniteData, useInfiniteQuery } from '@tanstack/react-query'
 import { GetAlbumsResponse } from './types'
 import { PaginationParams } from '../../types/Pagination'
 
 import { apiBaseUrl } from '@/lib/apiBaseUrl'
+
+export const HOME_ALBUMS_PARAMS: PaginationParams = {
+  pageParam: 1,
+  per_page: 99,
+  order_by: 'date',
+  order: 'DESC'
+}
+
+export const toAlbumsInfiniteData = (
+  page: GetAlbumsResponse
+): InfiniteData<GetAlbumsResponse, number> => ({
+  pages: [page],
+  pageParams: [1]
+})
 
 const getAlbums = async ({
   pageParam,
@@ -28,7 +42,7 @@ const getAlbums = async ({
   return res.json() as Promise<GetAlbumsResponse>
 }
 
-const albumsListQueryKey = (params: PaginationParams) =>
+export const albumsListQueryKey = (params: PaginationParams) =>
   [
     'albums',
     {
@@ -44,7 +58,14 @@ const albumsListQueryKey = (params: PaginationParams) =>
     }
   ] as const
 
-export const useGetAlbums = (params: PaginationParams) => {
+type UseGetAlbumsOptions = {
+  initialData?: InfiniteData<GetAlbumsResponse, number>
+}
+
+export const useGetAlbums = (
+  params: PaginationParams,
+  options?: UseGetAlbumsOptions
+) => {
   return useInfiniteQuery({
     queryKey: albumsListQueryKey(params),
     queryFn: ({ pageParam = 1 }) => getAlbums({ ...params, pageParam }),
@@ -57,8 +78,8 @@ export const useGetAlbums = (params: PaginationParams) => {
 
       return undefined
     },
-
     initialPageParam: 1,
-    enabled: true
+    initialData: options?.initialData,
+    staleTime: 60 * 1000
   })
 }

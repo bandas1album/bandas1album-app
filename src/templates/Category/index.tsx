@@ -3,12 +3,18 @@ import Head from 'next/head'
 import { NextSeo } from 'next-seo'
 import PageHeader from '@/components/PageHeader'
 import { GetAlbumsResponse } from '@/api/Albums/GetAlbums/types'
-import { useRouter } from 'next/router'
-import { useEffect, useRef, useState } from 'react'
-import { useGetAlbums } from '@/api/Albums/GetAlbums'
+import { useEffect, useRef } from 'react'
+import {
+  HOME_ALBUMS_PARAMS,
+  toAlbumsInfiniteData,
+  useGetAlbums
+} from '@/api/Albums/GetAlbums'
 import { SITE_URL, absoluteUrl } from '@/lib/seo/site'
 
 export type CategoryTemplateProps = {
+  category: string
+  slug: string
+  initialPage: GetAlbumsResponse
   initialSeo?: {
     title: string
     description: string
@@ -17,26 +23,24 @@ export type CategoryTemplateProps = {
 }
 
 export default function CategoryTemplate({
+  category,
+  slug,
+  initialPage,
   initialSeo
 }: CategoryTemplateProps) {
-  const { query } = useRouter()
   const loadMoreRef = useRef<HTMLDivElement | null>(null)
-  const [meta, setMeta] = useState<GetAlbumsResponse['meta'] | null>(null)
   const {
-    data: category,
+    data: categoryData,
     fetchNextPage,
     isFetchingNextPage,
     hasNextPage
-  } = useGetAlbums({
-    pageParam: 1,
-    per_page: 99,
-    order_by: 'date',
-    order: 'DESC',
-    taxonomy: {
-      category: query.category as string,
-      slug: query.slug as string
-    }
-  })
+  } = useGetAlbums(
+    {
+      ...HOME_ALBUMS_PARAMS,
+      taxonomy: { category, slug }
+    },
+    { initialData: toAlbumsInfiniteData(initialPage) }
+  )
 
   useEffect(() => {
     if (!loadMoreRef.current) return
@@ -59,18 +63,10 @@ export default function CategoryTemplate({
     return () => observer.disconnect()
   }, [fetchNextPage, hasNextPage, isFetchingNextPage])
 
-  useEffect(() => {
-    const lastItem = category?.pages[category?.pages.length - 1]
+  const meta =
+    categoryData?.pages[categoryData.pages.length - 1]?.meta ?? initialPage.meta
 
-    if (lastItem) {
-      setMeta(lastItem?.meta)
-    }
-  }, [category])
-
-  const path =
-    typeof query.category === 'string' && typeof query.slug === 'string'
-      ? `/${query.category}/${query.slug}`
-      : initialSeo?.canonicalPath ?? '/'
+  const path = initialSeo?.canonicalPath ?? `/${category}/${slug}`
 
   const pageTitle = meta?.context?.title
     ? `${meta.context.title} ‹ ${meta.context.page} | Bandas de 1 Álbum`
@@ -104,7 +100,7 @@ export default function CategoryTemplate({
           ]
         }}
       />
-      {category?.pages ? (
+      {categoryData?.pages?.length ? (
         <>
           {meta?.context?.title && (
             <PageHeader>
@@ -112,7 +108,7 @@ export default function CategoryTemplate({
             </PageHeader>
           )}
 
-          <ListAlbums albums={category} />
+          <ListAlbums albums={categoryData} />
         </>
       ) : (
         <p>Nenhum álbum foi encontrado.</p>

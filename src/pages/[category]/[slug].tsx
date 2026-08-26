@@ -1,19 +1,35 @@
 import type { GetServerSideProps } from 'next'
+import type { GetAlbumsResponse } from '@/api/Albums/GetAlbums/types'
 import CategoryTemplate from '@/templates/Category'
 import { fetchCategoryFirstPage } from '@/lib/seo/serverAlbum'
 
 const VALID_CATEGORIES = new Set(['genre', 'country', 'year'])
 
 export type CategoryPageProps = {
+  category: string
+  slug: string
   initialSeo: {
     title: string
     description: string
     canonicalPath: string
   }
+  initialPage: GetAlbumsResponse
 }
 
-export default function PageCategory({ initialSeo }: CategoryPageProps) {
-  return <CategoryTemplate initialSeo={initialSeo} />
+export default function PageCategory({
+  category,
+  slug,
+  initialSeo,
+  initialPage
+}: CategoryPageProps) {
+  return (
+    <CategoryTemplate
+      category={category}
+      slug={slug}
+      initialSeo={initialSeo}
+      initialPage={initialPage}
+    />
+  )
 }
 
 export const getServerSideProps: GetServerSideProps<CategoryPageProps> = async (
@@ -45,6 +61,9 @@ export const getServerSideProps: GetServerSideProps<CategoryPageProps> = async (
 
     return {
       props: {
+        category,
+        slug,
+        initialPage: data,
         initialSeo: {
           title,
           description,
