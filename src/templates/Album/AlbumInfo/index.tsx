@@ -168,12 +168,13 @@ export default function AlbumInfo({
         <InfosTag>
           <Pricetag />
           {genre?.map((item, index) => (
-            <>
-              <Link key={`genre-${index}`} href={`/genre/${item?.slug}`}>
-                {decodeBrokenUnicode(item?.title)}
-                {index + 1 < genre.length && ', '}
-              </Link>
-            </>
+            <Link
+              key={item?.slug ?? `genre-${index}`}
+              href={`/genre/${item?.slug}`}
+            >
+              {decodeBrokenUnicode(item?.title)}
+              {index + 1 < genre.length && ', '}
+            </Link>
           ))}
         </InfosTag>
       </InfosTags>
