@@ -109,7 +109,7 @@ ${normalize}
 }
 
 
-html,body, #__next {
+html, body, #__next, #__next > div {
   height: 100%;
   overflow: hidden;
 }

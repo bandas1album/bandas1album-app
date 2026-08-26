@@ -1,5 +1,6 @@
 import Document, {
   DocumentContext,
+  Head,
   Html,
   Main,
   NextScript
@@ -37,6 +38,7 @@ export default class MyDocument extends Document {
   render() {
     return (
       <Html lang="pt-BR">
+        <Head />
         <body data-theme="dark">
           <Main />
           <NextScript />
