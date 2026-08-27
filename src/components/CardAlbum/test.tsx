@@ -37,6 +37,8 @@ describe('<CardAlbum />', () => {
       />
     )
 
-    expect(screen.getByRole('link').getAttribute('href')).toEqual('/album/4-cabeca')
+    expect(screen.getByRole('link').getAttribute('href')).toEqual(
+      '/album/4-cabeca'
+    )
   })
 })
