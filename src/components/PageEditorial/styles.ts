@@ -1,9 +1,10 @@
 import styled, { css } from 'styled-components'
 
 export const Wrapper = styled.section<{ $variant: 'intro' | 'content' }>`
-  padding: 16px 32px 0;
-  color: var(--color-light);
-  background-color: var(--color-primary-400);
+  padding: 8px 24px;
+  color: var(--color-primary-800);
+  background-color: var(--color-primary-300);
+  text-align: center;
 
   p {
     margin: 0 0 1em;
