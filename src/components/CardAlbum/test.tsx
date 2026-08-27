@@ -24,8 +24,8 @@ describe('<CardAlbum />', () => {
       />
     )
 
-    expect(screen.getByRole('img').getAttribute('src')).toContain(
-      'url=https%3A%2F%2Fcdn.host.com%2F4-cabeca.png'
+    expect(screen.getByRole('img').getAttribute('src')).toMatch(
+      /4-cabeca\.png/
     )
   })
 

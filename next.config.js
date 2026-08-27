@@ -40,6 +40,9 @@ module.exports = withPWA({
     ]
   },
   images: {
+    // Capas já vêm redimensionadas do WP (thumbnail/large). Evita
+    // Image Optimization da Vercel (limite free: 5k transformations/mês).
+    unoptimized: true,
     domains: [
       'res.cloudinary.com',
       'bandas1album-api.test',
