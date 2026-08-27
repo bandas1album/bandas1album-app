@@ -23,3 +23,22 @@ export const HeaderTitle = styled.h1`
     font-size: 18px;
   }
 `
+
+export const Playlists = styled.nav`
+  display: flex;
+  gap: 8px;
+`
+
+export const PlaylistLink = styled.a`
+  color: var(--color-light);
+
+  &:hover,
+  &:focus-visible {
+    opacity: .8;
+  }
+
+  svg {
+    width: 32px;
+    height: 32px;
+  }
+`

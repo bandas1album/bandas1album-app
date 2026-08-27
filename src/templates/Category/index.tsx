@@ -71,7 +71,8 @@ export default function CategoryTemplate({
 
   const pageDescription = getCategorySeoDescription(meta)
   const introContent = getCategoryIntro(meta)
-
+  const playlists = meta?.context?.playlists
+  
   const canonicalUrl = `${SITE_URL}${path}`
   const listName = meta?.context?.title
     ? `${meta.context.page} › ${meta.context.title}`
@@ -119,12 +120,13 @@ export default function CategoryTemplate({
       {categoryData?.pages?.length ? (
         <>
           {meta?.context?.title && (
-            <PageHeader>
+            <PageHeader playlists={playlists}>
               {meta?.context?.page} › {meta?.context?.title}
             </PageHeader>
           )}
 
           <PageEditorial content={introContent} variant="intro" />
+
           <ListAlbums albums={categoryData} />
         </>
       ) : (
