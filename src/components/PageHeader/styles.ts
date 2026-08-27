@@ -22,6 +22,7 @@ export const HeaderTitle = styled.h1`
 export const Playlists = styled.nav`
   display: flex;
   gap: 8px;
+  min-width: 32px;
 `
 
 export const PlaylistLink = styled.a`
