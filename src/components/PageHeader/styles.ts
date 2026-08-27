@@ -34,7 +34,7 @@ export const PlaylistLink = styled.a`
 
   &:hover,
   &:focus-visible {
-    opacity: .8;
+    opacity: 0.8;
   }
 
   svg {
