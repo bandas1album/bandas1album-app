@@ -15,6 +15,22 @@ module.exports = withPWA({
   eslint: {
     dirs: ['src']
   },
+  async redirects() {
+    return [
+      {
+        source: '/genero/:slug',
+        destination: '/genre/:slug',
+        permanent: true
+      },
+      {
+        // Old album URLs were /{slug}; keep reserved app paths out of the catch-all.
+        source:
+          '/:slug((?!album|genre|country|year|genero|api|_next|favicon|undefined|sw\\.js|robots\\.txt|manifest\\.json|logo\\.svg|workbox-)[^/]+)',
+        destination: '/album/:slug',
+        permanent: true
+      }
+    ]
+  },
   async rewrites() {
     return [
       {

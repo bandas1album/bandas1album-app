@@ -29,10 +29,12 @@ const getAlbums = async ({
     page: String(pageParam),
     per_page: String(per_page),
     order_by: String(order_by),
-    order: String(order),
-    category: String(taxonomy?.category),
-    slug: String(taxonomy?.slug)
+    order: String(order)
   })
+  if (taxonomy?.category && taxonomy?.slug) {
+    params.set('category', taxonomy.category)
+    params.set('slug', taxonomy.slug)
+  }
   const res = await fetch(`${apiBaseUrl}/api/albums?${params.toString()}`)
 
   if (!res.ok) {

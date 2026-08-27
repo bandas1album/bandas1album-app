@@ -153,26 +153,31 @@ export default function AlbumInfo({
         </InfosArtist>
       </InfosHeader>
       <InfosTags>
-        <InfosTag>
-          <CalendarClear />
-          <Link href={`/year/${year}`}>{year}</Link>
-        </InfosTag>
-        <InfosTag>
-          <Location />
-          <Link href={`/country/${country?.slug}`}>{country?.title}</Link>
-        </InfosTag>
-        <InfosTag>
-          <Pricetag />
-          {genre?.map((item, index) => (
-            <Link
-              key={item?.slug ?? `genre-${index}`}
-              href={`/genre/${item?.slug}`}
-            >
-              {decodeBrokenUnicode(item?.title)}
-              {index + 1 < genre.length && ', '}
-            </Link>
-          ))}
-        </InfosTag>
+        {year ? (
+          <InfosTag>
+            <CalendarClear />
+            <Link href={`/year/${year}`}>{year}</Link>
+          </InfosTag>
+        ) : null}
+        {country?.slug ? (
+          <InfosTag>
+            <Location />
+            <Link href={`/country/${country.slug}`}>{country.title}</Link>
+          </InfosTag>
+        ) : null}
+        {genre?.length ? (
+          <InfosTag>
+            <Pricetag />
+            {genre
+              .filter((item) => item?.slug)
+              .map((item, index, items) => (
+                <Link key={item.slug} href={`/genre/${item.slug}`}>
+                  {decodeBrokenUnicode(item?.title)}
+                  {index + 1 < items.length && ', '}
+                </Link>
+              ))}
+          </InfosTag>
+        ) : null}
       </InfosTags>
     </Infos>
   )

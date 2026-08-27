@@ -11,7 +11,7 @@ export type CategoryPageProps = {
   slug: string
   initialSeo: {
     title: string
-    description: string
+    description?: string
     canonicalPath: string
   }
   initialPage: GetAlbumsResponse
@@ -42,7 +42,9 @@ export const getServerSideProps: GetServerSideProps<CategoryPageProps> = async (
   if (
     typeof category !== 'string' ||
     typeof slug !== 'string' ||
-    !VALID_CATEGORIES.has(category)
+    !VALID_CATEGORIES.has(category) ||
+    !slug ||
+    slug === 'undefined'
   ) {
     return { notFound: true }
   }

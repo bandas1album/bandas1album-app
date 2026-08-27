@@ -19,9 +19,7 @@ async function fetchAlbumsPage(page: number): Promise<GetAlbumsResponse> {
     page: String(page),
     per_page: '100',
     order_by: 'date',
-    order: 'DESC',
-    category: 'undefined',
-    slug: 'undefined'
+    order: 'DESC'
   })
   const res = await fetch(`${apiBaseUrl}/api/albums?${params}`)
   if (!res.ok) throw new Error(`Albums list failed: ${res.status}`)
@@ -47,9 +45,7 @@ export async function fetchAlbumsFirstPage(): Promise<GetAlbumsResponse> {
     page: '1',
     per_page: '99',
     order_by: 'date',
-    order: 'DESC',
-    category: 'undefined',
-    slug: 'undefined'
+    order: 'DESC'
   })
   const res = await fetch(`${apiBaseUrl}/api/albums?${params}`)
   if (!res.ok) throw new Error(`Albums list failed: ${res.status}`)

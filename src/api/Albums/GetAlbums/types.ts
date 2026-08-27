@@ -6,7 +6,7 @@ export type ListingPageContext = {
   page: string
   title: string
   slug: string
-  /** WP meta description — rendered as intro paragraph on category pages. */
+  /** Generated meta description — SEO + intro on category pages. */
   description?: string
 }
 
@@ -16,7 +16,7 @@ export type GetAlbumsResponse = {
     context?: ListingPageContext
     /** WP editor content — rendered on the home page. */
     content?: string
-    /** WP meta description — used for home SEO when provided. */
+    /** Optional home SEO description (frontend has a fallback). */
     description?: string
     pagination: {
       page: number

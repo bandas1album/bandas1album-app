@@ -25,7 +25,7 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async (
 ) => {
   const raw = context.params?.slug
   const slug = typeof raw === 'string' ? raw.trim() : ''
-  if (!slug) return { notFound: true }
+  if (!slug || slug === 'undefined') return { notFound: true }
 
   const album = await fetchAlbumBySlug(slug)
   if (!album) return { notFound: true }

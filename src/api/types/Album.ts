@@ -30,6 +30,7 @@ export type Album = {
   slug: string
   title: string
   description?: string
+  meta_description?: string
   cover: string
   artist?: string
   genres?: AlbumGenre[]

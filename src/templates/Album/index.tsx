@@ -65,11 +65,7 @@ export default function AlbumTemplate(data: Album) {
       </Head>
       <NextSeo
         title={`${pageTitle} | Bandas de 1 Álbum`}
-        description={`Ouça agora o álbum de ${data?.genres?.[0]?.title} "${
-          data?.title
-        }", único disco lançado por ${data?.artist} em ${
-          data?.released ? new Date(data.released).getFullYear().toString() : ''
-        }.`}
+        description={data?.meta_description}
         openGraph={{
           type: 'music.album',
           url: `${SITE_URL}/album/${data.slug}`,

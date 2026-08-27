@@ -56,17 +56,19 @@ export default function TabsMenu() {
             onScroll={(e) => handleScroll(e.target, () => getAlbumsNextPage())}
           >
             {albums?.pages?.map((page) =>
-              page.data?.map((album) => (
-                <li key={album.slug}>
-                  <Link prefetch={false} href={`/album/${album?.slug}`}>
-                    <CardMenu
-                      image={album.cover || ''}
-                      title={album.title || ''}
-                      subtitle={album?.artist || ''}
-                    />
-                  </Link>
-                </li>
-              ))
+              page.data
+                ?.filter((album) => album.slug)
+                .map((album) => (
+                  <li key={album.slug}>
+                    <Link prefetch={false} href={`/album/${album.slug}`}>
+                      <CardMenu
+                        image={album.cover || ''}
+                        title={album.title || ''}
+                        subtitle={album?.artist || ''}
+                      />
+                    </Link>
+                  </li>
+                ))
             )}
           </Submenu>
         </details>

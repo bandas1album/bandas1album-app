@@ -29,7 +29,7 @@ export type CategoryTemplateProps = {
   initialPage: GetAlbumsResponse
   initialSeo?: {
     title: string
-    description: string
+    description?: string
     canonicalPath: string
   }
 }
