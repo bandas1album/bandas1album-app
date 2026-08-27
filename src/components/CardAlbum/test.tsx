@@ -24,9 +24,7 @@ describe('<CardAlbum />', () => {
       />
     )
 
-    expect(screen.getByRole('img').getAttribute('src')).toMatch(
-      /4-cabeca\.png/
-    )
+    expect(screen.getByRole('img').getAttribute('src')).toMatch(/4-cabeca\.png/)
   })
 
   it('should has album link', () => {
@@ -39,8 +37,6 @@ describe('<CardAlbum />', () => {
       />
     )
 
-    expect(screen.getByRole('link').getAttribute('href')).toEqual(
-      '/album/4-cabeca'
-    )
+    expect(screen.getByRole('link').getAttribute('href')).toEqual('/album/4-cabeca')
   })
 })

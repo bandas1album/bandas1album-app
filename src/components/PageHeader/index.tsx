@@ -13,8 +13,6 @@ export default function PageHeader({
   hideBack?: boolean
   playlists?: ListingPagePlaylists
 }) {
-  const hasPlaylists = Boolean(playlists?.spotify || playlists?.youtube)
-
   return (
     <Header>
       {!hideBack && <ButtonBack></ButtonBack>}

@@ -10,10 +10,7 @@ import {
   useGetAlbums
 } from '@/api/Albums/GetAlbums'
 import { SITE_URL, absoluteUrl } from '@/lib/seo/site'
-import {
-  getCategoryIntro,
-  getCategorySeoDescription
-} from '@/lib/seo/listingMeta'
+import { getCategorySeoDescription } from '@/lib/seo/listingMeta'
 import {
   buildAlbumItemListJsonLd,
   buildBreadcrumbListJsonLd,
@@ -69,7 +66,6 @@ export default function CategoryTemplate({
     : initialSeo?.title ?? 'Bandas de 1 Álbum'
 
   const pageDescription = getCategorySeoDescription(meta)
-  const introContent = getCategoryIntro(meta)
   const playlists = meta?.context?.playlists
   const canonicalUrl = `${SITE_URL}${path}`
   const listName = meta?.context?.title
