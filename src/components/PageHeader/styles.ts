@@ -4,16 +4,11 @@ export const Header = styled.header`
   position: relative;
   display: flex;
   align-items: center;
+  justify-content: space-between;
   flex: none;
   height: 64px;
-  padding-left: 64px;
-  padding-right: 16px;
+  padding: 0 16px;
   background-color: var(--color-primary-400);
-
-  @media (min-width: 376px) {
-    padding-left: 0;
-    justify-content: center;
-  }
 `
 
 export const HeaderTitle = styled.h1`
