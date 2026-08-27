@@ -9,6 +9,7 @@ export const Header = styled.header`
   height: 64px;
   padding: 0 16px;
   background-color: var(--color-primary-400);
+  text-align: center;
 `
 
 export const HeaderTitle = styled.h1`

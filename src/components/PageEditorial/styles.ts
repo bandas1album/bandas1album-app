@@ -5,6 +5,7 @@ export const Wrapper = styled.section<{ $variant: 'intro' | 'content' }>`
   color: var(--color-primary-800);
   background-color: var(--color-primary-300);
   text-align: center;
+  display: none;
 
   p {
     margin: 0 0 1em;

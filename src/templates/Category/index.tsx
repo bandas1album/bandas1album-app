@@ -2,7 +2,6 @@ import ListAlbums from '@/components/ListAlbums'
 import Head from 'next/head'
 import { NextSeo } from 'next-seo'
 import PageHeader from '@/components/PageHeader'
-import PageEditorial from '@/components/PageEditorial'
 import { GetAlbumsResponse } from '@/api/Albums/GetAlbums/types'
 import { useRef } from 'react'
 import {
@@ -123,8 +122,6 @@ export default function CategoryTemplate({
               {meta?.context?.page} › {meta?.context?.title}
             </PageHeader>
           )}
-
-          <PageEditorial content={introContent} variant="intro" />
 
           <ListAlbums albums={categoryData} />
         </>
