@@ -12,6 +12,11 @@ export const Header = styled.header`
   text-align: center;
 `
 
+export const HeaderActions = styled.div`
+  width: 32px;
+  height: 32px;
+`
+
 export const HeaderTitle = styled.h1`
   font-size: 14px;
 

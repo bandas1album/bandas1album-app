@@ -23,9 +23,10 @@ module.exports = withPWA({
         permanent: true
       },
       {
-        // Old album URLs were /{slug}; keep reserved app paths out of the catch-all.
+        // Old album URLs were /{slug}. Only redirect album-like slugs so static
+        // files (sitemap.xml, robots.txt, sw.js, etc.) are not caught.
         source:
-          '/:slug((?!album|genre|country|year|genero|api|_next|favicon|undefined|sw\\.js|robots\\.txt|manifest\\.json|logo\\.svg|workbox-)[^/]+)',
+          '/:slug((?!album|genre|country|year|genero|api|_next|favicon|undefined|sitemap)[a-zA-Z0-9][a-zA-Z0-9_-]*)',
         destination: '/album/:slug',
         permanent: true
       }
