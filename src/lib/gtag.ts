@@ -24,11 +24,9 @@ export function sanitizeAnalyticsPath(pathOrUrl: string): string {
         : 'https://bandas1album.com.br'
     const url = new URL(pathOrUrl, base)
 
-    for (const key of [...url.searchParams.keys()]) {
-      if (SENSITIVE_QUERY_KEYS.has(key.toLowerCase())) {
-        url.searchParams.delete(key)
-      }
-    }
+    SENSITIVE_QUERY_KEYS.forEach((key) => {
+      url.searchParams.delete(key)
+    })
 
     const search = url.searchParams.toString()
     return `${url.pathname}${search ? `?${search}` : ''}${url.hash}`
