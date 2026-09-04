@@ -40,6 +40,10 @@ export const TabsItem = styled.div<{ $opened: boolean }>`
   transition: 0.2s transform ease, 0.2s opacity ease;
   transform: translateY(50%);
 
+  &[hidden] {
+    display: none;
+  }
+
   ${(props) =>
     props.$opened &&
     `

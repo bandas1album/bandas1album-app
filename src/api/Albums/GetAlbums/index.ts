@@ -6,7 +6,7 @@ import { apiBaseUrl } from '@/lib/apiBaseUrl'
 
 export const HOME_ALBUMS_PARAMS: PaginationParams = {
   pageParam: 1,
-  per_page: 99,
+  per_page: 30,
   order_by: 'date',
   order: 'DESC'
 }

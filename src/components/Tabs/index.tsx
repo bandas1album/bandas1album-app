@@ -12,6 +12,9 @@ import { useEffect, useState } from 'react'
 import TabsMenu from './Menu'
 import { gaEvent } from '@/lib/gtag'
 
+const SEARCH_PANEL_ID = 'tabs-panel-search'
+const MENU_PANEL_ID = 'tabs-panel-menu'
+
 export default function Tabs() {
   const [openedTabs, setOpenedTabs] = useState({
     state: false,
@@ -50,19 +53,34 @@ export default function Tabs() {
     }
   }, [])
 
+  useEffect(() => {
+    if (!openedTabs.state) return
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setOpenedTabs({ state: false, tab: '' })
+      }
+    }
+
+    document.addEventListener('keydown', onKeyDown)
+    return () => document.removeEventListener('keydown', onKeyDown)
+  }, [openedTabs.state])
+
   return (
     <TabsPanel>
       <TabsItem
+        id={SEARCH_PANEL_ID}
         aria-label="Aba de busca"
-        aria-expanded={isOpenedSearch ? true : false}
-        $opened={isOpenedSearch ? true : false}
+        hidden={!isOpenedSearch}
+        $opened={isOpenedSearch}
       >
         <TabsSearch focus={isOpenedSearch} />
       </TabsItem>
       <TabsItem
+        id={MENU_PANEL_ID}
         aria-label="Aba de menu"
-        aria-expanded={isOpenedMenu ? true : false}
-        $opened={isOpenedMenu ? true : false}
+        hidden={!isOpenedMenu}
+        $opened={isOpenedMenu}
       >
         <TabsMenu />
       </TabsItem>
@@ -71,6 +89,8 @@ export default function Tabs() {
           aria-label={
             isOpenedSearch ? 'Fechar aba de busca' : 'Abrir aba de busca'
           }
+          aria-controls={SEARCH_PANEL_ID}
+          aria-expanded={isOpenedSearch}
           onClick={() => {
             const closing = openedTabs.tab === 'search' && openedTabs.state
             if (!closing) {
@@ -99,6 +119,8 @@ export default function Tabs() {
         </Link>
         <TabsButton
           aria-label={isOpenedMenu ? 'Fechar aba de menu' : 'Abrir aba de menu'}
+          aria-controls={MENU_PANEL_ID}
+          aria-expanded={isOpenedMenu}
           onClick={() => {
             const closing = openedTabs.tab === 'menu' && openedTabs.state
             if (!closing) {

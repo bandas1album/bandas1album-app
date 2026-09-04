@@ -37,7 +37,7 @@ export const AvatarEdit = styled.button`
   }
 `
 
-export const Name = styled.h2`
+export const Name = styled.p`
   margin: 0 auto 8px;
   font-size: 1.5rem;
 `

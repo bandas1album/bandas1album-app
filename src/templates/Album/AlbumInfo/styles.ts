@@ -90,7 +90,7 @@ export const InfosTitle = styled.h2`
   font-weight: 600;
 `
 
-export const InfosArtist = styled.h2`
+export const InfosArtist = styled.p`
   margin: 0;
   font-size: 1rem;
   font-weight: 500;

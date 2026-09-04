@@ -107,7 +107,12 @@ export default function HomeTemplate({ initialPage }: HomeTemplateProps) {
       <>
         <PageHeader hideBack={true}>Bandas de 1 Álbum</PageHeader>
         <PageEditorial content={editorialContent} variant="content" />
-        <ListAlbums albums={albums} />
+        <ListAlbums
+          albums={albums}
+          hasNextPage={hasNextPage}
+          isFetchingNextPage={isFetchingNextPage}
+          onLoadMore={() => fetchNextPage()}
+        />
         <div ref={loadMoreRef} />
       </>
     </>

@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import { Button } from '@/styles/resets'
 
 export const List = styled.ul`
   display: grid;
@@ -16,3 +17,28 @@ export const List = styled.ul`
 `
 
 export const Loading = styled.div``
+
+export const LoadMore = styled.div`
+  display: flex;
+  justify-content: center;
+  padding: 16px 8px 32px;
+`
+
+export const LoadMoreButton = styled(Button)`
+  min-width: 160px;
+  height: 48px;
+  padding: 0 24px;
+  font-weight: 600;
+  border-radius: 8px;
+  color: var(--color-light);
+  background-color: var(--color-primary-500);
+
+  &:hover:not(:disabled) {
+    background-color: var(--color-primary-300);
+  }
+
+  &:disabled {
+    background-color: rgba(0 0 0 / 25%);
+    color: var(--color-light);
+  }
+`

@@ -124,7 +124,7 @@ export const AuthForm = styled.form`
   }
 `
 
-export const FormTitle = styled.h1`
+export const FormTitle = styled.h2`
   margin: 0;
   font-size: 1.5rem;
 `
@@ -222,7 +222,7 @@ export const ViewSuccess = styled.div`
   box-sizing: border-box;
 `
 
-export const ViewTitle = styled.h1`
+export const ViewTitle = styled.h2`
   margin: 0 auto 24px;
   text-align: center;
   font-size: 1.25rem;
@@ -230,7 +230,7 @@ export const ViewTitle = styled.h1`
   line-height: 1.2;
 `
 
-export const ViewSubtitle = styled.h1`
+export const ViewSubtitle = styled.p`
   margin: 0 auto 24px;
   text-align: center;
   font-size: 1rem;

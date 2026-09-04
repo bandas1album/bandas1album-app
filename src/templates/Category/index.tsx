@@ -120,7 +120,12 @@ export default function CategoryTemplate({
             </PageHeader>
           )}
 
-          <ListAlbums albums={categoryData} />
+          <ListAlbums
+            albums={categoryData}
+            hasNextPage={hasNextPage}
+            isFetchingNextPage={isFetchingNextPage}
+            onLoadMore={() => fetchNextPage()}
+          />
         </>
       ) : (
         <p>Nenhum álbum foi encontrado.</p>

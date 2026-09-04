@@ -43,7 +43,7 @@ async function fetchMenuPage(
 export async function fetchAlbumsFirstPage(): Promise<GetAlbumsResponse> {
   const params = new URLSearchParams({
     page: '1',
-    per_page: '99',
+    per_page: '30',
     order_by: 'date',
     order: 'DESC'
   })
@@ -59,7 +59,7 @@ export async function fetchCategoryFirstPage(
 ): Promise<GetAlbumsResponse | null> {
   const params = new URLSearchParams({
     page: '1',
-    per_page: '99',
+    per_page: '30',
     order_by: 'date',
     order: 'DESC',
     category,

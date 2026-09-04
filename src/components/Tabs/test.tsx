@@ -24,63 +24,95 @@ describe('<Tabs/>', () => {
   it('should open tab search on clicking search icon', async () => {
     renderTabs()
 
-    fireEvent.click(screen.getByLabelText('Abrir aba de busca'))
+    const openButton = screen.getByLabelText('Abrir aba de busca')
+    expect(openButton.getAttribute('aria-controls')).toEqual(
+      'tabs-panel-search'
+    )
+    expect(openButton.getAttribute('aria-expanded')).toEqual('false')
 
-    const tab = await screen.getByLabelText('Aba de busca')
+    fireEvent.click(openButton)
 
-    expect(tab.getAttribute('aria-expanded')).toEqual('true')
+    const tab = screen.getByLabelText('Aba de busca')
+    expect(tab).not.toHaveAttribute('hidden')
+    expect(screen.getByLabelText('Fechar aba de busca').getAttribute('aria-expanded')).toEqual(
+      'true'
+    )
   })
 
   it('should close tab search on clicking search icon', async () => {
     renderTabs()
 
     fireEvent.click(screen.getByLabelText('Abrir aba de busca'))
-
     fireEvent.click(screen.getByLabelText('Fechar aba de busca'))
 
-    const tab = await screen.getByLabelText('Aba de busca')
-
-    expect(tab.getAttribute('aria-expanded')).toEqual('false')
+    expect(screen.getByLabelText('Abrir aba de busca').getAttribute('aria-expanded')).toEqual(
+      'false'
+    )
+    expect(document.getElementById('tabs-panel-search')).toHaveAttribute('hidden')
   })
 
   it('should open tab menu on clicking menu icon', async () => {
     renderTabs()
 
-    fireEvent.click(screen.getByLabelText('Abrir aba de menu'))
+    const openButton = screen.getByLabelText('Abrir aba de menu')
+    expect(openButton.getAttribute('aria-controls')).toEqual('tabs-panel-menu')
 
-    const tab = await screen.getByLabelText('Aba de menu')
+    fireEvent.click(openButton)
 
-    expect(tab.getAttribute('aria-expanded')).toEqual('true')
+    const tab = screen.getByLabelText('Aba de menu')
+    expect(tab).not.toHaveAttribute('hidden')
+    expect(screen.getByLabelText('Fechar aba de menu').getAttribute('aria-expanded')).toEqual(
+      'true'
+    )
   })
 
   it('should close tab menu on clicking menu icon', async () => {
     renderTabs()
 
     fireEvent.click(screen.getByLabelText('Abrir aba de menu'))
-
     fireEvent.click(screen.getByLabelText('Fechar aba de menu'))
 
-    const tab = await screen.getByLabelText('Aba de menu')
-
-    expect(tab.getAttribute('aria-expanded')).toEqual('false')
+    expect(screen.getByLabelText('Abrir aba de menu').getAttribute('aria-expanded')).toEqual(
+      'false'
+    )
+    expect(document.getElementById('tabs-panel-menu')).toHaveAttribute('hidden')
   })
 
   it('should close search tab on clicking logo', async () => {
     renderTabs()
 
+    fireEvent.click(screen.getByLabelText('Abrir aba de busca'))
     fireEvent.click(screen.getByLabelText('Voltar para a homepage'))
 
-    const tabSearch = await screen.getByLabelText('Aba de menu')
-    expect(tabSearch.getAttribute('aria-expanded')).toEqual('false')
+    expect(screen.getByLabelText('Abrir aba de busca').getAttribute('aria-expanded')).toEqual(
+      'false'
+    )
   })
 
   it('should close menu tab on clicking logo', async () => {
     renderTabs()
 
+    fireEvent.click(screen.getByLabelText('Abrir aba de menu'))
     fireEvent.click(screen.getByLabelText('Voltar para a homepage'))
 
-    const tabMenu = await screen.getByLabelText('Aba de menu')
+    expect(screen.getByLabelText('Abrir aba de menu').getAttribute('aria-expanded')).toEqual(
+      'false'
+    )
+  })
 
-    expect(tabMenu.getAttribute('aria-expanded')).toEqual('false')
+  it('should close open tab on Escape', () => {
+    renderTabs()
+
+    fireEvent.click(screen.getByLabelText('Abrir aba de busca'))
+    expect(screen.getByLabelText('Fechar aba de busca').getAttribute('aria-expanded')).toEqual(
+      'true'
+    )
+
+    fireEvent.keyDown(document, { key: 'Escape' })
+
+    expect(screen.getByLabelText('Abrir aba de busca').getAttribute('aria-expanded')).toEqual(
+      'false'
+    )
+    expect(document.getElementById('tabs-panel-search')).toHaveAttribute('hidden')
   })
 })
