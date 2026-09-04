@@ -86,6 +86,8 @@ export const useGetAlbums = (
     initialPageParam: 1,
     initialData: options?.initialData,
     initialDataUpdatedAt: options?.initialData ? Date.now() : undefined,
-    staleTime: 60 * 1000
+    staleTime: options?.initialData ? 60 * 60 * 1000 : 60 * 1000,
+    refetchOnMount: false,
+    refetchOnWindowFocus: false
   })
 }

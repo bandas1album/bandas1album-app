@@ -146,8 +146,7 @@ export const AuthInfo = styled.p`
   text-align: center;
   overflow-wrap: anywhere;
 
-  a,
-  span {
+  a {
     color: rgba(0 0 0 / 40%);
     text-decoration: underline;
     cursor: pointer;
@@ -156,6 +155,33 @@ export const AuthInfo = styled.p`
       text-decoration: none;
     }
   }
+`
+
+export const InlineLink = styled.button`
+  display: inline;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: rgba(0 0 0 / 40%);
+  font: inherit;
+  text-decoration: underline;
+  cursor: pointer;
+
+  &:hover {
+    text-decoration: none;
+  }
+`
+
+export const DialogTitle = styled.h2`
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 `
 
 export const AuthMessage = styled.div`

@@ -1,7 +1,10 @@
-import type { GetServerSideProps } from 'next'
+import type { GetStaticPaths, GetStaticProps } from 'next'
 import type { GetAlbumsResponse } from '@/api/Albums/GetAlbums/types'
 import CategoryTemplate from '@/templates/Category'
-import { fetchCategoryFirstPage } from '@/lib/seo/serverAlbum'
+import {
+  fetchAllCategoryPaths,
+  fetchCategoryFirstPage
+} from '@/lib/seo/serverAlbum'
 import { getCategorySeoDescription } from '@/lib/seo/listingMeta'
 
 const VALID_CATEGORIES = new Set(['genre', 'country', 'year'])
@@ -33,7 +36,22 @@ export default function PageCategory({
   )
 }
 
-export const getServerSideProps: GetServerSideProps<CategoryPageProps> = async (
+export const getStaticPaths: GetStaticPaths = async () => {
+  try {
+    const paths = await fetchAllCategoryPaths()
+    return {
+      paths: paths.map(({ category, slug }) => ({
+        params: { category, slug }
+      })),
+      fallback: 'blocking'
+    }
+  } catch (e) {
+    console.error('[category paths]', e)
+    return { paths: [], fallback: 'blocking' }
+  }
+}
+
+export const getStaticProps: GetStaticProps<CategoryPageProps> = async (
   ctx
 ) => {
   const category = ctx.params?.category
@@ -70,10 +88,11 @@ export const getServerSideProps: GetServerSideProps<CategoryPageProps> = async (
           description,
           canonicalPath: `/${category}/${slug}`
         }
-      }
+      },
+      revalidate: 3600
     }
   } catch (e) {
-    console.error('[category ssr]', e)
+    console.error('[category isr]', e)
     return { notFound: true }
   }
 }

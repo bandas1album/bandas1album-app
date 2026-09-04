@@ -1,13 +1,15 @@
-/** @type {import('next').NextConfig} */
+import withSerwistInit from '@serwist/next'
+
 const isProd = process.env.NODE_ENV === 'production'
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const withPWA = require('next-pwa')({
-  dest: 'public',
+const withSerwist = withSerwistInit({
+  swSrc: 'src/sw.ts',
+  swDest: 'public/sw.js',
   disable: !isProd
 })
 
-module.exports = withPWA({
+/** @type {import('next').NextConfig} */
+const nextConfig = {
   reactStrictMode: true,
   compiler: {
     styledComponents: true
@@ -63,11 +65,13 @@ module.exports = withPWA({
     // Capas já vêm redimensionadas do WP (thumbnail/large). Evita
     // Image Optimization da Vercel (limite free: 5k transformations/mês).
     unoptimized: true,
-    domains: [
-      'res.cloudinary.com',
-      'bandas1album-api.test',
-      'api.bandas1album.com.br',
-      'secure.gravatar.com'
+    remotePatterns: [
+      { protocol: 'https', hostname: 'res.cloudinary.com' },
+      { protocol: 'https', hostname: 'api.bandas1album.com.br' },
+      { protocol: 'https', hostname: 'secure.gravatar.com' },
+      { protocol: 'http', hostname: 'bandas1album-api.test' }
     ]
   }
-})
+}
+
+export default withSerwist(nextConfig)

@@ -17,10 +17,17 @@ import { TResetPasswordParams } from '@/api/Auth/ResetPassword/types'
 import { Close } from '@styled-icons/ionicons-solid'
 import Image from 'next/image'
 import { gaEvent } from '@/lib/gtag'
+import { useEffect, useId, useRef } from 'react'
+
+const FOCUSABLE =
+  'a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])'
 
 export const AuthModal = () => {
   const { login } = useAuth()
   const { isOpen, open, view, close } = useAuthUI()
+  const titleId = useId()
+  const drawerRef = useRef<HTMLElement | null>(null)
+  const previousFocus = useRef<HTMLElement | null>(null)
   const {
     mutateAsync: mutateLogin,
     isPending: loginIsPending,
@@ -51,6 +58,54 @@ export const AuthModal = () => {
     isSuccess: resetIsSuccess,
     reset: resetReset
   } = useResetPassword()
+
+  useEffect(() => {
+    if (!isOpen) return
+
+    previousFocus.current = document.activeElement as HTMLElement | null
+    const drawer = drawerRef.current
+    const focusables = drawer
+      ? Array.from(drawer.querySelectorAll<HTMLElement>(FOCUSABLE)).filter(
+          (el) => !el.hasAttribute('disabled') && el.offsetParent !== null
+        )
+      : []
+
+    focusables[0]?.focus()
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        event.preventDefault()
+        close()
+        return
+      }
+
+      if (event.key !== 'Tab' || !drawer) return
+
+      const items = Array.from(
+        drawer.querySelectorAll<HTMLElement>(FOCUSABLE)
+      ).filter((el) => !el.hasAttribute('disabled') && el.offsetParent !== null)
+
+      if (items.length === 0) return
+
+      const first = items[0]
+      const last = items[items.length - 1]
+      const active = document.activeElement as HTMLElement | null
+
+      if (event.shiftKey && active === first) {
+        event.preventDefault()
+        last.focus()
+      } else if (!event.shiftKey && active === last) {
+        event.preventDefault()
+        first.focus()
+      }
+    }
+
+    document.addEventListener('keydown', onKeyDown)
+    return () => {
+      document.removeEventListener('keydown', onKeyDown)
+      previousFocus.current?.focus?.()
+    }
+  }, [isOpen, close, view])
 
   const handleLogin = async (form: TGenerateTokenParams) => {
     try {
@@ -92,16 +147,38 @@ export const AuthModal = () => {
     <S.AuthOverlay>
       <S.OpenButton
         aria-label="Abrir modal de login"
+        aria-expanded={isOpen}
+        aria-controls="auth-drawer"
         onClick={() => {
           gaEvent('open_auth_modal', { trigger: 'floating_button' })
           open('login')
         }}
       ></S.OpenButton>
 
-      <S.AuthDrawer $open={isOpen}>
-        <S.CloseModal onClick={() => close()}>
+      <S.AuthDrawer
+        id="auth-drawer"
+        ref={drawerRef}
+        $open={isOpen}
+        role="dialog"
+        aria-modal={isOpen}
+        aria-labelledby={titleId}
+        aria-hidden={!isOpen}
+      >
+        <S.CloseModal type="button" aria-label="Fechar" onClick={() => close()}>
           <Close />
         </S.CloseModal>
+
+        <S.DialogTitle id={titleId}>
+          {view === 'profile'
+            ? 'Sua conta'
+            : view === 'signup'
+            ? 'Criar conta'
+            : view === 'lost'
+            ? 'Recuperar senha'
+            : view === 'reset'
+            ? 'Nova senha'
+            : 'Entrar'}
+        </S.DialogTitle>
 
         {['login', 'signup', 'lost', 'reset'].includes(view) && (
           <Image
@@ -157,8 +234,10 @@ export const AuthModal = () => {
             Bandas de 1 Álbum é um projeto sem fins lucrativos dedicado a
             preservar e dar visibilidade a bandas e artistas que lançaram apenas
             um álbum, mantendo essas obras acessíveis para quem ama música.{' '}
-            <span onClick={() => open('signup')}>Crie sua conta</span> para
-            sugerir novas pérolas e{' '}
+            <S.InlineLink type="button" onClick={() => open('signup')}>
+              Crie sua conta
+            </S.InlineLink>{' '}
+            para sugerir novas pérolas e{' '}
             <a
               href="https://nubank.com.br/pagar/4tc3b/eSpPDeBif2"
               target="_blank"

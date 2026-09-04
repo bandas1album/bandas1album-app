@@ -4,7 +4,6 @@ import AlbumInfo from './AlbumInfo'
 import { jsonLdScriptProps } from 'react-schemaorg'
 import { MusicAlbum } from 'schema-dts'
 import AlbumTracklist from './AlbumTracklist'
-import DisqusComments from '@/components/DisqusComments'
 import { NextSeo } from 'next-seo'
 import { decodeBrokenUnicode } from '@/utils/decodeUnicode'
 import { AlbumUserActions } from './AlbumUserActions'
@@ -18,6 +17,12 @@ import {
   safeJsonLdStringify
 } from '@/lib/seo/structuredData'
 import AlbumDescription from './AlbumDescription'
+import dynamic from 'next/dynamic'
+
+const DisqusComments = dynamic(() => import('@/components/DisqusComments'), {
+  ssr: false,
+  loading: () => null
+})
 
 export default function AlbumTemplate(data: Album) {
   const pageTitle =

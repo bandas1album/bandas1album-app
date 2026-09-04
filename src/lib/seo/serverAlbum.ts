@@ -136,6 +136,47 @@ function menuPagesToSitemapUrls(
   return out
 }
 
+/** Collect album slugs for ISR paths. */
+export async function fetchAllAlbumSlugs(): Promise<string[]> {
+  const pages = await fetchAllAlbumPages()
+  const slugs: string[] = []
+  for (const body of pages) {
+    for (const album of body.data ?? []) {
+      if (album?.slug) slugs.push(album.slug)
+    }
+  }
+  return slugs
+}
+
+/** Collect category ISR paths (genre / country / year). */
+export async function fetchAllCategoryPaths(): Promise<
+  Array<{ category: string; slug: string }>
+> {
+  const [genrePages, countryPages, yearPages] = await Promise.all([
+    fetchAllMenuPages('genre'),
+    fetchAllMenuPages('country'),
+    fetchAllMenuPages('released')
+  ])
+
+  const paths: Array<{ category: string; slug: string }> = []
+  for (const body of genrePages) {
+    for (const item of body.data ?? []) {
+      if (item?.slug) paths.push({ category: 'genre', slug: item.slug })
+    }
+  }
+  for (const body of countryPages) {
+    for (const item of body.data ?? []) {
+      if (item?.slug) paths.push({ category: 'country', slug: item.slug })
+    }
+  }
+  for (const body of yearPages) {
+    for (const item of body.data ?? []) {
+      if (item?.slug) paths.push({ category: 'year', slug: item.slug })
+    }
+  }
+  return paths
+}
+
 /** Collect indexable paths for sitemap (paths only, leading slash). */
 export async function collectSitemapPaths(): Promise<SitemapUrl[]> {
   const [albumPages, genrePages, countryPages, yearPages] = await Promise.all([

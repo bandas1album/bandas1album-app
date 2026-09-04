@@ -32,6 +32,9 @@ export const useGetAlbumBySlug = (
     queryFn: () => getAlbumBySlug(slug),
     enabled: Boolean(slug),
     initialData: initialMatches ? initialFromServer : undefined,
-    initialDataUpdatedAt: initialMatches ? Date.now() : undefined
+    initialDataUpdatedAt: initialMatches ? Date.now() : undefined,
+    staleTime: initialMatches ? Infinity : 60 * 1000,
+    refetchOnMount: !initialMatches,
+    refetchOnWindowFocus: false
   })
 }

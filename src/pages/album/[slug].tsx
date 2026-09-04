@@ -1,6 +1,6 @@
-import type { GetServerSideProps } from 'next'
+import type { GetStaticPaths, GetStaticProps } from 'next'
 import type { Album } from '@/api/types/Album'
-import { fetchAlbumBySlug } from '@/lib/seo/serverAlbum'
+import { fetchAlbumBySlug, fetchAllAlbumSlugs } from '@/lib/seo/serverAlbum'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import AlbumTemplate from '@/templates/Album'
@@ -20,17 +20,36 @@ type PageProps = {
   album: Album
 }
 
-export const getServerSideProps: GetServerSideProps<PageProps> = async (
-  context
-) => {
+export const getStaticPaths: GetStaticPaths = async () => {
+  try {
+    const slugs = await fetchAllAlbumSlugs()
+    return {
+      paths: slugs.map((slug) => ({ params: { slug } })),
+      fallback: 'blocking'
+    }
+  } catch (e) {
+    console.error('[album paths]', e)
+    return { paths: [], fallback: 'blocking' }
+  }
+}
+
+export const getStaticProps: GetStaticProps<PageProps> = async (context) => {
   const raw = context.params?.slug
   const slug = typeof raw === 'string' ? raw.trim() : ''
   if (!slug || slug === 'undefined') return { notFound: true }
 
-  const album = await fetchAlbumBySlug(slug)
-  if (!album) return { notFound: true }
+  try {
+    const album = await fetchAlbumBySlug(slug)
+    if (!album) return { notFound: true }
 
-  return { props: { slug, album: { ...album, slug } } }
+    return {
+      props: { slug, album: { ...album, slug } },
+      revalidate: 3600
+    }
+  } catch (e) {
+    console.error('[album isr]', e)
+    return { notFound: true }
+  }
 }
 
 export default function PageAlbum({ slug, album: ssrAlbum }: PageProps) {
@@ -58,8 +77,16 @@ export default function PageAlbum({ slug, album: ssrAlbum }: PageProps) {
     )
   }
 
-  if (!router.isReady && !resolved) {
-    return null
+  if (router.isFallback || (!router.isReady && !resolved)) {
+    return (
+      <>
+        <Head>
+          <title>Carregando… | Bandas de 1 Álbum</title>
+          <meta name="robots" content="noindex,follow" />
+        </Head>
+        <p>Carregando…</p>
+      </>
+    )
   }
 
   if (isPending && !resolved) {
