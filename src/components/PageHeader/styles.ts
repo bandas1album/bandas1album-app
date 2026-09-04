@@ -18,6 +18,7 @@ export const HeaderActions = styled.div`
 `
 
 export const HeaderTitle = styled.h1`
+  flex: 1;
   font-size: 14px;
 
   @media (min-width: 768px) {
