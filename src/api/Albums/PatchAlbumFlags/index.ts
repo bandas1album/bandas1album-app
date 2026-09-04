@@ -10,6 +10,7 @@ export const patchAlbumFlags = async ({
 }: TPatchAlbumFlagsParams) => {
   const res = await fetch(`${apiBaseUrl}/api/album/${id}/${type}`, {
     method: 'PATCH',
+    credentials: 'omit',
     headers: {
       Authorization: `Bearer ${token}`
     }

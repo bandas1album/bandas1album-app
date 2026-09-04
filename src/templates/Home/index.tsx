@@ -15,7 +15,8 @@ import { SITE_URL, absoluteUrl } from '@/lib/seo/site'
 import { getHomeContent, getHomeSeoDescription } from '@/lib/seo/listingMeta'
 import {
   buildAlbumItemListJsonLd,
-  flattenAlbumPages
+  flattenAlbumPages,
+  safeJsonLdStringify
 } from '@/lib/seo/structuredData'
 
 export type HomeTemplateProps = {
@@ -69,13 +70,13 @@ export default function HomeTemplate({ initialPage }: HomeTemplateProps) {
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
-            __html: JSON.stringify(SITE_STRUCTURED_DATA)
+            __html: safeJsonLdStringify(SITE_STRUCTURED_DATA)
           }}
         />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
-            __html: JSON.stringify(
+            __html: safeJsonLdStringify(
               buildAlbumItemListJsonLd(
                 flattenAlbumPages(initialPage),
                 'Bandas de 1 Álbum'

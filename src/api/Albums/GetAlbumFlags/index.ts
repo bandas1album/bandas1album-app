@@ -9,6 +9,7 @@ export const getAlbumFlags = async ({
   token
 }: TGetAlbumFlagsParams) => {
   const res = await fetch(`${apiBaseUrl}/api/album/${id}/${type}`, {
+    credentials: 'omit',
     headers: {
       Authorization: `Bearer ${token}`
     }

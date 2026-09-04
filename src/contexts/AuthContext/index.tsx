@@ -5,12 +5,14 @@ import {
   useEffect,
   useState
 } from 'react'
+import { useQueryClient } from '@tanstack/react-query'
 import { AuthState } from './types'
 import { useGetUser } from '@/api/Auth/GetUser'
 
 const AuthContext = createContext<AuthState | undefined>(undefined)
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
+  const queryClient = useQueryClient()
   const [token, setToken] = useState<string | null>(null)
   const {
     data: user,
@@ -30,7 +32,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const logout = useCallback(() => {
     setToken(null)
     localStorage.removeItem('@bandas1album/token')
-  }, [])
+    queryClient.removeQueries({ queryKey: ['user'] })
+    queryClient.removeQueries({ queryKey: ['album-flags'] })
+  }, [queryClient])
 
   useEffect(() => {
     if (error) {
@@ -38,20 +42,20 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   }, [error, logout])
 
-  const login = (token: string) => {
-    setToken(token)
-    localStorage.setItem('@bandas1album/token', token)
+  const login = (nextToken: string) => {
+    setToken(nextToken)
+    localStorage.setItem('@bandas1album/token', nextToken)
   }
 
   return (
     <AuthContext.Provider
       value={{
         token,
-        user: user ?? null,
+        user: token ? user ?? null : null,
         refetchUser,
         login,
         logout,
-        isAuthenticated: !!user,
+        isAuthenticated: !!token && !!user,
         isLoading
       }}
     >

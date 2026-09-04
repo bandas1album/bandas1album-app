@@ -25,8 +25,7 @@ export const AuthLostPassword = ({
 }: TLostPassword) => {
   const { open } = useAuthUI()
   const [form, setForm] = useState<TLostPasswordParams>({
-    login: '',
-    url: window.location.origin
+    login: ''
   })
 
   return (

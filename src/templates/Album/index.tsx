@@ -14,7 +14,8 @@ import type { Album } from '@/api/types/Album'
 import { SITE_URL, absoluteUrl } from '@/lib/seo/site'
 import {
   buildAlbumBreadcrumbItems,
-  buildBreadcrumbListJsonLd
+  buildBreadcrumbListJsonLd,
+  safeJsonLdStringify
 } from '@/lib/seo/structuredData'
 import AlbumDescription from './AlbumDescription'
 
@@ -55,7 +56,7 @@ export default function AlbumTemplate(data: Album) {
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
-            __html: JSON.stringify(
+            __html: safeJsonLdStringify(
               buildBreadcrumbListJsonLd(
                 buildAlbumBreadcrumbItems(data, pageTitle)
               )

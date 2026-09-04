@@ -8,7 +8,6 @@ import {
 } from '@styled-icons/ionicons-solid'
 import { useState, useEffect } from 'react'
 import { TResetPasswordParams } from '@/api/Auth/ResetPassword/types'
-import { useRouter } from 'next/router'
 import { useAuthUI } from '@/contexts/AuthUIContext'
 
 type TResetPassword = {
@@ -28,21 +27,21 @@ export const AuthResetPassword = ({
   message,
   reset
 }: TResetPassword) => {
-  const { open } = useAuthUI()
-  const router = useRouter()
+  const { open, resetCredentials, clearResetCredentials } = useAuthUI()
   const [form, setForm] = useState<TResetPasswordParams>({
-    key: router.query.key as string,
-    login: router.query.login as string,
+    key: resetCredentials?.key || '',
+    login: resetCredentials?.login || '',
     password: ''
   })
 
   useEffect(() => {
+    if (!resetCredentials) return
     setForm((fields) => ({
       ...fields,
-      key: router.query.key as string,
-      login: router.query.login as string
+      key: resetCredentials.key,
+      login: resetCredentials.login
     }))
-  }, [router])
+  }, [resetCredentials])
 
   return (
     <>
@@ -54,6 +53,7 @@ export const AuthResetPassword = ({
           </S.ViewSubtitle>
           <ButtonFull
             onClick={() => {
+              clearResetCredentials()
               reset()
               open('login')
             }}
@@ -85,7 +85,7 @@ export const AuthResetPassword = ({
           ></Input>
           <ButtonFull
             type="submit"
-            disabled={isSubmitting}
+            disabled={isSubmitting || !form.key || !form.login}
             label={isSubmitting ? 'Criando...' : 'Criar nova senha'}
           ></ButtonFull>
           <ButtonFull

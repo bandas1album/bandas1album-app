@@ -9,6 +9,7 @@ export const generateToken = async (params: TGenerateTokenParams) => {
 
   const res = await fetch(`${apiBaseUrl}/jwt-auth/v1/token`, {
     method: 'POST',
+    credentials: 'omit',
     body
   })
 

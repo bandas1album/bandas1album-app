@@ -4,6 +4,7 @@ import { TGetUserResponse } from './types'
 
 export const getUser = async (token: string) => {
   const res = await fetch(`${apiBaseUrl}/api/user`, {
+    credentials: 'omit',
     headers: {
       Authorization: `Bearer ${token}`
     }
@@ -18,7 +19,7 @@ export const getUser = async (token: string) => {
 
 export const useGetUser = (token: string | null) => {
   return useQuery({
-    queryKey: ['user'],
+    queryKey: ['user', token],
     queryFn: () => getUser(token as string),
     enabled: !!token,
     staleTime: 1000 * 60 * 5

@@ -11,6 +11,7 @@ export const createUser = async (params: TCreateUserParams) => {
 
   const res = await fetch(`${apiBaseUrl}/api/user`, {
     method: 'POST',
+    credentials: 'omit',
     body
   })
 

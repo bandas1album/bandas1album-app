@@ -6,6 +6,37 @@ declare global {
   }
 }
 
+const SENSITIVE_QUERY_KEYS = new Set([
+  'key',
+  'rp_key',
+  'reset_key',
+  'login',
+  'token',
+  'password'
+])
+
+/** Strip auth/reset secrets before sending paths to analytics. */
+export function sanitizeAnalyticsPath(pathOrUrl: string): string {
+  try {
+    const base =
+      typeof window !== 'undefined'
+        ? window.location.origin
+        : 'https://bandas1album.com.br'
+    const url = new URL(pathOrUrl, base)
+
+    for (const key of [...url.searchParams.keys()]) {
+      if (SENSITIVE_QUERY_KEYS.has(key.toLowerCase())) {
+        url.searchParams.delete(key)
+      }
+    }
+
+    const search = url.searchParams.toString()
+    return `${url.pathname}${search ? `?${search}` : ''}${url.hash}`
+  } catch {
+    return pathOrUrl.split('?')[0] || '/'
+  }
+}
+
 function safeGtag(...args: unknown[]) {
   if (typeof window === 'undefined') return
   if (typeof window.gtag !== 'function') return
@@ -15,7 +46,7 @@ function safeGtag(...args: unknown[]) {
 // https://developers.google.com/analytics/devguides/collection/gtagjs/pages
 export const pageview = (path: string) => {
   safeGtag('config', GA_TRACKING_ID, {
-    page_path: path
+    page_path: sanitizeAnalyticsPath(path)
   })
 }
 

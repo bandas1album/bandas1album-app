@@ -15,7 +15,8 @@ import {
   buildAlbumItemListJsonLd,
   buildBreadcrumbListJsonLd,
   buildCategoryBreadcrumbItems,
-  flattenAlbumPages
+  flattenAlbumPages,
+  safeJsonLdStringify
 } from '@/lib/seo/structuredData'
 import { useInfiniteScrollLoadMore } from '@/hooks/useInfiniteScrollLoadMore'
 
@@ -79,7 +80,7 @@ export default function CategoryTemplate({
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
-            __html: JSON.stringify(
+            __html: safeJsonLdStringify(
               buildBreadcrumbListJsonLd(
                 buildCategoryBreadcrumbItems(meta, path)
               )
@@ -89,7 +90,7 @@ export default function CategoryTemplate({
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
-            __html: JSON.stringify(
+            __html: safeJsonLdStringify(
               buildAlbumItemListJsonLd(flattenAlbumPages(initialPage), listName)
             )
           }}

@@ -20,7 +20,7 @@ export default function App({ Component, pageProps }: AppProps) {
   const [queryClient] = useState(() => new QueryClient())
 
   useEffect(() => {
-    gtag.pageview(`${window.location.pathname}${window.location.search ?? ''}`)
+    gtag.pageview(window.location.pathname)
   }, [])
 
   useEffect(() => {

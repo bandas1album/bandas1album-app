@@ -27,7 +27,9 @@ import {
 import { Download } from '@styled-icons/ionicons-outline'
 import Link from 'next/link'
 import { decodeBrokenUnicode } from '@/utils/decodeUnicode'
+import { safeExternalUrl } from '@/utils/safeExternalUrl'
 import type { AlbumCountry, AlbumGenre, AlbumLinks } from '@/api/types/Album'
+import type { ReactNode } from 'react'
 
 type AlbumInfoProps = {
   title: string | undefined
@@ -37,6 +39,22 @@ type AlbumInfoProps = {
   genre: AlbumGenre[] | undefined
   social: AlbumLinks | undefined
 }
+
+type SocialLink = {
+  key: keyof AlbumLinks
+  title: string
+  icon: ReactNode
+}
+
+const SOCIAL_LINKS: SocialLink[] = [
+  { key: 'amazon', title: 'Amazon', icon: <Cart /> },
+  { key: 'deezer', title: 'Deezer', icon: <Deezer /> },
+  { key: 'download', title: 'Download', icon: <Download /> },
+  { key: 'lastfm', title: 'Last.fm', icon: <Lastfm /> },
+  { key: 'spotify', title: 'Spotify', icon: <Spotify /> },
+  { key: 'youtube', title: 'YouTube', icon: <Youtube /> },
+  { key: 'wikipedia', title: 'Wikipedia', icon: <WikipediaW /> }
+]
 
 export default function AlbumInfo({
   title,
@@ -53,97 +71,23 @@ export default function AlbumInfo({
           <PlayCircle />
         </InfosLinksButton>
         <InfosLinksList $opened={true}>
-          {social?.amazon ? (
-            <li>
-              <InfosLink
-                target="_blank"
-                href={social?.amazon || ''}
-                title="Amazon"
-              >
-                <Cart />
-              </InfosLink>
-            </li>
-          ) : (
-            ''
-          )}
-          {social?.deezer ? (
-            <li>
-              <InfosLink
-                target="_blank"
-                href={social?.deezer || ''}
-                title="Deezer"
-              >
-                <Deezer />
-              </InfosLink>
-            </li>
-          ) : (
-            ''
-          )}
-          {social?.download ? (
-            <li>
-              <InfosLink
-                target="_blank"
-                href={social?.download || ''}
-                title="Download"
-              >
-                <Download />
-              </InfosLink>
-            </li>
-          ) : (
-            ''
-          )}
-          {social?.lastfm ? (
-            <li>
-              <InfosLink
-                target="_blank"
-                href={social?.lastfm || ''}
-                title="Last.fm"
-              >
-                <Lastfm />
-              </InfosLink>
-            </li>
-          ) : (
-            ''
-          )}
-          {social?.spotify ? (
-            <li>
-              <InfosLink
-                target="_blank"
-                href={social?.spotify || ''}
-                title="Spotify"
-              >
-                <Spotify />
-              </InfosLink>
-            </li>
-          ) : (
-            ''
-          )}
-          {social?.youtube ? (
-            <li>
-              <InfosLink
-                target="_blank"
-                href={social?.youtube || ''}
-                title="YouTube"
-              >
-                <Youtube />
-              </InfosLink>
-            </li>
-          ) : (
-            ''
-          )}
-          {social?.wikipedia ? (
-            <li>
-              <InfosLink
-                target="_blank"
-                href={social?.wikipedia || ''}
-                title="Wikipedia"
-              >
-                <WikipediaW />
-              </InfosLink>
-            </li>
-          ) : (
-            ''
-          )}
+          {SOCIAL_LINKS.map(({ key, title: linkTitle, icon }) => {
+            const href = safeExternalUrl(social?.[key])
+            if (!href) return null
+
+            return (
+              <li key={key}>
+                <InfosLink
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  href={href}
+                  title={linkTitle}
+                >
+                  {icon}
+                </InfosLink>
+              </li>
+            )
+          })}
         </InfosLinksList>
       </InfosLinks>
       <InfosHeader>

@@ -3,20 +3,28 @@ import {
   useCallback,
   useContext,
   useEffect,
+  useRef,
   useState
 } from 'react'
-import { AuthUIContextType, AuthView } from './types'
+import { AuthUIContextType, AuthView, PasswordResetCredentials } from './types'
 import { AuthModal } from '@/components/AuthModal'
 import * as S from './styles'
 import { useAuth } from '../AuthContext'
 import { gaEvent } from '@/lib/gtag'
+import { useRouter } from 'next/router'
 
 const AuthUIContext = createContext<AuthUIContextType | null>(null)
 
+const RESET_QUERY_KEYS = ['key', 'rp_key', 'reset_key', 'login'] as const
+
 export const AuthUIProvider = ({ children }: { children: React.ReactNode }) => {
   const { token } = useAuth()
+  const router = useRouter()
+  const capturedReset = useRef(false)
   const [isOpen, setIsOpen] = useState(false)
   const [view, setView] = useState<AuthView>('login')
+  const [resetCredentials, setResetCredentials] =
+    useState<PasswordResetCredentials | null>(null)
 
   const open = useCallback(
     (nextView: AuthView = 'login') => {
@@ -27,6 +35,9 @@ export const AuthUIProvider = ({ children }: { children: React.ReactNode }) => {
   )
 
   const close = () => setIsOpen(false)
+  const clearResetCredentials = useCallback(() => {
+    setResetCredentials(null)
+  }, [])
 
   useEffect(() => {
     if (!token) {
@@ -35,14 +46,34 @@ export const AuthUIProvider = ({ children }: { children: React.ReactNode }) => {
   }, [token])
 
   useEffect(() => {
-    if (typeof window === 'undefined') return
-    const p = new URLSearchParams(window.location.search)
-    const hasResetKey = p.has('key') || p.has('rp_key') || p.has('reset_key')
-    if (hasResetKey) {
-      gaEvent('password_reset_open', { source: 'email_link' })
-      open('reset')
+    if (
+      typeof window === 'undefined' ||
+      !router.isReady ||
+      capturedReset.current
+    ) {
+      return
     }
-  }, [open])
+
+    const p = new URLSearchParams(window.location.search)
+    const key = p.get('key') || p.get('rp_key') || p.get('reset_key') || ''
+    const login = p.get('login') || ''
+
+    if (!key) return
+
+    capturedReset.current = true
+    setResetCredentials({ key, login })
+    gaEvent('password_reset_open', { source: 'email_link' })
+    open('reset')
+
+    // Drop reset secrets from the URL (history + analytics) after capturing.
+    const nextQuery = { ...router.query }
+    for (const q of RESET_QUERY_KEYS) {
+      delete nextQuery[q]
+    }
+    router.replace({ pathname: router.pathname, query: nextQuery }, undefined, {
+      shallow: true
+    })
+  }, [open, router])
 
   useEffect(() => {
     if (typeof window === 'undefined' || !isOpen) return
@@ -62,7 +93,17 @@ export const AuthUIProvider = ({ children }: { children: React.ReactNode }) => {
   }, [isOpen])
 
   return (
-    <AuthUIContext.Provider value={{ isOpen, view, open, close, setView }}>
+    <AuthUIContext.Provider
+      value={{
+        isOpen,
+        view,
+        open,
+        close,
+        setView,
+        resetCredentials,
+        clearResetCredentials
+      }}
+    >
       <S.AuthWrapper>
         <AuthModal />
         {children}

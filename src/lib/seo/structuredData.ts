@@ -3,6 +3,8 @@ import type { GetAlbumsResponse } from '@/api/Albums/GetAlbums/types'
 import type { Album } from '@/api/types/Album'
 import { absoluteUrl } from './site'
 
+export { safeJsonLdStringify } from './jsonLd'
+
 type BreadcrumbItem = {
   name: string
   url?: string

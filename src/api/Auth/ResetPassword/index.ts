@@ -10,6 +10,7 @@ export const resetPassword = async (params: TResetPasswordParams) => {
 
   const res = await fetch(`${apiBaseUrl}/api/auth/reset-password`, {
     method: 'POST',
+    credentials: 'omit',
     body
   })
 
