@@ -54,8 +54,9 @@ export default async function handler(
     paths.add(`/album/${slug}`)
   }
 
-  if (Array.isArray(body?.paths)) {
-    for (const path of body.paths) {
+  const extraPaths = body?.paths
+  if (Array.isArray(extraPaths)) {
+    for (const path of extraPaths) {
       if (typeof path !== 'string') continue
       const normalized = normalizePath(path)
       if (normalized) paths.add(normalized)
@@ -72,7 +73,7 @@ export default async function handler(
   const revalidated: string[] = []
   const failed: { path: string; error: string }[] = []
 
-  for (const path of paths) {
+  for (const path of Array.from(paths)) {
     try {
       await res.revalidate(path)
       revalidated.push(path)
