@@ -20,9 +20,9 @@ export type PlayerState = {
   currentIndex: number | null
   isPlaying: boolean
   progress: number
-  /** Segundos restantes da faixa ativa (YouTube getDuration - getCurrentTime). */
+  /** Segundos restantes da faixa ativa. */
   remainingSeconds: number | null
-  /** Host no lugar da capa (album page). null = desmonta o player YT. */
+  /** Host no lugar da capa (album page). null = desmonta o player. */
   registerPlayerHost: (element: HTMLElement | null) => void
   playAlbum: (album: Album) => void
   playAlbumTrack: (album: Album, trackIndex: number) => void
@@ -34,7 +34,6 @@ export type PlayerState = {
   isTrackActive: (albumSlug: string, trackIndex: number) => boolean
   isAlbumActive: (albumSlug: string) => boolean
   getTrackProgress: (albumSlug: string, trackIndex: number) => number
-  /** Tempo restante formatado na faixa ativa; null se não estiver tocando essa faixa. */
   getTrackRemainingLabel: (
     albumSlug: string,
     trackIndex: number
@@ -43,43 +42,3 @@ export type PlayerState = {
 }
 
 export type PlayableTrack = AlbumTrack & { youtube_id: string }
-
-declare global {
-  interface Window {
-    YT?: {
-      Player: new (
-        elementId: string | HTMLElement,
-        config: {
-          height?: string | number
-          width?: string | number
-          videoId?: string
-          playerVars?: Record<string, string | number>
-          events?: {
-            onReady?: (event: { target: YTPlayer }) => void
-            onStateChange?: (event: { data: number; target: YTPlayer }) => void
-          }
-        }
-      ) => YTPlayer
-      PlayerState: {
-        ENDED: number
-        PLAYING: number
-        PAUSED: number
-        BUFFERING: number
-        CUED: number
-      }
-    }
-    onYouTubeIframeAPIReady?: () => void
-  }
-}
-
-export type YTPlayer = {
-  destroy: () => void
-  loadVideoById: (videoId: string) => void
-  cueVideoById: (videoId: string) => void
-  playVideo: () => void
-  pauseVideo: () => void
-  getCurrentTime: () => number
-  getDuration: () => number
-  seekTo: (seconds: number, allowSeekAhead: boolean) => void
-  getPlayerState: () => number
-}

@@ -8,15 +8,30 @@ import {
   useState
 } from 'react'
 import type { Album } from '@/api/types/Album'
-import type {
-  PlayerAlbumMeta,
-  PlayerQueueTrack,
-  PlayerState,
-  YTPlayer
-} from './types'
+import type { PlayerAlbumMeta, PlayerQueueTrack, PlayerState } from './types'
 import { resolveTrackYouTubeId } from '@/utils/youtube'
+import type Plyr from 'plyr'
 
 const PlayerContext = createContext<PlayerState | undefined>(undefined)
+
+const PLYR_OPTIONS = {
+  controls: [] as string[],
+  clickToPlay: false,
+  hideControls: true,
+  keyboard: { focused: false, global: false },
+  tooltips: { controls: false, seek: false },
+  youtube: {
+    noCookie: false,
+    rel: 0,
+    showinfo: 0,
+    iv_load_policy: 3,
+    modestbranding: 1,
+    controls: 0,
+    fs: 0,
+    disablekb: 1,
+    playsinline: 1
+  }
+}
 
 export function buildQueue(album: Album): PlayerQueueTrack[] {
   return (album.tracklist ?? [])
@@ -42,29 +57,8 @@ export function formatPlayerClock(totalSeconds: number): string {
   return `${minutes}:${seconds.toString().padStart(2, '0')}`
 }
 
-function loadYouTubeApi(): Promise<void> {
-  if (typeof window === 'undefined') {
-    return Promise.resolve()
-  }
-
-  if (window.YT?.Player) {
-    return Promise.resolve()
-  }
-
-  return new Promise((resolve) => {
-    const previous = window.onYouTubeIframeAPIReady
-    window.onYouTubeIframeAPIReady = () => {
-      previous?.()
-      resolve()
-    }
-
-    if (!document.getElementById('youtube-iframe-api')) {
-      const script = document.createElement('script')
-      script.id = 'youtube-iframe-api'
-      script.src = 'https://www.youtube.com/iframe_api'
-      document.body.appendChild(script)
-    }
-  })
+function isValidYouTubeId(id: string): boolean {
+  return /^[a-zA-Z0-9_-]{11}$/.test(id)
 }
 
 export const PlayerProvider = ({ children }: { children: React.ReactNode }) => {
@@ -75,8 +69,9 @@ export const PlayerProvider = ({ children }: { children: React.ReactNode }) => {
   const [progress, setProgress] = useState(0)
   const [remainingSeconds, setRemainingSeconds] = useState<number | null>(null)
 
-  const playerRef = useRef<YTPlayer | null>(null)
+  const playerRef = useRef<Plyr | null>(null)
   const hostRef = useRef<HTMLElement | null>(null)
+  const targetRef = useRef<HTMLDivElement | null>(null)
   const queueRef = useRef<PlayerQueueTrack[]>([])
   const currentIndexRef = useRef<number | null>(null)
   const isPlayingRef = useRef(false)
@@ -85,6 +80,7 @@ export const PlayerProvider = ({ children }: { children: React.ReactNode }) => {
     null
   )
   const isReadyRef = useRef(false)
+  const loadedVideoIdRef = useRef<string | null>(null)
   const playAlbumTrackRef = useRef<
     ((album: Album, trackIndex: number) => void) | null
   >(null)
@@ -113,34 +109,52 @@ export const PlayerProvider = ({ children }: { children: React.ReactNode }) => {
     }
   }, [])
 
+  const syncProgressFromPlayer = useCallback(() => {
+    const player = playerRef.current
+    if (!player) return
+    const duration = player.duration
+    if (!duration || Number.isNaN(duration)) return
+    const current = player.currentTime
+    const remaining = Math.max(0, duration - current)
+    setProgress(Math.min(100, Math.max(0, (current / duration) * 100)))
+    setRemainingSeconds(remaining)
+  }, [])
+
   const startProgressTimer = useCallback(() => {
     clearProgressTimer()
     progressTimerRef.current = window.setInterval(() => {
-      const player = playerRef.current
-      if (!player) return
-      const duration = player.getDuration()
-      if (!duration || Number.isNaN(duration)) return
-      const current = player.getCurrentTime()
-      const remaining = Math.max(0, duration - current)
-      setProgress(Math.min(100, Math.max(0, (current / duration) * 100)))
-      setRemainingSeconds(remaining)
+      syncProgressFromPlayer()
     }, 250)
-  }, [clearProgressTimer])
+  }, [clearProgressTimer, syncProgressFromPlayer])
 
   const playQueueIndex = useCallback(
     (queueIndex: number) => {
       const next = queueRef.current[queueIndex]
       const player = playerRef.current
       if (!next || !player || !isReadyRef.current) return
+      if (!isValidYouTubeId(next.youtubeId)) return
 
       setCurrentIndex(queueIndex)
       setProgress(0)
       setRemainingSeconds(null)
-      if (!/^[a-zA-Z0-9_-]{11}$/.test(next.youtubeId)) return
-      player.loadVideoById(next.youtubeId)
-      player.playVideo()
-      setIsPlaying(true)
-      startProgressTimer()
+
+      if (loadedVideoIdRef.current === next.youtubeId) {
+        void player.play()
+        setIsPlaying(true)
+        startProgressTimer()
+        return
+      }
+
+      loadedVideoIdRef.current = next.youtubeId
+      player.source = {
+        type: 'video',
+        sources: [{ src: next.youtubeId, provider: 'youtube' }]
+      }
+      player.once('ready', () => {
+        void player.play()
+        setIsPlaying(true)
+        startProgressTimer()
+      })
     },
     [startProgressTimer]
   )
@@ -161,7 +175,8 @@ export const PlayerProvider = ({ children }: { children: React.ReactNode }) => {
     const index = currentIndexRef.current
     if (index == null) return
     if (index <= 0) {
-      playerRef.current?.seekTo(0, true)
+      const player = playerRef.current
+      if (player) player.currentTime = 0
       setProgress(0)
       return
     }
@@ -179,98 +194,107 @@ export const PlayerProvider = ({ children }: { children: React.ReactNode }) => {
     try {
       playerRef.current?.destroy()
     } catch {
-      // iframe já removido
+      // já destruído
     }
     playerRef.current = null
+    targetRef.current = null
     isReadyRef.current = false
+    loadedVideoIdRef.current = null
   }, [clearProgressTimer])
 
   const mountPlayerOnHost = useCallback(
-    (host: HTMLElement) => {
+    async (host: HTMLElement) => {
       const generation = ++createPlayerGenerationRef.current
 
       destroyPlayer()
       host.replaceChildren()
 
-      loadYouTubeApi().then(() => {
+      const { default: Plyr } = await import('plyr')
+      await import('plyr/dist/plyr.css')
+
+      if (
+        generation !== createPlayerGenerationRef.current ||
+        hostRef.current !== host
+      ) {
+        return
+      }
+
+      const current =
+        currentIndexRef.current != null
+          ? queueRef.current[currentIndexRef.current]
+          : null
+      const initialVideoId =
+        current?.youtubeId && isValidYouTubeId(current.youtubeId)
+          ? current.youtubeId
+          : undefined
+
+      const target = document.createElement('div')
+      target.dataset.plyrProvider = 'youtube'
+      if (initialVideoId) {
+        target.dataset.plyrEmbedId = initialVideoId
+        loadedVideoIdRef.current = initialVideoId
+      }
+      host.appendChild(target)
+      targetRef.current = target
+
+      const player = new Plyr(target, PLYR_OPTIONS)
+      playerRef.current = player
+
+      player.on('ready', () => {
         if (
-          cancelledGeneration(generation) ||
-          hostRef.current !== host ||
-          !window.YT?.Player
+          generation !== createPlayerGenerationRef.current ||
+          hostRef.current !== host
         ) {
           return
         }
+        isReadyRef.current = true
 
-        const current =
-          currentIndexRef.current != null
-            ? queueRef.current[currentIndexRef.current]
-            : null
+        const pending = pendingPlayRef.current
+        if (pending) {
+          pendingPlayRef.current = null
+          window.setTimeout(() => {
+            playAlbumTrackRef.current?.(pending.album, pending.trackIndex)
+          }, 0)
+          return
+        }
 
-        const initialVideoId =
-          current?.youtubeId && /^[a-zA-Z0-9_-]{11}$/.test(current.youtubeId)
-            ? current.youtubeId
-            : undefined
-
-        playerRef.current = new window.YT.Player(host, {
-          height: '100%',
-          width: '100%',
-          ...(initialVideoId ? { videoId: initialVideoId } : {}),
-          playerVars: {
-            autoplay: 0,
-            controls: 1,
-            rel: 0,
-            modestbranding: 1,
-            playsinline: 1
-          },
-          events: {
-            onReady: (event) => {
-              if (cancelledGeneration(generation) || hostRef.current !== host) {
-                return
-              }
-              isReadyRef.current = true
-
-              const pending = pendingPlayRef.current
-              if (pending) {
-                pendingPlayRef.current = null
-                window.setTimeout(() => {
-                  playAlbumTrackRef.current?.(pending.album, pending.trackIndex)
-                }, 0)
-                return
-              }
-
-              if (initialVideoId && isPlayingRef.current) {
-                event.target.playVideo()
-              }
-            },
-            onStateChange: (event) => {
-              const YT = window.YT
-              if (!YT) return
-
-              if (event.data === YT.PlayerState.ENDED) {
-                playNextRef.current()
-                return
-              }
-
-              if (event.data === YT.PlayerState.PLAYING) {
-                setIsPlaying(true)
-                startProgressTimerRef.current()
-                return
-              }
-
-              if (event.data === YT.PlayerState.PAUSED) {
-                setIsPlaying(false)
-                clearProgressTimerRef.current()
-              }
-            }
-          }
-        })
+        if (initialVideoId && isPlayingRef.current) {
+          void player.play()
+        }
       })
 
-      function cancelledGeneration(gen: number) {
-        return gen !== createPlayerGenerationRef.current
+      player.on('play', () => {
+        setIsPlaying(true)
+        startProgressTimerRef.current()
+      })
+
+      player.on('pause', () => {
+        setIsPlaying(false)
+        clearProgressTimerRef.current()
+        syncProgressFromPlayer()
+      })
+
+      player.on('ended', () => {
+        playNextRef.current()
+      })
+
+      player.on('timeupdate', () => {
+        syncProgressFromPlayer()
+      })
+
+      // Sem vídeo inicial, ainda assim marcamos ready após criar
+      if (!initialVideoId) {
+        isReadyRef.current = true
+        const pending = pendingPlayRef.current
+        if (pending) {
+          pendingPlayRef.current = null
+          window.setTimeout(() => {
+            playAlbumTrackRef.current?.(pending.album, pending.trackIndex)
+          }, 0)
+        }
       }
     },
-    [destroyPlayer]
+    [destroyPlayer, syncProgressFromPlayer]
   )
 
   const registerPlayerHost = useCallback(
@@ -284,7 +308,7 @@ export const PlayerProvider = ({ children }: { children: React.ReactNode }) => {
         return
       }
 
-      mountPlayerOnHost(element)
+      void mountPlayerOnHost(element)
     },
     [destroyPlayer, mountPlayerOnHost]
   )
@@ -318,14 +342,14 @@ export const PlayerProvider = ({ children }: { children: React.ReactNode }) => {
       }
 
       if (sameAlbum && currentIndexRef.current === queueIndex && isPlaying) {
-        playerRef.current.pauseVideo()
+        playerRef.current.pause()
         setIsPlaying(false)
         clearProgressTimer()
         return
       }
 
       if (sameAlbum && currentIndexRef.current === queueIndex && !isPlaying) {
-        playerRef.current.playVideo()
+        void playerRef.current.play()
         setIsPlaying(true)
         startProgressTimer()
         return
@@ -360,18 +384,18 @@ export const PlayerProvider = ({ children }: { children: React.ReactNode }) => {
     const player = playerRef.current
     if (!player || currentIndexRef.current == null) return
     if (isPlaying) {
-      player.pauseVideo()
+      player.pause()
       setIsPlaying(false)
       clearProgressTimer()
       return
     }
-    player.playVideo()
+    void player.play()
     setIsPlaying(true)
     startProgressTimer()
   }, [clearProgressTimer, isPlaying, startProgressTimer])
 
   const pause = useCallback(() => {
-    playerRef.current?.pauseVideo()
+    playerRef.current?.pause()
     setIsPlaying(false)
     clearProgressTimer()
   }, [clearProgressTimer])
@@ -379,10 +403,10 @@ export const PlayerProvider = ({ children }: { children: React.ReactNode }) => {
   const seekToPercent = useCallback((percent: number) => {
     const player = playerRef.current
     if (!player) return
-    const duration = player.getDuration()
+    const duration = player.duration
     if (!duration) return
     const next = Math.min(100, Math.max(0, percent))
-    player.seekTo((next / 100) * duration, true)
+    player.currentTime = (next / 100) * duration
     setProgress(next)
   }, [])
 

@@ -91,7 +91,7 @@ export default function AlbumInfo({
         >
           {showPause ? <PauseCircle /> : <PlayCircle />}
         </InfosLinksButton>
-        <InfosLinksList $opened={true} $hasPlay={canPlay}>
+        <InfosLinksList $opened={true}>
           {SOCIAL_LINKS.map(({ key, title: linkTitle, icon }) => {
             const href = safeExternalUrl(social?.[key])
             if (!href) return null

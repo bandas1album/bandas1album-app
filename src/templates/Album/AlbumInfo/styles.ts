@@ -74,7 +74,7 @@ export const InfosLinksList = styled.ul<{
   align-items: center;
   gap: 24px;
   overflow-y: auto;
-  padding-left: ${(props) => (props.$hasPlay === false ? '32px' : '80px')};
+  padding-left: 80px;
   padding-right: 32px;
   background-color: var(--color-primary-500);
   border-radius: 48px;

@@ -1,4 +1,53 @@
-import { styled } from 'styled-components'
+import { styled, createGlobalStyle } from 'styled-components'
+
+export const PlyrChromeReset = createGlobalStyle`
+  .album-cover-player {
+    .plyr,
+    .plyr__video-wrapper,
+    .plyr__poster {
+      width: 100% !important;
+      height: 100% !important;
+      background: transparent !important;
+    }
+
+    .plyr {
+      --plyr-video-background: transparent;
+    }
+
+    /* Sem UI do Plyr / YouTube — só o vídeo; play/pause pelos botões do app */
+    .plyr__controls,
+    .plyr__control,
+    .plyr__control--overlaid,
+    .plyr__poster,
+    .plyr__captions,
+    .plyr__menu,
+    .plyr__tooltip,
+    .plyr__progress,
+    .plyr__volume,
+    .plyr__time {
+      display: none !important;
+    }
+
+    .plyr,
+    .plyr__video-wrapper,
+    .plyr iframe {
+      pointer-events: none !important;
+    }
+
+    .plyr__video-embed,
+    .plyr__video-embed iframe {
+      width: 100% !important;
+      height: 100% !important;
+    }
+
+    /* Corta overlays residual do YouTube (título / logo em alguns estados) */
+    .plyr__video-embed {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+    }
+  }
+`
 
 export const CoverFrame = styled.figure<{
   $bg: string
@@ -61,11 +110,12 @@ export const PlayerSlot = styled.div<{ $active: boolean }>`
   width: 100%;
   height: 100%;
   opacity: ${({ $active }) => ($active ? 1 : 0)};
-  pointer-events: ${({ $active }) => ($active ? 'auto' : 'none')};
+  pointer-events: none;
   transition: opacity 0.2s ease;
 
   iframe {
     width: 100% !important;
     height: 100% !important;
+    border: 0;
   }
 `
