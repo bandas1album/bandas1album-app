@@ -27,30 +27,28 @@ export default function PageHeader({
     <Header>
       <HeaderActions>{!hideBack && <ButtonBack></ButtonBack>}</HeaderActions>
       <HeaderTitle>{children}</HeaderTitle>
-      {spotify || youtube ? (
-        <Playlists aria-label="Playlists">
-          {spotify ? (
-            <PlaylistLink
-              href={spotify}
-              target="_blank"
-              rel="noopener noreferrer"
-              title="Playlist no Spotify"
-            >
-              <Spotify />
-            </PlaylistLink>
-          ) : null}
-          {youtube ? (
-            <PlaylistLink
-              href={youtube}
-              target="_blank"
-              rel="noopener noreferrer"
-              title="Playlist no YouTube"
-            >
-              <Youtube />
-            </PlaylistLink>
-          ) : null}
-        </Playlists>
-      ) : null}
+      <Playlists aria-label="Playlists">
+        {spotify ? (
+          <PlaylistLink
+            href={spotify}
+            target="_blank"
+            rel="noopener noreferrer"
+            title="Playlist no Spotify"
+          >
+            <Spotify />
+          </PlaylistLink>
+        ) : null}
+        {youtube ? (
+          <PlaylistLink
+            href={youtube}
+            target="_blank"
+            rel="noopener noreferrer"
+            title="Playlist no YouTube"
+          >
+            <Youtube />
+          </PlaylistLink>
+        ) : null}
+      </Playlists>
     </Header>
   )
 }
