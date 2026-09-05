@@ -21,6 +21,7 @@ export const InfosLinks = styled.div`
   top: -32px;
   left: 0;
   right: 0;
+  z-index: 1;
   display: flex;
   align-items: center;
   width: 100%;
