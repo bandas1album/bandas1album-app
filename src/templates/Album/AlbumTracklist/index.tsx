@@ -1,10 +1,5 @@
 import { decodeBrokenUnicode } from '@/utils/decodeUnicode'
-import {
-  List,
-  ListTitle,
-  ListWrapper,
-  TrackPlay,
-} from './styles'
+import { List, ListTitle, ListWrapper, TrackPlay } from './styles'
 import type { Album, AlbumTrack } from '@/api/types/Album'
 import { Pause, Play } from '@styled-icons/ionicons-solid'
 import { usePlayer } from '@/contexts/PlayerContext'
