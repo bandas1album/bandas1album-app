@@ -18,7 +18,7 @@ export const List = styled.ol`
     align-items: center;
     justify-content: space-between;
     width: 100%;
-    padding: 8px 24px;
+    padding: 8px 32px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.2);
 
     &::before {
@@ -54,7 +54,7 @@ export const List = styled.ol`
 
 export const ListTitle = styled.h3`
   margin: 0;
-  padding: 0 24px;
+  padding: 0 32px;
   font-size: 18px;
   font-weight: 600;
 `

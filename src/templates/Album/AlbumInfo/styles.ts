@@ -26,7 +26,7 @@ export const InfosLinks = styled.div`
   align-items: center;
   width: 100%;
   max-width: calc(100% - 48px);
-  margin-left: 24px;
+  margin-left: 32px;
   gap: 24px;
 `
 
