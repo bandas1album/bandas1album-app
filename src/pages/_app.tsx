@@ -13,6 +13,7 @@ import * as gtag from '@/lib/gtag'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { AuthUIProvider } from '@/contexts/AuthUIContext'
 import { AuthProvider } from '@/contexts/AuthContext'
+import { PlayerProvider } from '@/contexts/PlayerContext'
 import { montserrat } from '@/lib/fonts'
 
 export default function App({ Component, pageProps }: AppProps) {
@@ -67,19 +68,21 @@ export default function App({ Component, pageProps }: AppProps) {
       <QueryClientProvider client={queryClient}>
         <AuthProvider>
           <AuthUIProvider>
-            <main role="main">
-              <NextNProgress
-                color="#a58a67"
-                startPosition={0.3}
-                stopDelayMs={200}
-                height={3}
-                showOnShallow={true}
-              />
+            <PlayerProvider>
+              <main role="main">
+                <NextNProgress
+                  color="#a58a67"
+                  startPosition={0.3}
+                  stopDelayMs={200}
+                  height={3}
+                  showOnShallow={true}
+                />
 
-              <Component {...pageProps} />
+                <Component {...pageProps} />
 
-              <Tabs />
-            </main>
+                <Tabs />
+              </main>
+            </PlayerProvider>
           </AuthUIProvider>
         </AuthProvider>
       </QueryClientProvider>

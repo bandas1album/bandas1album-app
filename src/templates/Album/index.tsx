@@ -110,7 +110,9 @@ export default function AlbumTemplate(data: Album) {
             description={data?.description}
           />
         )}
-        {data?.tracklist && <AlbumTracklist list={data?.tracklist} />}
+        {data?.tracklist && (
+          <AlbumTracklist album={data} list={data?.tracklist} />
+        )}
         <DisqusComments
           slug={data?.slug}
           id={data?.slug}

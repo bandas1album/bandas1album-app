@@ -22,6 +22,10 @@ export type AlbumLinks = {
 export type AlbumTrack = {
   name: string
   duration: string
+  youtube_url?: string
+  youtube_id?: string
+  description?: string
+  lyrics?: string
 }
 
 export type Album = {
