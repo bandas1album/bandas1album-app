@@ -4,7 +4,6 @@ import {
   ListTitle,
   ListWrapper,
   TrackPlay,
-  TrackPlaySpacer
 } from './styles'
 import type { Album, AlbumTrack } from '@/api/types/Album'
 import { Pause, Play } from '@styled-icons/ionicons-solid'

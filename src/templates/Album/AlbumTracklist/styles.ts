@@ -74,11 +74,3 @@ export const TrackPlay = styled.button`
   background-color: rgba(0 0 0 / 25%);
   color: #fff;
 `
-
-export const TrackPlaySpacer = styled.span`
-  display: inline-block;
-  flex-shrink: 0;
-  width: 24px;
-  height: 24px;
-  margin-right: 16px;
-`
