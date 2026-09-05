@@ -20,6 +20,9 @@ export type PlayerState = {
   currentIndex: number | null
   isPlaying: boolean
   progress: number
+  /** Host no lugar da capa (album page). null = desmonta o player YT. */
+  registerPlayerHost: (element: HTMLElement | null) => void
+  playAlbum: (album: Album) => void
   playAlbumTrack: (album: Album, trackIndex: number) => void
   toggle: () => void
   pause: () => void
@@ -27,7 +30,9 @@ export type PlayerState = {
   playPrev: () => void
   seekToPercent: (percent: number) => void
   isTrackActive: (albumSlug: string, trackIndex: number) => boolean
+  isAlbumActive: (albumSlug: string) => boolean
   getTrackProgress: (albumSlug: string, trackIndex: number) => number
+  firstPlayableTrackIndex: (album: Album) => number
 }
 
 export type PlayableTrack = AlbumTrack & { youtube_id: string }
@@ -36,7 +41,7 @@ declare global {
   interface Window {
     YT?: {
       Player: new (
-        elementId: string,
+        elementId: string | HTMLElement,
         config: {
           height?: string | number
           width?: string | number
@@ -63,6 +68,7 @@ declare global {
 export type YTPlayer = {
   destroy: () => void
   loadVideoById: (videoId: string) => void
+  cueVideoById: (videoId: string) => void
   playVideo: () => void
   pauseVideo: () => void
   getCurrentTime: () => number

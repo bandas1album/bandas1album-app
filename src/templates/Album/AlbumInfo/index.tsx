@@ -14,6 +14,7 @@ import {
   CalendarClear,
   Cart,
   Location,
+  PauseCircle,
   PlayCircle,
   Pricetag
 } from '@styled-icons/ionicons-solid'
@@ -28,10 +29,17 @@ import { Download } from '@styled-icons/ionicons-outline'
 import Link from 'next/link'
 import { decodeBrokenUnicode } from '@/utils/decodeUnicode'
 import { safeExternalUrl } from '@/utils/safeExternalUrl'
-import type { AlbumCountry, AlbumGenre, AlbumLinks } from '@/api/types/Album'
+import type {
+  Album,
+  AlbumCountry,
+  AlbumGenre,
+  AlbumLinks
+} from '@/api/types/Album'
 import type { ReactNode } from 'react'
+import { firstPlayableTrackIndex, usePlayer } from '@/contexts/PlayerContext'
 
 type AlbumInfoProps = {
+  album: Album
   title: string | undefined
   artist: string | undefined
   year: string | undefined
@@ -57,6 +65,7 @@ const SOCIAL_LINKS: SocialLink[] = [
 ]
 
 export default function AlbumInfo({
+  album,
   title,
   artist,
   country,
@@ -64,13 +73,25 @@ export default function AlbumInfo({
   year,
   social
 }: AlbumInfoProps) {
+  const { playAlbum, isAlbumActive, isPlaying } = usePlayer()
+  const canPlay = firstPlayableTrackIndex(album) >= 0
+  const showPause = canPlay && isAlbumActive(album.slug) && isPlaying
+
   return (
     <Infos>
       <InfosLinks>
-        <InfosLinksButton>
-          <PlayCircle />
+        <InfosLinksButton
+          type="button"
+          aria-label={
+            showPause
+              ? `Pausar ${title || 'álbum'}`
+              : `Tocar ${title || 'álbum'}`
+          }
+          onClick={() => playAlbum(album)}
+        >
+          {showPause ? <PauseCircle /> : <PlayCircle />}
         </InfosLinksButton>
-        <InfosLinksList $opened={true}>
+        <InfosLinksList $opened={true} $hasPlay={canPlay}>
           {SOCIAL_LINKS.map(({ key, title: linkTitle, icon }) => {
             const href = safeExternalUrl(social?.[key])
             if (!href) return null

@@ -1,6 +1,9 @@
 import { styled } from 'styled-components'
 
-export const Cover = styled.figure<{ $bg: string }>`
+export const CoverFrame = styled.figure<{
+  $bg: string
+  $playerActive: boolean
+}>`
   position: relative;
   display: flex;
   align-items: center;
@@ -15,7 +18,7 @@ export const Cover = styled.figure<{ $bg: string }>`
     content: '';
     display: block;
     position: absolute;
-    z-index: -1;
+    z-index: 0;
     top: 0;
     left: 0;
     width: 100%;
@@ -31,10 +34,38 @@ export const Cover = styled.figure<{ $bg: string }>`
     position: absolute;
     top: 0;
     left: 0;
+    z-index: 1;
     width: 100%;
     height: 100%;
     display: block;
     background-color: rgba(0, 0, 0, 0.25);
     pointer-events: none;
+    opacity: ${({ $playerActive }) => ($playerActive ? 0 : 1)};
+    transition: opacity 0.2s ease;
+  }
+`
+
+export const CoverImageWrap = styled.div<{ $hidden: boolean }>`
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  opacity: ${({ $hidden }) => ($hidden ? 0 : 1)};
+  transition: opacity 0.2s ease;
+  pointer-events: none;
+`
+
+export const PlayerSlot = styled.div<{ $active: boolean }>`
+  position: absolute;
+  inset: 0;
+  z-index: ${({ $active }) => ($active ? 3 : 0)};
+  width: 100%;
+  height: 100%;
+  opacity: ${({ $active }) => ($active ? 1 : 0)};
+  pointer-events: ${({ $active }) => ($active ? 'auto' : 'none')};
+  transition: opacity 0.2s ease;
+
+  iframe {
+    width: 100% !important;
+    height: 100% !important;
   }
 `

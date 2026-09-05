@@ -1,22 +1,45 @@
 import Image from 'next/image'
-import { Cover } from './styles'
+import { useEffect, useRef } from 'react'
+import { usePlayer } from '@/contexts/PlayerContext'
+import { CoverFrame, CoverImageWrap, PlayerSlot } from './styles'
 
 type AlbumCoverProps = {
   image: string | undefined
   title: string | undefined
+  albumSlug: string
 }
 
-export default function AlbumCover({ image, title }: AlbumCoverProps) {
+export default function AlbumCover({
+  image,
+  title,
+  albumSlug
+}: AlbumCoverProps) {
+  const slotRef = useRef<HTMLDivElement>(null)
+  const { registerPlayerHost, isAlbumActive } = usePlayer()
+  const showPlayer = isAlbumActive(albumSlug)
+
+  useEffect(() => {
+    registerPlayerHost(slotRef.current)
+    return () => registerPlayerHost(null)
+  }, [registerPlayerHost, albumSlug])
+
   return (
-    <Cover $bg={image || ''}>
-      <Image
-        src={image || ''}
-        alt={title || ''}
-        fill
-        sizes="(max-width: 768px) 100vw, 428px"
-        style={{ objectFit: 'contain' }}
-        priority
+    <CoverFrame $bg={image || ''} $playerActive={showPlayer}>
+      <CoverImageWrap $hidden={showPlayer}>
+        <Image
+          src={image || ''}
+          alt={title || ''}
+          fill
+          sizes="(max-width: 768px) 100vw, 428px"
+          style={{ objectFit: 'contain' }}
+          priority
+        />
+      </CoverImageWrap>
+      <PlayerSlot
+        ref={slotRef}
+        $active={showPlayer}
+        aria-hidden={!showPlayer}
       />
-    </Cover>
+    </CoverFrame>
   )
 }

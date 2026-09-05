@@ -29,14 +29,17 @@ export const InfosLinks = styled.div`
   gap: 24px;
 `
 
-export const InfosLinksButton = styled.div`
+export const InfosLinksButton = styled.button`
   position: absolute;
   z-index: 1;
   width: 60px;
   height: 60px;
+  padding: 0;
+  border: none;
   border-radius: 50%;
   color: var(--color-primary-700);
   background-color: var(--color-light);
+  cursor: pointer;
 
   svg {
     width: 80px;
@@ -58,7 +61,10 @@ export const InfosLink = styled(Link)`
   }
 `
 
-export const InfosLinksList = styled.ul<{ $opened: boolean }>`
+export const InfosLinksList = styled.ul<{
+  $opened: boolean
+  $hasPlay?: boolean
+}>`
   width: 100%;
   max-width: fit-content;
   height: 64px;
@@ -67,7 +73,7 @@ export const InfosLinksList = styled.ul<{ $opened: boolean }>`
   align-items: center;
   gap: 24px;
   overflow-y: auto;
-  padding-left: 80px;
+  padding-left: ${(props) => (props.$hasPlay === false ? '32px' : '80px')};
   padding-right: 32px;
   background-color: var(--color-primary-500);
   border-radius: 48px;
