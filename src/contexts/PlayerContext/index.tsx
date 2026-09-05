@@ -30,7 +30,8 @@ const PLYR_OPTIONS = {
     controls: 0,
     fs: 0,
     disablekb: 1,
-    playsinline: 1
+    playsinline: 1,
+    customControls: true
   }
 }
 
@@ -72,7 +73,6 @@ export const PlayerProvider = ({ children }: { children: React.ReactNode }) => {
 
   const playerRef = useRef<Plyr | null>(null)
   const hostRef = useRef<HTMLElement | null>(null)
-  const targetRef = useRef<HTMLDivElement | null>(null)
   const queueRef = useRef<PlayerQueueTrack[]>([])
   const currentIndexRef = useRef<number | null>(null)
   const isPlayingRef = useRef(false)
@@ -80,12 +80,12 @@ export const PlayerProvider = ({ children }: { children: React.ReactNode }) => {
   const pendingPlayRef = useRef<{ album: Album; trackIndex: number } | null>(
     null
   )
-  const isReadyRef = useRef(false)
   const loadedVideoIdRef = useRef<string | null>(null)
+  const creatingRef = useRef<Promise<Plyr | null> | null>(null)
   const playAlbumTrackRef = useRef<
     ((album: Album, trackIndex: number) => void) | null
   >(null)
-  const createPlayerGenerationRef = useRef(0)
+  const mountGenerationRef = useRef(0)
 
   const playNextRef = useRef<() => void>(() => undefined)
   const startProgressTimerRef = useRef<() => void>(() => undefined)
@@ -128,36 +128,152 @@ export const PlayerProvider = ({ children }: { children: React.ReactNode }) => {
     }, 250)
   }, [clearProgressTimer, syncProgressFromPlayer])
 
+  const destroyPlayer = useCallback(() => {
+    clearProgressTimer()
+    try {
+      playerRef.current?.destroy()
+    } catch {
+      // já destruído
+    }
+    playerRef.current = null
+    loadedVideoIdRef.current = null
+    creatingRef.current = null
+    if (hostRef.current) {
+      hostRef.current.replaceChildren()
+    }
+  }, [clearProgressTimer])
+
+  const bindPlayerEvents = useCallback(
+    (player: Plyr) => {
+      player.on('play', () => {
+        setIsPlaying(true)
+        startProgressTimerRef.current()
+      })
+      player.on('pause', () => {
+        setIsPlaying(false)
+        clearProgressTimerRef.current()
+        syncProgressFromPlayer()
+      })
+      player.on('ended', () => {
+        playNextRef.current()
+      })
+      player.on('timeupdate', () => {
+        syncProgressFromPlayer()
+      })
+    },
+    [syncProgressFromPlayer]
+  )
+
+  /**
+   * Cria o Plyr apenas com um YouTube ID válido.
+   * Nunca monta provider=youtube sem embed-id (causa "Invalid video id").
+   */
+  const ensurePlayer = useCallback(
+    async (youtubeId: string): Promise<Plyr | null> => {
+      if (!isValidYouTubeId(youtubeId)) return null
+      const host = hostRef.current
+      if (!host) return null
+
+      if (playerRef.current && loadedVideoIdRef.current === youtubeId) {
+        return playerRef.current
+      }
+
+      if (
+        playerRef.current &&
+        loadedVideoIdRef.current &&
+        loadedVideoIdRef.current !== youtubeId
+      ) {
+        const player = playerRef.current
+        loadedVideoIdRef.current = youtubeId
+        return new Promise((resolve) => {
+          const onReady = () => {
+            player.off('ready', onReady)
+            resolve(player)
+          }
+          player.on('ready', onReady)
+          player.source = {
+            type: 'video',
+            sources: [{ src: youtubeId, provider: 'youtube' }]
+          }
+        })
+      }
+
+      if (creatingRef.current) {
+        await creatingRef.current
+        if (playerRef.current && loadedVideoIdRef.current === youtubeId) {
+          return playerRef.current
+        }
+      }
+
+      const generation = ++mountGenerationRef.current
+
+      const createPromise = (async () => {
+        destroyPlayer()
+
+        const { default: PlyrCtor } = await import('plyr')
+        if (
+          generation !== mountGenerationRef.current ||
+          hostRef.current !== host
+        ) {
+          return null
+        }
+
+        const target = document.createElement('div')
+        target.dataset.plyrProvider = 'youtube'
+        target.dataset.plyrEmbedId = youtubeId
+        host.appendChild(target)
+
+        const player = new PlyrCtor(target, PLYR_OPTIONS)
+        playerRef.current = player
+        loadedVideoIdRef.current = youtubeId
+        bindPlayerEvents(player)
+
+        await new Promise<void>((resolve) => {
+          player.once('ready', () => resolve())
+        })
+
+        if (
+          generation !== mountGenerationRef.current ||
+          hostRef.current !== host
+        ) {
+          try {
+            player.destroy()
+          } catch {
+            // ignore
+          }
+          return null
+        }
+
+        return player
+      })()
+
+      creatingRef.current = createPromise
+      const player = await createPromise
+      if (creatingRef.current === createPromise) {
+        creatingRef.current = null
+      }
+      return player
+    },
+    [bindPlayerEvents, destroyPlayer]
+  )
+
   const playQueueIndex = useCallback(
-    (queueIndex: number) => {
+    async (queueIndex: number) => {
       const next = queueRef.current[queueIndex]
-      const player = playerRef.current
-      if (!next || !player || !isReadyRef.current) return
-      if (!isValidYouTubeId(next.youtubeId)) return
+      if (!next || !isValidYouTubeId(next.youtubeId)) return
 
       setCurrentIndex(queueIndex)
       setProgress(0)
       setRemainingSeconds(null)
 
-      if (loadedVideoIdRef.current === next.youtubeId) {
-        void player.play()
-        setIsPlaying(true)
-        startProgressTimer()
-        return
-      }
+      const player = await ensurePlayer(next.youtubeId)
+      if (!player) return
 
-      loadedVideoIdRef.current = next.youtubeId
-      player.source = {
-        type: 'video',
-        sources: [{ src: next.youtubeId, provider: 'youtube' }]
-      }
-      player.once('ready', () => {
-        void player.play()
-        setIsPlaying(true)
-        startProgressTimer()
-      })
+      void player.play()
+      setIsPlaying(true)
+      startProgressTimer()
     },
-    [startProgressTimer]
+    [ensurePlayer, startProgressTimer]
   )
 
   const playNext = useCallback(() => {
@@ -169,7 +285,7 @@ export const PlayerProvider = ({ children }: { children: React.ReactNode }) => {
       setProgress(100)
       return
     }
-    playQueueIndex(index + 1)
+    void playQueueIndex(index + 1)
   }, [clearProgressTimer, playQueueIndex])
 
   const playPrev = useCallback(() => {
@@ -181,7 +297,7 @@ export const PlayerProvider = ({ children }: { children: React.ReactNode }) => {
       setProgress(0)
       return
     }
-    playQueueIndex(index - 1)
+    void playQueueIndex(index - 1)
   }, [playQueueIndex])
 
   useEffect(() => {
@@ -190,116 +306,16 @@ export const PlayerProvider = ({ children }: { children: React.ReactNode }) => {
     clearProgressTimerRef.current = clearProgressTimer
   }, [playNext, startProgressTimer, clearProgressTimer])
 
-  const destroyPlayer = useCallback(() => {
-    clearProgressTimer()
-    try {
-      playerRef.current?.destroy()
-    } catch {
-      // já destruído
-    }
-    playerRef.current = null
-    targetRef.current = null
-    isReadyRef.current = false
-    loadedVideoIdRef.current = null
-  }, [clearProgressTimer])
-
-  const mountPlayerOnHost = useCallback(
-    async (host: HTMLElement) => {
-      const generation = ++createPlayerGenerationRef.current
-
-      destroyPlayer()
-      host.replaceChildren()
-
-      const { default: Plyr } = await import('plyr')
-
-      if (
-        generation !== createPlayerGenerationRef.current ||
-        hostRef.current !== host
-      ) {
-        return
-      }
-
-      const current =
-        currentIndexRef.current != null
-          ? queueRef.current[currentIndexRef.current]
-          : null
-      const initialVideoId =
-        current?.youtubeId && isValidYouTubeId(current.youtubeId)
-          ? current.youtubeId
-          : undefined
-
-      const target = document.createElement('div')
-      target.dataset.plyrProvider = 'youtube'
-      if (initialVideoId) {
-        target.dataset.plyrEmbedId = initialVideoId
-        loadedVideoIdRef.current = initialVideoId
-      }
-      host.appendChild(target)
-      targetRef.current = target
-
-      const player = new Plyr(target, PLYR_OPTIONS)
-      playerRef.current = player
-
-      player.on('ready', () => {
-        if (
-          generation !== createPlayerGenerationRef.current ||
-          hostRef.current !== host
-        ) {
-          return
-        }
-        isReadyRef.current = true
-
-        const pending = pendingPlayRef.current
-        if (pending) {
-          pendingPlayRef.current = null
-          window.setTimeout(() => {
-            playAlbumTrackRef.current?.(pending.album, pending.trackIndex)
-          }, 0)
-          return
-        }
-
-        if (initialVideoId && isPlayingRef.current) {
-          void player.play()
-        }
-      })
-
-      player.on('play', () => {
-        setIsPlaying(true)
-        startProgressTimerRef.current()
-      })
-
-      player.on('pause', () => {
-        setIsPlaying(false)
-        clearProgressTimerRef.current()
-        syncProgressFromPlayer()
-      })
-
-      player.on('ended', () => {
-        playNextRef.current()
-      })
-
-      player.on('timeupdate', () => {
-        syncProgressFromPlayer()
-      })
-
-      // Sem vídeo inicial, ainda assim marcamos ready após criar
-      if (!initialVideoId) {
-        isReadyRef.current = true
-        const pending = pendingPlayRef.current
-        if (pending) {
-          pendingPlayRef.current = null
-          window.setTimeout(() => {
-            playAlbumTrackRef.current?.(pending.album, pending.trackIndex)
-          }, 0)
-        }
-      }
-    },
-    [destroyPlayer, syncProgressFromPlayer]
-  )
-
   const registerPlayerHost = useCallback(
     (element: HTMLElement | null) => {
       if (hostRef.current === element) return
+
+      const previousVideoId = loadedVideoIdRef.current
+      const wasPlaying = isPlayingRef.current
+
+      if (hostRef.current && hostRef.current !== element) {
+        destroyPlayer()
+      }
 
       hostRef.current = element
 
@@ -308,9 +324,26 @@ export const PlayerProvider = ({ children }: { children: React.ReactNode }) => {
         return
       }
 
-      void mountPlayerOnHost(element)
+      // Reanexa o host (ex.: voltou à página do álbum) com o vídeo atual
+      if (previousVideoId && isValidYouTubeId(previousVideoId)) {
+        void (async () => {
+          const player = await ensurePlayer(previousVideoId)
+          if (player && wasPlaying) {
+            void player.play()
+          }
+        })()
+        return
+      }
+
+      const pending = pendingPlayRef.current
+      if (pending) {
+        pendingPlayRef.current = null
+        window.setTimeout(() => {
+          playAlbumTrackRef.current?.(pending.album, pending.trackIndex)
+        }, 0)
+      }
     },
-    [destroyPlayer, mountPlayerOnHost]
+    [destroyPlayer, ensurePlayer]
   )
 
   const playAlbumTrack = useCallback(
@@ -321,7 +354,7 @@ export const PlayerProvider = ({ children }: { children: React.ReactNode }) => {
       )
       if (queueIndex < 0) return
 
-      if (!playerRef.current || !isReadyRef.current) {
+      if (!hostRef.current) {
         pendingPlayRef.current = { album: nextAlbum, trackIndex }
         return
       }
@@ -341,21 +374,28 @@ export const PlayerProvider = ({ children }: { children: React.ReactNode }) => {
         queueRef.current = nextQueue
       }
 
-      if (sameAlbum && currentIndexRef.current === queueIndex && isPlaying) {
-        playerRef.current.pause()
-        setIsPlaying(false)
-        clearProgressTimer()
-        return
-      }
+      const next = nextQueue[queueIndex]
+      if (!next) return
 
-      if (sameAlbum && currentIndexRef.current === queueIndex && !isPlaying) {
+      if (
+        sameAlbum &&
+        currentIndexRef.current === queueIndex &&
+        loadedVideoIdRef.current === next.youtubeId &&
+        playerRef.current
+      ) {
+        if (isPlaying) {
+          playerRef.current.pause()
+          setIsPlaying(false)
+          clearProgressTimer()
+          return
+        }
         void playerRef.current.play()
         setIsPlaying(true)
         startProgressTimer()
         return
       }
 
-      playQueueIndex(queueIndex)
+      void playQueueIndex(queueIndex)
     },
     [
       album?.slug,
