@@ -20,10 +20,11 @@ export type PlayerState = {
   currentIndex: number | null
   isPlaying: boolean
   progress: number
-  /** Segundos restantes da faixa ativa. */
   remainingSeconds: number | null
-  /** Host no lugar da capa (album page). null = desmonta o player. */
-  registerPlayerHost: (element: HTMLElement | null) => void
+  /** true quando o vídeo está no PiP (fora da página do álbum) */
+  isPipMode: boolean
+  /** Host da capa do álbum. null = sai da página (vai para PiP se estiver tocando). */
+  registerPlayerHost: (element: HTMLElement | null, albumSlug?: string) => void
   playAlbum: (album: Album) => void
   playAlbumTrack: (album: Album, trackIndex: number) => void
   toggle: () => void

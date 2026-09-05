@@ -89,7 +89,7 @@ export const AuthDrawer = styled.aside<{ $open: boolean }>`
   -webkit-overflow-scrolling: touch;
   padding: max(16px, env(safe-area-inset-top)) 16px
     max(16px, env(safe-area-inset-bottom));
-  z-index: 9;
+  z-index: 11;
   background-color: var(--color-light);
   color: var(--color-primary-500);
   box-sizing: border-box;
