@@ -25,6 +25,7 @@ declare module 'plyr' {
   export default class Plyr {
     constructor(target: string | Element, options?: PlyrOptions)
     get playing(): boolean
+    get paused(): boolean
     get currentTime(): number
     set currentTime(value: number)
     get duration(): number
