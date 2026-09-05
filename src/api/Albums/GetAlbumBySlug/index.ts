@@ -33,8 +33,10 @@ export const useGetAlbumBySlug = (
     enabled: Boolean(slug),
     initialData: initialMatches ? initialFromServer : undefined,
     initialDataUpdatedAt: initialMatches ? Date.now() : undefined,
-    staleTime: initialMatches ? Infinity : 60 * 1000,
-    refetchOnMount: !initialMatches,
+    // ISR + save no WP revalidam a página; no client, refetch periódico evita
+    // ficar preso em dados do getStaticProps com staleTime infinito.
+    staleTime: 60 * 1000,
+    refetchOnMount: true,
     refetchOnWindowFocus: false
   })
 }
