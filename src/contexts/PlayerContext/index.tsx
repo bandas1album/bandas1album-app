@@ -11,6 +11,7 @@ import type { Album } from '@/api/types/Album'
 import type { PlayerAlbumMeta, PlayerQueueTrack, PlayerState } from './types'
 import { resolveTrackYouTubeId } from '@/utils/youtube'
 import type Plyr from 'plyr'
+import 'plyr/dist/plyr.css'
 
 const PlayerContext = createContext<PlayerState | undefined>(undefined)
 
@@ -210,7 +211,6 @@ export const PlayerProvider = ({ children }: { children: React.ReactNode }) => {
       host.replaceChildren()
 
       const { default: Plyr } = await import('plyr')
-      await import('plyr/dist/plyr.css')
 
       if (
         generation !== createPlayerGenerationRef.current ||

@@ -48,3 +48,5 @@ declare module 'plyr' {
     ): void
   }
 }
+
+declare module 'plyr/dist/plyr.css'
