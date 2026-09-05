@@ -4,6 +4,7 @@ import type { Album, AlbumTrack } from '@/api/types/Album'
 import { Pause, Play } from '@styled-icons/ionicons-solid'
 import { usePlayer } from '@/contexts/PlayerContext'
 import type { CSSProperties } from 'react'
+import { resolveTrackYouTubeId } from '@/utils/youtube'
 
 type AlbumTrackListProps = {
   album: Album
@@ -24,7 +25,7 @@ export default function AlbumTracklist({ album, list }: AlbumTrackListProps) {
       <ListTitle>Lista de faixas</ListTitle>
       <List>
         {list?.map((track, index) => {
-          const youtubeId = track.youtube_id?.trim()
+          const youtubeId = resolveTrackYouTubeId(track)
           const active = isTrackActive(album.slug, index)
           const progress = getTrackProgress(album.slug, index)
           const remainingLabel = getTrackRemainingLabel(album.slug, index)
@@ -41,7 +42,7 @@ export default function AlbumTracklist({ album, list }: AlbumTrackListProps) {
                 } as CSSProperties
               }
             >
-              {youtubeId && (
+              {youtubeId ? (
                 <TrackPlay
                   type="button"
                   aria-label={
@@ -53,7 +54,7 @@ export default function AlbumTracklist({ album, list }: AlbumTrackListProps) {
                 >
                   {showPause ? <Pause size={16} /> : <Play size={16} />}
                 </TrackPlay>
-              )}
+              ) : null}
               <strong className="track-name">
                 {decodeBrokenUnicode(track.name)}
               </strong>

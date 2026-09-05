@@ -14,13 +14,14 @@ import type {
   PlayerState,
   YTPlayer
 } from './types'
+import { resolveTrackYouTubeId } from '@/utils/youtube'
 
 const PlayerContext = createContext<PlayerState | undefined>(undefined)
 
 export function buildQueue(album: Album): PlayerQueueTrack[] {
   return (album.tracklist ?? [])
     .map((track, index) => ({
-      youtubeId: track.youtube_id?.trim() || '',
+      youtubeId: resolveTrackYouTubeId(track),
       name: track.name,
       duration: track.duration,
       index
@@ -29,8 +30,8 @@ export function buildQueue(album: Album): PlayerQueueTrack[] {
 }
 
 export function firstPlayableTrackIndex(album: Album): number {
-  return (album.tracklist ?? []).findIndex((track) =>
-    Boolean(track.youtube_id?.trim())
+  return (album.tracklist ?? []).findIndex(
+    (track) => resolveTrackYouTubeId(track) !== ''
   )
 }
 
@@ -135,6 +136,7 @@ export const PlayerProvider = ({ children }: { children: React.ReactNode }) => {
       setCurrentIndex(queueIndex)
       setProgress(0)
       setRemainingSeconds(null)
+      if (!/^[a-zA-Z0-9_-]{11}$/.test(next.youtubeId)) return
       player.loadVideoById(next.youtubeId)
       player.playVideo()
       setIsPlaying(true)
@@ -204,10 +206,15 @@ export const PlayerProvider = ({ children }: { children: React.ReactNode }) => {
             ? queueRef.current[currentIndexRef.current]
             : null
 
+        const initialVideoId =
+          current?.youtubeId && /^[a-zA-Z0-9_-]{11}$/.test(current.youtubeId)
+            ? current.youtubeId
+            : undefined
+
         playerRef.current = new window.YT.Player(host, {
           height: '100%',
           width: '100%',
-          videoId: current?.youtubeId,
+          ...(initialVideoId ? { videoId: initialVideoId } : {}),
           playerVars: {
             autoplay: 0,
             controls: 1,
@@ -231,7 +238,7 @@ export const PlayerProvider = ({ children }: { children: React.ReactNode }) => {
                 return
               }
 
-              if (current?.youtubeId && isPlayingRef.current) {
+              if (initialVideoId && isPlayingRef.current) {
                 event.target.playVideo()
               }
             },
