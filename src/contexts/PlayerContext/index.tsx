@@ -34,6 +34,13 @@ export function firstPlayableTrackIndex(album: Album): number {
   )
 }
 
+export function formatPlayerClock(totalSeconds: number): string {
+  const safe = Math.max(0, Math.floor(totalSeconds))
+  const minutes = Math.floor(safe / 60)
+  const seconds = safe % 60
+  return `${minutes}:${seconds.toString().padStart(2, '0')}`
+}
+
 function loadYouTubeApi(): Promise<void> {
   if (typeof window === 'undefined') {
     return Promise.resolve()
@@ -65,6 +72,7 @@ export const PlayerProvider = ({ children }: { children: React.ReactNode }) => {
   const [currentIndex, setCurrentIndex] = useState<number | null>(null)
   const [isPlaying, setIsPlaying] = useState(false)
   const [progress, setProgress] = useState(0)
+  const [remainingSeconds, setRemainingSeconds] = useState<number | null>(null)
 
   const playerRef = useRef<YTPlayer | null>(null)
   const hostRef = useRef<HTMLElement | null>(null)
@@ -112,7 +120,9 @@ export const PlayerProvider = ({ children }: { children: React.ReactNode }) => {
       const duration = player.getDuration()
       if (!duration || Number.isNaN(duration)) return
       const current = player.getCurrentTime()
+      const remaining = Math.max(0, duration - current)
       setProgress(Math.min(100, Math.max(0, (current / duration) * 100)))
+      setRemainingSeconds(remaining)
     }, 250)
   }, [clearProgressTimer])
 
@@ -124,6 +134,7 @@ export const PlayerProvider = ({ children }: { children: React.ReactNode }) => {
 
       setCurrentIndex(queueIndex)
       setProgress(0)
+      setRemainingSeconds(null)
       player.loadVideoById(next.youtubeId)
       player.playVideo()
       setIsPlaying(true)
@@ -392,6 +403,16 @@ export const PlayerProvider = ({ children }: { children: React.ReactNode }) => {
     [isTrackActive, progress]
   )
 
+  const getTrackRemainingLabel = useCallback(
+    (albumSlug: string, trackIndex: number) => {
+      if (!isTrackActive(albumSlug, trackIndex) || remainingSeconds == null) {
+        return null
+      }
+      return formatPlayerClock(remainingSeconds)
+    },
+    [isTrackActive, remainingSeconds]
+  )
+
   const value = useMemo<PlayerState>(
     () => ({
       album,
@@ -399,6 +420,7 @@ export const PlayerProvider = ({ children }: { children: React.ReactNode }) => {
       currentIndex,
       isPlaying,
       progress,
+      remainingSeconds,
       registerPlayerHost,
       playAlbum,
       playAlbumTrack,
@@ -410,6 +432,7 @@ export const PlayerProvider = ({ children }: { children: React.ReactNode }) => {
       isTrackActive,
       isAlbumActive,
       getTrackProgress,
+      getTrackRemainingLabel,
       firstPlayableTrackIndex
     }),
     [
@@ -418,6 +441,7 @@ export const PlayerProvider = ({ children }: { children: React.ReactNode }) => {
       currentIndex,
       isPlaying,
       progress,
+      remainingSeconds,
       registerPlayerHost,
       playAlbum,
       playAlbumTrack,
@@ -428,7 +452,8 @@ export const PlayerProvider = ({ children }: { children: React.ReactNode }) => {
       seekToPercent,
       isTrackActive,
       isAlbumActive,
-      getTrackProgress
+      getTrackProgress,
+      getTrackRemainingLabel
     ]
   )
 

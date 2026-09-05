@@ -20,6 +20,8 @@ export type PlayerState = {
   currentIndex: number | null
   isPlaying: boolean
   progress: number
+  /** Segundos restantes da faixa ativa (YouTube getDuration - getCurrentTime). */
+  remainingSeconds: number | null
   /** Host no lugar da capa (album page). null = desmonta o player YT. */
   registerPlayerHost: (element: HTMLElement | null) => void
   playAlbum: (album: Album) => void
@@ -32,6 +34,11 @@ export type PlayerState = {
   isTrackActive: (albumSlug: string, trackIndex: number) => boolean
   isAlbumActive: (albumSlug: string) => boolean
   getTrackProgress: (albumSlug: string, trackIndex: number) => number
+  /** Tempo restante formatado na faixa ativa; null se não estiver tocando essa faixa. */
+  getTrackRemainingLabel: (
+    albumSlug: string,
+    trackIndex: number
+  ) => string | null
   firstPlayableTrackIndex: (album: Album) => number
 }
 

@@ -11,8 +11,13 @@ type AlbumTrackListProps = {
 }
 
 export default function AlbumTracklist({ album, list }: AlbumTrackListProps) {
-  const { playAlbumTrack, isPlaying, isTrackActive, getTrackProgress } =
-    usePlayer()
+  const {
+    playAlbumTrack,
+    isPlaying,
+    isTrackActive,
+    getTrackProgress,
+    getTrackRemainingLabel
+  } = usePlayer()
 
   return (
     <ListWrapper>
@@ -22,6 +27,7 @@ export default function AlbumTracklist({ album, list }: AlbumTrackListProps) {
           const youtubeId = track.youtube_id?.trim()
           const active = isTrackActive(album.slug, index)
           const progress = getTrackProgress(album.slug, index)
+          const remainingLabel = getTrackRemainingLabel(album.slug, index)
           const showPause = active && isPlaying
 
           return (
@@ -51,7 +57,9 @@ export default function AlbumTracklist({ album, list }: AlbumTrackListProps) {
               <strong className="track-name">
                 {decodeBrokenUnicode(track.name)}
               </strong>
-              <span className="track-duration">{track.duration}</span>
+              <span className="track-duration">
+                {remainingLabel ?? track.duration}
+              </span>
             </li>
           )
         })}
