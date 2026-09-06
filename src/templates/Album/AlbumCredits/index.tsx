@@ -16,7 +16,7 @@ export default function AlbumCredits({ credits }: AlbumCreditsProps) {
       <CreditsList>
         {credits.map((credit, index) => {
           const detail = credit.detail?.trim()
-          const label = detail
+          const label = detail ? detail : credit.role
           const image = credit.image ? credit.image : '/logo.png'
 
           return (
