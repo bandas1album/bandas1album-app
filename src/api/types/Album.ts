@@ -28,6 +28,25 @@ export type AlbumTrack = {
   lyrics?: string
 }
 
+export type AlbumCreditRole =
+  | 'musician'
+  | 'producer'
+  | 'engineer'
+  | 'mixer'
+  | 'mastering'
+  | 'composer'
+  | 'other'
+
+export type AlbumCredit = {
+  person_id: number
+  name: string
+  slug: string
+  role: AlbumCreditRole | string
+  detail?: string
+  /** Featured image URL of the person CPT, if set. */
+  image?: string | null
+}
+
 export type Album = {
   id?: number
   author?: string
@@ -45,4 +64,5 @@ export type Album = {
   label?: string
   links?: AlbumLinks
   tracklist?: AlbumTrack[]
+  credits?: AlbumCredit[]
 }

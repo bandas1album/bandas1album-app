@@ -179,20 +179,44 @@ export async function fetchAllCategoryPaths(): Promise<
   return paths
 }
 
+/** Collect person slugs for ISR paths. */
+export async function fetchAllPersonSlugs(): Promise<string[]> {
+  try {
+    const pages = await fetchAllMenuPages('person')
+    const slugs: string[] = []
+    for (const body of pages) {
+      for (const item of body.data ?? []) {
+        if (item?.slug) slugs.push(item.slug)
+      }
+    }
+    return slugs
+  } catch {
+    // API sem type=person (ex.: produção ainda não deployada) — ISR sob demanda.
+    return []
+  }
+}
+
 /** Collect indexable paths for sitemap (paths only, leading slash). */
 export async function collectSitemapPaths(): Promise<SitemapUrl[]> {
-  const [albumPages, genrePages, countryPages, yearPages] = await Promise.all([
-    fetchAllAlbumPages(),
-    fetchAllMenuPages('genre'),
-    fetchAllMenuPages('country'),
-    fetchAllMenuPages('released')
-  ])
+  const [albumPages, genrePages, countryPages, yearPages, personSlugs] =
+    await Promise.all([
+      fetchAllAlbumPages(),
+      fetchAllMenuPages('genre'),
+      fetchAllMenuPages('country'),
+      fetchAllMenuPages('released'),
+      fetchAllPersonSlugs()
+    ])
 
   return [
     { url: '/', changefreq: 'daily', priority: 1 },
     ...albumPagesToSitemapUrls(albumPages),
     ...menuPagesToSitemapUrls(genrePages, 'genre'),
     ...menuPagesToSitemapUrls(countryPages, 'country'),
-    ...menuPagesToSitemapUrls(yearPages, 'year')
+    ...menuPagesToSitemapUrls(yearPages, 'year'),
+    ...personSlugs.map((slug) => ({
+      url: `/person/${slug}`,
+      changefreq: 'weekly' as const,
+      priority: 0.6
+    }))
   ]
 }

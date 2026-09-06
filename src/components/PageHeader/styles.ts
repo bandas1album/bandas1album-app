@@ -18,12 +18,32 @@ export const HeaderActions = styled.div`
 `
 
 export const HeaderTitle = styled.h1`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
   flex: 1;
+  min-width: 0;
   font-size: 14px;
 
   @media (min-width: 768px) {
     font-size: 18px;
   }
+
+  span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+`
+
+export const HeaderImage = styled.img`
+  flex: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: var(--color-primary-500, rgba(0, 0, 0, 0.15));
 `
 
 export const Playlists = styled.nav`

@@ -1,6 +1,6 @@
 import { Album } from '@/api/types/Album'
 
-/** Taxonomy context returned by `/api/albums` when filtering by genre/country/year. */
+/** Listing context returned by `/api/albums` when filtering by genre/country/year/person. */
 export type ListingPagePlaylists = {
   youtube?: string | null
   spotify?: string | null
@@ -15,6 +15,8 @@ export type ListingPageContext = {
   description?: string
   /** Playlist links for genre/country taxonomy pages. */
   playlists?: ListingPagePlaylists
+  /** Person photo (featured image) on person listing pages. */
+  image?: string | null
 }
 
 export type GetAlbumsResponse = {

@@ -10,7 +10,7 @@ export const AlbumDescriptionContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 16px;
-  padding: 32px 24px 0;
+  padding: 32px 32px 0;
   line-height: 150%;
 
   p:first-child {

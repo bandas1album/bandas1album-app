@@ -17,6 +17,7 @@ import {
   safeJsonLdStringify
 } from '@/lib/seo/structuredData'
 import AlbumDescription from './AlbumDescription'
+import AlbumCredits from './AlbumCredits'
 import dynamic from 'next/dynamic'
 
 const DisqusComments = dynamic(() => import('@/components/DisqusComments'), {
@@ -115,6 +116,7 @@ export default function AlbumTemplate(data: Album) {
             description={data?.description}
           />
         )}
+        {data?.credits?.length ? <AlbumCredits credits={data.credits} /> : null}
         {data?.tracklist && (
           <AlbumTracklist album={data} list={data?.tracklist} />
         )}
