@@ -28,6 +28,7 @@ export const CreditsList = styled.ul`
     background: rgba(0 0 0 / 20%);
     padding-bottom: 16px;
     overflow: hidden;
+    border: 1px solid rgba(0 0 0 / 10%);
   }
 
   a {
