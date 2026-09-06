@@ -76,7 +76,7 @@ export const PlayerShell = styled.div.attrs<PlayerShellProps>(
   })
 )<PlayerShellProps>`
   position: fixed;
-  z-index: ${({ $mode }) => ($mode === 'cover' ? 30 : 45)};
+  z-index: 1;
   display: flex;
   flex-direction: column;
   overflow: hidden;

@@ -6,7 +6,7 @@ export const TabsPanel = styled.header`
   bottom: calc(16px + var(--keyboard-offset, 0px));
   left: 0;
   right: 0;
-  z-index: 2;
+  z-index: 4;
   width: calc(100% - 32px);
   max-width: 768px;
   margin: 64px auto 0;
