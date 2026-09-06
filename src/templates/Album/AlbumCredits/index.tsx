@@ -3,6 +3,16 @@ import type { AlbumCredit } from '@/api/types/Album'
 import { CreditsList, CreditsTitle, CreditsWrapper } from './styles'
 import Image from 'next/image'
 
+const ROLE_LABELS: Record<string, string> = {
+  musician: 'Músico',
+  producer: 'Produtor',
+  engineer: 'Engenheiro',
+  mixer: 'Mixagem',
+  mastering: 'Masterização',
+  composer: 'Compositor',
+  other: 'Outro'
+}
+
 type AlbumCreditsProps = {
   credits: AlbumCredit[] | undefined
 }
@@ -16,7 +26,9 @@ export default function AlbumCredits({ credits }: AlbumCreditsProps) {
       <CreditsList>
         {credits.map((credit, index) => {
           const detail = credit.detail?.trim()
-          const label = detail ? detail : credit.role
+          const label = detail
+            ? detail
+            : ROLE_LABELS[credit.role] || credit.role
           const image = credit.image ? credit.image : '/logo.png'
 
           return (
