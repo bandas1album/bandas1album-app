@@ -18,12 +18,12 @@ export const CreditsList = styled.ul`
   margin: 0;
   padding: 0;
   list-style: none;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 16px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  grid-template-rows: max-content;
+  grid-gap: 16px;
 
   li {
-    width: 200px;
     border-radius: 8px;
     background: rgba(0 0 0 / 20%);
     padding-bottom: 16px;
