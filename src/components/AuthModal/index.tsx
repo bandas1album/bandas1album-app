@@ -19,6 +19,9 @@ import Image from 'next/image'
 import { gaEvent } from '@/lib/gtag'
 import { useCallback, useEffect, useId, useLayoutEffect, useRef } from 'react'
 
+const useIsomorphicLayoutEffect =
+  typeof window !== 'undefined' ? useLayoutEffect : useEffect
+
 const FOCUSABLE =
   'a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])'
 
@@ -76,7 +79,7 @@ export const AuthModal = () => {
   }, [close, releaseDrawerFocus])
 
   // Tira o foco do drawer antes do paint com aria-hidden (evita o warning do Chrome).
-  useLayoutEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     if (isOpen) return
     releaseDrawerFocus()
   }, [isOpen, releaseDrawerFocus])

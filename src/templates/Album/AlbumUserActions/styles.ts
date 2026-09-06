@@ -5,7 +5,7 @@ export const Actions = styled.div`
   position: absolute;
   top: 80px;
   right: 16px;
-  z-index: 1;
+  z-index: 10;
   display: flex;
   align-items: flex-end;
   flex-direction: column;
