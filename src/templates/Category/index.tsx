@@ -15,6 +15,7 @@ import {
   buildAlbumItemListJsonLd,
   buildBreadcrumbListJsonLd,
   buildCategoryBreadcrumbItems,
+  buildPersonPageJsonLd,
   flattenAlbumPages,
   safeJsonLdStringify
 } from '@/lib/seo/structuredData'
@@ -68,16 +69,22 @@ export default function CategoryTemplate({
 
   const pageDescription = getCategorySeoDescription(meta)
   const playlists = meta?.context?.playlists
+  const personImage = meta?.context?.image || null
   const canonicalUrl = `${SITE_URL}${path}`
   const listName = meta?.context?.title
     ? `${meta.context.page} › ${meta.context.title}`
     : undefined
-  const ogImage = {
-    url: absoluteUrl('/cover.png'),
-    width: 1280,
-    height: 720,
-    alt: 'Bandas de 1 Álbum'
-  }
+  const personJsonLd = meta?.context
+    ? buildPersonPageJsonLd(meta.context)
+    : null
+  const ogImage = personImage
+    ? { url: absoluteUrl(personImage), alt: meta?.context?.title || 'Pessoa' }
+    : {
+        url: absoluteUrl('/cover.png'),
+        width: 1280,
+        height: 720,
+        alt: 'Bandas de 1 Álbum'
+      }
 
   return (
     <>
@@ -93,6 +100,14 @@ export default function CategoryTemplate({
             )
           }}
         />
+        {personJsonLd ? (
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{
+              __html: safeJsonLdStringify(personJsonLd)
+            }}
+          />
+        ) : null}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -114,7 +129,11 @@ export default function CategoryTemplate({
       {categoryData?.pages?.length ? (
         <>
           {meta?.context?.title && (
-            <PageHeader playlists={playlists}>
+            <PageHeader
+              playlists={playlists}
+              image={personImage}
+              imageAlt={meta.context.title}
+            >
               {meta?.context?.page} › {meta?.context?.title}
             </PageHeader>
           )}

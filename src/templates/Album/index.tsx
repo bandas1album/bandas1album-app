@@ -1,8 +1,6 @@
 import Head from 'next/head'
 import AlbumCover from './AlbumCover'
 import AlbumInfo from './AlbumInfo'
-import { jsonLdScriptProps } from 'react-schemaorg'
-import { MusicAlbum } from 'schema-dts'
 import AlbumTracklist from './AlbumTracklist'
 import { NextSeo } from 'next-seo'
 import { decodeBrokenUnicode } from '@/utils/decodeUnicode'
@@ -14,6 +12,7 @@ import { SITE_URL, absoluteUrl } from '@/lib/seo/site'
 import {
   buildAlbumBreadcrumbItems,
   buildBreadcrumbListJsonLd,
+  buildMusicAlbumJsonLd,
   safeJsonLdStringify
 } from '@/lib/seo/structuredData'
 import AlbumDescription from './AlbumDescription'
@@ -36,28 +35,10 @@ export default function AlbumTemplate(data: Album) {
       <Head>
         <title>{pageTitle} | Bandas de 1 Álbum</title>
         <script
-          {...jsonLdScriptProps<MusicAlbum>({
-            '@context': 'https://schema.org',
-            '@type': 'MusicAlbum',
-            byArtist: {
-              '@type': 'MusicGroup',
-              name: data?.artist || ''
-            },
-            genre: data?.genres?.length ? data.genres?.[0]?.title || '' : '',
-            image: data?.cover
-              ? absoluteUrl(data.cover)
-              : absoluteUrl('/cover.png'),
-            name: data?.title || '',
-            numTracks: data?.tracklist && data?.tracklist.length,
-            track:
-              data?.tracklist &&
-              data.tracklist.map((track) => ({
-                '@type': 'MusicRecording',
-                duration: track.duration || '',
-                name: decodeBrokenUnicode(track.name) || ''
-              })),
-            url: `${SITE_URL}/album/${data.slug}`
-          })}
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: safeJsonLdStringify(buildMusicAlbumJsonLd(data))
+          }}
         />
         <script
           type="application/ld+json"

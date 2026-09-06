@@ -3,6 +3,7 @@ import ButtonBack from '../Buttons/ButtonBack'
 import {
   Header,
   HeaderActions,
+  HeaderImage,
   HeaderTitle,
   PlaylistLink,
   Playlists
@@ -14,11 +15,15 @@ import { safeExternalUrl } from '@/utils/safeExternalUrl'
 export default function PageHeader({
   children,
   hideBack,
-  playlists
+  playlists,
+  image,
+  imageAlt
 }: {
   children: React.ReactNode
   hideBack?: boolean
   playlists?: ListingPagePlaylists
+  image?: string | null
+  imageAlt?: string
 }) {
   const spotify = safeExternalUrl(playlists?.spotify)
   const youtube = safeExternalUrl(playlists?.youtube)
@@ -27,6 +32,14 @@ export default function PageHeader({
     <Header>
       <HeaderActions>{!hideBack && <ButtonBack></ButtonBack>}</HeaderActions>
       <HeaderTitle>
+        {image ? (
+          <HeaderImage
+            src={image}
+            alt={imageAlt || ''}
+            width={40}
+            height={40}
+          />
+        ) : null}
         <span>{children}</span>
       </HeaderTitle>
       <Playlists aria-label="Playlists">

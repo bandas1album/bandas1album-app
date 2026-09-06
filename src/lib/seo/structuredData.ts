@@ -1,13 +1,24 @@
 import type { InfiniteData } from '@tanstack/react-query'
 import type { GetAlbumsResponse } from '@/api/Albums/GetAlbums/types'
-import type { Album } from '@/api/types/Album'
-import { absoluteUrl } from './site'
+import type { Album, AlbumCredit } from '@/api/types/Album'
+import { decodeBrokenUnicode } from '@/utils/decodeUnicode'
+import { absoluteUrl, SITE_URL } from './site'
 
 export { safeJsonLdStringify } from './jsonLd'
 
 type BreadcrumbItem = {
   name: string
   url?: string
+}
+
+const CREDIT_ROLE_LABELS: Record<string, string> = {
+  musician: 'Músico',
+  producer: 'Produtor',
+  engineer: 'Engenheiro',
+  mixer: 'Mixagem',
+  mastering: 'Masterização',
+  composer: 'Compositor',
+  other: 'Outro'
 }
 
 export function flattenAlbumPages(
@@ -26,6 +37,102 @@ export function albumListItemName(album: {
 }): string {
   if (album.title === album.artist) return album.title || ''
   return `${album.artist || ''} - ${album.title || ''}`.trim()
+}
+
+function oneOrMany<T>(items: T[]): T | T[] | undefined {
+  if (!items.length) return undefined
+  return items.length === 1 ? items[0] : items
+}
+
+/** Schema.org Person from an album credit. */
+export function buildPersonJsonLdFromCredit(credit: AlbumCredit) {
+  const roleLabel = CREDIT_ROLE_LABELS[credit.role] || credit.role
+  const detail = credit.detail?.trim()
+  const jobTitle = detail ? `${roleLabel} — ${detail}` : roleLabel
+
+  return {
+    '@type': 'Person' as const,
+    name: credit.name,
+    url: absoluteUrl(`/person/${credit.slug}`),
+    ...(credit.image ? { image: absoluteUrl(credit.image) } : {}),
+    jobTitle
+  }
+}
+
+/**
+ * MusicAlbum JSON-LD, including credited people mapped to schema roles.
+ */
+export function buildMusicAlbumJsonLd(album: Album) {
+  const credits = album.credits ?? []
+  const producers = credits
+    .filter((c) => c.role === 'producer')
+    .map(buildPersonJsonLdFromCredit)
+  const composers = credits
+    .filter((c) => c.role === 'composer')
+    .map(buildPersonJsonLdFromCredit)
+  const performers = credits
+    .filter((c) => c.role === 'musician')
+    .map(buildPersonJsonLdFromCredit)
+  const contributors = credits
+    .filter(
+      (c) => !['producer', 'composer', 'musician'].includes(String(c.role))
+    )
+    .map(buildPersonJsonLdFromCredit)
+
+  const producer = oneOrMany(producers)
+  const composer = oneOrMany(composers)
+  const performer = oneOrMany(performers)
+  const contributor = oneOrMany(contributors)
+
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'MusicAlbum',
+    name: album.title || '',
+    url: `${SITE_URL}/album/${album.slug}`,
+    image: album.cover ? absoluteUrl(album.cover) : absoluteUrl('/cover.png'),
+    byArtist: {
+      '@type': 'MusicGroup',
+      name: album.artist || ''
+    },
+    ...(album.genres?.[0]?.title ? { genre: album.genres[0].title } : {}),
+    ...(album.tracklist?.length ? { numTracks: album.tracklist.length } : {}),
+    ...(album.tracklist?.length
+      ? {
+          track: album.tracklist.map((track) => ({
+            '@type': 'MusicRecording' as const,
+            name: decodeBrokenUnicode(track.name) || '',
+            ...(track.duration ? { duration: track.duration } : {})
+          }))
+        }
+      : {}),
+    ...(producer ? { producer } : {}),
+    ...(composer ? { composer } : {}),
+    ...(performer ? { performer } : {}),
+    ...(contributor ? { contributor } : {})
+  }
+}
+
+/** Person / ProfilePage JSON-LD for `/person/[slug]` listings. */
+export function buildPersonPageJsonLd(
+  context: NonNullable<GetAlbumsResponse['meta']['context']>
+) {
+  if (context.type !== 'person') return null
+
+  const person = {
+    '@type': 'Person' as const,
+    name: context.title,
+    url: absoluteUrl(`/person/${context.slug}`),
+    ...(context.image ? { image: absoluteUrl(context.image) } : {}),
+    ...(context.description ? { description: context.description } : {})
+  }
+
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'ProfilePage',
+    url: absoluteUrl(`/person/${context.slug}`),
+    name: context.title,
+    mainEntity: person
+  }
 }
 
 export function buildBreadcrumbListJsonLd(items: BreadcrumbItem[]) {

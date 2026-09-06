@@ -11,7 +11,7 @@ import { useRef } from 'react'
 import PageHeader from '@/components/PageHeader'
 import { useInfiniteScrollLoadMore } from '@/hooks/useInfiniteScrollLoadMore'
 import { SITE_URL, absoluteUrl } from '@/lib/seo/site'
-import { getHomeContent, getHomeSeoDescription } from '@/lib/seo/listingMeta'
+import { getHomeSeoDescription } from '@/lib/seo/listingMeta'
 import {
   buildAlbumItemListJsonLd,
   flattenAlbumPages,
