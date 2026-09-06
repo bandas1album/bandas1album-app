@@ -40,15 +40,19 @@ export const getStaticProps: GetStaticProps<PageProps> = async (context) => {
 
   try {
     const album = await fetchAlbumBySlug(slug)
-    if (!album) return { notFound: true }
+    if (!album) {
+      // 404 real — revalida em breve para não “grudar” se o álbum voltar
+      return { notFound: true, revalidate: 60 }
+    }
 
     return {
       props: { slug, album: { ...album, slug } },
       revalidate: 3600
     }
   } catch (e) {
+    // Falha transitória da API: não vira 404 permanente (mata indexação).
     console.error('[album isr]', e)
-    return { notFound: true }
+    throw e
   }
 }
 

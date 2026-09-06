@@ -69,7 +69,14 @@ export const getStaticProps: GetStaticProps<CategoryPageProps> = async (
 
   try {
     const data = await fetchCategoryFirstPage(category, slug)
-    if (!data) return { notFound: true }
+    if (!data) return { notFound: true, revalidate: 60 }
+
+    const totalItems = data.meta?.pagination?.total_items ?? 0
+    const hasAlbums = (data.data?.length ?? 0) > 0
+    // Soft 404: API devolve 200 com lista vazia para termos inexistentes/vazios.
+    if (!hasAlbums && totalItems === 0) {
+      return { notFound: true, revalidate: 300 }
+    }
 
     const ctxMeta = data.meta?.context
     const title = ctxMeta
@@ -93,6 +100,6 @@ export const getStaticProps: GetStaticProps<CategoryPageProps> = async (
     }
   } catch (e) {
     console.error('[category isr]', e)
-    return { notFound: true }
+    throw e
   }
 }

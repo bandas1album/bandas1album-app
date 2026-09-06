@@ -17,7 +17,8 @@ export async function fetchAlbumBySlug(slug: string): Promise<Album | null> {
 async function fetchAlbumsPage(page: number): Promise<GetAlbumsResponse> {
   const params = new URLSearchParams({
     page: String(page),
-    per_page: '100',
+    // API caps at 50; requesting 100 can desync total_pages vs rows returned.
+    per_page: '50',
     order_by: 'date',
     order: 'DESC'
   })
@@ -105,11 +106,12 @@ function albumPagesToSitemapUrls(pages: GetAlbumsResponse[]): SitemapUrl[] {
   for (const body of pages) {
     for (const album of body.data ?? []) {
       if (album?.slug) {
+        const lastmod = album.modified || album.released?.slice?.(0, 10)
         out.push({
           url: `/album/${album.slug}`,
           changefreq: 'weekly',
           priority: 0.8,
-          lastmod: album.released
+          ...(lastmod ? { lastmod } : {})
         })
       }
     }

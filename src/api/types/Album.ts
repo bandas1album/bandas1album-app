@@ -39,6 +39,8 @@ export type Album = {
   artist?: string
   genres?: AlbumGenre[]
   released?: string
+  /** ISO datetime from WP post_modified (list endpoint). */
+  modified?: string
   country?: AlbumCountry
   label?: string
   links?: AlbumLinks

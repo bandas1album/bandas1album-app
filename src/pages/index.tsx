@@ -20,7 +20,8 @@ export const getStaticProps: GetStaticProps<HomePageProps> = async () => {
       revalidate: 3600
     }
   } catch (e) {
+    // Não transformar blip da API em 404 da homepage (Google desindexa).
     console.error('[home isr]', e)
-    return { notFound: true }
+    throw e
   }
 }
