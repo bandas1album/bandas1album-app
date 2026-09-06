@@ -67,7 +67,13 @@ export default function Tabs() {
   }, [openedTabs.state])
 
   return (
-    <TabsPanel>
+    <TabsPanel
+      onClick={(event) => {
+        const target = event.target as HTMLElement | null
+        if (!target?.closest('a')) return
+        setOpenedTabs({ state: false, tab: '' })
+      }}
+    >
       <TabsItem
         id={SEARCH_PANEL_ID}
         aria-label="Aba de busca"

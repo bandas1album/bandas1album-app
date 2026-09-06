@@ -69,7 +69,6 @@ export const PlayerShell = styled.div.attrs<PlayerShellProps>(
           }
         : {
             right: 16,
-            bottom: 16,
             width: 220,
             transform: `translateY(${$visible ? 0 : 12}px)`
           }
@@ -96,9 +95,14 @@ export const PlayerShell = styled.div.attrs<PlayerShellProps>(
   ${({ $mode }) =>
     $mode === 'pip' &&
     `
+    bottom: 104px;
+
+    @media (min-width: 1240px) {
+      bottom: 16px !important;
+    }
+
     @media (max-width: 720px) {
       right: 12px !important;
-      bottom: 80px !important;
       width: 180px !important;
     }
   `}
@@ -107,7 +111,7 @@ export const PlayerShell = styled.div.attrs<PlayerShellProps>(
 export const PipBack = styled(Link)`
   display: flex;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: space-between;
   gap: 6px;
   padding: 8px 10px;
   font-size: 12px;
