@@ -95,6 +95,10 @@ export const PlayerProvider = ({ children }: { children: React.ReactNode }) => {
   const creatingRef = useRef<Promise<Plyr | null> | null>(null)
   const coverRectRafRef = useRef<number | null>(null)
   const playNextRef = useRef<() => void>(() => undefined)
+  /** Intenção do usuário: deve continuar tocando se o SO/YouTube pausar sozinho. */
+  const wantPlayingRef = useRef(false)
+  const resumeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const prevModeRef = useRef<'pip' | 'cover' | null>(null)
 
   const hasSession = currentIndex != null
   const isCoverMode = Boolean(
@@ -107,6 +111,39 @@ export const PlayerProvider = ({ children }: { children: React.ReactNode }) => {
     isPlayingRef.current = next
     setIsPlaying(next)
   }, [])
+
+  const clearResumeTimer = useCallback(() => {
+    if (resumeTimerRef.current != null) {
+      clearTimeout(resumeTimerRef.current)
+      resumeTimerRef.current = null
+    }
+  }, [])
+
+  /** Tenta retomar após pause forçado (troca de layout / voltar do background). */
+  const resumeIfWanted = useCallback(
+    (delayMs = 0) => {
+      clearResumeTimer()
+      if (!wantPlayingRef.current || currentIndexRef.current == null) return
+
+      const run = () => {
+        resumeTimerRef.current = null
+        if (!wantPlayingRef.current) return
+        const player = playerRef.current
+        if (!player) return
+        void player.play()?.then(
+          () => setPlayingState(true),
+          () => undefined
+        )
+      }
+
+      if (delayMs <= 0) {
+        run()
+        return
+      }
+      resumeTimerRef.current = setTimeout(run, delayMs)
+    },
+    [clearResumeTimer, setPlayingState]
+  )
 
   const syncProgress = useCallback(() => {
     const player = playerRef.current
@@ -249,6 +286,7 @@ export const PlayerProvider = ({ children }: { children: React.ReactNode }) => {
         playerHostRef.current.dataset.youtubeId = youtubeId
 
         player.on('play', () => {
+          wantPlayingRef.current = true
           setPlayingState(true)
         })
         player.on('pause', () => {
@@ -256,6 +294,8 @@ export const PlayerProvider = ({ children }: { children: React.ReactNode }) => {
           syncProgress()
         })
         player.on('ended', () => {
+          // Troca de faixa: mantém intenção de tocar.
+          wantPlayingRef.current = true
           playNextRef.current()
         })
         player.on('timeupdate', () => {
@@ -294,6 +334,7 @@ export const PlayerProvider = ({ children }: { children: React.ReactNode }) => {
       }
 
       try {
+        wantPlayingRef.current = true
         await player.play()
         setPlayingState(true)
         updateCoverRect()
@@ -305,25 +346,30 @@ export const PlayerProvider = ({ children }: { children: React.ReactNode }) => {
   )
 
   const pause = useCallback(() => {
+    wantPlayingRef.current = false
+    clearResumeTimer()
     playerRef.current?.pause()
     setPlayingState(false)
-  }, [setPlayingState])
+  }, [clearResumeTimer, setPlayingState])
 
   const toggle = useCallback(() => {
     const player = playerRef.current
     if (!player || currentIndexRef.current == null) return
 
-    if (isPlayingRef.current) {
+    if (isPlayingRef.current || wantPlayingRef.current) {
+      wantPlayingRef.current = false
+      clearResumeTimer()
       player.pause()
       setPlayingState(false)
       return
     }
 
+    wantPlayingRef.current = true
     void player.play()?.then(
       () => setPlayingState(true),
       () => setPlayingState(false)
     )
-  }, [setPlayingState])
+  }, [clearResumeTimer, setPlayingState])
 
   const playAlbumTrack = useCallback(
     (nextAlbum: Album, trackIndex: number) => {
@@ -411,6 +457,34 @@ export const PlayerProvider = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     playNextRef.current = playNext
   }, [playNext])
+
+  // Mobile: YouTube pausa ao trocar capa ↔ PiP (resize do iframe). Retoma se ainda deve tocar.
+  useEffect(() => {
+    const prev = prevModeRef.current
+    prevModeRef.current = playerMode
+    if (!prev || prev === playerMode) return
+    if (!wantPlayingRef.current) return
+    resumeIfWanted(300)
+  }, [playerMode, resumeIfWanted])
+
+  // Ao voltar do background / desbloquear, tenta retomar (playback em background
+  // com embed YouTube no mobile não é permitido pelo SO/Chrome/Safari).
+  useEffect(() => {
+    const onVisibility = () => {
+      if (document.visibilityState === 'visible') {
+        resumeIfWanted(200)
+      }
+    }
+    const onPageShow = () => resumeIfWanted(200)
+
+    document.addEventListener('visibilitychange', onVisibility)
+    window.addEventListener('pageshow', onPageShow)
+    return () => {
+      document.removeEventListener('visibilitychange', onVisibility)
+      window.removeEventListener('pageshow', onPageShow)
+      clearResumeTimer()
+    }
+  }, [clearResumeTimer, resumeIfWanted])
 
   const registerPlayerHost = useCallback(
     (element: HTMLElement | null, albumSlug?: string) => {
