@@ -9,7 +9,6 @@ import {
 import type { GetAlbumsResponse } from '@/api/Albums/GetAlbums/types'
 import { useRef } from 'react'
 import PageHeader from '@/components/PageHeader'
-import PageEditorial from '@/components/PageEditorial'
 import { useInfiniteScrollLoadMore } from '@/hooks/useInfiniteScrollLoadMore'
 import { SITE_URL, absoluteUrl } from '@/lib/seo/site'
 import { getHomeContent, getHomeSeoDescription } from '@/lib/seo/listingMeta'
@@ -60,7 +59,6 @@ export default function HomeTemplate({ initialPage }: HomeTemplateProps) {
   })
 
   const pageMeta = albums?.pages[0]?.meta ?? initialPage.meta
-  const editorialContent = getHomeContent(pageMeta)
   const seoDescription = getHomeSeoDescription(pageMeta)
 
   return (
@@ -106,7 +104,6 @@ export default function HomeTemplate({ initialPage }: HomeTemplateProps) {
       />
       <>
         <PageHeader hideBack={true}>Bandas de 1 Álbum</PageHeader>
-        <PageEditorial content={editorialContent} variant="content" />
         <ListAlbums
           albums={albums}
           hasNextPage={hasNextPage}
