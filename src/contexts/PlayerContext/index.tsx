@@ -99,6 +99,8 @@ export const PlayerProvider = ({ children }: { children: React.ReactNode }) => {
   const wantPlayingRef = useRef(false)
   const resumeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const prevModeRef = useRef<'pip' | 'cover' | null>(null)
+  /** Construtor do Plyr pré-carregado — evita await no primeiro toque (gesto mobile). */
+  const plyrCtorRef = useRef<typeof Plyr | null>(null)
 
   const hasSession = currentIndex != null
   const isCoverMode = Boolean(
@@ -209,7 +211,9 @@ export const PlayerProvider = ({ children }: { children: React.ReactNode }) => {
   }, [currentIndex])
 
   useEffect(() => {
-    void import('plyr')
+    void import('plyr').then((mod) => {
+      plyrCtorRef.current = mod.default
+    })
   }, [])
 
   useIsomorphicLayoutEffect(() => {
@@ -230,9 +234,63 @@ export const PlayerProvider = ({ children }: { children: React.ReactNode }) => {
     }
   }, [album?.slug, currentIndex, coverSlug, updateCoverRect])
 
-  /** Cria o Plyr uma vez; só troca source quando o vídeo muda. */
+  const bindPlayerEvents = useCallback(
+    (player: Plyr) => {
+      player.on('play', () => {
+        wantPlayingRef.current = true
+        setPlayingState(true)
+      })
+      player.on('pause', () => {
+        setPlayingState(false)
+        syncProgress()
+      })
+      player.on('ended', () => {
+        wantPlayingRef.current = true
+        playNextRef.current()
+      })
+      player.on('timeupdate', () => {
+        syncProgress()
+      })
+    },
+    [setPlayingState, syncProgress]
+  )
+
+  /**
+   * Cria o Plyr de forma síncrona (sem await) para preservar o gesto de toque no mobile.
+   * O iframe do YouTube precisa nascer no mesmo tick do click para o autoplay funcionar.
+   */
+  const createPlayerSync = useCallback(
+    (youtubeId: string, autoplay: boolean): Plyr | null => {
+      const PlyrCtor = plyrCtorRef.current
+      const host = playerHostRef.current
+      if (!PlyrCtor || !host || !isValidYouTubeId(youtubeId)) return null
+
+      const target = document.createElement('div')
+      target.dataset.plyrProvider = 'youtube'
+      target.dataset.plyrEmbedId = youtubeId
+      host.replaceChildren(target)
+
+      const player = new PlyrCtor(target, {
+        ...PLYR_OPTIONS,
+        autoplay,
+        youtube: {
+          ...PLYR_OPTIONS.youtube,
+          autoplay: autoplay ? 1 : 0
+        }
+      })
+
+      playerRef.current = player
+      loadedVideoIdRef.current = youtubeId
+      host.dataset.youtubeId = youtubeId
+      bindPlayerEvents(player)
+      return player
+    },
+    [bindPlayerEvents]
+  )
+
+  /** Troca source ou cria player; preferir createPlayerSync no caminho do click. */
   const ensurePlayer = useCallback(
-    async (youtubeId: string): Promise<Plyr | null> => {
+    async (youtubeId: string, autoplay = false): Promise<Plyr | null> => {
       if (!isValidYouTubeId(youtubeId)) return null
       const host = playerHostRef.current
       if (!host) return null
@@ -241,12 +299,10 @@ export const PlayerProvider = ({ children }: { children: React.ReactNode }) => {
         await creatingRef.current
       }
 
-      // Mesmo vídeo: reutiliza a instância (pause/play sem remontar).
       if (playerRef.current && loadedVideoIdRef.current === youtubeId) {
         return playerRef.current
       }
 
-      // Vídeo diferente: só troca o source.
       if (playerRef.current) {
         const player = playerRef.current
         loadedVideoIdRef.current = youtubeId
@@ -267,54 +323,39 @@ export const PlayerProvider = ({ children }: { children: React.ReactNode }) => {
         creatingRef.current = ready
         const result = await ready
         creatingRef.current = null
+        if (autoplay) {
+          try {
+            await result.play()
+          } catch {
+            /* mobile pode bloquear se o gesto já expirou */
+          }
+        }
         return result
       }
 
-      // Primeira criação.
-      const createPromise = (async () => {
-        const { default: PlyrCtor } = await import('plyr')
-        if (!playerHostRef.current) return null
+      if (!plyrCtorRef.current) {
+        const mod = await import('plyr')
+        plyrCtorRef.current = mod.default
+      }
 
-        const target = document.createElement('div')
-        target.dataset.plyrProvider = 'youtube'
-        target.dataset.plyrEmbedId = youtubeId
-        playerHostRef.current.replaceChildren(target)
+      const player = createPlayerSync(youtubeId, autoplay)
+      if (!player) return null
 
-        const player = new PlyrCtor(target, PLYR_OPTIONS)
-        playerRef.current = player
-        loadedVideoIdRef.current = youtubeId
-        playerHostRef.current.dataset.youtubeId = youtubeId
+      await new Promise<void>((resolve) => {
+        player.once('ready', () => resolve())
+      })
 
-        player.on('play', () => {
-          wantPlayingRef.current = true
-          setPlayingState(true)
-        })
-        player.on('pause', () => {
-          setPlayingState(false)
-          syncProgress()
-        })
-        player.on('ended', () => {
-          // Troca de faixa: mantém intenção de tocar.
-          wantPlayingRef.current = true
-          playNextRef.current()
-        })
-        player.on('timeupdate', () => {
-          syncProgress()
-        })
+      if (autoplay) {
+        try {
+          await player.play()
+        } catch {
+          /* autoplay do embed pode ter coberto */
+        }
+      }
 
-        await new Promise<void>((resolve) => {
-          player.once('ready', () => resolve())
-        })
-
-        return player
-      })()
-
-      creatingRef.current = createPromise
-      const player = await createPromise
-      creatingRef.current = null
       return player
     },
-    [setPlayingState, syncProgress]
+    [createPlayerSync]
   )
 
   const playQueueIndex = useCallback(
@@ -326,23 +367,68 @@ export const PlayerProvider = ({ children }: { children: React.ReactNode }) => {
       setCurrentIndex(queueIndex)
       setProgress(0)
       setRemainingSeconds(null)
+      wantPlayingRef.current = true
 
-      const player = await ensurePlayer(next.youtubeId)
+      // Já carregado: play ainda no mesmo turno do click (antes de qualquer await).
+      if (playerRef.current && loadedVideoIdRef.current === next.youtubeId) {
+        try {
+          const playResult = playerRef.current.play()
+          setPlayingState(true)
+          updateCoverRect()
+          await playResult
+        } catch {
+          setPlayingState(false)
+        }
+        return
+      }
+
+      // Troca de faixa: recria o embed no mesmo gesto (source async perde autoplay no mobile).
+      if (playerRef.current && plyrCtorRef.current) {
+        try {
+          playerRef.current.destroy()
+        } catch {
+          /* ignore */
+        }
+        playerRef.current = null
+        loadedVideoIdRef.current = null
+      }
+
+      // Criação síncrona — preserva gesto no iOS/Android.
+      if (plyrCtorRef.current) {
+        const player = createPlayerSync(next.youtubeId, true)
+        if (player) {
+          setPlayingState(true)
+          updateCoverRect()
+          player.once('ready', () => {
+            if (!wantPlayingRef.current) return
+            void player.play()?.then(
+              () => setPlayingState(true),
+              () => undefined
+            )
+          })
+          return
+        }
+      }
+
+      // Fallback (Plyr ainda carregando).
+      const player = await ensurePlayer(next.youtubeId, true)
       if (!player) {
+        wantPlayingRef.current = false
         setPlayingState(false)
         return
       }
 
       try {
-        wantPlayingRef.current = true
         await player.play()
         setPlayingState(true)
         updateCoverRect()
       } catch {
-        setPlayingState(false)
+        if (!player.playing) {
+          setPlayingState(false)
+        }
       }
     },
-    [ensurePlayer, setPlayingState, updateCoverRect]
+    [createPlayerSync, ensurePlayer, setPlayingState, updateCoverRect]
   )
 
   const pause = useCallback(() => {
@@ -356,7 +442,8 @@ export const PlayerProvider = ({ children }: { children: React.ReactNode }) => {
     const player = playerRef.current
     if (!player || currentIndexRef.current == null) return
 
-    if (isPlayingRef.current || wantPlayingRef.current) {
+    // Só pausa se estiver de fato tocando — evita 2º toque virar pause após falha de autoplay.
+    if (isPlayingRef.current) {
       wantPlayingRef.current = false
       clearResumeTimer()
       player.pause()
