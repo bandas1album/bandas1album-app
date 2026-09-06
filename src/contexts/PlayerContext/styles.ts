@@ -48,14 +48,33 @@ export const PlayerChromeReset = createGlobalStyle`
   }
 `
 
-export const PlayerShell = styled.div<{
+type PlayerShellProps = {
   $visible: boolean
   $mode: 'pip' | 'cover'
   $top: number
   $left: number
   $width: number
   $height: number
-}>`
+}
+
+export const PlayerShell = styled.div.attrs<PlayerShellProps>(
+  ({ $mode, $visible, $top, $left, $width, $height }) => ({
+    style:
+      $mode === 'cover'
+        ? {
+            top: $top,
+            left: $left,
+            width: $width,
+            height: $height
+          }
+        : {
+            right: 16,
+            bottom: 16,
+            width: 220,
+            transform: `translateY(${$visible ? 0 : 12}px)`
+          }
+  })
+)<PlayerShellProps>`
   position: fixed;
   z-index: ${({ $mode }) => ($mode === 'cover' ? 30 : 45)};
   display: flex;
@@ -74,24 +93,13 @@ export const PlayerShell = styled.div<{
       ? 'opacity 0.2s ease, transform 0.2s ease'
       : 'opacity 0.15s ease'};
 
-  ${({ $mode, $top, $left, $width, $height, $visible }) =>
-    $mode === 'cover'
-      ? `
-    top: ${$top}px;
-    left: ${$left}px;
-    width: ${$width}px;
-    height: ${$height}px;
-  `
-      : `
-    right: 16px;
-    bottom: 16px;
-    width: 220px;
-    transform: translateY(${$visible ? '0' : '12px'});
-
+  ${({ $mode }) =>
+    $mode === 'pip' &&
+    `
     @media (max-width: 720px) {
-      right: 12px;
-      bottom: 80px;
-      width: 180px;
+      right: 12px !important;
+      bottom: 80px !important;
+      width: 180px !important;
     }
   `}
 `

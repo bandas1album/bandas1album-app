@@ -9,12 +9,24 @@ type TDisqusComments = {
   title: string | undefined
 }
 
+type DisqusWindow = Window & {
+  DISQUS?: {
+    reset: (options: {
+      reload: boolean
+      config: (this: {
+        page: { identifier?: string; url?: string; title?: string }
+      }) => void
+    }) => void
+  }
+}
+
 export default function DisqusComments({ slug, id, title }: TDisqusComments) {
   const containerRef = useRef<HTMLDivElement | null>(null)
   const [shouldLoad, setShouldLoad] = useState(false)
   const disqusShortname = 'bandas1album'
+  const pageUrl = `https://bandas1album.com.br/album/${slug}`
   const disqusConfig = {
-    url: `https://bandas1album.com.br/album/${slug}`,
+    url: pageUrl,
     identifier: id as string | undefined,
     title: title as string | undefined
   }
@@ -36,6 +48,23 @@ export default function DisqusComments({ slug, id, title }: TDisqusComments) {
     observer.observe(node)
     return () => observer.disconnect()
   }, [shouldLoad])
+
+  // Navegação SPA: se o embed já existe, reset em vez de reinjetar embed.js
+  useEffect(() => {
+    if (!shouldLoad || !id) return
+
+    const w = window as DisqusWindow
+    if (!w.DISQUS) return
+
+    w.DISQUS.reset({
+      reload: true,
+      config() {
+        this.page.identifier = id
+        this.page.url = pageUrl
+        this.page.title = title
+      }
+    })
+  }, [shouldLoad, id, pageUrl, title])
 
   return (
     <CommentsWrapper ref={containerRef}>

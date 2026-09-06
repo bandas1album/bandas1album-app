@@ -17,7 +17,7 @@ import { TResetPasswordParams } from '@/api/Auth/ResetPassword/types'
 import { Close } from '@styled-icons/ionicons-solid'
 import Image from 'next/image'
 import { gaEvent } from '@/lib/gtag'
-import { useEffect, useId, useRef } from 'react'
+import { useCallback, useEffect, useId, useLayoutEffect, useRef } from 'react'
 
 const FOCUSABLE =
   'a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])'
@@ -27,6 +27,7 @@ export const AuthModal = () => {
   const { isOpen, open, view, close } = useAuthUI()
   const titleId = useId()
   const drawerRef = useRef<HTMLElement | null>(null)
+  const openButtonRef = useRef<HTMLButtonElement | null>(null)
   const previousFocus = useRef<HTMLElement | null>(null)
   const {
     mutateAsync: mutateLogin,
@@ -59,6 +60,27 @@ export const AuthModal = () => {
     reset: resetReset
   } = useResetPassword()
 
+  const releaseDrawerFocus = useCallback(() => {
+    const drawer = drawerRef.current
+    const active = document.activeElement as HTMLElement | null
+    if (drawer && active && drawer.contains(active)) {
+      active.blur()
+    }
+  }, [])
+
+  const handleClose = useCallback(() => {
+    releaseDrawerFocus()
+    const restore = previousFocus.current ?? openButtonRef.current
+    restore?.focus?.()
+    close()
+  }, [close, releaseDrawerFocus])
+
+  // Tira o foco do drawer antes do paint com aria-hidden (evita o warning do Chrome).
+  useLayoutEffect(() => {
+    if (isOpen) return
+    releaseDrawerFocus()
+  }, [isOpen, releaseDrawerFocus])
+
   useEffect(() => {
     if (!isOpen) return
 
@@ -75,7 +97,7 @@ export const AuthModal = () => {
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
         event.preventDefault()
-        close()
+        handleClose()
         return
       }
 
@@ -103,9 +125,8 @@ export const AuthModal = () => {
     document.addEventListener('keydown', onKeyDown)
     return () => {
       document.removeEventListener('keydown', onKeyDown)
-      previousFocus.current?.focus?.()
     }
-  }, [isOpen, close, view])
+  }, [isOpen, view, handleClose])
 
   const handleLogin = async (form: TGenerateTokenParams) => {
     try {
@@ -146,6 +167,7 @@ export const AuthModal = () => {
   return (
     <S.AuthOverlay>
       <S.OpenButton
+        ref={openButtonRef}
         aria-label="Abrir modal de login"
         aria-expanded={isOpen}
         aria-controls="auth-drawer"
@@ -163,8 +185,11 @@ export const AuthModal = () => {
         aria-modal={isOpen}
         aria-labelledby={titleId}
         aria-hidden={!isOpen}
+        {...(!isOpen
+          ? ({ inert: '' } as React.HTMLAttributes<HTMLElement>)
+          : {})}
       >
-        <S.CloseModal type="button" aria-label="Fechar" onClick={() => close()}>
+        <S.CloseModal type="button" aria-label="Fechar" onClick={handleClose}>
           <Close />
         </S.CloseModal>
 
@@ -254,7 +279,7 @@ export const AuthModal = () => {
 
         <S.CloseButton
           aria-label="Fechar modal de login"
-          onClick={() => close()}
+          onClick={handleClose}
         ></S.CloseButton>
       </S.AuthDrawer>
     </S.AuthOverlay>

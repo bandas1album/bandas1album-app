@@ -23,6 +23,24 @@ const useIsomorphicLayoutEffect =
 const PlayerContext = createContext<PlayerState | undefined>(undefined)
 
 const PLYR_OPTIONS = {
+  controls: [] as string[],
+  clickToPlay: false,
+  hideControls: true,
+  keyboard: { focused: false, global: false },
+  captions: { active: false },
+  tooltips: { controls: false, seek: false },
+  youtube: {
+    noCookie: false,
+    rel: 0,
+    showinfo: 0,
+    iv_load_policy: 3,
+    modestbranding: 1,
+    controls: 0,
+    fs: 0,
+    disablekb: 1,
+    playsinline: 1,
+    customControls: true
+  }
 }
 
 export function buildQueue(album: Album): PlayerQueueTrack[] {
