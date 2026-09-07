@@ -30,7 +30,9 @@ export default function PageHeader({
 
   return (
     <Header>
-      <HeaderActions>{!hideBack && <ButtonBack></ButtonBack>}</HeaderActions>
+      <HeaderActions>
+        <ButtonBack disabled={hideBack || false}></ButtonBack>
+      </HeaderActions>
       <HeaderTitle>
         {image ? (
           <HeaderImage
@@ -43,16 +45,17 @@ export default function PageHeader({
         <span>{children}</span>
       </HeaderTitle>
       <Playlists aria-label="Playlists">
-        {spotify ? (
-          <PlaylistLink
-            href={spotify}
-            target="_blank"
-            rel="noopener noreferrer"
-            title="Playlist no Spotify"
-          >
-            <Spotify />
-          </PlaylistLink>
-        ) : null}
+        <PlaylistLink
+          href={
+            spotify ||
+            'https://open.spotify.com/playlist/5kJipc06T3cpu4nHSyt3J3?si=16a5d3ec3c13436a'
+          }
+          target="_blank"
+          rel="noopener noreferrer"
+          title="Playlist no Spotify"
+        >
+          <Spotify />
+        </PlaylistLink>
         {youtube ? (
           <PlaylistLink
             href={youtube}

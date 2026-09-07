@@ -10,4 +10,9 @@ export const Back = styled(Button)`
   background-color: var(--color-primary-500);
   color: var(--color-light);
   border-radius: 50%;
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
 `
