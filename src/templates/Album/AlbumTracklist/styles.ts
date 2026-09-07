@@ -1,6 +1,6 @@
 import { styled } from 'styled-components'
 
-export const ListWrapper = styled.div`
+export const ListWrapper = styled.section`
   display: flex;
   flex-direction: column;
   gap: 16px;

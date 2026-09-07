@@ -63,6 +63,8 @@ export type Album = {
   country?: AlbumCountry
   label?: string
   links?: AlbumLinks
+  /** Normalized Spotify podcast embed URL (episode/show). */
+  spotify_embed?: string | null
   tracklist?: AlbumTrack[]
   credits?: AlbumCredit[]
 }

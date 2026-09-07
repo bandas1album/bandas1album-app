@@ -17,6 +17,7 @@ import {
 } from '@/lib/seo/structuredData'
 import AlbumDescription from './AlbumDescription'
 import AlbumCredits from './AlbumCredits'
+import AlbumSpotifyEmbed from './AlbumSpotifyEmbed'
 import dynamic from 'next/dynamic'
 
 const DisqusComments = dynamic(() => import('@/components/DisqusComments'), {
@@ -82,21 +83,27 @@ export default function AlbumTemplate(data: Album) {
           title={data?.title}
           albumSlug={data.slug}
         />
-        <AlbumInfo
-          album={data}
-          title={decodeBrokenUnicode(data?.title)}
-          artist={decodeBrokenUnicode(data?.artist)}
-          genre={data?.genres}
-          country={data?.country}
-          social={data?.links}
-          year={data?.released?.split('-')[0]}
-        />
-        {data?.description && (
-          <AlbumDescription
-            title={data?.title}
-            description={data?.description}
+        <article>
+          <AlbumInfo
+            album={data}
+            title={decodeBrokenUnicode(data?.title)}
+            artist={decodeBrokenUnicode(data?.artist)}
+            genre={data?.genres}
+            country={data?.country}
+            social={data?.links}
+            year={data?.released?.split('-')[0]}
           />
-        )}
+          {data?.description && (
+            <AlbumDescription
+              title={data?.title}
+              description={data?.description}
+            />
+          )}
+          <AlbumSpotifyEmbed
+            url={data?.spotify_embed}
+            albumTitle={data?.title}
+          />
+        </article>
         {data?.credits?.length ? <AlbumCredits credits={data.credits} /> : null}
         {data?.tracklist && (
           <AlbumTracklist album={data} list={data?.tracklist} />

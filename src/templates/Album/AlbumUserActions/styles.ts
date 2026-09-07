@@ -1,7 +1,7 @@
 import { Button } from '@/styles/resets'
 import styled from 'styled-components'
 
-export const Actions = styled.div`
+export const Actions = styled.aside`
   position: absolute;
   top: 80px;
   right: 16px;
