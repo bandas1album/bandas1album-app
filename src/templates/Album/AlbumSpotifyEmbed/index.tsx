@@ -14,13 +14,11 @@ export default function AlbumSpotifyEmbed({
   const embedUrl = safeSpotifyEmbedUrl(url)
   if (!embedUrl) return null
 
-  const title = albumTitle
-    ? `Review no Spotify — ${albumTitle}`
-    : 'Review no Spotify'
+  const title = 'Podcast de review do album'
 
   return (
     <EmbedWrapper>
-      <AlbumContentTitle>{title}</AlbumContentTitle>
+      <AlbumContentTitle>Review no Spotify</AlbumContentTitle>
       <EmbedFrame
         src={embedUrl}
         title={title}
