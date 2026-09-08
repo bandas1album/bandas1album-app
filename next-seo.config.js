@@ -4,7 +4,7 @@ const siteUrl =
 export default {
   defaultTitle: 'Bandas 1 Álbum',
   description:
-    'Descubra bandas e artistas que lançaram apenas um álbum na carreira — ouça, explore por gênero, país ou ano.',
+    'Conheça bandas e artistas que lançaram apenas um álbum na carreira. Descubra discos, histórias, gêneros e raridades no Bandas 1 Álbum.',
   additionalMetaTags: [
     {
       name: 'author',

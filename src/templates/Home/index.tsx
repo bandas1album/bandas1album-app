@@ -64,7 +64,10 @@ export default function HomeTemplate({ initialPage }: HomeTemplateProps) {
   return (
     <>
       <Head>
-        <title>Bandas 1 Álbum</title>
+        <title>
+          Bandas e Artistas que lançaram apenas um álbum na carreira | Bandas 1
+          Álbum
+        </title>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
