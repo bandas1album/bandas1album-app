@@ -68,7 +68,7 @@ export const getStaticProps: GetStaticProps<PersonPageProps> = async (ctx) => {
       return { notFound: true, revalidate: 300 }
     }
 
-    const title = `${ctxMeta.title} ‹ ${ctxMeta.page} | Bandas de 1 Álbum`
+    const title = `${ctxMeta.title} ‹ ${ctxMeta.page} | Bandas 1 Álbum`
     const description = getCategorySeoDescription(data.meta)
 
     return {

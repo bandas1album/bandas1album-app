@@ -1,7 +1,7 @@
 import type { GetAlbumsResponse } from '@/api/Albums/GetAlbums/types'
 
 const HOME_SEO_FALLBACK =
-  'O projeto Bandas de 1 Álbum eterniza bandas e artistas que lançaram apenas um álbum na carreira.'
+  'O projeto Bandas 1 Álbum eterniza bandas e artistas que lançaram apenas um álbum na carreira.'
 
 export function getHomeContent(
   meta?: GetAlbumsResponse['meta']

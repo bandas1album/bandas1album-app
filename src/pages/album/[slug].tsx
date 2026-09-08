@@ -74,7 +74,7 @@ export default function PageAlbum({ slug, album: ssrAlbum }: PageProps) {
     return (
       <>
         <Head>
-          <title>Álbum | Bandas de 1 Álbum</title>
+          <title>Álbum | Bandas 1 Álbum</title>
         </Head>
         <p>Álbum inválido.</p>
       </>
@@ -85,7 +85,7 @@ export default function PageAlbum({ slug, album: ssrAlbum }: PageProps) {
     return (
       <>
         <Head>
-          <title>Carregando… | Bandas de 1 Álbum</title>
+          <title>Carregando… | Bandas 1 Álbum</title>
           <meta name="robots" content="noindex,follow" />
         </Head>
         <p>Carregando…</p>
@@ -97,7 +97,7 @@ export default function PageAlbum({ slug, album: ssrAlbum }: PageProps) {
     return (
       <>
         <Head>
-          <title>Carregando… | Bandas de 1 Álbum</title>
+          <title>Carregando… | Bandas 1 Álbum</title>
           <meta name="robots" content="noindex,follow" />
         </Head>
         <p>Carregando…</p>
@@ -109,7 +109,7 @@ export default function PageAlbum({ slug, album: ssrAlbum }: PageProps) {
     return (
       <>
         <Head>
-          <title>Erro | Bandas de 1 Álbum</title>
+          <title>Erro | Bandas 1 Álbum</title>
           <meta name="robots" content="noindex,follow" />
         </Head>
         <p role="alert">

@@ -25,14 +25,14 @@ export type HomeTemplateProps = {
 const SITE_STRUCTURED_DATA = {
   '@context': 'https://schema.org',
   '@type': 'WebSite',
-  name: 'Bandas de 1 Álbum',
+  name: 'Bandas 1 Álbum',
   url: SITE_URL,
   description:
     'Descubra bandas e artistas que lançaram apenas um álbum na carreira — explore por gênero, país ou ano de lançamento.',
   inLanguage: 'pt-BR',
   publisher: {
     '@type': 'Organization',
-    name: 'Bandas de 1 Álbum',
+    name: 'Bandas 1 Álbum',
     url: SITE_URL,
     logo: {
       '@type': 'ImageObject',
@@ -64,7 +64,7 @@ export default function HomeTemplate({ initialPage }: HomeTemplateProps) {
   return (
     <>
       <Head>
-        <title>Bandas de 1 Álbum</title>
+        <title>Bandas 1 Álbum</title>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -77,33 +77,33 @@ export default function HomeTemplate({ initialPage }: HomeTemplateProps) {
             __html: safeJsonLdStringify(
               buildAlbumItemListJsonLd(
                 flattenAlbumPages(initialPage),
-                'Bandas de 1 Álbum'
+                'Bandas 1 Álbum'
               )
             )
           }}
         />
       </Head>
       <NextSeo
-        title="Bandas de 1 Álbum"
+        title="Bandas 1 Álbum"
         description={seoDescription}
         canonical={`${SITE_URL}/`}
         openGraph={{
           type: 'website',
           locale: 'pt_BR',
           url: `${SITE_URL}/`,
-          siteName: 'Bandas de 1 Álbum',
+          siteName: 'Bandas 1 Álbum',
           images: [
             {
               url: absoluteUrl('/cover.png'),
               width: 1280,
               height: 720,
-              alt: 'Bandas de 1 Álbum'
+              alt: 'Bandas 1 Álbum'
             }
           ]
         }}
       />
       <>
-        <PageHeader hideBack={true}>Bandas de 1 Álbum</PageHeader>
+        <PageHeader hideBack={true}>Bandas 1 Álbum</PageHeader>
         <ListAlbums
           albums={albums}
           hasNextPage={hasNextPage}

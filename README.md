@@ -1,4 +1,4 @@
-# Bandas de 1 Álbum
+# Bandas 1 Álbum
 
 Eternizando bandas e artistas que lançaram apenas um álbum.
 

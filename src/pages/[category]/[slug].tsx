@@ -80,8 +80,8 @@ export const getStaticProps: GetStaticProps<CategoryPageProps> = async (
 
     const ctxMeta = data.meta?.context
     const title = ctxMeta
-      ? `${ctxMeta.title} ‹ ${ctxMeta.page} | Bandas de 1 Álbum`
-      : `${slug} | Bandas de 1 Álbum`
+      ? `${ctxMeta.title} ‹ ${ctxMeta.page} | Bandas 1 Álbum`
+      : `${slug} | Bandas 1 Álbum`
 
     const description = getCategorySeoDescription(data.meta)
 

@@ -152,7 +152,7 @@ export function buildAlbumBreadcrumbItems(
   album: Album,
   pageTitle: string
 ): BreadcrumbItem[] {
-  const items: BreadcrumbItem[] = [{ name: 'Bandas de 1 Álbum', url: '/' }]
+  const items: BreadcrumbItem[] = [{ name: 'Bandas 1 Álbum', url: '/' }]
 
   const primaryGenre = album.genres?.[0]
   if (primaryGenre?.slug) {
@@ -174,7 +174,7 @@ export function buildCategoryBreadcrumbItems(
   meta: GetAlbumsResponse['meta'],
   path: string
 ): BreadcrumbItem[] {
-  const items: BreadcrumbItem[] = [{ name: 'Bandas de 1 Álbum', url: '/' }]
+  const items: BreadcrumbItem[] = [{ name: 'Bandas 1 Álbum', url: '/' }]
 
   if (meta?.context?.page) {
     items.push({ name: meta.context.page })

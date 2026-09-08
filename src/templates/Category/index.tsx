@@ -64,8 +64,8 @@ export default function CategoryTemplate({
   const path = initialSeo?.canonicalPath ?? `/${category}/${slug}`
 
   const pageTitle = meta?.context?.title
-    ? `${meta.context.title} ‹ ${meta.context.page} | Bandas de 1 Álbum`
-    : initialSeo?.title ?? 'Bandas de 1 Álbum'
+    ? `${meta.context.title} ‹ ${meta.context.page} | Bandas 1 Álbum`
+    : initialSeo?.title ?? 'Bandas 1 Álbum'
 
   const pageDescription = getCategorySeoDescription(meta)
   const playlists = meta?.context?.playlists
@@ -83,7 +83,7 @@ export default function CategoryTemplate({
         url: absoluteUrl('/cover.png'),
         width: 1280,
         height: 720,
-        alt: 'Bandas de 1 Álbum'
+        alt: 'Bandas 1 Álbum'
       }
 
   return (

@@ -2,13 +2,13 @@ const siteUrl =
   process.env.NEXT_PUBLIC_SITE_URL || 'https://bandas1album.com.br'
 
 export default {
-  defaultTitle: 'Bandas de 1 Álbum',
+  defaultTitle: 'Bandas 1 Álbum',
   description:
     'Descubra bandas e artistas que lançaram apenas um álbum na carreira — ouça, explore por gênero, país ou ano.',
   additionalMetaTags: [
     {
       name: 'author',
-      content: 'Bandas de 1 Álbum'
+      content: 'Bandas 1 Álbum'
     }
   ],
   additionalLinkTags: [
@@ -36,13 +36,13 @@ export default {
     type: 'website',
     locale: 'pt_BR',
     url: siteUrl,
-    siteName: 'Bandas de 1 Álbum',
+    siteName: 'Bandas 1 Álbum',
     images: [
       {
         url: `${siteUrl}/cover.png`,
         width: 1280,
         height: 720,
-        alt: 'Bandas de 1 Álbum'
+        alt: 'Bandas 1 Álbum'
       }
     ]
   },

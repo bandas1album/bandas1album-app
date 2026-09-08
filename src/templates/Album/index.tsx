@@ -34,7 +34,7 @@ export default function AlbumTemplate(data: Album) {
   return (
     <>
       <Head>
-        <title>{pageTitle} | Bandas de 1 Álbum</title>
+        <title>{pageTitle} | Bandas 1 Álbum</title>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -53,7 +53,7 @@ export default function AlbumTemplate(data: Album) {
         />
       </Head>
       <NextSeo
-        title={`${pageTitle} | Bandas de 1 Álbum`}
+        title={`${pageTitle} | Bandas 1 Álbum`}
         description={data?.meta_description}
         openGraph={{
           type: 'music.album',

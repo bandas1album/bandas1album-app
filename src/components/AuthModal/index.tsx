@@ -209,12 +209,7 @@ export const AuthModal = () => {
         </S.DialogTitle>
 
         {['login', 'signup', 'lost', 'reset'].includes(view) && (
-          <Image
-            src="/logo.svg"
-            width={80}
-            height={80}
-            alt="Bandas de 1 Álbum"
-          />
+          <Image src="/logo.svg" width={80} height={80} alt="Bandas 1 Álbum" />
         )}
 
         <S.AuthContainer>
@@ -259,9 +254,9 @@ export const AuthModal = () => {
 
         {['login', 'signup'].includes(view) && (
           <S.AuthInfo>
-            Bandas de 1 Álbum é um projeto sem fins lucrativos dedicado a
-            preservar e dar visibilidade a bandas e artistas que lançaram apenas
-            um álbum, mantendo essas obras acessíveis para quem ama música.{' '}
+            Bandas 1 Álbum é um projeto sem fins lucrativos dedicado a preservar
+            e dar visibilidade a bandas e artistas que lançaram apenas um álbum,
+            mantendo essas obras acessíveis para quem ama música.{' '}
             <S.InlineLink type="button" onClick={() => open('signup')}>
               Crie sua conta
             </S.InlineLink>{' '}

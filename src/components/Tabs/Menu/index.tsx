@@ -196,7 +196,7 @@ export default function TabsMenu() {
       </MenuSocial>
 
       <MenuFooter>
-        <strong>Bandas de 1 Álbum © 2021-{year}</strong>
+        <strong>Bandas 1 Álbum © 2021-{year}</strong>
       </MenuFooter>
     </MenuNav>
   )
