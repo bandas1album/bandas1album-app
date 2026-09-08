@@ -28,7 +28,7 @@ const SITE_STRUCTURED_DATA = {
   name: 'Bandas 1 Álbum',
   url: SITE_URL,
   description:
-    'Descubra bandas e artistas que lançaram apenas um álbum na carreira — explore por gênero, país ou ano de lançamento.',
+    'Conheça bandas e artistas que lançaram apenas um álbum na carreira. Descubra discos, histórias, gêneros e raridades no Bandas 1 Álbum.',
   inLanguage: 'pt-BR',
   publisher: {
     '@type': 'Organization',
