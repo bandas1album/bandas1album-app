@@ -9,7 +9,7 @@
     "src/pages/api/cron/generate-sitemap.ts": {
       "maxDuration": 60
     },
-    "src/pages/sitemap.xml.tsx": {
+    "src/app/sitemap.xml/route.ts": {
       "maxDuration": 60
     }
   }

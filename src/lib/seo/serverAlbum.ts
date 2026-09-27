@@ -33,7 +33,8 @@ async function fetchMenuPage(
 ): Promise<GetMenuResponse> {
   const params = new URLSearchParams({
     type,
-    page: String(page)
+    page: String(page),
+    per_page: '50'
   })
   const res = await fetch(`${apiBaseUrl}/api/menu?${params}`)
   if (!res.ok) throw new Error(`Menu fetch failed: ${res.status}`)
